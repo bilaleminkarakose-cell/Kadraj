@@ -262,6 +262,21 @@ textarea.in{min-height:5.5rem;padding:12px 14px;resize:vertical}
 .msg img.att{max-width:13rem;border-radius:14px;display:block;margin:-2px -4px 2px}
 .react{position:absolute;bottom:-10px;right:10px;display:inline-flex;align-items:center;gap:2px;background:var(--surface);color:var(--heart);border:1px solid var(--line);border-radius:10px;padding:1px 6px;font:700 .68rem/1.4 var(--f-body)}
 .react svg{width:.7rem;height:.7rem;fill:var(--heart);stroke:none}
+.react{color:var(--fg);cursor:pointer}.react svg.rx{width:.95rem;height:.95rem;margin-right:-3px}.react svg.rx:last-of-type{margin-right:1px}
+.rxpick{display:flex;justify-content:space-between;gap:4px;margin:2px 14px 8px;padding:8px 10px;border-radius:999px;background:var(--surface-2);border:1px solid var(--line)}
+.rxpick button{display:grid;place-items:center;width:2.6rem;height:2.6rem;border-radius:50%;transition:transform .15s}
+.rxpick button:active{transform:scale(1.25)}.rxpick button.on{background:var(--surface);box-shadow:0 0 0 2px var(--accent)}
+.rxpick svg.rx{width:1.9rem;height:1.9rem}
+.rxrow svg.rx{width:1.6rem;height:1.6rem;flex:none}
+.msgs.wp .stamp,.msgs.wp .seen{background:var(--surface);padding:4px 9px;border-radius:9px;opacity:.95}
+.msgs.wp .sender{background:var(--surface);border-radius:8px;padding:1px 7px;justify-self:start}
+.msgs.wp .hero{background:var(--surface);border-radius:22px;margin:0 6px;opacity:.96}
+.wpgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:4px 16px 12px}
+.wpgrid button{aspect-ratio:9/14;border-radius:14px;border:1px solid var(--line);background-color:var(--bg);display:grid;place-items:end center;padding-bottom:5px;font-size:.66rem;font-weight:700;overflow:hidden}
+.wpgrid button.on{box-shadow:0 0 0 3px var(--accent)}
+.wpgrid button span{background:var(--surface);border-radius:6px;padding:1px 5px}
+.tile .pn{position:absolute;top:6px;left:6px;color:#fff;filter:drop-shadow(0 1px 2px rgba(0,0,0,.7))}
+.tile .pn svg.i{width:1rem;height:1rem}
 .mrow.has-react{margin-bottom:8px}
 .seen{align-self:flex-end;font-size:.72rem;color:var(--muted);margin-top:-2px}
 .stamp{align-self:center;font:500 .68rem/1 var(--f-mono);color:var(--muted);margin:10px 0 4px}
@@ -739,6 +754,7 @@ home:'<path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>
 search:'<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>',
 add:'<path d="M12 5v14M5 12h14"/>',
 reels:'<rect x="3" y="3" width="18" height="18" rx="5"/><path d="M3 8.5h18M8 3l3 5.5M14 3l3 5.5"/><path d="m10 12 5 3-5 3z"/>',
+pin:'<path d="M9 3h6l-1 6 3 3v2H7v-2l3-3z"/><path d="M12 14v7"/>',
 heart:'<path d="M12 20.5s-7.5-4.6-9.3-9.2C1.4 7.9 3.6 4.5 7 4.5c2 0 3.6 1.1 5 2.9 1.4-1.8 3-2.9 5-2.9 3.4 0 5.6 3.4 4.3 6.8-1.8 4.6-9.3 9.2-9.3 9.2z"/>',
 comment:'<path d="M20.5 11.5a8.5 8.5 0 0 1-12.4 7.6L3.5 20.5l1.4-4.5a8.5 8.5 0 1 1 15.6-4.5z"/>',
 send:'<path d="M21.5 2.5 10.6 13.4M21.5 2.5 15 21l-4.4-7.6L3 9z"/>',
@@ -1008,7 +1024,7 @@ function vChats(){const all=chatList();const list=all.filter(c=>c.key!=="u:bot:r
  const bots=BOTS.filter(b=>!b.ai&&!S.botchats[b.key]?.msgs?.length);
  if(bots.length)h+=`<h3 class="sec-h"><span>Botlarla dene</span></h3><div class="hrow">${bots.map(b=>`<div class="pcard"><button data-msg="${esc(b.uid)}">${avatar(b.uid,52,{click:false,ring:false})}</button><div class="n"><b>${esc(b.username)}</b></div><button class="btn sm sec block" data-msg="${esc(b.uid)}">Yaz</button></div>`).join("")}</div>`;
  return h}
-function renderMsgs(){const box=$("#msgs");if(!box||S.route.name!=="chat")return;const key=S.route.params.key;const k=keyInfo(key);const atBottom=box.scrollHeight-box.scrollTop-box.clientHeight<90;
+function renderMsgs(){const box=$("#msgs");if(!box||S.route.name!=="chat")return;const key=S.route.params.key;applyWp(box,key);const k=keyInfo(key);const atBottom=box.scrollHeight-box.scrollTop-box.clientHeight<90;
  const hid=(S.hidden&&S.hidden.msgs)||{};const msgs=currentMsgs().filter(m=>!(m.id&&hid[m.id]));let h="";
  const fresh=S.midsKey!==key;if(fresh){S.knownMids=new Set();S.seenKeys=new Set();S.midsKey=key}
  if(k.type==="meydan")h+=`<div class="hero"><span class="av" style="--s:68px"><img src="${MEYDAN_AV}" alt=""></span><b>Meydan</b><span>Bu sayfaya erişimi olan herkesin ortak sohbeti. Mesajında <b>@rota</b> yazarsan yapay zekâ rehberi de katılır.</span></div>`;
@@ -1033,8 +1049,8 @@ function renderMsgs(){const box=$("#msgs");if(!box||S.route.name!=="chat")return
    if(m.img)body+=`<img class="att" src="${esc(m.img)}" alt="Fotoğraf" data-view="1">`;
    if(m.text)body+=isAI&&!mine?md(m.text):esc(m.text);
    if(m.edited)body+=`<span class="edl">düzenlendi</span>`}
-  const hearts=Object.values(m.likes||{}).filter(Boolean).length;
-  h+=`<div class="mrow ${mine?"me":""} ${hearts?"has-react":""} ${isNew?"nw":""}">${multi&&!mine?(showSender?avatar(m.from,30,{click:false,ring:false,online:false}):'<span style="width:30px;flex:none"></span>'):""}<div class="mcol">${showSender?`<span class="sender">${esc(P(m.from).username)}${BOT[m.from]?badge(m.from):""}</span>`:""}<div class="msg ${isAI&&!mine?"ai":""} ${m.del?"del":""}" ${m.id&&k.type!=="bot"?`data-mid="${esc(m.id)}" id="m-${esc(m.id)}"`:""}>${body}${hearts?`<span class="react"><svg viewBox="0 0 24 24">${IP.heart}</svg>${hearts>1?hearts:""}</span>`:""}</div></div></div>`;
+  const hearts=Object.keys(msgReacts(m)).length;
+  h+=`<div class="mrow ${mine?"me":""} ${hearts?"has-react":""} ${isNew?"nw":""}">${multi&&!mine?(showSender?avatar(m.from,30,{click:false,ring:false,online:false}):'<span style="width:30px;flex:none"></span>'):""}<div class="mcol">${showSender?`<span class="sender">${esc(P(m.from).username)}${BOT[m.from]?badge(m.from):""}</span>`:""}<div class="msg ${isAI&&!mine?"ai":""} ${m.del?"del":""}" ${m.id&&k.type!=="bot"?`data-mid="${esc(m.id)}" id="m-${esc(m.id)}"`:""}>${body}${hearts?reactChip(m):""}</div></div></div>`;
   if(seenAt[idx])h+=`<div class="seenrow">${seenAt[idx].slice(0,8).map(([u,t])=>`<button class="seenav ${S.seenKeys&&!S.seenKeys.has(u+":"+(m.id||m.at))&&!fresh?"nw":""}" data-seen="${esc(u)}" data-t="${t}" aria-label="${esc(P(u).username)} gördü"><img src="${esc(P(u).avatar)}" alt=""></button>`).join("")}</div>`;
   if(seenAt[idx]){S.seenKeys=S.seenKeys||new Set();seenAt[idx].forEach(([u])=>S.seenKeys.add(u+":"+(m.id||m.at)))}
   S.knownMids.add(mk)});
@@ -1099,7 +1115,7 @@ function renderTop(){if(!S.authed)return;const r=S.route.name;const t=$("#top");
  else if(r==="profile"){const p=P(S.route.params.uid);const own=p.uid===S.uid;h=(S.stack.length?backBtn:"")+`<h1>${esc(p.username)}${badge(p.uid)}</h1>`+(own?`<div class="acts"><button class="ib" data-go="settings" aria-label="Ayarlar">${I("gear")}</button></div>`:`<button class="ib" data-act="profmenu" data-uid="${esc(p.uid)}" aria-label="Diğer">${I("more")}</button>`)}
  else if(r==="post")h=backBtn+`<h1>Paylaşım</h1>`;
  else if(r==="activity")h=backBtn+`<h1>Bildirimler</h1>`;
- else if(r==="chat")h=backBtn+chatHead(S.route.params.key);
+ else if(r==="chat")h=backBtn+chatHead(S.route.params.key)+`<button class="ib" data-act="wallpaper" aria-label="Duvar kağıdı">${I("image")}</button>`;
  else if(r==="settings")h=backBtn+`<h1>Ayarlar</h1>`;
  else if(r==="edit")h=backBtn+`<h1>Profili düzenle</h1>`;
  else if(r==="people")h=backBtn+`<h1>${esc(P(S.route.params.uid).username)}</h1>`;
@@ -1162,7 +1178,12 @@ function vExplore(){const q=(S.q||"").trim().toLocaleLowerCase("tr");
  return h+`<h3 class="sec-h"><span>Keşfedilecekler</span></h3>`+grid(ps)}
 function personRow(u){const p=P(u);return`<div class="row"><button data-prof="${esc(u)}">${avatar(u,48,{click:false})}</button><button class="t" data-prof="${esc(u)}"><div><b>${esc(p.name)}</b>${badge(u)}</div><div class="s">@${esc(p.username)}${S.online.has(u)?" · çevrimiçi":""}</div></button>${u!==S.uid&&!S.guest?`<button class="btn sm ${isFollowing(S.uid,u)?"sec":""}" data-follow="${esc(u)}">${isFollowing(S.uid,u)?"Takiptesin":"Takip et"}</button>`:""}</div>`}
 function tileInner(p){if(p.kind==="note")return`<span class="tx" style="background:${NOTE_BG[p.bg||0]}">${esc((p.text||"").slice(0,70))}</span>`;if(p.kind==="poll")return`<span class="tx" style="background:#0c7a63">${esc(p.question.slice(0,60))}</span><span class="k">${I("poll")}</span>`;const th=postThumb(p);return(th?`<img src="${esc(th)}" alt="" loading="lazy" ${p.css?`style="filter:${esc(p.css)}"`:""}>`:`<span class="tx" style="background:#111">${I("play")}</span>`)+(p.kind==="reel"?`<span class="k">${I("reels")}</span>`:"")}
-function grid(posts){if(!posts.length)return"";return`<div class="grid">${posts.map(p=>`<button class="tile" data-open="${esc(p.id)}" aria-label="Paylaşımı aç">${tileInner(p)}<span class="c">${I("heart")}${short(likeCount(p))}</span></button>`).join("")}</div>`}
+const pinsOf=uid=>((S.profiles[uid]||{}).pins||[]).filter(id=>{const p=postById(id);return p&&p.uid===uid}).slice(0,3);
+function withPins(list,uid){const pins=pinsOf(uid);if(!pins.length)return list;const top=pins.map(id=>list.find(p=>p.id===id)).filter(Boolean);return[...top,...list.filter(p=>!pins.includes(p.id))]}
+async function togglePin(id){if(!guard())return;const cur=pinsOf(S.uid);const on=cur.includes(id);if(!on&&cur.length>=3)return toast("En fazla 3 paylaşım sabitleyebilirsin. Önce birini kaldır.");
+ const pins=on?cur.filter(x=>x!==id):[id,...cur];S.profiles={...S.profiles,[S.uid]:{...S.profiles[S.uid],pins}};render(false);
+ if(await write(()=>DB.update("profiles/"+S.uid,{pins})))toast(on?"Sabitleme kaldırıldı":"Profilinde en üste sabitlendi")}
+function grid(posts,pins){if(!posts.length)return"";return`<div class="grid">${posts.map(p=>`<button class="tile" data-open="${esc(p.id)}" aria-label="Paylaşımı aç">${tileInner(p)}${pins&&pins.includes(p.id)?`<span class="pn" aria-label="Sabitlendi">${I("pin")}</span>`:""}<span class="c">${I("heart")}${short(likeCount(p))}</span></button>`).join("")}</div>`}
 
 /* --- Reels --- */
 function reelList(){return allPosts().filter(p=>p.kind==="reel"&&canSee(p))}
@@ -1187,7 +1208,7 @@ function vProfile(uid){const p=P(uid);const own=uid===S.uid;const posts=postsOf(
  h+=`<div class="ptabs" role="tablist">${tabs.map(([k,l,ic])=>`<button class="chip" role="tab" aria-pressed="${S.profTab===k}" data-ptab="${k}">${I(ic)}${l}</button>`).join("")}</div>`;
  const list=S.profTab==="posts"?posts.filter(x=>x.kind!=="reel"):S.profTab==="reels"?posts.filter(x=>x.kind==="reel"):Object.entries(S.saved).filter(([,v])=>v).map(([id])=>postById(id)).filter(Boolean);
  if(!list.length)h+=`<div class="empty"><span class="ic">${I(S.profTab==="saved"?"bookmark":S.profTab==="reels"?"reels":"image")}</span><b>${S.profTab==="saved"?"Kaydedilen yok":own?"İlk paylaşımını yap":"Henüz paylaşım yok"}</b>${S.profTab==="saved"?"Paylaşımlardaki yer imi düğmesiyle kaydet.":own?`<button class="btn sm" data-act="${S.profTab==="reels"?"newreel":"create"}">${S.profTab==="reels"?"Sahne oluştur":"Paylaşım oluştur"}</button>`:""}</div>`;
- else h+=grid(list);
+ else h+=S.profTab==="saved"?grid(list):grid(withPins(list,uid),pinsOf(uid));
  return h}
 function vPeople({uid,type}){const list=type==="followers"?followersOf(uid):followingOf(uid);
  return`<div class="ptabs"><button class="chip" aria-pressed="${type==="followers"}" data-swap="followers">${short(followerCount(uid))} takipçi</button><button class="chip" aria-pressed="${type==="following"}" data-swap="following">${fmt(followingOf(uid).length)} takip</button></div>`+(list.length?`<div class="box">${list.map(u=>personRow(u)).join("")}</div>`:`<div class="empty"><b>Liste boş</b>${type==="followers"&&BOT[uid]?"Bu sayıya test için temsili takipçiler dahil.":"Henüz kimse yok."}</div>`)}
@@ -1203,6 +1224,19 @@ function vActivity(){const list=activity();const seen=LS.get("kadraj_act_"+S.uid
 
 /* --- Sohbet merkezi --- */
 /* --- Sohbet --- */
+/* sohbet duvar kağıdı (3.9): yalnızca bu cihazda; settings.wp[key] ya da settings.wp["*"] */
+const WP_HEART="data:image/svg+xml,"+encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 56 56"><g fill="#ff3b5c" fill-opacity=".16"><path transform="translate(4 4) scale(.75)" d="${IP.heart.match(/d="([^"]+)"/)[1]}"/><path transform="translate(32 30) scale(.6)" d="${IP.heart.match(/d="([^"]+)"/)[1]}"/></g></svg>`);
+const WALLS=[["none","Yok",""],["dusk","Gün batımı","linear-gradient(160deg,rgba(255,94,98,.32),rgba(255,153,102,.2) 50%,rgba(120,80,220,.3))"],["ocean","Okyanus","linear-gradient(180deg,rgba(0,150,255,.26),rgba(0,210,190,.22))"],["mint","Nane","radial-gradient(circle at 20% 10%,rgba(120,230,170,.42),transparent 60%),radial-gradient(circle at 90% 90%,rgba(80,170,255,.36),transparent 55%)"],["night","Gece","linear-gradient(180deg,#0f1530,#2a1b4a)"],["dots","Noktalı","radial-gradient(rgba(127,127,127,.32) 1.4px,transparent 1.7px) 0 0/18px 18px"],["grid","Kareli","linear-gradient(rgba(127,127,127,.16) 1px,transparent 1px) 0 0/22px 22px,linear-gradient(90deg,rgba(127,127,127,.16) 1px,transparent 1px) 0 0/22px 22px"],["hearts","Kalpler",`url("${WP_HEART}") 0 0/56px 56px`]];
+const wpLsKey=key=>"kadraj_wp_"+String(key).replace(/[^\w:-]/g,"_");
+function wpOf(key){const w=settings.wp||{};const id=w[key]||w["*"]||"none";if(id==="photo"){const src=LS.get(wpLsKey(w[key]==="photo"?key:"*"));return src?{id:"photo:"+src.length,bg:`linear-gradient(rgba(0,0,0,.12),rgba(0,0,0,.12)),url("${src}") center/cover no-repeat`}:{id:"none",bg:""}}const x=WALLS.find(a=>a[0]===id)||WALLS[0];return{id:x[0],bg:x[2]}}
+function applyWp(box,key){const w=wpOf(key);if(box.dataset.wp===w.id)return;box.dataset.wp=w.id;box.style.background=w.bg;box.classList.toggle("wp",!!w.bg)}
+function wallpaperMenu(){const key=S.route.params.key;const w=settings.wp||{};const cur=w[key]||w["*"]||"none";
+ const l=sheet("wp","Sohbet duvar kağıdı",`<p class="muted" style="margin:0 18px 10px;font-size:.84rem">Yalnızca senin cihazında görünür.</p><div class="wpgrid">${WALLS.map(([id,lb,bg])=>`<button type="button" data-wpid="${id}" class="${cur===id?"on":""}" style="background:${esc(bg)}"><span>${esc(lb)}</span></button>`).join("")}</div>
+ <button class="opt" id="wpPh">${I("image")}${cur==="photo"?"Başka fotoğraf seç":"Fotoğraftan seç"}</button><label class="opt" style="cursor:pointer"><input type="checkbox" id="wpAll" ${w["*"]&&!w[key]?"checked":""}> Bütün sohbetlerde kullan</label><button class="opt" data-act="close">${I("close")}Kapat</button>`);
+ const save=id=>{const all=$("#wpAll",l).checked;const nw={...(settings.wp||{})};if(all){nw["*"]=id;delete nw[key]}else nw[key]=id;settings.wp=nw;saveSettings();const box=$("#msgs");if(box)applyWp(box,key);closeLayer("wp");toast(id==="none"?"Duvar kağıdı kaldırıldı":"Duvar kağıdı değişti")};
+ $$("[data-wpid]",l).forEach(b=>b.onclick=()=>save(b.dataset.wpid));
+ $("#wpPh",l).onclick=async()=>{const all=$("#wpAll",l).checked;const r=await pickImage({title:"Duvar kağıdı",draw:false});if(!r)return;const img=r.img;const ratio=(img.naturalWidth||img.width)/(img.naturalHeight||img.height)||.56;const W=720,H=Math.round(W/Math.min(Math.max(ratio,.4),1.2));
+  const data=encode(toCanvas(img,W,H),420000,.8);if(!LS.set(wpLsKey(all?"*":key),data))return toast("Fotoğraf çok büyük, kaydedilemedi.");$("#wpAll",l).checked=all;save("photo")}}
 function vChat(key){const k=keyInfo(key);const isRota=k.type==="bot"&&k.bot.ai;
  const chips=isRota?["Satranç oynayalım","Kadraj'ı nasıl kullanırım?","Arkadaşlarımla nasıl konuşurum?","Test bildirimleri oluştur","Fotoğraf yüklenmiyor","JavaScript'te debounce yaz"]:k.type==="bot"?["Merhaba!","Bugün ne paylaştın?","Bana bir öneri ver"]:k.type==="meydan"?["Selam herkese!","@rota bugün ne paylaşayım?"]:k.type==="group"?["Selam ekip!","@rota bize bir etkinlik öner"]:["Selam!","Nasılsın?"];
  if(S.replyKey!==key){S.replyTo=null;S.replyKey=key}
@@ -1233,7 +1267,7 @@ function vSettings(){const p=me();const sw=(id,on,label,sub)=>`<label class="sro
  <div class="set"><h3>Bildirim ve oynatma</h3>${sw("setNotify",settings.notify,"Uygulama içi bildirimler","Mesaj, beğeni ve dürtmelerde üstte uyarı")}${sw("setAutoplay",settings.autoplay,"Sahneleri otomatik oynat","Kapatırsan dokununca başlar")}</div>
  <div class="set"><h3>Oturum</h3>${sw("setRemember",remembered,"Beni hatırla","Açıkken bu cihazda şifre sorulmaz")}<button class="srow" data-act="logout">${I("logout")}<span class="t">Çıkış yap<small>@${esc(p.username)}</small></span></button></div>
  ${S.admin?`<div class="set"><h3>Yönetici</h3><button class="srow" data-go="admin">${I("key")}<span class="t">Yönetici paneli<small>Kullanıcılar, botlar, duyuru, temizlik</small></span></button></div>`:""}<div class="set"><h3>Uygulama</h3><button class="srow" data-act="install">${I("home")}<span class="t">${isStandalone()?"Ana ekranda açık":"Ana ekrana ekle"}<small>${isStandalone()?"Kadraj uygulama olarak çalışıyor":"Telefonunda simgesiyle dursun, tam ekran açılsın"}</small></span></button></div><div class="set"><h3>Yardım</h3><button class="srow" data-act="invite">${I("users")}<span class="t">Arkadaşlarını davet et<small>Birlikte kullanmanın yolu</small></span></button><button class="srow" data-msg="bot:rota">${I("spark")}<span class="t">Rota'ya sor<small>Yapay zekâ rehberi</small></span></button></div>
- <div class="set"><h3>Hakkında</h3><div class="kv"><span>Sürüm</span><span class="mono">Kadraj 3.8 · Firebase</span></div><div class="kv"><span>Veri</span><span>${S.mode==="cloud"?"Firebase · arkadaşlarınla canlı":"Demo · yalnızca bu cihaz"}</span></div><div class="kv"><span>Şu an açık</span><span>${S.online.size+1} kişi</span></div><div class="kv"><span>Rota</span><span>${S.caps.sample?"Yapay zekâ bağlı":"Hazır yanıtlar"}</span></div></div>
+ <div class="set"><h3>Hakkında</h3><div class="kv"><span>Sürüm</span><span class="mono">Kadraj 3.9 · Firebase</span></div><div class="kv"><span>Veri</span><span>${S.mode==="cloud"?"Firebase · arkadaşlarınla canlı":"Demo · yalnızca bu cihaz"}</span></div><div class="kv"><span>Şu an açık</span><span>${S.online.size+1} kişi</span></div><div class="kv"><span>Rota</span><span>${S.caps.sample?"Yapay zekâ bağlı":"Hazır yanıtlar"}</span></div></div>
  <div class="set"><button class="srow" data-act="resetcfg">${I("link")}<span class="t">${S.mode==="cloud"?"Firebase bağlantısını değiştir":"Firebase'i kur"}<small>${S.mode==="cloud"?"Kurulum ekranına döner":"Arkadaşlarınla konuşmak için gerekli"}</small></span></button><button class="srow" data-act="delacct">${I("trash")}<span class="t" style="color:var(--heart)">Hesabı sil<small>Profil, paylaşımlar ve hikâyeler kalıcı olarak silinir</small></span></button></div>`}
 function vEdit(){const p=me();const d=S.editDraft||{};return`<form class="form" id="editForm"><div class="avpick" style="justify-content:center;flex-direction:column"><span class="av" style="--s:96px"><img id="editAv" src="${esc(d.av||p.avatar)}" alt=""></span><button type="button" class="btn sec sm" id="editAvBtn">${I("image")}Fotoğrafı değiştir</button></div>
  <div class="field"><label for="eName">Ad</label><input class="in" id="eName" value="${esc(d.name??p.name)}" maxlength="40" required></div>
@@ -1313,6 +1347,7 @@ document.addEventListener("click",async e=>{const t=e.target.closest("button,[da
  if(a==="postmenu")return postMenu(d.id);
  if(a==="profmenu")return profMenu(d.uid);
  if(a==="groupmenu")return groupMenu();
+ if(a==="wallpaper")return wallpaperMenu();
  if(a==="newchat")return openNewChat();
  if(a==="newgroup")return openNewGroup();
  if(a==="invite"){closeAll();return go("invite")}
@@ -1331,7 +1366,7 @@ document.addEventListener("click",async e=>{const t=e.target.closest("button,[da
 /* çift dokunuş: beğeni ve mesaja kalp */
 let lastTap={id:null,t:0};
 document.addEventListener("pointerup",e=>{const m=e.target.closest("[data-dbl]");if(m){const id=m.dataset.dbl;const t=now();if(lastTap.id===id&&t-lastTap.t<320){lastTap={id:null,t:0};burst(m);if(!iLike(id))toggleLike(id,true)}else lastTap={id,t};return}
- const msg=e.target.closest(".msg[data-mid]");if(msg){const id="m:"+msg.dataset.mid;const t=now();if(lastTap.id===id&&t-lastTap.t<320){lastTap={id:null,t:0};reactMsg(msg.dataset.mid)}else lastTap={id,t}}});
+ const msg=!e.target.closest("[data-rxl]")&&e.target.closest(".msg[data-mid]");if(msg){const id="m:"+msg.dataset.mid;const t=now();if(lastTap.id===id&&t-lastTap.t<320){lastTap={id:null,t:0};reactMsg(msg.dataset.mid)}else lastTap={id,t}}});
 document.addEventListener("click",e=>{const im=e.target.closest("img[data-view]");if(!im)return;openLayer("imgv",`<div class="imgview" data-act="close"><img src="${esc(im.src)}" alt=""><button class="ib" data-act="close" aria-label="Kapat">${I("close")}</button></div>`,{noScrim:true});$('[data-layer="imgv"] .imgview').onclick=ev=>{if(ev.target.tagName!=="IMG")closeLayer("imgv")}});
 document.addEventListener("dblclick",e=>{const r=e.target.closest(".reel");if(!r||e.target.closest("button"))return;burst(r);const id=r.dataset.pid;if(!iLike(id))toggleLike(id,true)});
 document.addEventListener("click",e=>{const r=e.target.closest(".reel");if(!r||e.target.closest("button"))return;const v=r.querySelector("video");if(S.needUnmute&&v&&!S.muted){S.needUnmute=false;$$(".rhint").forEach(h=>h.hidden=true);v.muted=v.dataset.mus==="1";const p=postById(r.dataset.pid);if(p&&p.music&&p.music!=="none")Music.start(p.music);return}if(v){if(v.paused)v.play().catch(()=>{});else v.pause()}});
@@ -1370,15 +1405,38 @@ function openShare(pid){if(!guard())return;const targets=[...new Set([...chatLis
  $$("[data-sendto]",l).forEach(b=>b.onclick=async()=>{b.disabled=true;b.textContent="Gönderildi";await sendMessage(b.dataset.sendto,{post:pid,text:""})})}
 /* menüler */
 function postMenu(id){const p=postById(id);if(!p)return;const own=p.uid===S.uid;
- const l=sheet("menu","",`${own?`${S.posts[id]?`<button class="opt" id="mEdit">${I("edit")}Açıklamayı düzenle</button>`:""}<button class="opt red" id="mDel">${I("trash")}Paylaşımı sil</button>`:`<button class="opt" data-follow="${esc(p.uid)}">${I("users")}${isFollowing(S.uid,p.uid)?"Takibi bırak":"Takip et"}</button><button class="opt" data-msg="${esc(p.uid)}">${I("chat")}Mesaj gönder</button>${BOT[p.uid]?"":`<button class="opt" id="mRep">${I("flag")}Şikayet et</button>`}`}<button class="opt" data-share="${esc(p.id)}">${I("send")}Arkadaşına gönder</button><button class="opt" data-prof="${esc(p.uid)}">${I("info")}Profili gör</button>${S.admin&&S.posts[id]?`<button class="opt" id="mPin">${I("spark")}${pinnedId()===id?"Öne çıkarmayı kaldır":"Yönetici: öne çıkar"}</button>${own?"":`<button class="opt red" id="mAdm">${I("trash")}Yönetici: paylaşımı kaldır</button>`}`:""}<button class="opt" data-act="close">${I("close")}Vazgeç</button>`);
+ const l=sheet("menu","",`${own?`${S.posts[id]?`<button class="opt" id="mPP">${I("pin")}${pinsOf(S.uid).includes(id)?"Profilde sabitlemeyi kaldır":"Profilde sabitle"}</button><button class="opt" id="mEdit">${I("edit")}Açıklamayı düzenle</button>`:""}<button class="opt red" id="mDel">${I("trash")}Paylaşımı sil</button>`:`<button class="opt" data-follow="${esc(p.uid)}">${I("users")}${isFollowing(S.uid,p.uid)?"Takibi bırak":"Takip et"}</button><button class="opt" data-msg="${esc(p.uid)}">${I("chat")}Mesaj gönder</button>${BOT[p.uid]?"":`<button class="opt" id="mRep">${I("flag")}Şikayet et</button>`}`}<button class="opt" data-share="${esc(p.id)}">${I("send")}Arkadaşına gönder</button><button class="opt" data-prof="${esc(p.uid)}">${I("info")}Profili gör</button>${S.admin&&S.posts[id]?`<button class="opt" id="mPin">${I("spark")}${pinnedId()===id?"Öne çıkarmayı kaldır":"Yönetici: öne çıkar"}</button>${own?"":`<button class="opt red" id="mAdm">${I("trash")}Yönetici: paylaşımı kaldır</button>`}`:""}<button class="opt" data-act="close">${I("close")}Vazgeç</button>`);
  const mr=$("#mRep",l);if(mr)mr.onclick=()=>{closeLayer("menu");reportPost(id)};
+ const mpp=$("#mPP",l);if(mpp)mpp.onclick=()=>{closeLayer("menu");togglePin(id)};
  const mp=$("#mPin",l);if(mp)mp.onclick=async()=>{closeLayer("menu");const on=pinnedId()===id;if(await admSet("pin",{pid:on?null:id}))toast(on?"Öne çıkarma kaldırıldı":"Paylaşım Akış'ın en üstünde")};
  const ma=$("#mAdm",l);if(ma)ma.onclick=()=>{closeLayer("menu");dialog("Paylaşım kaldırılsın mı?","Yönetici olarak bu paylaşımı herkes için silmek üzeresin.",[{label:"Kaldır",cls:"danger",fn:()=>deletePost(id)},{label:"Vazgeç"}])};
  const ed=$("#mEdit",l);if(ed)ed.onclick=()=>{closeLayer("menu");const l2=sheet("editcap","Açıklamayı düzenle",`<form class="form" id="ecF"><textarea class="in" id="ecIn" maxlength="900">${esc(p.caption||"")}</textarea><button class="btn block">Kaydet</button></form>`);$("#ecF",l2).onsubmit=async ev=>{ev.preventDefault();const v=$("#ecIn",l2).value.trim();if(await write(()=>DB.update("posts/"+id,{caption:v}))){S.posts={...S.posts,[id]:{...S.posts[id],caption:v}};closeLayer("editcap");toast("Açıklama güncellendi");render(false)}}};
  const del=$("#mDel",l);if(del)del.onclick=()=>{closeLayer("menu");dialog("Paylaşım silinsin mi?","Bu paylaşım ve yorumları kalıcı olarak silinir.",[{label:"Sil",cls:"danger",fn:()=>deletePost(id)},{label:"Vazgeç"}])}}
 async function deletePost(id){const pv=S.posts[id]?.video;if(!await write(()=>DB.del("posts/"+id)))return;DB.del("meta/"+id).catch(()=>{});if(pv&&pv.startsWith("chunk:")){const[,vid,n]=pv.split(":");for(let i=0;i<+n;i++)DB.del(`vchunks/${vid}-${i}`).catch(()=>{})}const ps={...S.posts};delete ps[id];S.posts=ps;toast("Paylaşım silindi");if(S.route.name==="post")back();else render(false)}
 function profMenu(uid){const l=sheet("menu","",`<button class="opt" id="pmCopy">${I("copy")}Kullanıcı adını kopyala</button>${S.guest?"":`<button class="opt" data-follow="${esc(uid)}">${I("users")}${isFollowing(S.uid,uid)?"Takibi bırak":"Takip et"}</button>`}${!BOT[uid]&&S.online.has(uid)?`<button class="opt" data-nudge="${esc(uid)}">${I("hand")}Dürt</button>`:""}<button class="opt" data-act="close">${I("close")}Vazgeç</button>`);$("#pmCopy",l).onclick=()=>{closeLayer("menu");copyText("@"+P(uid).username,"Kullanıcı adı kopyalandı")}}
-async function reactMsg(mid){const k=keyInfo(S.route.params.key);if(k.type==="bot"||!guard())return;const m=S.msgs.find(x=>x.id===mid);if(!m||m.del)return;const v=m.likes&&m.likes[S.uid]?0:now();vib(15);
+/* resimli tepkiler (3.9): m.reacts[uid]=tür; kalp eski sürümlerle uyum için likes'a da yazılır */
+const RXF="#FFC83D",RXD="#5B3A1A";
+const REACTS=[["heart","Kalp",`<path d="M12 20.5s-7.5-4.6-9.3-9.2C1.4 7.9 3.6 4.5 7 4.5c2 0 3.6 1.1 5 2.9 1.4-1.8 3-2.9 5-2.9 3.4 0 5.6 3.4 4.3 6.8-1.8 4.6-9.3 9.2-9.3 9.2z" fill="#FF3B5C"/><path d="M6.6 7.2c-1 .3-1.8 1.2-2 2.3" stroke="#fff" stroke-opacity=".6" stroke-width="1.3" fill="none" stroke-linecap="round"/>`],
+ ["laugh","Gülme",`<circle cx="12" cy="12" r="10" fill="${RXF}"/><path d="M6.8 8.6l2.6 1.3-2.6 1.3M17.2 8.6l-2.6 1.3 2.6 1.3" stroke="${RXD}" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M6.5 13.3h11a5.5 5.5 0 0 1-11 0z" fill="${RXD}"/><ellipse cx="12" cy="17.3" rx="2.6" ry="1.3" fill="#FF6B81"/><path d="M3.4 10.6q-1 2 .4 3 1.4-.8.6-3l-.5-.9zM20.6 10.6q1 2-.4 3-1.4-.8-.6-3l.5-.9z" fill="#4FB3FF"/>`],
+ ["wow","Şaşırma",`<circle cx="12" cy="12" r="10" fill="${RXF}"/><path d="M6.6 6.9q1.8-1.4 3.8-.6M17.4 6.9q-1.8-1.4-3.8-.6" stroke="${RXD}" stroke-width="1.4" fill="none" stroke-linecap="round"/><ellipse cx="8.6" cy="10.2" rx="1.4" ry="1.9" fill="${RXD}"/><ellipse cx="15.4" cy="10.2" rx="1.4" ry="1.9" fill="${RXD}"/><ellipse cx="12" cy="16.2" rx="2.3" ry="2.9" fill="${RXD}"/>`],
+ ["sad","Üzülme",`<circle cx="12" cy="12" r="10" fill="${RXF}"/><path d="M6.6 8.6l3-1.3M17.4 8.6l-3-1.3" stroke="${RXD}" stroke-width="1.4" fill="none" stroke-linecap="round"/><circle cx="8.8" cy="11" r="1.3" fill="${RXD}"/><circle cx="15.2" cy="11" r="1.3" fill="${RXD}"/><path d="M8.4 17.6q3.6-3.2 7.2 0" stroke="${RXD}" stroke-width="1.6" fill="none" stroke-linecap="round"/><path d="M16.4 13q1.7 2.5 1.7 3.5a1.7 1.7 0 0 1-3.4 0q0-1 1.7-3.5z" fill="#4FB3FF"/>`],
+ ["fire","Ateş",`<path d="M12 2c.6 3.2 3 4.8 4.6 7.2 1.3 1.9 1.9 3.6 1.9 5.3A6.5 6.5 0 0 1 12 21a6.5 6.5 0 0 1-6.5-6.5c0-2.4 1.2-4.4 2.8-5.9.2 1.6.9 2.7 2 3.2C10 9 10.7 5.3 12 2z" fill="#FF5A1F"/><path d="M12 11.3c1.6 1.8 3.2 3.3 3.2 5.3A3.2 3.2 0 0 1 12 20a3.2 3.2 0 0 1-3.2-3.3c0-1.3.7-2.4 1.6-3.2.1.9.5 1.5 1.1 1.8-.2-1.3 0-2.7.5-4z" fill="#FFC83D"/>`],
+ ["clap","Alkış",`<g transform="rotate(-22 12 15)"><rect x="5.5" y="7.5" width="7" height="13" rx="3.5" fill="#E8A355"/></g><g transform="rotate(16 12 15)"><rect x="11" y="6.5" width="7" height="13" rx="3.5" fill="#FFCF8A" stroke="#D9893A" stroke-width=".8"/><path d="M13.2 8.6v3.6M15.8 8.6v3.6" stroke="#D9893A" stroke-width=".9" stroke-linecap="round"/></g><path d="M4.6 3.6l1.3 1.9M8.6 2.2l.4 2.2M2.6 7.2l2 .8" stroke="#FFB020" stroke-width="1.6" stroke-linecap="round"/>`]];
+const RX=Object.fromEntries(REACTS.map(([k,l,svg])=>[k,{l,svg}]));
+const rxSvg=t=>RX[t]?`<svg class="rx" viewBox="0 0 24 24" aria-hidden="true">${RX[t].svg}</svg>`:"";
+function msgReacts(m){const out={};const lk=m.likes||{},rx=m.reacts||{};for(const u of new Set([...Object.keys(lk),...Object.keys(rx)])){const t=rx[u];if(t&&RX[t]&&(t!=="heart"||lk[u]))out[u]=t;else if(!t&&lk[u])out[u]="heart"}return out}
+function reactChip(m){const r=msgReacts(m);const n=Object.keys(r).length;if(!n)return"";const cnt={};for(const t of Object.values(r))cnt[t]=(cnt[t]||0)+1;const top=Object.keys(cnt).sort((a,b)=>cnt[b]-cnt[a]).slice(0,3);
+ return`<span class="react" ${m.id?`data-rxl="${esc(m.id)}"`:""}>${top.map(rxSvg).join("")}${n>1?n:""}</span>`}
+async function setReact(mid,type){const k=keyInfo(S.route.params.key);if(k.type==="bot"||!guard())return;const m=S.msgs.find(x=>x.id===mid);if(!m||m.del)return;
+ const cur=msgReacts(m)[S.uid]||"";const t=cur===type?"":type;const lv=t==="heart"?now():0;vib(15);
+ S.msgs=S.msgs.map(x=>x.id===mid?{...x,likes:{...(x.likes||{}),[S.uid]:lv},reacts:{...(x.reacts||{}),[S.uid]:t}}:x);renderMsgs();
+ await write(()=>DB.update(`chats/${k.cid}/msgs/${mid}`,{likes:{[S.uid]:lv},reacts:{[S.uid]:t}}),{quiet:true})}
+function reactList(mid){const m=S.msgs.find(x=>x.id===mid);if(!m)return;const r=Object.entries(msgReacts(m));if(!r.length)return;
+ const l=sheet("rxl","Tepkiler",`<div class="box" style="margin:4px 12px 10px">${r.map(([u,t])=>`<div class="row rxrow">${avatar(u,40,{click:false,ring:false})}<div class="t"><div><b>${esc(u===S.uid?"Sen":P(u).name)}</b></div><div class="s">@${esc(P(u).username)}${u===S.uid?" · kaldırmak için dokun":""}</div></div>${u===S.uid?`<button data-rxme="${esc(t)}" aria-label="Tepkini kaldır">${rxSvg(t)}</button>`:rxSvg(t)}</div>`).join("")}</div><button class="opt" data-act="close">${I("close")}Kapat</button>`);
+ const me_=$("[data-rxme]",l);if(me_)me_.onclick=()=>{closeLayer("rxl");setReact(mid,me_.dataset.rxme)}}
+document.addEventListener("click",e=>{const r=e.target.closest("[data-rxl]");if(!r||S.route.name!=="chat")return;e.stopImmediatePropagation();reactList(r.dataset.rxl)},true);
+async function reactMsg(mid){return setReact(mid,"heart")}
+async function reactMsgOld(mid){const k=keyInfo(S.route.params.key);if(k.type==="bot"||!guard())return;const m=S.msgs.find(x=>x.id===mid);if(!m||m.del)return;const v=m.likes&&m.likes[S.uid]?0:now();vib(15);
  S.msgs=S.msgs.map(x=>x.id===mid?{...x,likes:{...(x.likes||{}),[S.uid]:v}}:x);renderMsgs();await write(()=>DB.update(`chats/${k.cid}/msgs/${mid}`,{likes:{[S.uid]:v}}),{quiet:true})}
 function openNewChat(){const people=[...humans(),...BOTS.map(b=>b.uid)];
  const l=sheet("newchat","Yeni mesaj",`<div style="padding:0 16px 10px"><input class="in" id="ncQ" placeholder="Kişi ara" aria-label="Kişi ara"></div><div class="box" id="ncList"></div>`,{tall:true});
@@ -1827,8 +1885,8 @@ function typingStop(){const room=S.caps.room;clearTimeout(typingT);if(!room||!ty
 async function nudge(uid){if(!guard())return;const room=S.caps.room;if(!room)return toast("Dürtme için canlı bağlantı yok.");try{await room.emit("nudge",{to:uid,from:S.uid});vib(20);toast(`@${P(uid).username} dürtüldü`,uid)}catch(e){toast("Dürtme gönderilemedi. Düzenleyen yetkisi gerekiyor olabilir.")}}
 
 function msgMenu(mid){const key=S.route.params.key;const k=keyInfo(key);const m=S.msgs.find(x=>x.id===mid);if(!m||m.del)return;vib(20);const mine=m.from===S.uid;const canAll=mine||(S.admin&&k.type!=="dm");const canEdit=mine&&m.text&&!m.audio&&!m.game&&!m.call;
- const l=sheet("menu","",`<button class="opt" id="mmR">${I("reply")}Yanıtla</button><button class="opt" id="mmH">${I("heart")}${m.likes&&m.likes[S.uid]?"Kalbi kaldır":"Kalp bırak"}</button>${m.text?`<button class="opt" id="mmC">${I("copy")}Metni kopyala</button>`:""}${canEdit?`<button class="opt" id="mmE">${I("edit")}Düzenle</button>`:""}<button class="opt" id="mmM">${I("eye")}Benden sil</button>${canAll?`<button class="opt red" id="mmD">${I("trash")}Herkesten sil</button>`:""}<button class="opt" data-act="close">${I("close")}Vazgeç</button>`);
- $("#mmR",l).onclick=()=>{closeLayer("menu");S.replyTo={mid,from:m.from,text:msgPreview(m).slice(0,80)};drawReply();const i=$("#msgIn");if(i)i.focus()};$("#mmH",l).onclick=()=>{closeLayer("menu");reactMsg(mid)};const c=$("#mmC",l);if(c)c.onclick=()=>{closeLayer("menu");copyText(m.text,"Mesaj kopyalandı")};
+ const l=sheet("menu","",`${k.type!=="bot"?`<div class="rxpick" role="group" aria-label="Tepki seç">${REACTS.map(([t,lb])=>`<button type="button" data-rxp="${t}" class="${msgReacts(m)[S.uid]===t?"on":""}" aria-label="${lb}">${rxSvg(t)}</button>`).join("")}</div>`:""}<button class="opt" id="mmR">${I("reply")}Yanıtla</button>${m.text?`<button class="opt" id="mmC">${I("copy")}Metni kopyala</button>`:""}${canEdit?`<button class="opt" id="mmE">${I("edit")}Düzenle</button>`:""}<button class="opt" id="mmM">${I("eye")}Benden sil</button>${canAll?`<button class="opt red" id="mmD">${I("trash")}Herkesten sil</button>`:""}<button class="opt" data-act="close">${I("close")}Vazgeç</button>`);
+ $("#mmR",l).onclick=()=>{closeLayer("menu");S.replyTo={mid,from:m.from,text:msgPreview(m).slice(0,80)};drawReply();const i=$("#msgIn");if(i)i.focus()};$$("[data-rxp]",l).forEach(b=>b.onclick=()=>{closeLayer("menu");setReact(mid,b.dataset.rxp)});const c=$("#mmC",l);if(c)c.onclick=()=>{closeLayer("menu");copyText(m.text,"Mesaj kopyalandı")};
  const ed=$("#mmE",l);if(ed)ed.onclick=()=>{closeLayer("menu");const l2=sheet("medit","Mesajı düzenle",`<form class="form" id="meF"><textarea class="in" id="meT" maxlength="2000">${esc(m.text)}</textarea><button class="btn block">Kaydet</button></form>`);const ta=$("#meT",l2);ta.focus();ta.setSelectionRange(ta.value.length,ta.value.length);
   $("#meF",l2).onsubmit=async ev=>{ev.preventDefault();const v=ta.value.trim();if(!v||v===m.text){closeLayer("medit");return}const t=now();S.msgs=S.msgs.map(x=>x.id===mid?{...x,text:v,edited:t}:x);renderMsgs();closeLayer("medit");
    if(await write(()=>DB.update(`chats/${k.cid}/msgs/${mid}`,{text:v,edited:t}))){const last=S.msgs[S.msgs.length-1];if(last&&last.id===mid)await updateLast(k,last)}}};
