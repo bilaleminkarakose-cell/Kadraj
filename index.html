@@ -297,8 +297,9 @@ textarea.in{min-height:5.5rem;padding:12px 14px;resize:vertical}
 .ptabs{display:flex;gap:8px;padding:6px 16px 12px;overflow-x:auto;scrollbar-width:none}
 
 /* Reels */
-.reel{position:relative;height:100%;scroll-snap-align:start;scroll-snap-stop:always;overflow:hidden;background:#000;color:#fff}
-.reel video,.reel .slide{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.reel{position:relative;height:100%;width:100%;scroll-snap-align:start;contain:strict;scroll-snap-stop:always;overflow:hidden;background:#000;color:#fff}
+.reel video,.reel .slide{position:absolute;top:0;left:0;right:0;bottom:0;width:100%;height:100%;object-fit:cover;background:#000;transform:translateZ(0)}
+.reel .fx-zoom,.reel .fx-pan,.reel .fx-pulse{top:0;left:0;right:0;bottom:0}
 .reel .slide{opacity:0;transition:opacity .9s ease}
 .reel .slide.on{opacity:1}
 .rprev .slide{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .9s ease}
@@ -693,6 +694,12 @@ main.enter .nb{animation:nbin .45s cubic-bezier(.2,1.4,.4,1) both}
 .dotx{width:8px;height:8px;border-radius:50%;background:var(--accent);flex:none}
 .reel-top .rnew{display:inline-flex;align-items:center;gap:6px;height:2.6rem;padding:0 .9rem;border-radius:14px;background:#fff;color:#111;font-weight:700;font-size:.85rem}
 .reel-top .rnew svg.i{width:1.2rem;height:1.2rem}
+.cmt{align-items:flex-start}.cmt .t{flex:1}
+.clike{flex:none;width:2rem;height:2rem;display:grid;place-items:center;color:var(--muted)}
+.clike svg.i{width:1.05rem;height:1.05rem}.clike.on{color:var(--heart)}.clike.on svg.i{fill:var(--heart);stroke:var(--heart)}
+.clike.pop{animation:pop .3s ease}
+.reel .rhint{position:absolute;left:50%;top:58%;transform:translateX(-50%);z-index:4;display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:999px;background:rgba(0,0,0,.6);color:#fff;font-weight:700;font-size:.88rem}
+.reel .rhint[hidden]{display:none}.reel .rhint svg.i{width:1.2rem;height:1.2rem}
 </style>
 </head>
 <body>
@@ -827,7 +834,7 @@ const BOT_STORIES=[{id:"bs-1",uid:"bot:rota",img:"img/sisli-dag.jpg",at:T0-1.5*H
 const S={mode:"local",uid:null,viewer:null,isOwner:false,canWrite:true,authed:false,guest:false,
  profiles:{},posts:{},meta:{},stories:{},chats:{},botchats:{},saved:{},meydan:null,
  online:new Set(),typing:{},route:{name:"feed",params:{}},stack:[],feedSeg:"all",
- muted:true,caps:{},profTab:"posts",bootAt:now(),msgs:[],games:{}};
+ muted:LS.get("kadraj_muted",false),caps:{},profTab:"posts",bootAt:now(),msgs:[],games:{}};
 let DB=null;
 const settings=Object.assign({theme:"system",autoplay:true,notify:true,scale:1},LS.get("kadraj_settings",{}));
 function saveSettings(){LS.set("kadraj_settings",settings)}
@@ -947,7 +954,7 @@ const metaOf=id=>S.meta[id]||{likes:{},comments:{},votes:{}};
 const likers=id=>Object.entries(metaOf(id).likes||{}).filter(([k,v])=>v&&!(k.startsWith("bot:")&&!BOT[k])).sort((a,b)=>b[1]-a[1]).map(([k])=>k);
 const iLike=id=>!!(metaOf(id).likes||{})[S.uid];
 const likeCount=p=>(p.baseLikes||0)+likers(p.id).length;
-function commentsOf(p){const seed=(p.cm||[]).map((c,i)=>({id:"s"+i,uid:c[0],text:c[1],at:p.at+(i+1)*600e3}));const live=Object.entries(metaOf(p.id).comments||{}).filter(([,c])=>c&&c.text&&!(String(c.uid).startsWith("bot:")&&!BOT[c.uid])).map(([id,c])=>({id,...c}));return[...seed,...live].sort((a,b)=>a.at-b.at)}
+function commentsOf(p){const seed=(p.cm||[]).map((c,i)=>({id:"s"+i,uid:c[0],text:c[1],at:p.at+(i+1)*600e3}));const live=Object.entries(metaOf(p.id).comments||{}).filter(([,c])=>c&&c.text&&c.uid&&!(String(c.uid).startsWith("bot:")&&!BOT[c.uid])).map(([id,c])=>({id,...c}));return[...seed,...live].sort((a,b)=>a.at-b.at)}
 function votesOf(p){const base=(p.baseVotes||p.options.map(()=>0)).slice();for(const[,i]of Object.entries(metaOf(p.id).votes||{}))if(i!=null&&base[i]!=null)base[i]++;return base}
 const myVote=id=>{const v=(metaOf(id).votes||{})[S.uid];return v==null?null:v};
 function deepMerge(a,b){for(const[k,v]of Object.entries(b)){if(v&&typeof v==="object"&&!Array.isArray(v)&&a[k]&&typeof a[k]==="object")deepMerge(a[k],v);else a[k]=v}return a}
@@ -1163,7 +1170,7 @@ function slidesHtml(p){return(p.slides||[]).map((s,i)=>`<img class="slide ${i===
 function vReels(){const list=reelList();const top=`<div class="reel-top"><div><button class="ib" data-act="back" aria-label="Geri">${I("back")}</button><b>Sahneler</b><button class="ib" data-act="mute" aria-label="Sesi aç/kapat">${I(S.muted?"mute":"vol")}</button><button class="rnew" data-act="newreel" aria-label="Video ekle">${I("film")}<span>Video ekle</span></button></div></div>`;
  if(!list.length)return top+`<div class="empty" style="color:#fff;height:100%;align-content:center"><b style="color:#fff">Henüz sahne yok</b>İlk sahneyi sen oluştur.</div>`;
  return top+list.map((p,i)=>{const u=P(p.uid);const liked=iLike(p.id);const fol=p.uid===S.uid||isFollowing(S.uid,p.uid);
- const mus=p.music&&p.music!=="none";const media=p.video?`<video src="${esc(vsrc(p))}"${vref(p)} poster="${esc(R(p.poster||""))}" loop playsinline ${S.muted||mus?"muted":""} preload="${i<2?"auto":"metadata"}" data-rv ${mus?'data-mus="1"':""}></video><div class="rprog"><i></i></div><span class="rpause">${I("play")}</span>`:`<div class="fx-${esc(p.fx||"zoom")}" style="position:absolute;inset:0">${slidesHtml(p)}</div>`;
+ const mus=p.music&&p.music!=="none";const media=p.video?`<video src="${esc(vsrc(p))}"${vref(p)} poster="${esc(R(p.poster||""))}" loop playsinline ${S.muted||mus?"muted":""} preload="${i<1?"auto":i<3?"metadata":"none"}" disablepictureinpicture data-rv ${mus?'data-mus="1"':""}></video><div class="rprog"><i></i></div><span class="rpause">${I("play")}</span><button class="rhint" hidden>${I("vol")}Sesi açmak için dokun</button>`:`<div class="fx-${esc(p.fx||"zoom")}" style="position:absolute;inset:0">${slidesHtml(p)}</div>`;
  return`<section class="reel" data-pid="${esc(p.id)}">${media}<div class="shade"></div>
  <div class="side"><button class="${liked?"liked":""}" data-like="${esc(p.id)}" aria-label="Beğen"><span>${I("heart")}</span><span data-likecount-r="${esc(p.id)}">${short(likeCount(p))}</span></button><button data-comments="${esc(p.id)}" aria-label="Yorumlar"><span>${I("comment")}</span><span>${commentsOf(p).length}</span></button><button data-share="${esc(p.id)}" aria-label="Gönder"><span>${I("send")}</span><span>Gönder</span></button><button data-save="${esc(p.id)}" class="${isSaved(p.id)?"saved":""}" aria-label="Kaydet"><span>${I("bookmark")}</span><span>Kaydet</span></button></div>
  <div class="info"><div class="u"><button data-prof="${esc(p.uid)}" style="display:flex;align-items:center;gap:10px">${avatar(p.uid,34,{click:false,ring:false,online:false})}<span>${esc(u.username)}</span></button>${fol?"":`<button class="fbtn" data-follow="${esc(p.uid)}">Takip et</button>`}</div><div class="c">${richText(p.caption||"")}</div><div class="aud">${I("music")}<span>${mus?esc(MUSIC_NAMES[p.music]||"Müzik")+" · Kadraj Ses":esc(u.username)+" · Orijinal ses"}</span></div></div></section>`}).join("")}
@@ -1222,11 +1229,11 @@ function vInvite(){const cloud=S.mode==="cloud";
 function vSettings(){const p=me();const sw=(id,on,label,sub)=>`<label class="srow"><span class="t">${label}${sub?`<small>${sub}</small>`:""}</span><span class="sw"><input type="checkbox" id="${id}" ${on?"checked":""}><span></span></span></label>`;
  const remembered=S.mode==="cloud"?LS.get("kadraj_fb_remember",true):LS.get("kadraj_session")===S.uid;
  return`<div class="set"><h3>Görünüm</h3><div class="seg" role="group" aria-label="Tema">${[["light","sun","Açık"],["dark","moon","Koyu"],["system","auto","Sistem"]].map(([v,ic,l])=>`<button data-theme-set="${v}" aria-pressed="${settings.theme===v}">${I(ic)}${l}</button>`).join("")}</div><h3>Yazı boyutu</h3><div class="seg" role="group" aria-label="Yazı boyutu">${[[1,"Normal"],[1.1,"Büyük"],[1.2,"Çok büyük"]].map(([v,l])=>`<button data-scale="${v}" aria-pressed="${(settings.scale||1)==v}">${l}</button>`).join("")}</div></div>
- <div class="set"><h3>Hesap</h3><button class="srow" data-go="edit">${I("edit")}<span class="t">Profili düzenle<small>Ad, kullanıcı adı, biyografi, fotoğraf</small></span></button><button class="srow" data-act="changepw">${I("key")}<span class="t">Şifreyi değiştir</span></button>${sw("setPrivate",p.private,"Gizli hesap","Paylaşımlarını yalnızca takipçilerin görür")}</div>
+ <div class="set"><h3>Hesap</h3>${S.mode==="cloud"&&FB&&FB.auth&&FB.auth.currentUser&&FB.auth.currentUser.email?`<div class="kv"><span>Giriş e-postan</span><span class="mono" style="text-align:right;overflow-wrap:anywhere">${esc(FB.auth.currentUser.email)}</span></div>`:""}<button class="srow" data-go="edit">${I("edit")}<span class="t">Profili düzenle<small>Ad, kullanıcı adı, biyografi, fotoğraf</small></span></button><button class="srow" data-act="changepw">${I("key")}<span class="t">Şifreyi değiştir</span></button>${sw("setPrivate",p.private,"Gizli hesap","Paylaşımlarını yalnızca takipçilerin görür")}</div>
  <div class="set"><h3>Bildirim ve oynatma</h3>${sw("setNotify",settings.notify,"Uygulama içi bildirimler","Mesaj, beğeni ve dürtmelerde üstte uyarı")}${sw("setAutoplay",settings.autoplay,"Sahneleri otomatik oynat","Kapatırsan dokununca başlar")}</div>
  <div class="set"><h3>Oturum</h3>${sw("setRemember",remembered,"Beni hatırla","Açıkken bu cihazda şifre sorulmaz")}<button class="srow" data-act="logout">${I("logout")}<span class="t">Çıkış yap<small>@${esc(p.username)}</small></span></button></div>
  ${S.admin?`<div class="set"><h3>Yönetici</h3><button class="srow" data-go="admin">${I("key")}<span class="t">Yönetici paneli<small>Kullanıcılar, botlar, duyuru, temizlik</small></span></button></div>`:""}<div class="set"><h3>Uygulama</h3><button class="srow" data-act="install">${I("home")}<span class="t">${isStandalone()?"Ana ekranda açık":"Ana ekrana ekle"}<small>${isStandalone()?"Kadraj uygulama olarak çalışıyor":"Telefonunda simgesiyle dursun, tam ekran açılsın"}</small></span></button></div><div class="set"><h3>Yardım</h3><button class="srow" data-act="invite">${I("users")}<span class="t">Arkadaşlarını davet et<small>Birlikte kullanmanın yolu</small></span></button><button class="srow" data-msg="bot:rota">${I("spark")}<span class="t">Rota'ya sor<small>Yapay zekâ rehberi</small></span></button></div>
- <div class="set"><h3>Hakkında</h3><div class="kv"><span>Sürüm</span><span class="mono">Kadraj 3.6 · Firebase</span></div><div class="kv"><span>Veri</span><span>${S.mode==="cloud"?"Firebase · arkadaşlarınla canlı":"Demo · yalnızca bu cihaz"}</span></div><div class="kv"><span>Şu an açık</span><span>${S.online.size+1} kişi</span></div><div class="kv"><span>Rota</span><span>${S.caps.sample?"Yapay zekâ bağlı":"Hazır yanıtlar"}</span></div></div>
+ <div class="set"><h3>Hakkında</h3><div class="kv"><span>Sürüm</span><span class="mono">Kadraj 3.8 · Firebase</span></div><div class="kv"><span>Veri</span><span>${S.mode==="cloud"?"Firebase · arkadaşlarınla canlı":"Demo · yalnızca bu cihaz"}</span></div><div class="kv"><span>Şu an açık</span><span>${S.online.size+1} kişi</span></div><div class="kv"><span>Rota</span><span>${S.caps.sample?"Yapay zekâ bağlı":"Hazır yanıtlar"}</span></div></div>
  <div class="set"><button class="srow" data-act="resetcfg">${I("link")}<span class="t">${S.mode==="cloud"?"Firebase bağlantısını değiştir":"Firebase'i kur"}<small>${S.mode==="cloud"?"Kurulum ekranına döner":"Arkadaşlarınla konuşmak için gerekli"}</small></span></button><button class="srow" data-act="delacct">${I("trash")}<span class="t" style="color:var(--heart)">Hesabı sil<small>Profil, paylaşımlar ve hikâyeler kalıcı olarak silinir</small></span></button></div>`}
 function vEdit(){const p=me();const d=S.editDraft||{};return`<form class="form" id="editForm"><div class="avpick" style="justify-content:center;flex-direction:column"><span class="av" style="--s:96px"><img id="editAv" src="${esc(d.av||p.avatar)}" alt=""></span><button type="button" class="btn sec sm" id="editAvBtn">${I("image")}Fotoğrafı değiştir</button></div>
  <div class="field"><label for="eName">Ad</label><input class="in" id="eName" value="${esc(d.name??p.name)}" maxlength="40" required></div>
@@ -1246,7 +1253,7 @@ function afterRender(){const r=S.route.name;if(r==="chessgame"&&CH){chDraw();chW
  if(r==="reels"){io=new IntersectionObserver(es=>{for(const e of es){if(e.isIntersecting&&e.intersectionRatio>.6)activateReel(e.target);else if(e.target===activeReel)deactivateReel(e.target)}},{threshold:[0,.6]});$$(".reel").forEach(el=>io.observe(el));hydrateVideos();
   const start=S.route.params.start;if(start){const el=$(`.reel[data-pid="${CSS.escape(start)}"]`);if(el)main().scrollTop=el.offsetTop}}}
 function activateReel(el){if(activeReel===el)return;if(activeReel)deactivateReel(activeReel);activeReel=el;const p=postById(el.dataset.pid);const v=el.querySelector("video");
- if(v){v.muted=S.muted||v.dataset.mus==="1";if(settings.autoplay)v.play().catch(()=>{});const bar=el.querySelector(".rprog i");v.ontimeupdate=()=>{if(bar&&v.duration)bar.style.width=(v.currentTime/v.duration*100)+"%"};v.onplay=()=>el.classList.remove("paused");v.onpause=()=>{if(activeReel===el)el.classList.add("paused")}}
+ if(v){v.muted=S.muted||v.dataset.mus==="1";v.preload="auto";if(settings.autoplay)v.play().catch(()=>{if(!v.muted){v.muted=true;v.play().catch(()=>{});S.needUnmute=true;const h=el.querySelector(".rhint");if(h)h.hidden=false}});const nx=el.nextElementSibling&&el.nextElementSibling.querySelector("video");if(nx&&nx.preload!=="auto")nx.preload="auto";const bar=el.querySelector(".rprog i");v.ontimeupdate=()=>{if(bar&&v.duration)bar.style.width=(v.currentTime/v.duration*100)+"%"};v.onplay=()=>el.classList.remove("paused");v.onpause=()=>{if(activeReel===el)el.classList.add("paused")}}
  const sl=$$(".slide",el);if(sl.length){let i=0;sl.forEach((s,j)=>s.classList.toggle("on",j===0));if(sl.length>1)el._t=setInterval(()=>{sl[i].classList.remove("on");i=(i+1)%sl.length;sl[i].classList.add("on")},3200)}
  if(p&&p.music&&p.music!=="none"&&!S.muted)Music.start(p.music);else Music.stop()}
 function deactivateReel(el){const v=el.querySelector("video");if(v)v.pause();if(el._t){clearInterval(el._t);el._t=null}if(activeReel===el){activeReel=null;Music.stop()}}
@@ -1302,7 +1309,7 @@ document.addEventListener("click",async e=>{const t=e.target.closest("button,[da
  if(a==="create")return openCreate();
  if(a==="newreel")return openComposer("reel");
  if(a==="addstory")return openComposer("story");
- if(a==="mute"){S.muted=!S.muted;$$("video[data-rv]").forEach(v=>v.muted=S.muted||v.dataset.mus==="1");$$('[data-act="mute"]').forEach(b=>b.innerHTML=I(S.muted?"mute":"vol"));if(activeReel){const p=postById(activeReel.dataset.pid);if(!S.muted&&p&&p.music&&p.music!=="none")Music.start(p.music);else Music.stop();const v=activeReel.querySelector("video");if(v&&v.paused)v.play().catch(()=>{})}return}
+ if(a==="mute"){S.muted=!S.muted;LS.set("kadraj_muted",S.muted);$$("video[data-rv]").forEach(v=>v.muted=S.muted||v.dataset.mus==="1");$$('[data-act="mute"]').forEach(b=>b.innerHTML=I(S.muted?"mute":"vol"));if(activeReel){const p=postById(activeReel.dataset.pid);if(!S.muted&&p&&p.music&&p.music!=="none")Music.start(p.music);else Music.stop();const v=activeReel.querySelector("video");if(v&&v.paused)v.play().catch(()=>{})}return}
  if(a==="postmenu")return postMenu(d.id);
  if(a==="profmenu")return profMenu(d.uid);
  if(a==="groupmenu")return groupMenu();
@@ -1327,7 +1334,7 @@ document.addEventListener("pointerup",e=>{const m=e.target.closest("[data-dbl]")
  const msg=e.target.closest(".msg[data-mid]");if(msg){const id="m:"+msg.dataset.mid;const t=now();if(lastTap.id===id&&t-lastTap.t<320){lastTap={id:null,t:0};reactMsg(msg.dataset.mid)}else lastTap={id,t}}});
 document.addEventListener("click",e=>{const im=e.target.closest("img[data-view]");if(!im)return;openLayer("imgv",`<div class="imgview" data-act="close"><img src="${esc(im.src)}" alt=""><button class="ib" data-act="close" aria-label="Kapat">${I("close")}</button></div>`,{noScrim:true});$('[data-layer="imgv"] .imgview').onclick=ev=>{if(ev.target.tagName!=="IMG")closeLayer("imgv")}});
 document.addEventListener("dblclick",e=>{const r=e.target.closest(".reel");if(!r||e.target.closest("button"))return;burst(r);const id=r.dataset.pid;if(!iLike(id))toggleLike(id,true)});
-document.addEventListener("click",e=>{const r=e.target.closest(".reel");if(!r||e.target.closest("button"))return;const v=r.querySelector("video");if(v){if(v.paused)v.play().catch(()=>{});else v.pause()}});
+document.addEventListener("click",e=>{const r=e.target.closest(".reel");if(!r||e.target.closest("button"))return;const v=r.querySelector("video");if(S.needUnmute&&v&&!S.muted){S.needUnmute=false;$$(".rhint").forEach(h=>h.hidden=true);v.muted=v.dataset.mus==="1";const p=postById(r.dataset.pid);if(p&&p.music&&p.music!=="none")Music.start(p.music);return}if(v){if(v.paused)v.play().catch(()=>{});else v.pause()}});
 function burst(el){const b=document.createElement("div");b.className="burst";b.innerHTML=`<svg viewBox="0 0 24 24">${IP.heart}</svg>`;el.appendChild(b);setTimeout(()=>b.remove(),800)}
 /* uzun basma: mesaj menüsü */
 let lpT=null,lpXY=null;
@@ -1353,8 +1360,9 @@ function openComments(id){S.sheetPost=id;const l=sheet("comments","Yorumlar",`<d
  f.onsubmit=async ev=>{ev.preventDefault();const i=$("#cmtIn");const v=i.value;i.value="";await addComment(id,v);renderComments();const b=$(".sheet .body",l);b.scrollTop=b.scrollHeight};
  $("#cmtIn").addEventListener("keydown",ev=>{if(ev.key==="Enter"&&!ev.shiftKey){ev.preventDefault();f.requestSubmit()}});renderComments()}
 function renderComments(){const box=$("#cmtList");if(!box)return;const p=postById(S.sheetPost);if(!p)return;const cs=commentsOf(p);
- box.innerHTML=(cs.length?cs.map(c=>`<div class="cmt">${avatar(c.uid,36,{click:false})}<div class="t"><button data-prof="${esc(c.uid)}"><b>${esc(P(c.uid).username)}</b></button> ${richText(c.text)}<small>${ago(c.at)}${(c.uid===S.uid||p.uid===S.uid||S.admin)&&!c.id.startsWith("s")?` · <button data-delc="${esc(c.id)}" style="color:var(--heart);font-weight:700">Sil</button>`:""}</small></div></div>`).join(""):`<div class="empty" style="padding:30px"><b>Henüz yorum yok</b>İlk yorumu sen yap.</div>`);
- $$("[data-delc]",box).forEach(b=>b.onclick=async()=>{await delComment(p.id,b.dataset.delc);renderComments()})}
+ box.innerHTML=(cs.length?cs.map(c=>{const lk=Object.entries(c.likes||{}).filter(([,v])=>v);const mine=!!(c.likes||{})[S.uid];const canLike=!c.id.startsWith("s");return`<div class="cmt">${avatar(c.uid,36,{click:false})}<div class="t"><button data-prof="${esc(c.uid)}"><b>${esc(P(c.uid).username)}</b></button> ${richText(c.text)}<small>${ago(c.at)}${lk.length?` · ${lk.length} beğeni`:""}${(c.uid===S.uid||p.uid===S.uid||S.admin)&&!c.id.startsWith("s")?` · <button data-delc="${esc(c.id)}" style="color:var(--heart);font-weight:700">Sil</button>`:""}</small></div>${canLike?`<button class="clike ${mine?"on":""}" data-clike="${esc(c.id)}" aria-label="Yorumu beğen">${I("heart")}</button>`:""}</div>`}).join(""):`<div class="empty" style="padding:30px"><b>Henüz yorum yok</b>İlk yorumu sen yap.</div>`);
+ $$("[data-delc]",box).forEach(b=>b.onclick=async()=>{await delComment(p.id,b.dataset.delc);renderComments()});
+ $$("[data-clike]",box).forEach(b=>b.onclick=async()=>{if(!guard())return;const cid=b.dataset.clike;const cur=((metaOf(p.id).comments||{})[cid]||{}).likes||{};const v=cur[S.uid]?0:now();vib(12);b.classList.add("pop");await setMeta(p.id,{comments:{[cid]:{likes:{[S.uid]:v}}}});renderComments()})}
 /* paylaş */
 function openShare(pid){if(!guard())return;const targets=[...new Set([...chatList().map(c=>c.key),...followingOf(S.uid).map(u=>"u:"+u),...humans().map(u=>"u:"+u)])].filter(k=>k!=="u:bot:rota");
  const row=(av,name,sub,k)=>`<div class="row">${av}<div class="t"><div><b>${name}</b></div><div class="s">${sub}</div></div><button class="btn sm" data-sendto="${esc(k)}">Gönder</button></div>`;
@@ -1547,7 +1555,8 @@ function openRecorder(maxS=20){return new Promise(resolve=>{let stream=null,mr=n
 function videoPoster(url){return new Promise(res=>{const v=document.createElement("video");v.muted=true;v.src=url;v.playsInline=true;v.onloadeddata=()=>{v.currentTime=Math.min(1,(v.duration||2)/2)};v.onseeked=()=>{try{res(toCanvas(v,360,640).toDataURL("image/jpeg",.7))}catch{res("")}};v.onerror=()=>res("");setTimeout(()=>res(""),6000)})}
 /* video parçaları */
 const vcache={};
-const vsrc=p=>!p.video?"":p.video.startsWith("chunk:")?(vcache[p.video]||""):R(p.video);
+const RB={};function RV(x){if(!x)return x;const d=ASSETS[x];if(!d)return x;if(RB[x])return RB[x];try{const i=d.indexOf(",");const mime=d.slice(5,d.indexOf(";"))||"video/mp4";const bin=atob(d.slice(i+1));const u=new Uint8Array(bin.length);for(let k=0;k<bin.length;k++)u[k]=bin.charCodeAt(k);return RB[x]=URL.createObjectURL(new Blob([u],{type:mime}))}catch{return d}}
+const vsrc=p=>!p.video?"":p.video.startsWith("chunk:")?(vcache[p.video]||""):RV(p.video);
 const vref=p=>p.video&&p.video.startsWith("chunk:")?` data-vref="${esc(p.video)}"`:"";
 async function resolveVideo(ref){if(vcache[ref])return vcache[ref];const[,vid,n]=ref.split(":");const parts=await Promise.all([...Array(+n)].map((_,i)=>DB.get(`vchunks/${vid}-${i}`).catch(()=>null)));if(parts.some(x=>!x))return null;
  const durl=parts.map(x=>x.d).join("");const comma=durl.indexOf(",");const mime=(durl.slice(5,comma).split(";")[0])||"video/mp4";const bin=atob(durl.slice(comma+1));const u8=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u8[i]=bin.charCodeAt(i);
