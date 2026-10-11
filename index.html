@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0C7A63">
 <title>Kadraj</title>
-<meta name="description" content="Kadraj: arkadaşlarla fotoğraf, reels, not, anket ve sohbet">
+<meta name="description" content="Kadraj: arkadaşlarla fotoğraf, çekim, not, anket ve sohbet">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;600;700&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
@@ -437,6 +437,45 @@ textarea.in{min-height:5.5rem;padding:12px 14px;resize:vertical}
 #toasts{position:fixed;left:0;right:0;top:calc(66px + env(safe-area-inset-top,0px));z-index:80;display:grid;justify-items:center;gap:8px;pointer-events:none;padding:0 16px}
 .toast{max-width:440px;display:flex;align-items:center;gap:10px;background:var(--fg);color:var(--bg);padding:11px 15px;border-radius:16px;font-size:.9rem;box-shadow:var(--shadow);animation:up .25s ease;pointer-events:none}
 .toast .av{--s:28px}
+
+/* Sesli mesaj, yanıt, arama */
+.audm{display:flex;align-items:center;gap:10px;min-width:12.5rem}
+.audm .ap{width:2.4rem;height:2.4rem;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:var(--accent-ink);flex:none}
+.mrow.me .audm .ap{background:var(--accent-ink);color:var(--accent)}
+.audm .ap svg.i{width:1.1rem;height:1.1rem}
+.audm .bar{flex:1;height:4px;border-radius:2px;background:rgba(127,127,127,.35);position:relative;overflow:hidden}
+.audm .bar i{position:absolute;inset:0 auto 0 0;background:currentColor;width:0}
+.audm .t{font:.72rem var(--f-mono);opacity:.85;font-variant-numeric:tabular-nums}
+.rec{flex:1;display:flex;align-items:center;gap:10px;min-height:2.9rem;padding:0 14px;border-radius:18px;background:var(--surface);border:1.5px solid var(--heart);color:var(--heart);font-weight:700}
+.rec .dot{width:10px;height:10px;border-radius:50%;background:var(--heart);animation:blink 1s infinite}
+@keyframes blink{50%{opacity:.2}}
+.replybar{display:flex;align-items:center;gap:8px;margin:0 10px;padding:6px 6px 6px 12px;border-radius:14px;background:var(--surface);border:1px solid var(--line);font-size:.82rem}
+.replybar .t{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;border-left:3px solid var(--accent);padding-left:8px}
+.quote{display:block;margin:-2px -4px 6px;padding:6px 10px;border-radius:12px;background:rgba(127,127,127,.18);border-left:3px solid currentColor;font-size:.8rem;text-align:left;max-width:15rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.callmsg{display:flex;align-items:center;gap:8px;font-weight:600}
+.callmsg svg.i{width:1.15rem;height:1.15rem}
+.msg.flash{animation:flash 1.2s ease}
+@keyframes flash{30%{box-shadow:0 0 0 4px var(--sun)}}
+.call{position:absolute;inset:0;margin:0 auto;max-width:520px;background:radial-gradient(120% 80% at 50% 0%,#11493c,#06100d 70%);color:#fff;pointer-events:auto;display:flex;flex-direction:column;align-items:center;padding:calc(30px + env(safe-area-inset-top,0px)) 20px calc(34px + env(safe-area-inset-bottom,0px));overflow:hidden}
+.call #rv{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#000}
+.call #lv{position:absolute;right:14px;top:calc(14px + env(safe-area-inset-top,0px));width:30%;max-width:9rem;aspect-ratio:3/4;object-fit:cover;border-radius:16px;border:2px solid rgba(255,255,255,.7);z-index:3;background:#111;transform:scaleX(-1)}
+.call .who{position:relative;z-index:2;display:grid;justify-items:center;gap:10px;margin-top:9vh;text-align:center;text-shadow:0 1px 8px rgba(0,0,0,.5)}
+.call .who b{font:600 1.45rem/1.2 var(--f-display)}
+.call .who span{opacity:.85;font-variant-numeric:tabular-nums}
+.call.vid.live .who{margin-top:0;align-self:flex-start;justify-items:start;text-align:left}
+.call .ctrls{position:relative;z-index:2;margin-top:auto;display:flex;gap:22px;justify-content:center;flex-wrap:wrap}
+.call .lbl2{display:grid;justify-items:center;gap:6px;font-size:.75rem}
+.call .cb{width:4rem;height:4rem;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.16);color:#fff;backdrop-filter:blur(6px)}
+.call .cb.on{background:#fff;color:#06100d}
+.call .cb.red{background:#e23e57}.call .cb.green{background:#14a06b}
+.call .cb svg.i{width:1.7rem;height:1.7rem}
+.call .pulse{animation:cpulse 1.6s infinite}
+@keyframes cpulse{0%{box-shadow:0 0 0 0 rgba(20,160,107,.7)}70%{box-shadow:0 0 0 20px rgba(20,160,107,0)}100%{box-shadow:0 0 0 0 rgba(20,160,107,0)}}
+.call .note2{position:relative;z-index:2;margin-top:14px;font-size:.78rem;opacity:.75;text-align:center;max-width:20rem}
+.imgview{position:absolute;inset:0;background:rgba(0,0,0,.94);pointer-events:auto;display:grid;place-items:center;padding:12px}
+.imgview img{max-width:100%;max-height:100%;object-fit:contain;border-radius:8px}
+.imgview .ib{position:absolute;top:calc(12px + env(safe-area-inset-top,0px));right:12px;background:rgba(255,255,255,.15);border:0;color:#fff}
+.netbar{position:fixed;left:0;right:0;top:0;z-index:95;text-align:center;padding:calc(6px + env(safe-area-inset-top,0px)) 10px 6px;background:#b45309;color:#fff;font-size:.8rem;font-weight:700}
 @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-iteration-count:1!important;transition:none!important}}
 </style>
 </head>
@@ -520,6 +559,14 @@ eraser:'<path d="m7 21-4-4L14 6l6 6-9 9z"/><path d="M7 21h14"/>',
 film:'<rect x="3" y="3" width="18" height="18" rx="3"/><path d="M7 3v18M17 3v18M3 8h4M17 8h4M3 16h4M17 16h4"/>',
 eye:'<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
 reply:'<path d="M10 9V5l-7 7 7 7v-4.1c5 0 8.5 1.6 11 5.1-1-5-4-10-11-11z"/>',
+phone:'<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/>',
+video:'<rect x="2" y="6" width="14" height="12" rx="3"/><path d="m16 10.5 6-3.5v10l-6-3.5z"/>',
+camoff:'<rect x="2" y="6" width="14" height="12" rx="3"/><path d="m16 10.5 6-3.5v10l-6-3.5zM2 2l20 20"/>',
+mic:'<rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0M12 17v4M8 21h8"/>',
+micoff:'<rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0M12 17v4M8 21h8M3 3l18 18"/>',
+flip:'<path d="M20 7h-3l-2-3H9L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/><path d="M9 13.5a3 3 0 0 1 5-2.5M15 13a3 3 0 0 1-5 2.5"/>',
+hangup:'<path d="M2.5 14.5c5.3-5 13.7-5 19 0l-2.6 2.6-3.6-1.6v-2.6a10 10 0 0 0-6.6 0v2.6l-3.6 1.6z"/>',
+pause:'<path d="M8 5v14M16 5v14"/>',
 copy:'<rect x="8" y="8" width="13" height="13" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/>'};
 const I=(n,cls="")=>`<svg class="i ${cls}" viewBox="0 0 24 24" aria-hidden="true">${IP[n]||""}</svg>`;
 const VF=`<svg class="vfmark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M2.5 8V5a2.5 2.5 0 0 1 2.5-2.5h3M16 2.5h3A2.5 2.5 0 0 1 21.5 5v3M21.5 16v3a2.5 2.5 0 0 1-2.5 2.5h-3M8 21.5H5A2.5 2.5 0 0 1 2.5 19v-3"/><circle cx="12" cy="12" r="3.4" fill="currentColor" stroke="none"/></svg>`;
@@ -668,6 +715,10 @@ service cloud.firestore {
     match /stories/{id} { allow read, write: if girdi(); }
     match /vchunks/{id} { allow read, write: if girdi(); }
     match /pokes/{id} { allow read, write: if girdi(); }
+    match /calls/{id} {
+      allow read, write: if girdi();
+      match /cands/{c} { allow read, write: if girdi(); }
+    }
     match /chats/{cid} {
       allow read, write: if girdi();
       match /msgs/{mid} { allow read, write: if girdi(); }
@@ -783,7 +834,7 @@ function chatHead(key){const k=keyInfo(key);
  if(k.type==="meydan")return`<div class="chat-head"><span class="av" style="--s:40px"><img src="${MEYDAN_AV}" alt=""></span><div class="t"><div>Meydan</div><div>${S.online.size+1} kişi şu an burada · herkese açık</div></div></div>`;
  if(k.type==="group"){const c=S.chats[k.cid]||{};return`<div class="chat-head"><span class="av" style="--s:40px"><img src="${initialsAv(c.name||"Grup",k.cid)}" alt=""></span><div class="t"><div>${esc(c.name||"Grup")}</div><div>${esc((c.members||[]).map(u=>P(u).username).join(", "))}</div></div></div><button class="ib plain" data-act="groupmenu" aria-label="Grup seçenekleri">${I("more")}</button>`}
  const uid=k.uid;const p=P(uid);const typing=S.typing[uid]===cidFor(S.uid,uid);const st=p.ai?"Yapay zekâ rehberi · her zaman açık":BOT[uid]?"Test botu · otomatik yanıt":typing?"yazıyor…":S.online.has(uid)?"Çevrimiçi":"@"+p.username;
- return`<button class="chat-head" data-prof="${esc(uid)}">${avatar(uid,40,{click:false})}<div class="t"><div>${esc(p.name)}${badge(uid)}</div><div>${esc(st)}</div></div></button>${!BOT[uid]&&S.online.has(uid)?`<button class="ib" data-nudge="${esc(uid)}" aria-label="Dürt">${I("hand")}</button>`:""}`}
+ return`<button class="chat-head" data-prof="${esc(uid)}">${avatar(uid,40,{click:false})}<div class="t"><div>${esc(p.name)}${badge(uid)}</div><div>${esc(st)}</div></div></button>${!BOT[uid]&&S.mode==="cloud"?`<button class="ib" data-call="${esc(uid)}" data-v="0" aria-label="Sesli ara">${I("phone")}</button><button class="ib" data-call="${esc(uid)}" data-v="1" aria-label="Görüntülü ara">${I("video")}</button>`:!BOT[uid]&&S.online.has(uid)?`<button class="ib" data-nudge="${esc(uid)}" aria-label="Dürt">${I("hand")}</button>`:""}`}
 function renderDock(){if(!S.authed)return;const r=S.route.name;const cur=n=>(r===n||(n==="profile"&&r==="profile"&&S.route.params.uid===S.uid)||(n==="chats"&&r==="chat"))?'aria-current="page"':"";const u=unreadCount();
  $("#dock").innerHTML=`<nav aria-label="Ana menü"><button data-tab="feed" ${cur("feed")}>${I("home")}Akış</button><button data-tab="explore" ${cur("explore")}>${I("search")}Keşfet</button><button data-act="create" aria-label="Oluştur"><span class="create">${I("add")}</span></button><button data-tab="chats" ${cur("chats")}>${I("chat")}Sohbet${u?`<span class="cnt-badge">${u}</span>`:""}</button><button data-tab="profile" ${cur("profile")}><span class="me"><img src="${esc(me().avatar)}" alt="" style="width:100%;height:100%;object-fit:cover"></span>Ben</button></nav>`}
 
@@ -791,7 +842,7 @@ function renderDock(){if(!S.authed)return;const r=S.route.name;const cur=n=>(r==
 function vFeed(){const fol=followingOf(S.uid);
  const withStories=[...new Set([...fol,...BOTS.map(b=>b.uid),...Object.keys(S.profiles)])].filter(u=>u!==S.uid&&storiesOf(u).length);
  const seen=seenStories();withStories.sort((a,b)=>(storiesOf(a).every(s=>seen[s.id])?1:0)-(storiesOf(b).every(s=>seen[s.id])?1:0));
- let h=`<div class="chips" role="group" aria-label="Akış filtresi">${[["all","Herkes"],["following","Takip ettiklerim"]].map(([k,l])=>`<button class="chip" data-seg="${k}" aria-pressed="${S.feedSeg===k}">${l}</button>`).join("")}<button class="chip" data-go="reels">${I("reels")}Reels</button></div>`;
+ let h=`<div class="chips" role="group" aria-label="Akış filtresi">${[["all","Herkes"],["following","Takip ettiklerim"]].map(([k,l])=>`<button class="chip" data-seg="${k}" aria-pressed="${S.feedSeg===k}">${l}</button>`).join("")}<button class="chip" data-go="reels">${I("reels")}Çekimler</button></div>`;
  h+=`<div class="stories"><div class="story"><span style="position:relative">${storiesOf(S.uid).length?avatar(S.uid,62):`<button class="av" style="--s:62px" data-act="addstory" aria-label="Hikâye ekle"><img src="${esc(me().avatar)}" alt=""></button>`}${S.guest?"":`<button class="plus" data-act="addstory" aria-label="Hikâye ekle">${I("add")}</button>`}</span><span class="n muted">Hikâyen</span></div>`+
   withStories.map(u=>`<div class="story">${avatar(u,62,{online:false})}<span class="n">${esc(P(u).username)}</span></div>`).join("")+`</div>`;
  if(S.guest)h+=`<div class="banner">${I("info")}<span>Misafir olarak geziniyorsun. Paylaşım ve mesaj için uygulamanın sahibi seni bu sayfaya <b>Düzenleyen</b> olarak davet etmeli.</span></div>`;
@@ -806,11 +857,11 @@ function suggBlock(list){return`<section class="sugg"><h3 class="sec-h"><span>Ta
 function mediaHtml(p){
  if(p.kind==="note")return`<div class="note" style="background:${NOTE_BG[p.bg||0]}" data-dbl="${esc(p.id)}">${esc(p.text)}</div>`;
  if(p.kind==="poll")return pollHtml(p);
- if(p.kind==="reel"){const th=postThumb(p);return`<button class="media" style="--ar:4/5;display:block;width:100%" data-reel="${esc(p.id)}" aria-label="Reels'i izle">${th?`<img src="${esc(th)}" alt="" loading="lazy">`:""}<span class="badge-k">${I("reels")}Reels${p.music&&p.music!=="none"?" · müzikli":""}</span><span class="playbig"><span>${I("play")}</span></span></button>`}
+ if(p.kind==="reel"){const th=postThumb(p);return`<button class="media" style="--ar:4/5;display:block;width:100%" data-reel="${esc(p.id)}" aria-label="Çekimi izle">${th?`<img src="${esc(th)}" alt="" loading="lazy">`:""}<span class="badge-k">${I("reels")}Çekim${p.music&&p.music!=="none"?" · müzikli":""}</span><span class="playbig"><span>${I("play")}</span></span></button>`}
  return`<div class="media" style="--ar:${esc(p.ar||"1/1")}" data-dbl="${esc(p.id)}"><img src="${esc(R(p.src||p.img))}" alt="${esc((p.caption||"").slice(0,80))}" loading="lazy" ${p.css?`style="filter:${esc(p.css)}"`:""}></div>`}
 function pollHtml(p){const votes=votesOf(p);const tot=votes.reduce((a,b)=>a+b,0);const mv=myVote(p.id);const shown=mv!=null||p.uid===S.uid;
  return`<div class="poll"><div class="q">${esc(p.question)}</div>${p.options.map((o,i)=>{const pc=tot?Math.round(votes[i]/tot*100):0;return`<button class="popt ${mv===i?"mine":""}" data-vote="${esc(p.id)}" data-i="${i}">${shown?`<i class="bar" style="width:${pc}%"></i>`:""}<span>${esc(o)}</span>${shown?`<span class="pc">%${pc}</span>`:""}${mv===i?`<span>${I("check")}</span>`:""}</button>`}).join("")}<div class="tot">${fmt(tot)} oy${mv==null&&p.uid!==S.uid?" · oy verince sonuçları görürsün":""}</div></div>`}
-function postCard(p,{full=false}={}){const u=P(p.uid);const followed=p.uid===S.uid||isFollowing(S.uid,p.uid);const liked=iLike(p.id);const cs=commentsOf(p);const kindLbl={note:"not",poll:"anket",reel:"reels"}[p.kind]||"";
+function postCard(p,{full=false}={}){const u=P(p.uid);const followed=p.uid===S.uid||isFollowing(S.uid,p.uid);const liked=iLike(p.id);const cs=commentsOf(p);const kindLbl={note:"not",poll:"anket",reel:"çekim"}[p.kind]||"";
  return`<article class="card" data-pid="${esc(p.id)}"><div class="card-h">${avatar(p.uid,40)}<div class="who"><div><button data-prof="${esc(p.uid)}"><span class="uname">${esc(u.name)}</span></button>${badge(p.uid)}${followed?"":` · <button class="follow-link" data-follow="${esc(p.uid)}">Takip et</button>`}</div><div class="sub">@${esc(u.username)} · ${ago(p.at)}${p.loc?" · "+esc(p.loc):""}${kindLbl?" · "+kindLbl:""}</div></div><button class="ib plain" data-act="postmenu" data-id="${esc(p.id)}" aria-label="Seçenekler">${I("more")}</button></div>
  ${mediaHtml(p)}
  <div class="pills"><button class="pill ${liked?"liked":""}" data-like="${esc(p.id)}" aria-pressed="${liked}" aria-label="Beğen">${I("heart")}<span>${short(likeCount(p))}</span></button><button class="pill" data-comments="${esc(p.id)}" aria-label="Yorumlar">${I("comment")}${cs.length}</button><button class="pill" data-share="${esc(p.id)}" aria-label="Arkadaşına gönder">${I("send")}</button><span class="sp"></span><button class="pill ${isSaved(p.id)?"saved":""}" data-save="${esc(p.id)}" aria-label="Kaydet">${I("bookmark")}</button></div>
@@ -839,8 +890,8 @@ function grid(posts){if(!posts.length)return"";return`<div class="grid">${posts.
 /* --- Reels --- */
 function reelList(){return allPosts().filter(p=>p.kind==="reel"&&canSee(p))}
 function slidesHtml(p){return(p.slides||[]).map((s,i)=>`<img class="slide ${i===0?"on":""}" src="${esc(R(s))}" alt="">`).join("")+(p.text?`<div class="rtext">${esc(p.text)}</div>`:"")}
-function vReels(){const list=reelList();const top=`<div class="reel-top"><div><button class="ib" data-act="back" aria-label="Geri">${I("back")}</button><b>Reels</b><button class="ib" data-act="mute" aria-label="Sesi aç/kapat">${I(S.muted?"mute":"vol")}</button><button class="ib" data-act="newreel" aria-label="Reels oluştur">${I("add")}</button></div></div>`;
- if(!list.length)return top+`<div class="empty" style="color:#fff;height:100%;align-content:center"><b style="color:#fff">Henüz reels yok</b>İlk reels'i sen oluştur.</div>`;
+function vReels(){const list=reelList();const top=`<div class="reel-top"><div><button class="ib" data-act="back" aria-label="Geri">${I("back")}</button><b>Çekimler</b><button class="ib" data-act="mute" aria-label="Sesi aç/kapat">${I(S.muted?"mute":"vol")}</button><button class="ib" data-act="newreel" aria-label="Çekim oluştur">${I("add")}</button></div></div>`;
+ if(!list.length)return top+`<div class="empty" style="color:#fff;height:100%;align-content:center"><b style="color:#fff">Henüz çekim yok</b>İlk çekimi sen oluştur.</div>`;
  return top+list.map((p,i)=>{const u=P(p.uid);const liked=iLike(p.id);const fol=p.uid===S.uid||isFollowing(S.uid,p.uid);
  const media=p.video?`<video src="${esc(vsrc(p))}"${vref(p)} poster="${esc(p.poster||"")}" loop playsinline ${S.muted?"muted":""} preload="${i<2?"auto":"metadata"}" data-rv></video>`:`<div class="fx-${esc(p.fx||"zoom")}" style="position:absolute;inset:0">${slidesHtml(p)}</div>`;
  return`<section class="reel" data-pid="${esc(p.id)}">${media}<div class="shade"></div>
@@ -854,11 +905,11 @@ function vProfile(uid){const p=P(uid);const own=uid===S.uid;const posts=postsOf(
  <div><b style="font:600 1.05rem/1.3 var(--f-display)">${esc(p.name)}</b>${S.online.has(uid)?' <span class="tag">çevrimiçi</span>':""}${p.private?` <span class="tag">${I("lock")}gizli</span>`:""}</div>${p.bio?`<div class="bio">${richText(p.bio)}</div>`:""}
  <div class="btns">${own?`<button class="btn sec" data-go="edit">${I("edit")}Düzenle</button><button class="btn sec" data-act="invite">${I("users")}Davet et</button>`:S.guest?"":`<button class="btn ${isFollowing(S.uid,uid)?"sec":""}" data-follow="${esc(uid)}">${isFollowing(S.uid,uid)?"Takiptesin":isFollowing(uid,S.uid)?"Sen de takip et":"Takip et"}</button><button class="btn sec" data-msg="${esc(uid)}">${I("chat")}Mesaj</button>`}</div></div>`;
  if(locked)return h+`<div class="empty"><span class="ic">${I("lock")}</span><b>Bu hesap gizli</b>Paylaşımlarını görmek için takip et.</div>`;
- const tabs=own?[["posts","Paylaşımlar","grid"],["reels","Reels","reels"],["saved","Kaydedilenler","bookmark"]]:[["posts","Paylaşımlar","grid"],["reels","Reels","reels"]];
+ const tabs=own?[["posts","Paylaşımlar","grid"],["reels","Çekimler","reels"],["saved","Kaydedilenler","bookmark"]]:[["posts","Paylaşımlar","grid"],["reels","Çekimler","reels"]];
  if(!tabs.some(t=>t[0]===S.profTab))S.profTab="posts";
  h+=`<div class="ptabs" role="tablist">${tabs.map(([k,l,ic])=>`<button class="chip" role="tab" aria-pressed="${S.profTab===k}" data-ptab="${k}">${I(ic)}${l}</button>`).join("")}</div>`;
  const list=S.profTab==="posts"?posts.filter(x=>x.kind!=="reel"):S.profTab==="reels"?posts.filter(x=>x.kind==="reel"):Object.entries(S.saved).filter(([,v])=>v).map(([id])=>postById(id)).filter(Boolean);
- if(!list.length)h+=`<div class="empty"><span class="ic">${I(S.profTab==="saved"?"bookmark":S.profTab==="reels"?"reels":"image")}</span><b>${S.profTab==="saved"?"Kaydedilen yok":own?"İlk paylaşımını yap":"Henüz paylaşım yok"}</b>${S.profTab==="saved"?"Paylaşımlardaki yer imi düğmesiyle kaydet.":own?`<button class="btn sm" data-act="${S.profTab==="reels"?"newreel":"create"}">${S.profTab==="reels"?"Reels oluştur":"Paylaşım oluştur"}</button>`:""}</div>`;
+ if(!list.length)h+=`<div class="empty"><span class="ic">${I(S.profTab==="saved"?"bookmark":S.profTab==="reels"?"reels":"image")}</span><b>${S.profTab==="saved"?"Kaydedilen yok":own?"İlk paylaşımını yap":"Henüz paylaşım yok"}</b>${S.profTab==="saved"?"Paylaşımlardaki yer imi düğmesiyle kaydet.":own?`<button class="btn sm" data-act="${S.profTab==="reels"?"newreel":"create"}">${S.profTab==="reels"?"Çekim oluştur":"Paylaşım oluştur"}</button>`:""}</div>`;
  else h+=grid(list);
  return h}
 function vPeople({uid,type}){const list=type==="followers"?followersOf(uid):followingOf(uid);
@@ -891,7 +942,8 @@ function vChats(){const list=chatList().filter(c=>c.key!=="u:bot:rota");const ro
 /* --- Sohbet --- */
 function vChat(key){const k=keyInfo(key);const isRota=k.type==="bot"&&k.bot.ai;
  const chips=isRota?["Kadraj'ı nasıl kullanırım?","Arkadaşlarımla nasıl konuşurum?","Test bildirimleri oluştur","Fotoğraf yüklenmiyor","JavaScript'te debounce yaz"]:k.type==="bot"?["Merhaba!","Bugün ne paylaştın?","Bana bir öneri ver"]:k.type==="meydan"?["Selam herkese!","@rota bugün ne paylaşayım?"]:k.type==="group"?["Selam ekip!","@rota bize bir etkinlik öner"]:["Selam!","Nasılsın?"];
- return`<div class="msgs" id="msgs"></div><div class="cchips">${chips.map(c=>`<button data-chip="${esc(c)}">${esc(c)}</button>`).join("")}</div><form class="composer" id="composer"><button type="button" class="ib" data-act="attach" aria-label="Fotoğraf gönder" ${k.type==="bot"?"hidden":""}>${I("image")}</button><textarea id="msgIn" rows="1" placeholder="${isRota?"Rota'ya bir şey sor…":k.type==="meydan"?"Meydan'a yaz… (@rota çağırabilirsin)":"Mesaj yaz…"}" aria-label="Mesaj"></textarea><button class="send" type="submit" aria-label="Gönder">${I("send")}</button></form>`}
+ if(S.replyKey!==key){S.replyTo=null;S.replyKey=key}
+ return`<div class="msgs" id="msgs"></div><div class="cchips">${chips.map(c=>`<button data-chip="${esc(c)}">${esc(c)}</button>`).join("")}</div><div id="replyBar"></div><form class="composer" id="composer"><button type="button" class="ib" data-act="attach" aria-label="Fotoğraf gönder" ${k.type==="bot"?"hidden":""}>${I("image")}</button><textarea id="msgIn" rows="1" placeholder="${isRota?"Rota'ya bir şey sor…":k.type==="meydan"?"Meydan'a yaz… (@rota çağırabilirsin)":"Mesaj yaz…"}" aria-label="Mesaj"></textarea><button class="send" type="submit" id="sendBtn" aria-label="${k.type==="bot"?"Gönder":"Sesli mesaj kaydet"}">${I(k.type==="bot"?"send":"mic")}</button></form>`}
 function currentMsgs(){const k=keyInfo(S.route.params.key);if(k.type==="bot")return S.botchats[k.bot.key]?.msgs||[];return S.msgs}
 function renderMsgs(){const box=$("#msgs");if(!box||S.route.name!=="chat")return;const key=S.route.params.key;const k=keyInfo(key);const atBottom=box.scrollHeight-box.scrollTop-box.clientHeight<90;
  const msgs=currentMsgs();let h="";
@@ -902,11 +954,14 @@ function renderMsgs(){const box=$("#msgs");if(!box||S.route.name!=="chat")return
  msgs.forEach((m,idx)=>{const gap=m.at-lastAt;if(gap>30*60e3)h+=`<div class="stamp">${new Date(m.at).toLocaleString("tr-TR",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})}</div>`;const prev=msgs[idx-1];const showSender=multi&&m.from!==S.uid&&(!prev||prev.from!==m.from||gap>5*60e3);lastAt=m.at;
   const mine=m.from===S.uid;let body="";const isAI=m.from==="bot:rota";
   if(m.del)body="Bu mesaj geri alındı";else{
+   if(m.reply)body+=`<button class="quote" data-jump="${esc(m.reply.mid)}">${esc(P(m.reply.from).username)}: ${esc(m.reply.text||"")}</button>`;
+   if(m.audio)body+=audHtml(m);
+   if(m.call)body+=`<button class="callmsg" data-call="${esc(mine?(keyInfo(key).uid||""):m.from)}" data-v="${m.call.video?1:0}">${I(m.call.video?"video":"phone")}<span>${esc(callLabel(m.call,mine))}</span></button>`;
    if(m.post){const p=postById(m.post);body+=p?`<button class="mp" data-open="${esc(p.id)}">${postThumb(p)?`<img src="${esc(postThumb(p))}" alt="">`:`<div class="note" style="margin:0;min-height:6rem;font-size:.85rem;border-radius:0;background:${p.kind==="poll"?"#0c7a63":NOTE_BG[p.bg||0]}">${esc(p.text||p.question||"")}</div>`}<span>@${esc(P(p.uid).username)}</span></button>`:"<i>Paylaşım kaldırılmış</i>"}
-   if(m.img)body+=`<img class="att" src="${esc(m.img)}" alt="Fotoğraf">`;
+   if(m.img)body+=`<img class="att" src="${esc(m.img)}" alt="Fotoğraf" data-view="1">`;
    if(m.text)body+=isAI&&!mine?md(m.text):esc(m.text)}
   const hearts=Object.values(m.likes||{}).filter(Boolean).length;
-  h+=`<div class="mrow ${mine?"me":""} ${hearts?"has-react":""}">${multi&&!mine?(showSender?avatar(m.from,30,{click:false,ring:false,online:false}):'<span style="width:30px;flex:none"></span>'):""}<div class="mcol">${showSender?`<span class="sender">${esc(P(m.from).username)}</span>`:""}<div class="msg ${isAI&&!mine?"ai":""} ${m.del?"del":""}" ${m.id&&k.type!=="bot"?`data-mid="${esc(m.id)}"`:""}>${body}${hearts?`<span class="react"><svg viewBox="0 0 24 24">${IP.heart}</svg>${hearts>1?hearts:""}</span>`:""}</div></div></div>`});
+  h+=`<div class="mrow ${mine?"me":""} ${hearts?"has-react":""}">${multi&&!mine?(showSender?avatar(m.from,30,{click:false,ring:false,online:false}):'<span style="width:30px;flex:none"></span>'):""}<div class="mcol">${showSender?`<span class="sender">${esc(P(m.from).username)}</span>`:""}<div class="msg ${isAI&&!mine?"ai":""} ${m.del?"del":""}" ${m.id&&k.type!=="bot"?`data-mid="${esc(m.id)}" id="m-${esc(m.id)}"`:""}>${body}${hearts?`<span class="react"><svg viewBox="0 0 24 24">${IP.heart}</svg>${hearts>1?hearts:""}</span>`:""}</div></div></div>`});
  if(k.type==="dm"&&msgs.length){const last=msgs[msgs.length-1];const c=S.chats[k.cid];if(last.from===S.uid&&c&&((c.reads||{})[k.uid]||0)>=last.at)h+=`<div class="seen">Görüldü</div>`}
  const typer=k.type==="dm"?(S.typing[k.uid]===k.cid?k.uid:null):(multi?Object.keys(S.typing).find(u=>S.typing[u]===k.cid):null);
  if((k.type==="bot"&&S.botTyping===k.uid)||typer||(multi&&S.botTyping==="bot:rota@"+key))h+=`<div class="typing" aria-label="yazıyor"><i></i><i></i><i></i></div>`;
@@ -928,17 +983,17 @@ function vInvite(){const cloud=S.mode==="cloud";
  <div style="padding:0 16px 16px;display:grid;gap:8px">${navigator.share?`<button class="btn block" data-act="shareinvite">${I("send")}WhatsApp ya da başka uygulamayla gönder</button>`:""}<button class="btn ${navigator.share?"sec":""} block" data-act="copyinvite">${I("copy")}Davet mesajını kopyala</button></div>
  <h3 class="sec-h">Arkadaşın ne yapacak?</h3><ol class="steps"><li>Bağlantıya dokunur, Kadraj açılır.</li><li><b>Hesap oluştur</b>'a dokunur; adını, kullanıcı adını, e-postasını ve şifresini yazar.</li><li>Keşfet'te seni bulur, takip eder ve Sohbet'ten yazar.</li></ol>
  <h3 class="sec-h">İçeride konuşmanın yolları</h3>
- <div class="box">${[["globe","Meydan","Uygulamadaki herkesin canlı ortak sohbeti"],["chat","Birebir mesaj","Fotoğraf ve paylaşım gönder, çift dokunarak kalp bırak, uzun basarak geri al"],["users","Grup sohbeti","İstediğin arkadaşlarla grup kur, @rota'yı çağır"],["hand","Dürt","Şu an açık olan arkadaşına titreşimli dürtme gönder"],["reply","Hikâye yanıtı","Bir hikâyeye yazdığın yanıt mesaj olarak gider"],["send","Paylaşım gönder","Her kartın altındaki uçak düğmesiyle"]].map(([ic,b,s])=>`<div class="srow">${I(ic)}<span class="t">${b}<small>${s}</small></span></div>`).join("")}</div>`}
+ <div class="box">${[["globe","Meydan","Uygulamadaki herkesin canlı ortak sohbeti"],["chat","Birebir mesaj","Fotoğraf ve paylaşım gönder, çift dokunarak kalp bırak, uzun basarak geri al"],["users","Grup sohbeti","İstediğin arkadaşlarla grup kur, @rota'yı çağır"],["phone","Sesli ve görüntülü arama","Birebir sohbetin üstündeki telefon ve kamera düğmeleri"],["mic","Sesli mesaj","Mesaj kutusu boşken mikrofona dokun, konuş, gönder"],["hand","Dürt","Şu an açık olan arkadaşına titreşimli dürtme gönder"],["reply","Hikâye yanıtı","Bir hikâyeye yazdığın yanıt mesaj olarak gider"],["send","Paylaşım gönder","Her kartın altındaki uçak düğmesiyle"]].map(([ic,b,s])=>`<div class="srow">${I(ic)}<span class="t">${b}<small>${s}</small></span></div>`).join("")}</div>`}
 
 /* --- Ayarlar --- */
 function vSettings(){const p=me();const sw=(id,on,label,sub)=>`<label class="srow"><span class="t">${label}${sub?`<small>${sub}</small>`:""}</span><span class="sw"><input type="checkbox" id="${id}" ${on?"checked":""}><span></span></span></label>`;
  const remembered=S.mode==="cloud"?LS.get("kadraj_fb_remember",true):LS.get("kadraj_session")===S.uid;
  return`<div class="set"><h3>Görünüm</h3><div class="seg" role="group" aria-label="Tema">${[["light","sun","Açık"],["dark","moon","Koyu"],["system","auto","Sistem"]].map(([v,ic,l])=>`<button data-theme-set="${v}" aria-pressed="${settings.theme===v}">${I(ic)}${l}</button>`).join("")}</div><h3>Yazı boyutu</h3><div class="seg" role="group" aria-label="Yazı boyutu">${[[1,"Normal"],[1.1,"Büyük"],[1.2,"Çok büyük"]].map(([v,l])=>`<button data-scale="${v}" aria-pressed="${(settings.scale||1)==v}">${l}</button>`).join("")}</div></div>
  <div class="set"><h3>Hesap</h3><button class="srow" data-go="edit">${I("edit")}<span class="t">Profili düzenle<small>Ad, kullanıcı adı, biyografi, fotoğraf</small></span></button><button class="srow" data-act="changepw">${I("key")}<span class="t">Şifreyi değiştir</span></button>${sw("setPrivate",p.private,"Gizli hesap","Paylaşımlarını yalnızca takipçilerin görür")}</div>
- <div class="set"><h3>Bildirim ve oynatma</h3>${sw("setNotify",settings.notify,"Uygulama içi bildirimler","Mesaj, beğeni ve dürtmelerde üstte uyarı")}${sw("setAutoplay",settings.autoplay,"Reels'i otomatik oynat","Kapatırsan dokununca başlar")}</div>
+ <div class="set"><h3>Bildirim ve oynatma</h3>${sw("setNotify",settings.notify,"Uygulama içi bildirimler","Mesaj, beğeni ve dürtmelerde üstte uyarı")}${sw("setAutoplay",settings.autoplay,"Çekimleri otomatik oynat","Kapatırsan dokununca başlar")}</div>
  <div class="set"><h3>Oturum</h3>${sw("setRemember",remembered,"Beni hatırla","Açıkken bu cihazda şifre sorulmaz")}<button class="srow" data-act="logout">${I("logout")}<span class="t">Çıkış yap<small>@${esc(p.username)}</small></span></button></div>
  <div class="set"><h3>Yardım</h3><button class="srow" data-act="invite">${I("users")}<span class="t">Arkadaşlarını davet et<small>Birlikte kullanmanın yolu</small></span></button><button class="srow" data-msg="bot:rota">${I("spark")}<span class="t">Rota'ya sor<small>Yapay zekâ rehberi</small></span></button></div>
- <div class="set"><h3>Hakkında</h3><div class="kv"><span>Sürüm</span><span class="mono">Kadraj 3.0 · Firebase</span></div><div class="kv"><span>Veri</span><span>${S.mode==="cloud"?"Firebase · arkadaşlarınla canlı":"Demo · yalnızca bu cihaz"}</span></div><div class="kv"><span>Şu an açık</span><span>${S.online.size+1} kişi</span></div><div class="kv"><span>Rota</span><span>${S.caps.sample?"Yapay zekâ bağlı":"Hazır yanıtlar"}</span></div></div>
+ <div class="set"><h3>Hakkında</h3><div class="kv"><span>Sürüm</span><span class="mono">Kadraj 3.1 · Firebase</span></div><div class="kv"><span>Veri</span><span>${S.mode==="cloud"?"Firebase · arkadaşlarınla canlı":"Demo · yalnızca bu cihaz"}</span></div><div class="kv"><span>Şu an açık</span><span>${S.online.size+1} kişi</span></div><div class="kv"><span>Rota</span><span>${S.caps.sample?"Yapay zekâ bağlı":"Hazır yanıtlar"}</span></div></div>
  <div class="set"><button class="srow" data-act="resetcfg">${I("link")}<span class="t">${S.mode==="cloud"?"Firebase bağlantısını değiştir":"Firebase'i kur"}<small>${S.mode==="cloud"?"Kurulum ekranına döner":"Arkadaşlarınla konuşmak için gerekli"}</small></span></button><button class="srow" data-act="delacct">${I("trash")}<span class="t" style="color:var(--heart)">Hesabı sil<small>Profil, paylaşımlar ve hikâyeler kalıcı olarak silinir</small></span></button></div>`}
 function vEdit(){const p=me();return`<form class="form" id="editForm"><div class="avpick" style="justify-content:center;flex-direction:column"><span class="av" style="--s:96px"><img id="editAv" src="${esc(p.avatar)}" alt=""></span><button type="button" class="btn sec sm" id="editAvBtn">${I("image")}Fotoğrafı değiştir</button></div>
  <div class="field"><label for="eName">Ad</label><input class="in" id="eName" value="${esc(p.name)}" maxlength="40" required></div>
@@ -971,6 +1026,10 @@ document.addEventListener("click",async e=>{const t=e.target.closest("button,[da
  if(d.msg){closeAll();if(S.guest&&d.msg!=="bot:rota")return guard();return openChat("u:"+d.msg)}
  if(d.chat){closeAll();return openChat(d.chat)}
  if(d.nudge)return nudge(d.nudge);
+ if(d.cact)return callAction(d.cact);
+ if(d.call){if(!d.call)return;return startCall(d.call,d.v==="1")}
+ if(d.play)return playAudio(d.play);
+ if(d.jump){const el=document.getElementById("m-"+d.jump);if(el){el.scrollIntoView({block:"center",behavior:"smooth"});el.classList.remove("flash");void el.offsetWidth;el.classList.add("flash")}else toast("Bu mesaj artık görünmüyor.");return}
  if(d.open){closeAll();const p=postById(d.open);if(p&&p.kind==="reel")return go("reels",{start:p.id});return go("post",{id:d.open})}
  if(d.reel)return go("reels",{start:d.reel});
  if(d.like){t.classList.add("pop");setTimeout(()=>t.classList.remove("pop"),300);return toggleLike(d.like)}
@@ -988,6 +1047,9 @@ document.addEventListener("click",async e=>{const t=e.target.closest("button,[da
  if(d.chip){if(d.chip==="Test bildirimleri oluştur")return runTest();const inp=$("#msgIn");if(inp){inp.value=d.chip;$("#composer").requestSubmit()}return}
  const a=d.act;if(!a)return;
  if(a==="back")return back();
+ if(a==="reccancel")return stopRec(false);
+ if(a==="recsend")return stopRec(true);
+ if(a==="noreply"){S.replyTo=null;return drawReply()}
  if(a==="close"){const l=t.closest(".layer");if(l)closeLayer(l.dataset.layer);return}
  if(a==="theme"){settings.theme=isDark()?"light":"dark";saveSettings();applyTheme();return render(false)}
  if(a==="create")return openCreate();
@@ -1012,6 +1074,7 @@ document.addEventListener("click",async e=>{const t=e.target.closest("button,[da
 let lastTap={id:null,t:0};
 document.addEventListener("pointerup",e=>{const m=e.target.closest("[data-dbl]");if(m){const id=m.dataset.dbl;const t=now();if(lastTap.id===id&&t-lastTap.t<320){lastTap={id:null,t:0};burst(m);if(!iLike(id))toggleLike(id,true)}else lastTap={id,t};return}
  const msg=e.target.closest(".msg[data-mid]");if(msg){const id="m:"+msg.dataset.mid;const t=now();if(lastTap.id===id&&t-lastTap.t<320){lastTap={id:null,t:0};reactMsg(msg.dataset.mid)}else lastTap={id,t}}});
+document.addEventListener("click",e=>{const im=e.target.closest("img[data-view]");if(!im)return;openLayer("imgv",`<div class="imgview" data-act="close"><img src="${esc(im.src)}" alt=""><button class="ib" data-act="close" aria-label="Kapat">${I("close")}</button></div>`,{noScrim:true});$('[data-layer="imgv"] .imgview').onclick=ev=>{if(ev.target.tagName!=="IMG")closeLayer("imgv")}});
 document.addEventListener("dblclick",e=>{const r=e.target.closest(".reel");if(!r||e.target.closest("button"))return;burst(r);const id=r.dataset.pid;if(!iLike(id))toggleLike(id,true)});
 document.addEventListener("click",e=>{const r=e.target.closest(".reel");if(!r||e.target.closest("button"))return;const v=r.querySelector("video");if(v){if(v.paused)v.play().catch(()=>{});else v.pause()}});
 function burst(el){const b=document.createElement("div");b.className="burst";b.innerHTML=`<svg viewBox="0 0 24 24">${IP.heart}</svg>`;el.appendChild(b);setTimeout(()=>b.remove(),800)}
@@ -1048,14 +1111,15 @@ function openShare(pid){if(!guard())return;const targets=[...new Set([...chatLis
  $$("[data-sendto]",l).forEach(b=>b.onclick=async()=>{b.disabled=true;b.textContent="Gönderildi";await sendMessage(b.dataset.sendto,{post:pid,text:""})})}
 /* menüler */
 function postMenu(id){const p=postById(id);if(!p)return;const own=p.uid===S.uid;
- const l=sheet("menu","",`${own?`<button class="opt red" id="mDel">${I("trash")}Paylaşımı sil</button>`:`<button class="opt" data-follow="${esc(p.uid)}">${I("users")}${isFollowing(S.uid,p.uid)?"Takibi bırak":"Takip et"}</button><button class="opt" data-msg="${esc(p.uid)}">${I("chat")}Mesaj gönder</button>`}<button class="opt" data-share="${esc(p.id)}">${I("send")}Arkadaşına gönder</button><button class="opt" data-prof="${esc(p.uid)}">${I("info")}Profili gör</button><button class="opt" data-act="close">${I("close")}Vazgeç</button>`);
+ const l=sheet("menu","",`${own?`${S.posts[id]?`<button class="opt" id="mEdit">${I("edit")}Açıklamayı düzenle</button>`:""}<button class="opt red" id="mDel">${I("trash")}Paylaşımı sil</button>`:`<button class="opt" data-follow="${esc(p.uid)}">${I("users")}${isFollowing(S.uid,p.uid)?"Takibi bırak":"Takip et"}</button><button class="opt" data-msg="${esc(p.uid)}">${I("chat")}Mesaj gönder</button>`}<button class="opt" data-share="${esc(p.id)}">${I("send")}Arkadaşına gönder</button><button class="opt" data-prof="${esc(p.uid)}">${I("info")}Profili gör</button><button class="opt" data-act="close">${I("close")}Vazgeç</button>`);
+ const ed=$("#mEdit",l);if(ed)ed.onclick=()=>{closeLayer("menu");const l2=sheet("editcap","Açıklamayı düzenle",`<form class="form" id="ecF"><textarea class="in" id="ecIn" maxlength="900">${esc(p.caption||"")}</textarea><button class="btn block">Kaydet</button></form>`);$("#ecF",l2).onsubmit=async ev=>{ev.preventDefault();const v=$("#ecIn",l2).value.trim();if(await write(()=>DB.update("posts/"+id,{caption:v}))){S.posts={...S.posts,[id]:{...S.posts[id],caption:v}};closeLayer("editcap");toast("Açıklama güncellendi");render(false)}}};
  const del=$("#mDel",l);if(del)del.onclick=()=>{closeLayer("menu");dialog("Paylaşım silinsin mi?","Bu paylaşım ve yorumları kalıcı olarak silinir.",[{label:"Sil",cls:"danger",fn:()=>deletePost(id)},{label:"Vazgeç"}])}}
 async function deletePost(id){const pv=S.posts[id]?.video;if(!await write(()=>DB.del("posts/"+id)))return;DB.del("meta/"+id).catch(()=>{});if(pv&&pv.startsWith("chunk:")){const[,vid,n]=pv.split(":");for(let i=0;i<+n;i++)DB.del(`vchunks/${vid}-${i}`).catch(()=>{})}const ps={...S.posts};delete ps[id];S.posts=ps;toast("Paylaşım silindi");if(S.route.name==="post")back();else render(false)}
 function profMenu(uid){const l=sheet("menu","",`<button class="opt" id="pmCopy">${I("copy")}Kullanıcı adını kopyala</button>${S.guest?"":`<button class="opt" data-follow="${esc(uid)}">${I("users")}${isFollowing(S.uid,uid)?"Takibi bırak":"Takip et"}</button>`}${!BOT[uid]&&S.online.has(uid)?`<button class="opt" data-nudge="${esc(uid)}">${I("hand")}Dürt</button>`:""}<button class="opt" data-act="close">${I("close")}Vazgeç</button>`);$("#pmCopy",l).onclick=()=>{closeLayer("menu");copyText("@"+P(uid).username,"Kullanıcı adı kopyalandı")}}
 function msgMenu(mid){const m=S.msgs.find(x=>x.id===mid);if(!m||m.del)return;vib(20);const mine=m.from===S.uid;
- const l=sheet("menu","",`<button class="opt" id="mmH">${I("heart")}${m.likes&&m.likes[S.uid]?"Kalbi kaldır":"Kalp bırak"}</button>${m.text?`<button class="opt" id="mmC">${I("copy")}Metni kopyala</button>`:""}${mine?`<button class="opt red" id="mmD">${I("trash")}Herkesten geri al</button>`:""}<button class="opt" data-act="close">${I("close")}Vazgeç</button>`);
- $("#mmH",l).onclick=()=>{closeLayer("menu");reactMsg(mid)};const c=$("#mmC",l);if(c)c.onclick=()=>{closeLayer("menu");copyText(m.text,"Mesaj kopyalandı")};
- const dl=$("#mmD",l);if(dl)dl.onclick=async()=>{closeLayer("menu");const k=keyInfo(S.route.params.key);S.msgs=S.msgs.map(x=>x.id===mid?{...x,del:true}:x);renderMsgs();await write(()=>DB.update(`chats/${k.cid}/msgs/${mid}`,{del:true,text:"",img:null,post:null}))}}
+ const l=sheet("menu","",`<button class="opt" id="mmR">${I("reply")}Yanıtla</button><button class="opt" id="mmH">${I("heart")}${m.likes&&m.likes[S.uid]?"Kalbi kaldır":"Kalp bırak"}</button>${m.text?`<button class="opt" id="mmC">${I("copy")}Metni kopyala</button>`:""}${mine?`<button class="opt red" id="mmD">${I("trash")}Herkesten geri al</button>`:""}<button class="opt" data-act="close">${I("close")}Vazgeç</button>`);
+ $("#mmR",l).onclick=()=>{closeLayer("menu");S.replyTo={mid,from:m.from,text:(m.text||(m.audio?"Sesli mesaj":m.img?"Fotoğraf":m.post?"Paylaşım":m.call?"Arama":"")).slice(0,80)};drawReply();const i=$("#msgIn");if(i)i.focus()};$("#mmH",l).onclick=()=>{closeLayer("menu");reactMsg(mid)};const c=$("#mmC",l);if(c)c.onclick=()=>{closeLayer("menu");copyText(m.text,"Mesaj kopyalandı")};
+ const dl=$("#mmD",l);if(dl)dl.onclick=async()=>{closeLayer("menu");const k=keyInfo(S.route.params.key);S.msgs=S.msgs.map(x=>x.id===mid?{...x,del:true}:x);renderMsgs();await write(()=>DB.update(`chats/${k.cid}/msgs/${mid}`,{del:true,text:"",img:null,post:null,audio:null}))}}
 async function reactMsg(mid){const k=keyInfo(S.route.params.key);if(k.type==="bot"||!guard())return;const m=S.msgs.find(x=>x.id===mid);if(!m||m.del)return;const v=m.likes&&m.likes[S.uid]?0:now();vib(15);
  S.msgs=S.msgs.map(x=>x.id===mid?{...x,likes:{...(x.likes||{}),[S.uid]:v}}:x);renderMsgs();await write(()=>DB.update(`chats/${k.cid}/msgs/${mid}`,{likes:{[S.uid]:v}}),{quiet:true})}
 function openNewChat(){const people=[...humans(),...BOTS.map(b=>b.uid)];
@@ -1076,13 +1140,14 @@ function groupMenu(){const k=keyInfo(S.route.params.key);const c=S.chats[k.cid];
 
 /* ============ Hikâye görüntüleyici ============ */
 function openStories(uid){const list=storiesOf(uid);if(!list.length)return;let i=0;const seen=seenStories();const fu=list.findIndex(s=>!seen[s.id]);if(fu>0)i=fu;let raf=0;
- const l=openLayer("story",`<div class="sv" role="dialog" aria-label="Hikâye"><div class="bars">${list.map(()=>"<i><b></b></i>").join("")}</div><div class="shd">${avatar(uid,34,{ring:false,click:false})}<div class="n">${esc(P(uid).username)}<small id="svT"></small></div><button class="ib" data-act="close" aria-label="Kapat">${I("close")}</button></div><div class="img"><img id="svImg" alt=""></div><button class="tap l" id="svPrev" aria-label="Önceki"></button><button class="tap r" id="svNext" aria-label="Sonraki"></button>${uid===S.uid?`<div class="ft"><button class="btn sec" id="svDel" style="margin-left:auto">${I("trash")}Sil</button></div>`:`<form class="ft" id="svF"><input id="svIn" placeholder="${esc(P(uid).username)} kişisine yanıt yaz…" aria-label="Yanıt"><button class="ib" aria-label="Gönder">${I("send")}</button></form>`}</div>`,{noScrim:true,onClose:()=>{cancelAnimationFrame(raf);scheduleRefresh()}});
+ const l=openLayer("story",`<div class="sv" role="dialog" aria-label="Hikâye"><div class="bars">${list.map(()=>"<i><b></b></i>").join("")}</div><div class="shd">${avatar(uid,34,{ring:false,click:false})}<div class="n">${esc(P(uid).username)}<small id="svT"></small></div><button class="ib" data-act="close" aria-label="Kapat">${I("close")}</button></div><div class="img"><img id="svImg" alt=""></div><button class="tap l" id="svPrev" aria-label="Önceki"></button><button class="tap r" id="svNext" aria-label="Sonraki"></button>${uid===S.uid?`<div class="ft"><button class="btn sec" id="svViews">${I("eye")}<span id="svVc">0</span> görüntüleme</button><button class="btn sec" id="svDel" style="margin-left:auto">${I("trash")}Sil</button></div>`:`<form class="ft" id="svF"><input id="svIn" placeholder="${esc(P(uid).username)} kişisine yanıt yaz…" aria-label="Yanıt"><button class="ib" aria-label="Gönder">${I("send")}</button></form>`}</div>`,{noScrim:true,onClose:()=>{cancelAnimationFrame(raf);scheduleRefresh()}});
  const bars=$$(".bars b",l);let start=0,paused=false;const dur=5000;
- const show=()=>{const s=list[i];$("#svImg",l).src=R(s.img);$("#svT",l).textContent=ago(s.at);const sn=seenStories();sn[s.id]=1;LS.set("kadraj_seen",sn);bars.forEach((b,j)=>b.style.width=j<i?"100%":"0");start=performance.now();tick()};
+ const show=()=>{const s=list[i];$("#svImg",l).src=R(s.img);$("#svT",l).textContent=ago(s.at);const sn=seenStories();sn[s.id]=1;LS.set("kadraj_seen",sn);if(uid!==S.uid&&S.stories[s.id]&&!((S.stories[s.id].views||{})[S.uid])&&S.canWrite&&!S.guest){S.stories[s.id]={...S.stories[s.id],views:{...(S.stories[s.id].views||{}),[S.uid]:now()}};DB.update("stories/"+s.id,{views:{[S.uid]:now()}}).catch(()=>{})}const vc=$("#svVc",l);if(vc)vc.textContent=Object.values((S.stories[s.id]||{}).views||{}).filter(Boolean).length;bars.forEach((b,j)=>b.style.width=j<i?"100%":"0");start=performance.now();tick()};
  const tick=()=>{cancelAnimationFrame(raf);raf=requestAnimationFrame(function f(t){if(!l.isConnected)return;if(paused){start+=16;raf=requestAnimationFrame(f);return}const pr=Math.min(1,(t-start)/dur);bars[i].style.width=pr*100+"%";if(pr>=1)next();else raf=requestAnimationFrame(f)})};
  const next=()=>{if(i<list.length-1){i++;show()}else closeLayer("story")};
  $("#svNext",l).onclick=next;$("#svPrev",l).onclick=()=>{if(i>0)i--;show()};
  const f=$("#svF",l);if(f){const inp=$("#svIn",l);inp.onfocus=()=>paused=true;inp.onblur=()=>paused=false;f.onsubmit=async e=>{e.preventDefault();const v=inp.value.trim();if(!v)return;inp.value="";if(guard()){await sendMessage("u:"+uid,{text:"Hikâyene yanıt: "+v});toast("Yanıt gönderildi")}}}
+ const vb=$("#svViews",l);if(vb)vb.onclick=()=>{paused=true;const s=list[i];const v=Object.entries((S.stories[s.id]||{}).views||{}).filter(([,t])=>t).sort((a,b)=>b[1]-a[1]);sheet("views","Görenler",v.length?`<div class="box">${v.map(([u,t])=>`<div class="row">${avatar(u,40,{click:false,ring:false})}<div class="t"><div><b>${esc(P(u).name)}</b></div><div class="s">@${esc(P(u).username)} · ${ago(t)}</div></div></div>`).join("")}</div>`:`<div class="empty" style="padding:24px"><b>Henüz kimse görmedi</b>Arkadaşların açınca burada listelenir.</div>`,{onClose:()=>{paused=false}})};
  const del=$("#svDel",l);if(del)del.onclick=async()=>{const s=list[i];paused=true;if(await write(()=>DB.del("stories/"+s.id))){const st={...S.stories};delete st[s.id];S.stories=st;toast("Hikâye silindi")}closeLayer("story")};
  show()}
 
@@ -1091,12 +1156,10 @@ function loadImg(src){return new Promise((res,rej)=>{const im=new Image();im.onl
 function readFile(file){return new Promise((res,rej)=>{const fr=new FileReader();fr.onload=()=>res(fr.result);fr.onerror=rej;fr.readAsDataURL(file)})}
 /* nativePick: dosya | null (vazgeçildi) | undefined (seçici hiç açılmadı) */
 function nativePick(accept,capture){return new Promise(resolve=>{const inp=document.createElement("input");inp.type="file";inp.accept=accept;if(capture)inp.setAttribute("capture",capture);inp.className="hidden-input";document.body.appendChild(inp);
- let settled=false,opened=false;const done=v=>{if(settled)return;settled=true;removeEventListener("blur",onBlur);document.removeEventListener("visibilitychange",onBlur);setTimeout(()=>inp.remove(),1000);resolve(v)};
- const onBlur=()=>{opened=true};addEventListener("blur",onBlur);document.addEventListener("visibilitychange",onBlur);
+ let settled=false;const done=v=>{if(settled)return;settled=true;setTimeout(()=>inp.remove(),2000);resolve(v)};
  inp.addEventListener("change",()=>done(inp.files&&inp.files[0]||null));inp.addEventListener("cancel",()=>done(null));
- try{if(inp.showPicker)inp.showPicker();else inp.click()}catch{try{inp.click()}catch{done(undefined);return}}
- setTimeout(()=>{if(!settled&&!opened&&document.hasFocus())done(undefined)},2500);
- addEventListener("focus",function f(){removeEventListener("focus",f);setTimeout(()=>{if(!settled&&opened)done(null)},1500)})})}
+ try{inp.click()}catch{done(undefined);return}
+ const slow=S.onPickSlow;S.onPickSlow=null;setTimeout(()=>{if(!settled&&!document.hidden&&document.hasFocus()&&slow)slow()},4000)})}
 /* pickImage: {img, src?} ya da {video} döner. src = Kadraj galerisindeki dosya yolu */
 function pickImage({title="Fotoğraf ekle",video=false,draw=true}={}){return new Promise(resolve=>{let done=false;
  const finish=v=>{if(done)return;done=true;closeLayer("pick");resolve(v)};
@@ -1107,11 +1170,11 @@ function pickImage({title="Fotoğraf ekle",video=false,draw=true}={}){return new
   ${draw?`<button class="src" data-src="draw"><span class="ic">${I("pen")}</span><span><b>Parmağınla çiz</b><small>Kendi görselini oluştur</small></span></button>`:""}
  </div><div class="hint" id="pickHint" hidden></div><div class="pastebox" contenteditable="true" id="pasteBox" aria-label="Fotoğraf yapıştırma alanı">${I("paste")}<br>Kopyaladığın bir fotoğrafı buraya yapıştır<br><small>(uzun bas, sonra Yapıştır)</small></div>`,{onClose:()=>finish(null)});
  const hint=$("#pickHint",l);
- const showHint=()=>{hint.hidden=false;hint.innerHTML=`<b>Dosya seçici açılmadı.</b> Tarayıcın izin vermiyor olabilir. <b>Kadraj galerisi</b> ya da <b>çizim</b> her zaman çalışır; ayrıca fotoğrafı kopyalayıp aşağıya yapıştırabilirsin. Uygulamayı Chrome ya da Safari\'de açmayı da dene.`;hint.scrollIntoView({block:"nearest"})};
+ const showHint=()=>{hint.hidden=false;hint.innerHTML=`<b>Galerin açılmadı mı?</b> Tarayıcı izin vermiyor olabilir. <b>Kadraj galerisi</b> ya da <b>çizim</b> her zaman çalışır; ayrıca fotoğrafı kopyalayıp aşağıya yapıştırabilirsin. Uygulamayı Chrome ya da Safari\'de açmayı da dene.`;hint.scrollIntoView({block:"nearest"})};
  const fromFile=async f=>{if(f===undefined){showHint();return}if(!f)return;if(f.type.startsWith("video/")){if(!video){toast("Burada sadece fotoğraf ekleyebilirsin.");return}return finish({video:f})}
   if(f.type&&!f.type.startsWith("image/")){toast("Bu dosya türü desteklenmiyor.");return}try{const img=await loadImg(await readFile(f));finish({img})}catch{toast("Fotoğraf açılamadı. HEIC ise önce JPEG olarak kaydet ya da başka bir dosya dene.")}};
- $('[data-src="file"]',l).onclick=async()=>fromFile(await nativePick(video?"image/*,video/*":"image/*"));
- $('[data-src="camera"]',l).onclick=async()=>fromFile(await nativePick("image/*","environment"));
+ $('[data-src="file"]',l).onclick=async()=>{S.onPickSlow=showHint;fromFile(await nativePick(video?"image/*,video/*":"image/*"))};
+ $('[data-src="camera"]',l).onclick=async()=>{S.onPickSlow=showHint;fromFile(await nativePick("image/*","environment"))};
  $('[data-src="gallery"]',l).onclick=()=>{const g=sheet("gal","Kadraj galerisi",`<div class="gal">${GALLERY.map(s=>`<button data-g="${s}" aria-label="Fotoğrafı seç"><img src="${R(s)}" alt=""></button>`).join("")}</div>`);$$("[data-g]",g).forEach(b=>b.onclick=async()=>{try{const img=await loadImg(R(b.dataset.g));closeLayer("gal");finish({img,src:b.dataset.g})}catch{toast("Fotoğraf yüklenemedi.")}})};
  const dr=$('[data-src="draw"]',l);if(dr)dr.onclick=()=>openDraw().then(c=>{if(c)finish({img:c})});
  const pb=$("#pasteBox",l);pb.addEventListener("paste",async e=>{e.preventDefault();const items=[...(e.clipboardData?.items||[])];const it=items.find(x=>x.type.startsWith("image/"));if(!it){toast("Panoda fotoğraf yok. Önce bir fotoğrafı kopyala.");return}fromFile(it.getAsFile())});
@@ -1147,7 +1210,7 @@ function toCanvas(img,w,h,filter){const c=document.createElement("canvas");c.wid
 /* ============ Oluştur ============ */
 const FILTERS=[["Normal",""],["Sıcak","sepia(.25) saturate(1.3) hue-rotate(-8deg) brightness(1.04)"],["Soğuk","saturate(.95) hue-rotate(12deg) brightness(1.03) contrast(1.05)"],["Siyah-Beyaz","grayscale(1) contrast(1.15)"],["Vintage","sepia(.45) contrast(.92) brightness(1.06) saturate(.85)"],["Canlı","saturate(1.6) contrast(1.1)"],["Gece","brightness(.85) contrast(1.25) saturate(.8) hue-rotate(200deg)"]];
 function openCreate(){if(!guard())return;
- const tiles=[["photo","image","Fotoğraf","Telefon, kamera, galeri ya da çizim","#0C7A63"],["reel","reels","Reels","Fotoğraflardan müzikli ya da video","#DB2777"],["story","eye","Hikâye","24 saat görünür","#D97706"],["note","type","Not","Renkli zeminde kısa yazı","#1D4ED8"],["poll","poll","Anket","Arkadaşlarına soru sor","#7C3AED"],["draw","pen","Çizim","Parmağınla çiz, paylaş","#0E7490"]];
+ const tiles=[["photo","image","Fotoğraf","Telefon, kamera, galeri ya da çizim","#0C7A63"],["reel","reels","Çekim","Müzikli kısa video ya da fotoğraf","#DB2777"],["story","eye","Hikâye","24 saat görünür","#D97706"],["note","type","Not","Renkli zeminde kısa yazı","#1D4ED8"],["poll","poll","Anket","Arkadaşlarına soru sor","#7C3AED"],["draw","pen","Çizim","Parmağınla çiz, paylaş","#0E7490"]];
  const l=sheet("create","Ne paylaşmak istersin?",`<div class="ctiles">${tiles.map(([k,ic,b,s,c])=>`<button class="ctile" data-ck="${k}" style="--c:${c}"><span class="ic">${I(ic)}</span><b>${b}</b><small>${s}</small></button>`).join("")}</div>`);
  $$("[data-ck]",l).forEach(b=>b.onclick=()=>{closeLayer("create");openComposer(b.dataset.ck)})}
 async function openComposer(kind){if(!guard())return;
@@ -1157,7 +1220,7 @@ async function openComposer(kind){if(!guard())return;
  drawComposer()}
 const arSize=ar=>ar==="4/5"?[1080,1350]:ar==="16/9"?[1080,608]:[1080,1080];
 function thumbOf(c){if(c._thumb&&c._thumbFor===c.img)return c._thumb;c._thumb=toCanvas(c.img,120,120).toDataURL("image/jpeg",.7);c._thumbFor=c.img;return c._thumb}
-function drawComposer(){const c=S.cmp;const titles={photo:"Yeni fotoğraf",reel:"Yeni reels",story:"Yeni hikâye",note:"Yeni not",poll:"Yeni anket"};
+function drawComposer(){const c=S.cmp;const titles={photo:"Yeni fotoğraf",reel:"Yeni çekim",story:"Yeni hikâye",note:"Yeni not",poll:"Yeni anket"};
  let l=$('#overlay [data-layer="composer"]');
  if(!l)l=openLayer("composer",`<div class="full" role="dialog" aria-label="Oluştur"><div class="hd"><button class="ib plain" data-act="close" aria-label="Kapat">${I("close")}</button><h1 id="cmpT"></h1><button class="btn sm" id="cmpGo">Paylaş</button></div><div class="body" id="cmpB"></div></div>`,{noScrim:true,onClose:()=>{Music.stop();if(S.cmp&&S.cmp._t){clearInterval(S.cmp._t);S.cmp._t=null}}});
  $("#cmpT",l).textContent=titles[c.kind];const b=$("#cmpB",l);const go=$("#cmpGo",l);go.onclick=publishComposer;go.disabled=false;go.textContent="Paylaş";
@@ -1181,8 +1244,8 @@ function drawComposer(){const c=S.cmp;const titles={photo:"Yeni fotoğraf",reel:
  else if(c.kind==="reel"){b.innerHTML=`<div style="padding:6px 16px 4px"><div class="seg">${[["slides","Fotoğraflardan"],["video","Video yükle"]].map(([v,lb])=>`<button data-rm="${v}" aria-pressed="${c.mode===v}">${lb}</button>`).join("")}</div></div><div id="rBody"></div><div class="form">${capFields}</div>`;
   $$("[data-rm]",l).forEach(el=>el.onclick=()=>{c.mode=el.dataset.rm;drawComposer()});
   const rb=$("#rBody",l);
-  if(c.mode==="video"){rb.innerHTML=(c.video?`<div class="pv"><video src="${c.videoUrl}" controls playsinline muted loop></video></div><div style="padding:0 16px"><button class="btn ghost" id="vPick" type="button">Başka video seç</button></div>`:`<div class="srcs" style="padding-top:8px"><button class="src" id="vPick" type="button"><span class="ic">${I("film")}</span><span><b>Telefondan video seç</b><small>MP4 ya da MOV, en fazla ${S.mode==="local"?"1,5":"4"} MB (yaklaşık 15–20 saniye)</small></span></button></div>`)+`<div class="hint" id="vHint" hidden>Dosya seçici açılmadı. Tarayıcın izin vermiyor olabilir. <b>Fotoğraflardan</b> sekmesiyle müzikli reels yapabilir ya da uygulamayı Chrome veya Safari\'de açmayı deneyebilirsin.</div>`;
-   $("#vPick",l).onclick=async()=>{const f=await nativePick("video/*");if(f===undefined){$("#vHint",l).hidden=false;return}if(!f)return;if(!f.type.startsWith("video/"))return toast("Bir video dosyası seç.");if(f.size>(S.mode==="local"?1.5*1048576:VMAX))return toast("Video çok büyük. Daha kısa bir video seç.");c.video=f;c.videoUrl=URL.createObjectURL(f);drawComposer()}}
+  if(c.mode==="video"){rb.innerHTML=(c.video?`<div class="pv"><video src="${c.videoUrl}" controls playsinline muted loop></video></div><div style="padding:0 16px"><button class="btn ghost" id="vPick" type="button">Başka video seç</button></div>`:`<div class="srcs" style="padding-top:8px"><button class="src" id="vPick" type="button"><span class="ic">${I("film")}</span><span><b>Telefondan video seç</b><small>MP4 ya da MOV, en fazla ${S.mode==="local"?"1,5":"4"} MB (yaklaşık 15–20 saniye)</small></span></button></div>`)+`<div class="hint" id="vHint" hidden>Dosya seçici açılmadı. Tarayıcın izin vermiyor olabilir. <b>Fotoğraflardan</b> sekmesiyle müzikli çekim yapabilir ya da uygulamayı Chrome veya Safari\'de açmayı deneyebilirsin.</div>`;
+   $("#vPick",l).onclick=async()=>{S.onPickSlow=()=>{const h=$("#vHint",l);if(h)h.hidden=false};const f=await nativePick("video/*");if(f===undefined){$("#vHint",l).hidden=false;return}if(!f)return;if(!f.type.startsWith("video/"))return toast("Bir video dosyası seç.");if(f.size>(S.mode==="local"?1.5*1048576:VMAX))return toast("Video çok büyük. Daha kısa bir video seç.");c.video=f;c.videoUrl=URL.createObjectURL(f);drawComposer()}}
   else{rb.innerHTML=`<div class="rprev" id="rPrev"></div><div class="form" style="padding-bottom:0"><span class="lbl">Kareler (en fazla 3)</span><div class="slides-pick">${c.slides.map((s,i)=>`<div class="s"><img src="${R(s)}" alt=""><button data-srm="${i}" aria-label="Kareyi kaldır" type="button">${I("close")}</button></div>`).join("")}${c.slides.length<3?`<button class="add" id="sAdd" type="button" aria-label="Kare ekle">${I("add")}</button>`:""}</div>
    <div class="field"><label for="rTxt">Ekrandaki yazı</label><input class="in" id="rTxt" maxlength="50" value="${esc(c.text||"")}" placeholder="Örn. Hafta sonu özeti"></div>
    <span class="lbl">Hareket</span><div class="seg">${[["zoom","Yakınlaş"],["pan","Kaydır"],["pulse","Nabız"]].map(([v,lb])=>`<button data-fx="${v}" aria-pressed="${c.fx===v}">${lb}</button>`).join("")}</div>
@@ -1211,7 +1274,7 @@ async function publishComposer(){const c=S.cmp;const l=$('#overlay [data-layer="
   const ok=await write(()=>DB.set(path,doc));
   if(!ok){go.disabled=false;go.textContent="Paylaş";return}
   if(c.kind==="story"){S.stories={...S.stories,[id]:{id,...doc}};closeLayer("composer");toast("Hikâyen paylaşıldı");return tab("feed")}
-  S.posts={...S.posts,[id]:{id,...doc}};closeLayer("composer");toast({photo:"Fotoğraf paylaşıldı",note:"Not paylaşıldı",poll:"Anket yayında",reel:"Reels paylaşıldı"}[c.kind]);
+  S.posts={...S.posts,[id]:{id,...doc}};closeLayer("composer");toast({photo:"Fotoğraf paylaşıldı",note:"Not paylaşıldı",poll:"Anket yayında",reel:"Çekim paylaşıldı"}[c.kind]);
   if(c.kind==="reel"){S.stack=[{name:"feed",params:{}}];S.route={name:"reels",params:{start:id}};render(true)}else tab("feed")}
  catch(e){console.warn(e);toast("Paylaşılamadı: "+(e&&e.message?e.message:"bilinmeyen hata"));go.disabled=false;go.textContent="Paylaş"}}
 function videoPoster(url){return new Promise(res=>{const v=document.createElement("video");v.muted=true;v.src=url;v.playsInline=true;v.onloadeddata=()=>{v.currentTime=Math.min(1,(v.duration||2)/2)};v.onseeked=()=>{try{res(toCanvas(v,360,640).toDataURL("image/jpeg",.7))}catch{res("")}};v.onerror=()=>res("");setTimeout(()=>res(""),6000)})}
@@ -1251,7 +1314,7 @@ function authShell(html){S.authed=false;$("#top").hidden=true;$("#dock").hidden=
 const mosaic=`<div class="mosaic"><img src="${R("img/iskele.jpg")}" alt=""><img src="${R("img/kedi.jpg")}" alt=""><img src="${R("img/gunbatimi.jpg")}" alt=""></div>`;
 const modeChip=()=>`<span class="modechip ${S.mode==="cloud"?"cloud":""}"><i></i>${S.mode==="cloud"?"Firebase · arkadaşlarınla canlı":"Demo · yalnızca bu cihaz"}</span>`;
 const brandLine=`<div class="brand" style="margin-bottom:12px">${VF}<span class="wordmark">kadraj</span></div>`;
-function showWelcome(){authShell(`${mosaic}<div>${brandLine}<h2>Arkadaşlarınla anı paylaş, sohbet et.</h2><p class="lead">Fotoğraf, reels, not, anket ve canlı sohbet tek yerde. Rota adındaki yapay zekâ rehberi de yanında.</p></div>${modeChip()}<div style="display:grid;gap:10px"><button class="btn block" id="wReg">Hesap oluştur</button>${S.mode==="local"?`<button class="btn line block" id="wLog">Giriş yap</button>`:""}</div>`);
+function showWelcome(){authShell(`${mosaic}<div>${brandLine}<h2>Arkadaşlarınla anı paylaş, sohbet et.</h2><p class="lead">Fotoğraf, çekim, not, anket ve canlı sohbet tek yerde. Rota adındaki yapay zekâ rehberi de yanında.</p></div>${modeChip()}<div style="display:grid;gap:10px"><button class="btn block" id="wReg">Hesap oluştur</button>${S.mode==="local"?`<button class="btn line block" id="wLog">Giriş yap</button>`:""}</div>`);
  $("#wReg").onclick=showRegister;const wl=$("#wLog");if(wl)wl.onclick=()=>showLogin()}
 function showRegister(){const sug=S.viewer?.name||"";let avData=null;
  authShell(`<div>${brandLine}<h2>Hesap oluştur</h2><p class="lead">Bir dakikadan kısa sürer.</p></div>${modeChip()}
@@ -1322,7 +1385,7 @@ function subscribeShared(){
  DB.watchCol("stories",docs=>{const m={};const lim=now()-24*H;for(const d of docs)if(d.at>lim)m[d.id]=d;S.stories=m;scheduleRefresh()},{orderBy:["at","desc"],limit:120});
  DB.watchDoc("chats/meydan",d=>{const o=S.meydan;S.meydan=d;if(d&&d.last&&notifReady&&settings.notify&&S.authed&&d.last.from!==S.uid&&(!o||!o.last||o.last.at<d.last.at)&&!(S.route.name==="chat"&&S.route.params.key==="meydan"))toast(`Meydan · ${P(d.last.from).username}: ${d.last.text.slice(0,60)}`,d.last.from);scheduleRefresh()})}
 let userUnsub=[];
-function subscribeUser(){teardownUser();const u=S.uid;
+function subscribeUser(){teardownUser();const u=S.uid;if(S.mode==="cloud"&&FB)userUnsub.push(listenCalls());
  userUnsub.push(DB.watchCol("chats",docs=>{const m={};for(const d of docs)m[d.id]=d;notifyChats(m);S.chats=m;scheduleRefresh()},{where:["members","array-contains",u],limit:200}));
  userUnsub.push(DB.watchDoc(`data/users/${u}/saved`,d=>{S.saved=(d&&d.ids)||{};scheduleRefresh()}));
  for(const b of BOTS)userUnsub.push(DB.watchDoc(`data/users/${u}/bot-${b.key}`,d=>{S.botchats={...S.botchats,[b.key]:d||{msgs:[]}};scheduleRefresh()}))}
@@ -1332,7 +1395,7 @@ function openChat(key){if(S.route.name==="chat"&&S.route.params.key===key)return
 function startChat(key){const k=keyInfo(key);if(k.type==="bot"){stopChat();markBotRead(k.uid);return}if(chatKey===k.cid)return;stopChat();chatKey=k.cid;S.msgs=[];
  if(k.type==="meydan")LS.set("kadraj_meydan_"+S.uid,now());
  chatUnsub=DB.watchCol(`chats/${k.cid}/msgs`,docs=>{S.msgs=docs.sort((a,b)=>a.at-b.at);if(S.route.name==="chat")renderMsgs();if(k.type==="meydan")LS.set("kadraj_meydan_"+S.uid,now());else markRead(k.cid)},{orderBy:["at","desc"],limit:300})}
-function stopChat(){if(chatUnsub){try{chatUnsub()}catch{}}chatUnsub=null;chatKey=null}
+function stopChat(){if(REC)stopRec(false);if(AUD&&PLAYING){AUD.pause();PLAYING=null}if(chatUnsub){try{chatUnsub()}catch{}}chatUnsub=null;chatKey=null}
 async function markRead(cid){const c=S.chats[cid];if(!c||!c.last)return;if(((c.reads||{})[S.uid]||0)>=c.last.at)return;if(!S.canWrite||S.guest)return;try{await DB.update("chats/"+cid,{reads:{[S.uid]:now()}})}catch{}}
 async function markBotRead(uid){const k=BOT[uid].key;const c=S.botchats[k];if(!c||!c.msgs?.length)return;const l=c.msgs[c.msgs.length-1];if((c.readAt||0)>=l.at||l.from===S.uid)return;S.botchats={...S.botchats,[k]:{...c,readAt:now()}};try{await DB.set(`data/users/${S.uid}/bot-${k}`,{msgs:c.msgs,readAt:now()})}catch{}}
 function notifyMeta(m){if(!notifReady||!settings.notify||!S.authed)return;for(const[id,d]of Object.entries(m)){const p=S.posts[id];if(!p||p.uid!==S.uid)continue;const old=S.meta[id]||{};for(const[u,at]of Object.entries(d.likes||{}))if(at&&u!==S.uid&&!(old.likes||{})[u]&&at>S.bootAt)toast(`@${P(u).username} paylaşımını beğendi`,u);for(const[cid,c]of Object.entries(d.comments||{}))if(c&&c.uid!==S.uid&&!(old.comments||{})[cid]&&c.at>S.bootAt)toast(`@${P(c.uid).username}: ${c.text.slice(0,60)}`,c.uid)}}
@@ -1340,16 +1403,121 @@ function notifyChats(m){if(!notifReady||!settings.notify)return;for(const[id,c]o
 function notifyNewPosts(m){if(!notifReady||!settings.notify||!S.authed)return;for(const[id,p]of Object.entries(m))if(!S.posts[id]&&p.uid!==S.uid&&p.at>S.bootAt&&isFollowing(S.uid,p.uid))toast(`@${P(p.uid).username} yeni bir paylaşım yaptı`,p.uid)}
 
 /* ============ Mesaj gönderme ============ */
-function wireComposer(){const f=$("#composer"),inp=$("#msgIn");if(!f)return;const key=S.route.params.key;
+function wireComposer(){const f=$("#composer"),inp=$("#msgIn");if(!f)return;const key=S.route.params.key;const k=keyInfo(key);const btn=$("#sendBtn");const voice=k.type!=="bot";
  const grow=()=>{inp.style.height="auto";inp.style.height=Math.min(128,inp.scrollHeight)+"px"};
- inp.addEventListener("input",()=>{grow();typingPing(key)});
+ const icon=()=>{if(btn&&voice){const has=!!inp.value.trim();btn.innerHTML=I(has?"send":"mic");btn.setAttribute("aria-label",has?"Gönder":"Sesli mesaj kaydet")}};
+ inp.addEventListener("input",()=>{grow();icon();typingPing(key)});
  inp.addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();f.requestSubmit()}});
- f.onsubmit=async e=>{e.preventDefault();const v=inp.value.trim();if(!v)return;inp.value="";grow();typingStop();S.forceBottom=true;await sendMessage(key,{text:v})}}
+ f.onsubmit=async e=>{e.preventDefault();const v=inp.value.trim();if(!v){if(voice)startRec();return}inp.value="";grow();icon();typingStop();S.forceBottom=true;const extra=S.replyTo?{reply:S.replyTo}:{};S.replyTo=null;drawReply();await sendMessage(key,{text:v,...extra})};
+ drawReply()}
+function drawReply(){const b=$("#replyBar");if(!b)return;const r=S.replyTo;b.innerHTML=r?`<div class="replybar">${I("reply")}<span class="t"><b>${esc(P(r.from).username)}</b> · ${esc(r.text)}</span><button class="ib plain" data-act="noreply" aria-label="Yanıtı iptal et" style="width:2.2rem;height:2.2rem">${I("close")}</button></div>`:""}
+/* ---- sesli mesaj ---- */
+const mmss=x=>{x=Math.max(0,Math.round(x||0));return`${Math.floor(x/60)}:${String(x%60).padStart(2,"0")}`};
+let REC=null,AUD=null,PLAYING=null;
+function audHtml(m){return`<span class="audm"><button class="ap" data-play="${esc(m.id||"")}" aria-label="Sesli mesajı oynat">${I(PLAYING===m.id?"pause":"play")}</button><span class="bar"><i id="ab-${esc(m.id||"")}"></i></span><span class="t" id="at-${esc(m.id||"")}">${mmss(m.dur)}</span></span>`}
+async function startRec(){if(!guard()||REC)return;if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia||!window.MediaRecorder)return toast("Bu tarayıcı ses kaydını desteklemiyor.");
+ let stream;try{stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true}})}catch(e){return toast(e&&e.name==="NotAllowedError"?"Mikrofon izni verilmedi. Tarayıcı ayarlarından bu siteye mikrofon izni ver.":"Mikrofon açılamadı.")}
+ const types=["audio/webm;codecs=opus","audio/mp4","audio/ogg;codecs=opus","audio/webm"];const mt=types.find(t=>MediaRecorder.isTypeSupported&&MediaRecorder.isTypeSupported(t))||"";
+ let mr;try{mr=new MediaRecorder(stream,mt?{mimeType:mt,audioBitsPerSecond:32000}:{audioBitsPerSecond:32000})}catch{mr=new MediaRecorder(stream)}
+ const chunks=[];mr.ondataavailable=e=>{if(e.data&&e.data.size)chunks.push(e.data)};
+ REC={mr,stream,chunks,start:now(),key:S.route.params.key};mr.start(250);vib(30);
+ const f=$("#composer");if(f)f.innerHTML=`<button type="button" class="ib" data-act="reccancel" aria-label="Kaydı iptal et">${I("trash")}</button><div class="rec"><i class="dot"></i><span>Kaydediliyor</span><span id="recT" class="mono" style="margin-left:auto;font-size:.85rem">0:00</span></div><button type="button" class="send" data-act="recsend" aria-label="Sesli mesajı gönder">${I("send")}</button>`;
+ REC.timer=setInterval(()=>{if(!REC)return;const x=(now()-REC.start)/1000;const t=$("#recT");if(t)t.textContent=mmss(x);if(x>=120)stopRec(true)},250)}
+async function stopRec(send){if(!REC)return;const r=REC;REC=null;clearInterval(r.timer);const dur=Math.round((now()-r.start)/1000);
+ await new Promise(res=>{r.mr.onstop=res;try{r.mr.stop()}catch{res()}setTimeout(res,1500)});r.stream.getTracks().forEach(t=>t.stop());
+ if(S.route.name==="chat"&&S.route.params.key===r.key)render(false);
+ if(!send)return;if(dur<1)return toast("Çok kısa oldu. Konuşup sonra gönder'e bas.");
+ const blob=new Blob(r.chunks,{type:(r.mr.mimeType||"audio/webm").split(";")[0]});if(blob.size>650000)return toast("Ses kaydı çok büyük, daha kısa kaydet.");
+ const durl=await readFile(blob);S.forceBottom=true;const extra=S.replyTo?{reply:S.replyTo}:{};S.replyTo=null;await sendMessage(r.key,{audio:durl,dur,text:"",...extra})}
+function playAudio(mid){const m=S.msgs.find(x=>x.id===mid);if(!m||!m.audio)return;if(!AUD){AUD=new Audio();AUD.ontimeupdate=()=>{if(!PLAYING)return;const b=$("#ab-"+CSS.escape(PLAYING)),t=$("#at-"+CSS.escape(PLAYING));const d=AUD.duration&&isFinite(AUD.duration)?AUD.duration:(S.msgs.find(x=>x.id===PLAYING)?.dur||1);if(b)b.style.width=Math.min(100,AUD.currentTime/d*100)+"%";if(t)t.textContent=mmss(AUD.currentTime)};AUD.onended=()=>{PLAYING=null;renderMsgs()}}
+ if(PLAYING===mid){AUD.pause();PLAYING=null;renderMsgs();return}
+ AUD.pause();AUD.src=m.audio;PLAYING=mid;AUD.play().catch(()=>{PLAYING=null;toast("Bu ses bu cihazda çalınamadı.")});renderMsgs()}
+/* ---- arama: WebRTC, sinyal Firestore üzerinden ---- */
+const ICE={iceServers:[{urls:["stun:stun.l.google.com:19302","stun:stun1.l.google.com:19302","stun:stun2.l.google.com:19302"]}]};
+let CALL=null,toneT=null,vibT=null;
+function callLabel(c,mine){if(!c)return"";const t=c.video?"Görüntülü arama":"Sesli arama";if(c.status==="ok")return`${t} · ${mmss(c.dur)}`;if(c.status==="declined")return mine?`${t} · reddedildi`:`${t} · reddettin`;if(c.status==="canceled")return mine?`${t} · iptal edildi`:`Cevapsız ${t.toLocaleLowerCase("tr")}`;return mine?`${t} · cevap yok`:`Cevapsız ${t.toLocaleLowerCase("tr")}`}
+const callSupported=()=>!!(window.RTCPeerConnection&&navigator.mediaDevices&&navigator.mediaDevices.getUserMedia);
+function getMedia(video,facing="user"){return navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true},video:video?{facingMode:facing,width:{ideal:640},height:{ideal:480}}:false})}
+function mediaErr(e){console.warn(e);toast(e&&e.name==="NotAllowedError"?"Mikrofon/kamera izni verilmedi. Tarayıcı ayarlarından bu siteye izin ver.":e&&e.name==="NotFoundError"?"Mikrofon ya da kamera bulunamadı.":"Mikrofon/kamera açılamadı.")}
+function newPC(id){const{F,db}=FB;const pc=new RTCPeerConnection(ICE);
+ pc.onicecandidate=e=>{if(e.candidate)F.addDoc(F.collection(db,"calls",id,"cands"),{from:S.uid,c:e.candidate.toJSON(),at:Date.now()}).catch(()=>{})};
+ pc.ontrack=e=>{if(!CALL||CALL.pc!==pc)return;CALL.remote=e.streams&&e.streams[0]?e.streams[0]:new MediaStream([e.track]);attachStreams()};
+ pc.onconnectionstatechange=()=>{if(!CALL||CALL.pc!==pc)return;const st=pc.connectionState;
+  if(st==="connected"&&CALL.status!=="connected"){CALL.status="connected";CALL.start=now();stopTone();vibStop();clearTimeout(CALL.discT);CALL.tick=setInterval(updCallStatus,1000);renderCall()}
+  else if(st==="failed")endCall(true,"Bağlantı kurulamadı. İkiniz de Wi-Fi'ye bağlanıp tekrar deneyin.");
+  else if(st==="disconnected"){clearTimeout(CALL.discT);CALL.discT=setTimeout(()=>{if(CALL&&CALL.pc===pc&&pc.connectionState!=="connected")endCall(true,"Bağlantı koptu.")},10000)}};
+ return pc}
+function listenCands(){const c=CALL;const{F,db}=FB;c.pend=c.pend||[];
+ c.unsubs.push(F.onSnapshot(F.collection(db,"calls",c.id,"cands"),s=>{for(const ch of s.docChanges()){if(ch.type!=="added")continue;const d=ch.doc.data();if(!d||d.from===S.uid||CALL!==c)continue;const ic=new RTCIceCandidate(d.c);if(c.pc&&c.pc.remoteDescription)c.pc.addIceCandidate(ic).catch(e=>console.warn(e));else c.pend.push(ic)}}))}
+function flushCands(){const c=CALL;if(!c||!c.pc)return;const p=c.pend||[];c.pend=[];p.forEach(ic=>c.pc.addIceCandidate(ic).catch(()=>{}))}
+async function startCall(uid,video){if(!guard())return;if(S.mode!=="cloud")return toast("Arama için Firebase bağlantısı gerekiyor.");if(!callSupported())return toast("Bu tarayıcı aramayı desteklemiyor. Chrome ya da Safari'yi dene.");if(CALL)return toast("Zaten bir aramadasın.");if(BOT[uid])return toast("Botlar aranamaz.");
+ let stream;try{stream=await getMedia(video)}catch(e){return mediaErr(e)}
+ const{F,db}=FB;const ref=F.doc(F.collection(db,"calls"));const id=ref.id;
+ const c=CALL={id,ref,peer:uid,video:!!video,role:"caller",status:"ringing",stream,unsubs:[],start:0,mic:true,cam:!!video,facing:"user",pend:[]};
+ const pc=newPC(id);c.pc=pc;stream.getTracks().forEach(t=>pc.addTrack(t,stream));
+ showCallUI();listenCands();
+ try{const offer=await pc.createOffer();await pc.setLocalDescription(offer);await F.setDoc(ref,{from:S.uid,to:uid,video:!!video,status:"ringing",offer:{type:offer.type,sdp:offer.sdp},at:Date.now()})}catch(e){console.warn(e);c.outcome="failed";return endCall(false,e&&e.code==="permission-denied"?"Arama kuralları eksik. Firestore kurallarını güncelle.":"Arama başlatılamadı.")}
+ startTone("back");
+ c.unsubs.push(F.onSnapshot(ref,async s=>{if(CALL!==c)return;const d=s.exists()?s.data():null;if(!d){endCall(false);return}
+  if(d.answer&&!pc.currentRemoteDescription){try{await pc.setRemoteDescription(d.answer);flushCands();if(c.status==="ringing"){c.status="connecting";stopTone();renderCall()}}catch(e){console.warn(e)}}
+  if(d.status==="declined"){c.outcome="declined";endCall(false,"Arama reddedildi.")}else if(d.status==="ended")endCall(false,"Arama bitti.")}));
+ c.noAns=setTimeout(()=>{if(CALL===c&&c.status==="ringing"){c.outcome="missed";F.updateDoc(ref,{status:"missed"}).catch(()=>{});endCall(false,"Cevap yok.")}},40000)}
+function listenCalls(){const{F,db}=FB;const seen=new Set();
+ return F.onSnapshot(F.query(F.collection(db,"calls"),F.where("to","==",S.uid)),s=>{for(const ch of s.docChanges()){const id=ch.doc.id;const d=ch.doc.data()||{};
+  if(ch.type==="removed"){if(CALL&&CALL.id===id)endCall(false);continue}
+  if(d.status==="ringing"&&!seen.has(id)&&Date.now()-d.at<45000){seen.add(id);if(CALL){F.updateDoc(F.doc(db,"calls/"+id),{status:"declined"}).catch(()=>{});continue}incomingCall(id,d)}
+  else if(CALL&&CALL.id===id&&(d.status==="ended"||d.status==="missed"))endCall(false,d.status==="missed"?"Cevapsız arama.":"Arama bitti.")}},e=>console.warn("calls",e))}
+function incomingCall(id,d){const{F,db}=FB;CALL={id,ref:F.doc(db,"calls/"+id),peer:d.from,video:!!d.video,role:"callee",status:"incoming",offer:d.offer,unsubs:[],start:0,mic:true,cam:!!d.video,facing:"user",pend:[]};
+ const c=CALL;c.unsubs.push(F.onSnapshot(c.ref,s=>{if(CALL!==c)return;const x=s.exists()?s.data():null;if(!x||x.status==="ended"||x.status==="missed")endCall(false,x&&x.status==="ended"&&c.status!=="incoming"?"Arama bitti.":"Cevapsız arama.")}));
+ showCallUI();startTone("ring");vibLoop()}
+async function acceptCall(){const c=CALL;if(!c||c.status!=="incoming")return;stopTone();vibStop();c.status="connecting";renderCall();
+ let stream;try{stream=await getMedia(c.video)}catch(e){mediaErr(e);return declineCall()}
+ if(CALL!==c){stream.getTracks().forEach(t=>t.stop());return}
+ c.stream=stream;const pc=newPC(c.id);c.pc=pc;stream.getTracks().forEach(t=>pc.addTrack(t,stream));listenCands();
+ try{await pc.setRemoteDescription(c.offer);flushCands();const ans=await pc.createAnswer();await pc.setLocalDescription(ans);await FB.F.updateDoc(c.ref,{answer:{type:ans.type,sdp:ans.sdp},status:"accepted"})}catch(e){console.warn(e);return endCall(true,"Arama bağlanamadı.")}
+ renderCall()}
+function declineCall(){const c=CALL;if(!c)return;FB.F.updateDoc(c.ref,{status:"declined"}).catch(()=>{});endCall(false)}
+function endCall(notify,msg){const c=CALL;if(!c)return;const wasLive=c.status==="connected";const dur=c.start?Math.round((now()-c.start)/1000):0;CALL=null;
+ stopTone();vibStop();clearTimeout(c.noAns);clearTimeout(c.discT);clearInterval(c.tick);
+ c.unsubs.forEach(u=>{try{u()}catch{}});try{c.pc&&c.pc.close()}catch{}
+ if(c.stream)c.stream.getTracks().forEach(t=>t.stop());
+ if(notify&&c.ref)FB.F.updateDoc(c.ref,{status:"ended"}).catch(()=>{});
+ if(c.role==="caller"&&c.outcome!=="failed"){const st=wasLive?"ok":(c.outcome||"canceled");Promise.resolve(sendMessage("u:"+c.peer,{call:{video:c.video,status:st,dur}})).catch(()=>{});setTimeout(()=>FB.F.deleteDoc(c.ref).catch(()=>{}),5000)}
+ closeLayer("call");if(msg)toast(msg)}
+function showCallUI(){openLayer("call",`<div class="call" id="callBox"></div>`,{noScrim:true});renderCall()}
+function renderCall(){const box=$("#callBox");const c=CALL;if(!box||!c)return;const p=P(c.peer);const live=c.status==="connected";
+ const st={ringing:"Çalıyor…",incoming:c.video?"Görüntülü arama geliyor":"Sesli arama geliyor",connecting:"Bağlanıyor…",connected:mmss(c.start?(now()-c.start)/1000:0)}[c.status]||"";
+ box.className="call"+(c.video?" vid":"")+(live?" live":"");
+ box.innerHTML=`${c.video?`<video id="rv" autoplay playsinline></video><video id="lv" autoplay playsinline muted ${c.stream?"":"hidden"} style="${c.facing==="user"?"":"transform:none"}"></video>`:`<audio id="ra" autoplay></audio>`}
+ <div class="who">${c.video&&live?"":avatar(c.peer,112,{click:false,ring:false,online:false})}<b>${esc(p.name)}</b><span id="callSt">${esc(st)}</span></div>
+ <div class="ctrls">${c.status==="incoming"?`<span class="lbl2"><button class="cb red" data-cact="decline" aria-label="Reddet">${I("hangup")}</button>Reddet</span><span class="lbl2"><button class="cb green pulse" data-cact="accept" aria-label="Kabul et">${I(c.video?"video":"phone")}</button>Kabul et</span>`:`<span class="lbl2"><button class="cb ${c.mic?"":"on"}" data-cact="mic" aria-label="Mikrofon">${I(c.mic?"mic":"micoff")}</button>${c.mic?"Sessize al":"Sesi aç"}</span>${c.video?`<span class="lbl2"><button class="cb ${c.cam?"":"on"}" data-cact="cam" aria-label="Kamera">${I(c.cam?"video":"camoff")}</button>Kamera</span><span class="lbl2"><button class="cb" data-cact="flip" aria-label="Kamerayı çevir">${I("flip")}</button>Çevir</span>`:""}<span class="lbl2"><button class="cb red" data-cact="end" aria-label="Aramayı kapat">${I("hangup")}</button>Kapat</span>`}</div>
+ ${c.status==="ringing"?`<div class="note2">Arkadaşının Kadraj'ı o an açık olmalı.</div>`:""}`;
+ attachStreams()}
+function attachStreams(){const c=CALL;if(!c)return;const rv=$("#rv"),lv=$("#lv"),ra=$("#ra");
+ if(c.remote){if(rv&&rv.srcObject!==c.remote){rv.srcObject=c.remote;rv.play().catch(()=>{})}if(ra&&ra.srcObject!==c.remote){ra.srcObject=c.remote;ra.play().catch(()=>{})}}
+ if(lv&&c.stream&&lv.srcObject!==c.stream){lv.hidden=false;lv.srcObject=c.stream;lv.play().catch(()=>{})}}
+function updCallStatus(){const e=$("#callSt");if(e&&CALL&&CALL.start)e.textContent=mmss((now()-CALL.start)/1000)}
+async function callAction(a){const c=CALL;if(!c)return;
+ if(a==="accept")return acceptCall();if(a==="decline")return declineCall();
+ if(a==="end"){if(c.role==="caller"&&c.status==="ringing")c.outcome="canceled";return endCall(true)}
+ if(a==="mic"){c.mic=!c.mic;c.stream&&c.stream.getAudioTracks().forEach(t=>t.enabled=c.mic);return renderCall()}
+ if(a==="cam"){c.cam=!c.cam;c.stream&&c.stream.getVideoTracks().forEach(t=>t.enabled=c.cam);return renderCall()}
+ if(a==="flip"){try{const facing=c.facing==="user"?"environment":"user";const ns=await navigator.mediaDevices.getUserMedia({video:{facingMode:facing,width:{ideal:640},height:{ideal:480}}});const nt=ns.getVideoTracks()[0];const sender=c.pc&&c.pc.getSenders().find(x=>x.track&&x.track.kind==="video");if(sender)await sender.replaceTrack(nt);c.stream.getVideoTracks().forEach(t=>{c.stream.removeTrack(t);t.stop()});c.stream.addTrack(nt);c.facing=facing;renderCall()}catch(e){toast("Kamera çevrilemedi.")}}}
+function startTone(kind){stopTone();let ctx;try{ctx=Music.ctx||(Music.ctx=new(window.AudioContext||window.webkitAudioContext)());ctx.resume()}catch{return}
+ const beep=()=>{const t=ctx.currentTime;const ring=kind==="ring";[ring?660:440,ring?880:480].forEach(f=>{const o=ctx.createOscillator(),g=ctx.createGain();o.frequency.value=f;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(ring?.09:.05,t+.04);g.gain.setValueAtTime(ring?.09:.05,t+(ring?.7:1.1));g.gain.linearRampToValueAtTime(0,t+(ring?.8:1.2));o.connect(g);g.connect(ctx.destination);o.start(t);o.stop(t+1.3)})};
+ beep();toneT=setInterval(beep,kind==="ring"?1800:3500)}
+function stopTone(){clearInterval(toneT);toneT=null}
+function vibLoop(){vibStop();vib([500,300,500]);vibT=setInterval(()=>vib([500,300,500]),2200)}
+function vibStop(){clearInterval(vibT);vibT=null;try{navigator.vibrate&&navigator.vibrate(0)}catch{}}
+/* ---- çevrimdışı uyarısı ---- */
+function netBar(){let b=document.getElementById("netbar");if(navigator.onLine){if(b)b.remove();return}if(!b){b=document.createElement("div");b.id="netbar";b.className="netbar";b.textContent="İnternet bağlantısı yok. Gönderdiklerin bağlantı gelince iletilecek.";document.body.appendChild(b)}}
+addEventListener("online",netBar);addEventListener("offline",netBar);setTimeout(netBar,1500);
+
 async function sendMessage(key,payload){const k=keyInfo(key);if(k.type==="bot")return sendToBot(k.uid,payload);if(!guard())return;
  const at=now();const mid=at.toString(36)+Math.random().toString(36).slice(2,6);const msg={from:S.uid,at,...payload};if(!msg.text)delete msg.text;
  if(S.route.name==="chat"&&chatKey===k.cid){S.msgs=[...S.msgs,{id:mid,...msg}];renderMsgs()}
  if(!await write(()=>DB.set(`chats/${k.cid}/msgs/${mid}`,msg)))return;
- const preview=payload.text||(payload.post?"Bir paylaşım gönderdi":payload.img?"Fotoğraf":"");
+ const preview=payload.text||(payload.post?"Bir paylaşım gönderdi":payload.img?"Fotoğraf":payload.audio?"Sesli mesaj":payload.call?callLabel(payload.call,true):"");
  if(k.type==="meydan")await write(()=>DB.set("chats/meydan",{last:{text:preview,from:S.uid,at},updatedAt:at}),{quiet:true});
  else if(k.type==="group")await write(()=>DB.update("chats/"+k.cid,{last:{text:preview,from:S.uid,at},updatedAt:at,reads:{[S.uid]:at}}),{quiet:true});
  else{const meta={members:[S.uid,k.uid].sort(),last:{text:preview,from:S.uid,at},updatedAt:at,reads:{[S.uid]:at}};await write(()=>S.chats[k.cid]?DB.update("chats/"+k.cid,meta):DB.set("chats/"+k.cid,meta),{quiet:true})}
@@ -1368,26 +1536,26 @@ async function nudge(uid){if(!guard())return;const room=S.caps.room;if(!room)ret
 
 /* ============ Botlar & Rota ============ */
 const APP_GUIDE=`Kadraj bir sosyal uygulamadır (Firebase üzerinde çalışır, herkes kendi e-postasıyla hesap açar). Alt dok: Akış, Keşfet, ortada + (Oluştur), Sohbet, Ben.
-- Oluştur (+): Fotoğraf, Reels, Hikâye, Not (renkli zeminde yazı), Anket (2-4 seçenek), Çizim (parmakla).
+- Oluştur (+): Fotoğraf, Çekim (kısa video, Kadraj'da Reels'in adı), Hikâye, Not (renkli zeminde yazı), Anket (2-4 seçenek), Çizim (parmakla).
 - Fotoğraf kaynakları: telefondan seç, kamera, Kadraj galerisi (hazır 10 fotoğraf), parmakla çizim, panodan yapıştırma. Dosya seçici açılmazsa galeri, çizim ya da yapıştırma kullanılır.
 - Fotoğraf: Kare/Dikey/Yatay kırpma, 7 filtre, açıklama, konum; "Rota açıklama yazsın" düğmesi.
-- Reels: "Fotoğraflardan" (1-3 kare, ekrandaki yazı, hareket: Yakınlaş/Kaydır/Nabız, müzik: Lo-fi/Enerjik/Sakin; müzik cihazda üretilir) ya da "Video yükle" (en fazla 4 MB). Reels ekranında sesi sağ üstteki hoparlör açar, çift dokunuş beğenir.
+- Çekim: "Fotoğraflardan" (1-3 kare, ekrandaki yazı, hareket: Yakınlaş/Kaydır/Nabız, müzik: Lo-fi/Enerjik/Sakin; müzik cihazda üretilir) ya da "Video yükle" (en fazla 4 MB). Çekimler ekranında sesi sağ üstteki hoparlör açar, çift dokunuş beğenir.
 - Hikâye: 24 saat görünür, üstüne yazı eklenebilir; yanıtlar mesaj olarak gelir.
 - Etkileşim: beğeni (çift dokunuş da olur), yorum, kaydet, arkadaşına gönder, anket oyu.
-- Sohbet sekmesi: Meydan (sayfadaki herkesin ortak canlı sohbeti), Şu an burada listesi (çevrimiçi kişiler; Dürt düğmesi titreşimli dürtme gönderir), Yeni mesaj, Grup kur, Davet et, Rota, test botları. Mesajlarda fotoğraf ve paylaşım gönderilir; mesaja çift dokununca kalp, uzun basınca menü (kopyala, geri al). Birebir sohbette "Görüldü" ve "yazıyor…" görünür. Meydan'da ya da grupta mesaja @rota yazınca Rota yanıt verir.
+- Sohbet sekmesi: Sesli mesaj (mesaj kutusu boşken mikrofon düğmesine dokun, konuş, gönder), sesli ve görüntülü arama (birebir sohbetin üstündeki telefon ve kamera düğmeleri; arkadaş uygulamayı açıkken çalar), mesaja uzun basıp Yanıtla, Meydan (sayfadaki herkesin ortak canlı sohbeti), Şu an burada listesi (çevrimiçi kişiler; Dürt düğmesi titreşimli dürtme gönderir), Yeni mesaj, Grup kur, Davet et, Rota, test botları. Mesajlarda fotoğraf ve paylaşım gönderilir; mesaja çift dokununca kalp, uzun basınca menü (kopyala, geri al). Birebir sohbette "Görüldü" ve "yazıyor…" görünür. Meydan'da ya da grupta mesaja @rota yazınca Rota yanıt verir.
 - Arkadaşlarla kullanmak: Sohbet > Davet et (ya da Ben > Davet et) ekranındaki davet bağlantısı WhatsApp gibi bir uygulamayla gönderilir. Arkadaş bağlantıyı açar, e-posta ve şifreyle hesap oluşturur, seni Keşfet'te bulup takip eder ve yazar. Şifre unutulursa giriş ekranındaki Şifremi unuttum e-postaya sıfırlama bağlantısı gönderir.
-- Ben (profil) > dişli: tema (Açık/Koyu/Sistem; Akış'taki ay/güneş düğmesi de değiştirir), yazı boyutu (Normal/Büyük/Çok büyük), gizli hesap, bildirimler, reels otomatik oynatma, Beni hatırla, şifre değiştir, çıkış, hesabı sil.
+- Ben (profil) > dişli: tema (Açık/Koyu/Sistem; Akış'taki ay/güneş düğmesi de değiştirir), yazı boyutu (Normal/Büyük/Çok büyük), gizli hesap, bildirimler, çekimleri otomatik oynatma, Beni hatırla, şifre değiştir, çıkış, hesabı sil.
 - Test botları: iskele.notlari, chelsea.ve.mira, sabah.demlemesi, yorunge.gunlugu, garaj.17, eski.para.arsivi, rakim.2400. Mesaj atınca karakterleriyle yanıt verirler. Rota'nın "Test bildirimleri oluştur" komutu botların beğeni, yorum, takip ve mesaj göndermesini sağlar.
 - Mesajlar uygulamanın Firebase veritabanında durur, uygulamaya giren herkes teknik olarak erişebilir; şifre ya da kişisel bilgi paylaşılmamalı.`;
 const ROTA_SYS=`Sen "Rota"sın: Kadraj uygulamasının yapay zekâ rehberisin. Türkçe, samimi ve net konuş. Yanıtların kısa olsun (genelde 2-6 cümle ya da kısa madde listesi). Uygulama sorularında aşağıdaki rehbere dayan, olmayan özellik uydurma. Fotoğrafçılık, sosyal medya ve yazılım/kod konularında da bilgilisin; kod istenirse kısa, çalışır örnekleri üç ters tırnaklı kod bloğunda ver. Emoji kullanma.\n\nUYGULAMA REHBERİ:\n${APP_GUIDE}`;
-const FAQ=[[/arkada|konuş|davet|birlikte/i,"Arkadaşını getirmek için **Sohbet > Davet et**'e dokun ve davet mesajını WhatsApp ile gönder. Arkadaşın bağlantıyı açıp e-postasıyla hesap oluşturur, seni Keşfet'te bulur.\n\nİçeride konuşmanın yolları:\n- **Meydan**: herkesin ortak sohbeti\n- **Birebir mesaj** ve **grup**\n- **Dürt**: şu an açık olan arkadaşına"],
+const FAQ=[[/ara(ma|yabil|nır|rım)|telefon|görüntülü/i,"Arama için arkadaşınla birebir sohbeti aç, üstteki **telefon** (sesli) ya da **kamera** (görüntülü) düğmesine dokun. Arkadaşının uygulaması o an açık olmalı; şu an burada listesinde yeşil noktayla görünür. Mikrofon ve kamera iznini ilk aramada tarayıcı sorar."],[/sesli mesaj|ses kayd|mikrofon/i,"Sesli mesaj için sohbette mesaj kutusu boşken sağdaki **mikrofon** düğmesine dokun, konuş ve **gönder**'e bas. Vazgeçersen çöp kutusuna dokun. En fazla 2 dakika."],[/arkada|konuş|davet|birlikte/i,"Arkadaşını getirmek için **Sohbet > Davet et**'e dokun ve davet mesajını WhatsApp ile gönder. Arkadaşın bağlantıyı açıp e-postasıyla hesap oluşturur, seni Keşfet'te bulur.\n\nİçeride konuşmanın yolları:\n- **Meydan**: herkesin ortak sohbeti\n- **Birebir mesaj** ve **grup**\n- **Dürt**: şu an açık olan arkadaşına"],
  [/yükle|yüklen|fotoğraf ekle|seçici|olmuyor/i,"Fotoğraf eklemek için **+ > Fotoğraf > Telefondan fotoğraf seç**. Seçici açılmazsa:\n- **Kadraj galerisi**\n- **Parmağınla çiz**\n- Fotoğrafı kopyalayıp **yapıştır**\n\nUygulamayı Chrome ya da Safari'de açmak da işe yarar."],
- [/nasıl kullan|ne yapabil|özellik|başla/i,"Kısa tur:\n- Ortadaki **+** ile fotoğraf, reels, hikâye, not, anket ya da çizim paylaş.\n- Fotoğrafa çift dokun, beğen.\n- **Sohbet** sekmesinde Meydan, mesajlar ve gruplar var.\n- Ben > dişli: tema, yazı boyutu, Beni hatırla.\n- Bildirimleri denemek için bana “Test bildirimleri oluştur” de."],
- [/reels|video/i,"Reels için + > Reels. İki yol var:\n- **Fotoğraflardan**: 1-3 kare seç, yazı ekle, hareket ve müzik seç.\n- **Video yükle**: en fazla 4 MB.\n\nReels ekranında sesi sağ üstteki hoparlörden açarsın."],
+ [/nasıl kullan|ne yapabil|özellik|başla/i,"Kısa tur:\n- Ortadaki **+** ile fotoğraf, çekim, hikâye, not, anket ya da çizim paylaş.\n- Fotoğrafa çift dokun, beğen.\n- **Sohbet** sekmesinde Meydan, mesajlar ve gruplar var.\n- Ben > dişli: tema, yazı boyutu, Beni hatırla.\n- Bildirimleri denemek için bana “Test bildirimleri oluştur” de."],
+ [/reels|çekim|video/i,"Çekim (kısa video) için + > Çekim. İki yol var:\n- **Fotoğraflardan**: 1-3 kare seç, yazı ekle, hareket ve müzik seç.\n- **Video yükle**: en fazla 4 MB.\n\nÇekimler ekranında sesi sağ üstteki hoparlörden açarsın."],
  [/hikaye|hikâye|story/i,"Akışın üstündeki **Hikâyen** balonundaki + ile hikâye eklersin. Üstüne yazı koyabilirsin; 24 saat görünür."],
  [/tema|karanlık|koyu|açık mod|dark|yazı boyu/i,"Akış'taki ay/güneş düğmesi temayı anında değiştirir. Ben > dişli > Görünüm'den Sistem temasını ve yazı boyutunu da seçebilirsin."],
  [/şifre|unuttum|giriş/i,"Şifreni Ben > dişli > Şifreyi değiştir'den güncelleyebilirsin. Unuttuysan giriş ekranında e-postanı yazıp **Şifremi unuttum**'a dokun; sıfırlama bağlantısı e-postana gelir."],
- [/ipucu|çekim|etkinlik|paylaşayım/i,"Birkaç fikir:\n1. Sabah ışığında bir fotoğraf çek ve Sıcak filtresiyle paylaş.\n2. Arkadaşlarına bir anket aç: “Bu hafta sonu ne yapalım?”\n3. Üç fotoğraftan Lo-fi müzikli bir reels hazırla."],
+ [/ipucu|çekim|etkinlik|paylaşayım/i,"Birkaç fikir:\n1. Sabah ışığında bir fotoğraf çek ve Sıcak filtresiyle paylaş.\n2. Arkadaşlarına bir anket aç: “Bu hafta sonu ne yapalım?”\n3. Üç fotoğraftan Lo-fi müzikli bir çekim hazırla."],
  [/debounce/i,"Basit bir debounce:\n```js\nfunction debounce(fn, ms = 300) {\n  let t;\n  return (...args) => {\n    clearTimeout(t);\n    t = setTimeout(() => fn(...args), ms);\n  };\n}\n```\nArama kutusu gibi sık tetiklenen olaylarda gereksiz çağrıları önler."]];
 const BOT_CANNED={deniz:["Selam! Bu sabah yine iskeledeydim, ışık harikaydı.","Uzun pozlama için tripod şart, gerisi sabır.","Gün doğumunu yakalamak için 05.30'da çıkıyorum, gelmek ister misin?"],mira:["Chelsea şu an uyuyor, uyanınca ileteceğim.","Miyav. (Chelsea mama saatinin geçtiğini söylüyor.)","Kutu buldum, mutluyum. — Chelsea"],kahve:["Selam! Bugün Kolombiya demledim, çok yumuşak.","Espresso mu filtre mi? Ben bugün filtre modundayım.","Moda'ya yolun düşerse kahve benden."],roket:["Bu hafta iki fırlatma var, takvime ekle!","Hubble'ın derin alan görüntüsü hâlâ en sevdiğim kare.","Bu akşam gökyüzü açıksa Jüpiter'i çıplak gözle görebilirsin."],garaj:["Ellerim yağlı, kısa yazıyorum: selam!","Karbüratör ayarı bitti, şimdi elektrik tesisatı.","Motor işinden anlıyor musun? Bir yardım lazım olabilir."],arsiv:["Merhaba! Bu ay kataloğa yeni parçalar girdi.","Sikkelerin üstündeki her figürün bir hikâyesi var.","En sevdiğin tarih dönemi hangisi?"],dag:["Selam! Yeni bir manzara üstünde çalışıyorum.","Bu sefer sadece dört renk kullanacağım, bakalım.","Hangi renk paleti seni sakinleştiriyor?"]};
 async function sendToBot(uid,payload){const b=BOT[uid];const k=b.key;const path=`data/users/${S.uid}/bot-${k}`;if(S.guest&&!b.ai)return guard();
@@ -1401,7 +1569,7 @@ async function sendToBot(uid,payload){const b=BOT[uid];const k=b.key;const path=
  msgs=[...(S.botchats[k]?.msgs||msgs),{from:uid,text:reply,at:now()}];const onScreen=S.route.name==="chat"&&S.route.params.key==="u:"+uid;S.botchats={...S.botchats,[k]:{msgs,readAt:onScreen?now():0}};
  if(!S.guest)DB.set(path,{msgs:msgs.slice(-80),readAt:onScreen?now():0}).catch(()=>{});
  if(onScreen)renderMsgs();else if(settings.notify)toast(`${b.name}: ${reply.slice(0,70)}`,uid);scheduleRefresh()}
-function fallbackRota(q){for(const[re,a]of FAQ)if(re.test(q))return a;return"Şu an yapay zekâ bağlantım yok, hazır yanıtlarla çalışıyorum. Şunları sorabilirsin: nasıl kullanırım, arkadaşlarımla nasıl konuşurum, fotoğraf yüklenmiyor, reels, hikâye, tema, şifre. Ya da “Test bildirimleri oluştur” de."}
+function fallbackRota(q){for(const[re,a]of FAQ)if(re.test(q))return a;return"Şu an yapay zekâ bağlantım yok, hazır yanıtlarla çalışıyorum. Şunları sorabilirsin: nasıl kullanırım, arkadaşlarımla nasıl konuşurum, fotoğraf yüklenmiyor, çekim, sesli mesaj, arama, hikâye, tema, şifre. Ya da “Test bildirimleri oluştur” de."}
 async function botReply(b,msgs){const sample=S.caps.sample;if(!sample)return null;const meName=me().name||"kullanıcı";
  const transcript=msgs.slice(-14).map(m=>`${m.from===S.uid?meName:b.name}: ${m.text||(m.post?"[bir paylaşım gönderdi: "+(postById(m.post)?.caption||postById(m.post)?.text||"")+"]":"")}`).join("\n");
  const prompt=b.ai?`${ROTA_SYS}\n\nKonuşma:\n${transcript}\n\nRota olarak son mesaja yanıt ver. Sadece yanıt metnini yaz.`:`Kadraj adlı sosyal uygulamada test amaçlı bir bot hesabısın. Karakterin: ${b.persona} Kullanıcı adın @${b.username}. Türkçe, doğal ve samimi bir mesaj yanıtı yaz: 1-2 kısa cümle, emoji yok, karakterden çıkma.\n\nKonuşma:\n${transcript}\n\n${b.name} olarak yanıtın:`;
@@ -1443,7 +1611,7 @@ function showSetup(msg){const cur=LS.get("kadraj_fb_cfg");authShell(`<div>${bran
 const authErr=e=>{const c=(e&&e.code)||"";const map={"auth/email-already-in-use":"Bu e-postayla zaten hesap var. Giriş yapmayı dene.","auth/invalid-email":"E-posta adresi geçerli görünmüyor.","auth/missing-email":"E-posta adresini yaz.","auth/weak-password":"Şifre en az 6 karakter olmalı.","auth/missing-password":"Şifreni yaz.","auth/invalid-credential":"E-posta ya da şifre yanlış.","auth/invalid-login-credentials":"E-posta ya da şifre yanlış.","auth/wrong-password":"Şifre yanlış.","auth/user-not-found":"Bu e-postayla hesap yok. Önce hesap oluştur.","auth/too-many-requests":"Çok fazla deneme yapıldı. Birkaç dakika sonra tekrar dene.","auth/network-request-failed":"İnternet bağlantısı yok gibi görünüyor.","auth/operation-not-allowed":"Firebase'de E-posta/Şifre girişi açık değil. Kurulumun 2. adımını yap.","auth/configuration-not-found":"Firebase'de Authentication açılmamış. Kurulumun 2. adımını yap.","auth/requires-recent-login":"Güvenlik için çıkış yapıp tekrar gir, sonra yeniden dene.","permission-denied":"Veritabanı kuralları izin vermiyor. Kurulumun 4. adımındaki kuralları yapıştırıp Yayınla'ya bas."};
  if(map[c])return map[c];if(/api-key/i.test(c))return"Firebase kodu hatalı görünüyor. Ayarlar > Firebase bağlantısını değiştir'den kodu yeniden yapıştır.";return"Bir sorun oldu: "+((e&&e.message)||c)};
 async function setPersist(on){const{A,auth}=FB;try{await A.setPersistence(auth,on?A.browserLocalPersistence:A.browserSessionPersistence)}catch{}LS.set("kadraj_fb_remember",!!on)}
-function fbWelcome(){authShell(`${mosaic}<div>${brandLine}<h2>Arkadaşlarınla anı paylaş, sohbet et.</h2><p class="lead">Fotoğraf, reels, not, anket ve canlı sohbet tek yerde. Rota adındaki rehber de yanında.</p></div>${modeChip()}<div style="display:grid;gap:10px"><button class="btn block" id="wReg">Hesap oluştur</button><button class="btn line block" id="wLog">Giriş yap</button></div>`);$("#wReg").onclick=fbRegister;$("#wLog").onclick=()=>fbLogin()}
+function fbWelcome(){authShell(`${mosaic}<div>${brandLine}<h2>Arkadaşlarınla anı paylaş, sohbet et.</h2><p class="lead">Fotoğraf, çekim, not, anket ve canlı sohbet tek yerde. Rota adındaki rehber de yanında.</p></div>${modeChip()}<div style="display:grid;gap:10px"><button class="btn block" id="wReg">Hesap oluştur</button><button class="btn line block" id="wLog">Giriş yap</button></div>`);$("#wReg").onclick=fbRegister;$("#wLog").onclick=()=>fbLogin()}
 function fbRegister(){let avData=null;
  authShell(`<div>${brandLine}<h2>Hesap oluştur</h2><p class="lead">E-postan sadece giriş ve şifre sıfırlama için kullanılır, başkaları göremez.</p></div>${modeChip()}
  <form id="regF" novalidate><div class="avpick"><span class="av" style="--s:64px"><img id="rAv" src="${initialsAv("Yeni","x")}" alt=""></span><button type="button" class="btn sec sm" id="rAvBtn">${I("image")}Profil fotoğrafı</button></div>
@@ -1481,7 +1649,7 @@ function fbLogin(prefill){authShell(`<div>${brandLine}<h2>Giriş yap</h2></div>$
   try{await setPersist($("#lRem").checked);await FB.A.signInWithEmailAndPassword(FB.auth,$("#lMail").value.trim(),$("#lPw").value)}catch(ex){err.textContent=authErr(ex);btn.disabled=false;btn.textContent="Giriş yap"}}}
 let sharedOn=false;
 async function startSession(fresh){if(!sharedOn){subscribeShared();sharedOn=true}const room=S.caps.room;if(room&&room.listen&&!S.roomListen)S.roomListen=room.listen();await enterApp(fresh)}
-function endSession(){teardownUser();closeAll();if(S.roomListen){S.roomListen();S.roomListen=null}unsubAll();sharedOn=false;S.authed=false;S.profiles={};S.posts={};S.meta={};S.stories={};S.meydan=null}
+function endSession(){if(CALL)endCall(true);teardownUser();closeAll();if(S.roomListen){S.roomListen();S.roomListen=null}unsubAll();sharedOn=false;S.authed=false;S.profiles={};S.posts={};S.meta={};S.stories={};S.meydan=null}
 function fbLogout(){dialog("Çıkış yapılsın mı?",`@${esc(me().username)} hesabından çıkacaksın.`,[{label:"Çıkış yap",cls:"danger",fn:async()=>{try{await S.caps.room?.leave()}catch{}endSession();await FB.A.signOut(FB.auth)}},{label:"Vazgeç"}])}
 function fbChangePw(){const l=sheet("pw","Şifreyi değiştir",`<form class="form" id="cpF2"><div class="field"><label for="cp0">Mevcut şifre</label><input class="in" id="cp0" type="password" autocomplete="current-password"></div><div class="field"><label for="cp1">Yeni şifre</label><input class="in" id="cp1" type="password" autocomplete="new-password"></div><div class="err" id="cpE"></div><button class="btn block">Güncelle</button></form>`);
  $("#cpF2",l).onsubmit=async e=>{e.preventDefault();const er=$("#cpE",l);const pw=$("#cp1",l).value;if(pw.length<6)return er.textContent="Yeni şifre en az 6 karakter olmalı.";try{const{A,auth}=FB;const u=auth.currentUser;await A.reauthenticateWithCredential(u,A.EmailAuthProvider.credential(u.email,$("#cp0",l).value));await A.updatePassword(u,pw);closeLayer("pw");toast("Şifren değişti")}catch(ex){er.textContent=authErr(ex)}}}
