@@ -2,6 +2,7 @@
 <html lang="tr">
 <head>
 <meta charset="utf-8">
+<meta name="kadraj-version" content="40">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0C7A63">
 <link rel="manifest" href="manifest.webmanifest">
@@ -715,6 +716,24 @@ main.enter .nb{animation:nbin .45s cubic-bezier(.2,1.4,.4,1) both}
 .clike.pop{animation:pop .3s ease}
 .reel .rhint{position:absolute;left:50%;top:58%;transform:translateX(-50%);z-index:4;display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:999px;background:rgba(0,0,0,.6);color:#fff;font-weight:700;font-size:.88rem}
 .reel .rhint[hidden]{display:none}.reel .rhint svg.i{width:1.2rem;height:1.2rem}
+/* ===== 4.0 eklentileri: her ajan yalnızca kendi işaretleri arasına yazar ===== */
+/*@css:A{*/
+/*}@css:A*/
+
+/*@css:B{*/
+/*}@css:B*/
+
+/*@css:C{*/
+/*}@css:C*/
+
+/*@css:D1{*/
+/*}@css:D1*/
+
+/*@css:D2{*/
+/*}@css:D2*/
+
+/*@css:E{*/
+/*}@css:E*/
 </style>
 </head>
 <body>
@@ -746,7 +765,15 @@ const SS={get(k){try{return sessionStorage.getItem(k)}catch{return null}},set(k,
 function hash32(str,seed){let h=seed>>>0;for(let i=0;i<str.length;i++){h^=str.charCodeAt(i);h=Math.imul(h,16777619)}return(h>>>0).toString(16).padStart(8,"0")}
 async function sha(s){try{const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(s));return[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("")}catch{return hash32(s,2166136261)+hash32(s,99991)+hash32(s,7)}}
 function richText(t){return esc(t).replace(/(#[\wçğıöşüÇĞİÖŞÜ]+)/g,'<span class="ht">$1</span>').replace(/(^|\s)@([a-z0-9._]+)/gi,'$1<button class="ht" data-mention="$2">@$2</button>')}
-const vib=ms=>{try{navigator.vibrate&&navigator.vibrate(ms)}catch{}};
+const vib=ms=>{try{if(settings.haptics===false)return;navigator.vibrate&&navigator.vibrate(ms)}catch{}};
+/* ============ 4.0 kancalar ============ */
+/* Sürüm: APP_V tamsayı (4.0 → 40). Başlıktaki <meta name="kadraj-version"> ile aynı tutulmalı. */
+const APP_V=40,APP_VER="4.0";
+/* data-act="x" olan düğmeler için ek eylemler: ACT.x=(t,d,e)=>{...} (tıklama dağıtıcısının sonunda çağrılır) */
+const ACT={};
+/* Kancalar: after(routeName) her render sonrası · enter(fresh) uygulamaya girince · profiles(map) profiller gelince · boot() açılışta */
+const HOOKS={after:[],enter:[],profiles:[],boot:[]};
+function runHooks(k,...a){for(const f of HOOKS[k]||[])try{f(...a)}catch(e){console.warn("hook",k,e)}}
 
 /* ============ İkonlar ============ */
 const IP={
@@ -960,7 +987,7 @@ function canSee(p){const owner=S.profiles[p.uid];if(!owner||!owner.private||p.ui
 function storiesOf(uid){const lim=now()-24*H;return[...BOT_STORIES,...Object.values(S.stories)].filter(s=>s.uid===uid&&s.at>lim).sort((a,b)=>a.at-b.at)}
 const seenStories=()=>LS.get("kadraj_seen",{})||{};
 function storyRing(uid){const st=storiesOf(uid);if(!st.length)return"";const seen=seenStories();return st.every(s=>seen[s.id])?"ring seen":"ring"}
-function avatar(uid,size=44,opts={}){const p=P(uid);const ring=opts.ring===false?"":storyRing(uid);const on=opts.online!==false&&S.online.has(uid)?'<i class="on"></i>':"";
+function avatar(uid,size=44,opts={}){const p=P(uid);const ring=opts.ring===false?"":storyRing(uid);const on=opts.online!==false&&isActive(uid)?'<i class="on"></i>':"";
  const inner=`<img src="${esc(p.avatar)}" alt="" loading="lazy">${on}`;
  return ring&&opts.click!==false?`<button class="av ${ring}" style="--s:${size}px" data-story="${esc(uid)}" aria-label="${esc(p.username)} hikâyesi">${inner}</button>`:`<span class="av ${ring}" style="--s:${size}px">${inner}</span>`}
 const badge=uid=>BOT[uid]?(BOT[uid].ai?'<span class="tag">'+I("spark")+'AI</span>':'<span class="tag">bot</span>'):isVerified(uid)?'<span class="vbadge" title="Onaylı hesap" aria-label="Onaylı hesap"><svg viewBox="0 0 24 24"><path d="M12 2l2.4 1.8 3-.2.9 2.9 2.5 1.7-1 2.8 1 2.8-2.5 1.7-.9 2.9-3-.2L12 22l-2.4-1.8-3 .2-.9-2.9-2.5-1.7 1-2.8-1-2.8 2.5-1.7.9-2.9 3 .2z"/><path d="m8 12.3 2.6 2.5L16 9.5" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>':"";
@@ -998,6 +1025,11 @@ function chatList(){const out=[];const hid=(S.hidden&&S.hidden.chats)||{};const 
  for(const[k,c]of Object.entries(S.botchats)){const b=BOTS.find(x=>x.key===k);if(!b||!c.msgs?.length)continue;const l=c.msgs[c.msgs.length-1];out.push({key:"u:"+b.uid,other:b.uid,last:{text:l.text,from:l.from,at:l.at},at:l.at,unread:l.from!==S.uid&&l.at>(c.readAt||0)})}
  return out.sort((a,b)=>b.at-a.at)}
 const groupAv=(c,id)=>(c&&c.photo)||initialsAv((c&&c.name)||"Grup",id);
+/* aktiflik (4.0): ayarlarda "Aktiflik durumu" kapalıysa (settings.showActive===false) kimsenin durumu gösterilmez */
+const lastSeenAt=uid=>(S.lastSeen||{})[uid]||0;
+const isActive=uid=>settings.showActive!==false&&!!uid&&!BOT[uid]&&S.online.has(uid);
+function activeLabel(uid){if(settings.showActive===false||!uid||BOT[uid])return"";if(S.online.has(uid))return"Şu an aktif";const t=lastSeenAt(uid);if(!t)return"";const m=(now()-t)/60e3;if(m<1)return"Az önce aktifti";if(m<60)return`${Math.round(m)} dk önce aktifti`;if(m<1440)return`${Math.round(m/60)} sa önce aktifti`;if(m<10080)return`${Math.round(m/1440)} gün önce aktifti`;return""}
+const activeUsers=()=>humans().filter(isActive);
 function seenText(uid){if(S.online.has(uid))return"Çevrimiçi";const t=(S.lastSeen||{})[uid];if(!t)return"Çevrimdışı";const a=ago(t);return"Son görülme "+(a==="şimdi"?"az önce":a+" önce")}
 const msgPreview=m=>m?(m.text||(m.post?"Bir paylaşım gönderdi":m.img?"Fotoğraf":m.audio?"Sesli mesaj":m.call?"Arama":m.game?"Satranç daveti":"")):"";
 const noteOf=u=>{const n=S.profiles[u]&&S.profiles[u].note;return n&&n.text&&n.at>now()-24*H?n.text:""};
@@ -1267,7 +1299,7 @@ function vSettings(){const p=me();const sw=(id,on,label,sub)=>`<label class="sro
  <div class="set"><h3>Bildirim ve oynatma</h3>${sw("setNotify",settings.notify,"Uygulama içi bildirimler","Mesaj, beğeni ve dürtmelerde üstte uyarı")}${sw("setAutoplay",settings.autoplay,"Sahneleri otomatik oynat","Kapatırsan dokununca başlar")}</div>
  <div class="set"><h3>Oturum</h3>${sw("setRemember",remembered,"Beni hatırla","Açıkken bu cihazda şifre sorulmaz")}<button class="srow" data-act="logout">${I("logout")}<span class="t">Çıkış yap<small>@${esc(p.username)}</small></span></button></div>
  ${S.admin?`<div class="set"><h3>Yönetici</h3><button class="srow" data-go="admin">${I("key")}<span class="t">Yönetici paneli<small>Kullanıcılar, botlar, duyuru, temizlik</small></span></button></div>`:""}<div class="set"><h3>Uygulama</h3><button class="srow" data-act="install">${I("home")}<span class="t">${isStandalone()?"Ana ekranda açık":"Ana ekrana ekle"}<small>${isStandalone()?"Kadraj uygulama olarak çalışıyor":"Telefonunda simgesiyle dursun, tam ekran açılsın"}</small></span></button></div><div class="set"><h3>Yardım</h3><button class="srow" data-act="invite">${I("users")}<span class="t">Arkadaşlarını davet et<small>Birlikte kullanmanın yolu</small></span></button><button class="srow" data-msg="bot:rota">${I("spark")}<span class="t">Rota'ya sor<small>Yapay zekâ rehberi</small></span></button></div>
- <div class="set"><h3>Hakkında</h3><div class="kv"><span>Sürüm</span><span class="mono">Kadraj 3.9 · Firebase</span></div><div class="kv"><span>Veri</span><span>${S.mode==="cloud"?"Firebase · arkadaşlarınla canlı":"Demo · yalnızca bu cihaz"}</span></div><div class="kv"><span>Şu an açık</span><span>${S.online.size+1} kişi</span></div><div class="kv"><span>Rota</span><span>${S.caps.sample?"Yapay zekâ bağlı":"Hazır yanıtlar"}</span></div></div>
+ <div class="set"><h3>Hakkında</h3><div class="kv"><span>Sürüm</span><span class="mono">Kadraj ${APP_VER} · Firebase</span></div><div class="kv"><span>Veri</span><span>${S.mode==="cloud"?"Firebase · arkadaşlarınla canlı":"Demo · yalnızca bu cihaz"}</span></div><div class="kv"><span>Şu an açık</span><span>${S.online.size+1} kişi</span></div><div class="kv"><span>Rota</span><span>${S.caps.sample?"Yapay zekâ bağlı":"Hazır yanıtlar"}</span></div></div>
  <div class="set"><button class="srow" data-act="resetcfg">${I("link")}<span class="t">${S.mode==="cloud"?"Firebase bağlantısını değiştir":"Firebase'i kur"}<small>${S.mode==="cloud"?"Kurulum ekranına döner":"Arkadaşlarınla konuşmak için gerekli"}</small></span></button><button class="srow" data-act="delacct">${I("trash")}<span class="t" style="color:var(--heart)">Hesabı sil<small>Profil, paylaşımlar ve hikâyeler kalıcı olarak silinir</small></span></button></div>`}
 function vEdit(){const p=me();const d=S.editDraft||{};return`<form class="form" id="editForm"><div class="avpick" style="justify-content:center;flex-direction:column"><span class="av" style="--s:96px"><img id="editAv" src="${esc(d.av||p.avatar)}" alt=""></span><button type="button" class="btn sec sm" id="editAvBtn">${I("image")}Fotoğrafı değiştir</button></div>
  <div class="field"><label for="eName">Ad</label><input class="in" id="eName" value="${esc(d.name??p.name)}" maxlength="40" required></div>
@@ -1277,7 +1309,7 @@ function vEdit(){const p=me();const d=S.editDraft||{};return`<form class="form" 
 
 /* ============ Render sonrası ============ */
 let io=null,activeReel=null;
-function afterRender(){const r=S.route.name;if(r==="chessgame"&&CH){chDraw();chWire();if(CH.mode==="online")chOnlineOverlay();else if(CH.mode==="bot"&&!CH.over&&CH.g.turn!==CH.my&&!CH.thinking)setTimeout(chBot,450)}if(r==="chat"){S.forceBottom=true;startChat(S.route.params.key);renderMsgs();wireComposer()}else stopChat();
+function afterRender(){const r=S.route.name;runHooks("after",r);if(r==="chessgame"&&CH){chDraw();chWire();if(CH.mode==="online")chOnlineOverlay();else if(CH.mode==="bot"&&!CH.over&&CH.g.turn!==CH.my&&!CH.thinking)setTimeout(chBot,450)}if(r==="chat"){S.forceBottom=true;startChat(S.route.params.key);renderMsgs();wireComposer()}else stopChat();
  const bk=$("#admBk");if(bk)bk.onchange=async()=>{const on=bk.checked;let msg="";if(on){msg=prompt("Kullanıcılara gösterilecek mesaj (boş bırakabilirsin):","Kadraj birazdan geri dönecek.")??"";}if(await admSet("bakim",{on,msg})){admLog(on?"Bakım modu açıldı":"Bakım modu kapatıldı");toast(on?"Bakım modu açık":"Bakım modu kapandı");render(false)}else bk.checked=!on};
  const aq=$("#admQ");if(aq){aq.oninput=()=>{S.admQ=aq.value;clearTimeout(aq._t);aq._t=setTimeout(()=>{const pos=aq.selectionStart;render(false);const n=$("#admQ");if(n){n.focus();try{n.setSelectionRange(pos,pos)}catch{}}},300)}}
  const q=$("#q");if(q){q.oninput=()=>{S.q=q.value;clearTimeout(S._admT);if(q.value.length>=16){const v=q.value;S._admT=setTimeout(()=>admTry(v),450)}clearTimeout(q._t);q._t=setTimeout(()=>{const pos=q.selectionStart;render(false);const n=$("#q");if(!n)return;n.focus();try{n.setSelectionRange(pos,pos)}catch{}},250)}}
@@ -1362,6 +1394,7 @@ document.addEventListener("click",async e=>{const t=e.target.closest("button,[da
  if(a==="note")return openNote();
  if(a==="install")return installApp();
  if(a==="insthide"){LS.set("kadraj_inst_hide",1);return render(false)}
+ if(ACT[a])return ACT[a](t,d,e);
 });
 /* çift dokunuş: beğeni ve mesaja kalp */
 let lastTap={id:null,t:0};
@@ -1725,7 +1758,7 @@ function sysNote(title,body,tag){try{if(typeof Notification==="undefined"||Notif
  if(navigator.serviceWorker&&navigator.serviceWorker.ready){navigator.serviceWorker.ready.then(reg=>{reg.showNotification(title,{body:body||"",tag:tag||"kadraj",icon:"icon-192.png",badge:"icon-192.png",renotify:true}).catch(()=>{new Notification(title,{body,tag,icon:"icon-192.png"})})}).catch(()=>{try{new Notification(title,{body,tag,icon:"icon-192.png"})}catch{}})}
  else new Notification(title,{body,tag,icon:"icon-192.png"})}catch{}}
 function subscribeShared(){admSubscribe();
- DB.watchCol("profiles",docs=>{const m={};for(const d of docs)if(d.uid)m[d.uid]=d;const mine=S.profiles[S.uid];if(mine&&m[S.uid]&&S.editDraft&&S.editDraft.av&&m[S.uid].avatar!==S.editDraft.av)m[S.uid]={...m[S.uid],avatar:S.editDraft.av};if(mine&&!m[S.uid]&&S.authed)m[S.uid]=mine;S.profiles=m;scheduleRefresh()},{limit:500});
+ DB.watchCol("profiles",docs=>{const m={};for(const d of docs)if(d.uid)m[d.uid]=d;const mine=S.profiles[S.uid];if(mine&&m[S.uid]&&S.editDraft&&S.editDraft.av&&m[S.uid].avatar!==S.editDraft.av)m[S.uid]={...m[S.uid],avatar:S.editDraft.av};if(mine&&!m[S.uid]&&S.authed)m[S.uid]=mine;S.profiles=m;runHooks("profiles",m);scheduleRefresh()},{limit:500});
  DB.watchCol("posts",docs=>{const m={};for(const d of docs)m[d.id]=d;notifyNewPosts(m);S.posts=m;scheduleRefresh()},{orderBy:["at","desc"],limit:300});
  DB.watchCol("meta",docs=>{const m={};for(const d of docs)m[d.id]=d;notifyMeta(m);S.meta=m;scheduleRefresh()},{limit:600});
  DB.watchCol("stories",docs=>{const m={};const lim=now()-24*H;for(const d of docs)if(d.at>lim)m[d.id]=d;S.stories=m;scheduleRefresh()},{orderBy:["at","desc"],limit:120});
@@ -2642,7 +2675,7 @@ async function enterApp(fresh){S.authed=true;S.guest=false;S.bootAt=now();S.admi
  S.stack=[];S.route={name:"feed",params:{}};navInit();render(true);
  if(fresh)setTimeout(()=>toast(`Hoş geldin @${me().username}! Arkadaşlarını Sohbet > Davet et'ten çağırabilirsin.`,"bot:rota"),400);
  setTimeout(()=>{if(settings.notify&&notifPerm()==='default')askNotif(true)},2500);
- setTimeout(checkChildInvite,1500)}
+ setTimeout(checkChildInvite,1500);runHooks("enter",fresh)}
 function enterGuest(){S.authed=true;S.guest=true;S.canWrite=false;S.uid=S.uid||"guest";S.route={name:"feed",params:{}};render(true)}
 function withTimeout(p,ms){return Promise.race([p,new Promise(r=>setTimeout(()=>r(null),ms))])}
 function wireRoom(room){room.onPeers(({peers})=>{const on=new Set(),ty={};for(const p of peers){const pr=p.presence||{};if(!pr.uid||p.isMe)continue;on.add(pr.uid);if(pr.typing)ty[pr.uid]=pr.typing}S.online=on;S.typing=ty;scheduleRefresh()});
@@ -2663,6 +2696,26 @@ async function boot(){
 async function bootLocal(){DB=LocalDB;S.mode="local";subscribeShared();
  const sess=LS.get("kadraj_session")||SS.get("kadraj_sess");if(sess&&await LocalDB.get("profiles/"+sess)){S.uid=sess;S.profiles={...S.profiles,[sess]:await LocalDB.get("profiles/"+sess)};return enterApp()}
  showWelcome()}
+/* ===== 4.0 eklentileri: her ajan yalnızca kendi işaretleri arasına yazar ===== */
+/*@js:A{*/
+function showWhatsNew(force){}
+function checkVersion(manual){}
+/*}@js:A*/
+
+/*@js:B{*/
+/*}@js:B*/
+
+/*@js:C{*/
+/*}@js:C*/
+
+/*@js:D1{*/
+/*}@js:D1*/
+
+/*@js:D2{*/
+/*}@js:D2*/
+
+/*@js:E{*/
+/*}@js:E*/
 boot();
 
 </script>
