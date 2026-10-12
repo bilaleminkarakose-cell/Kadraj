@@ -1,4 +1,4 @@
-# Kadraj: kod haritası (sürüm 3.9)
+# Kadraj: kod haritası (sürüm 4.0; 3.9 haritası + 4.0 notları aşağıda)
 
 Bu dosya, `index.html` okunarak çıkarılmış ayrıntılı bir haritadır. Yeni bir oturumda önce bunu oku, sonra gerekli fonksiyonu `grep` ile bul (satır numaraları değişir, isimlerle ara).
 
@@ -127,3 +127,11 @@ Bu dosya, `index.html` okunarak çıkarılmış ayrıntılı bir haritadır. Yen
 - `chInvitePick` içindeki `S.mode!=="cloud"&&S.mode!=="local"` koşulu hiçbir zaman doğru olmaz (zararsız).
 - `boot()` içindeki `if(!cfg)` dalı `EMBED_CFG` olduğu için hiç çalışmaz; kurulum ekranı yalnızca bağlantı hatasında çıkar.
 - Tepki bildirimi yok (`notifyChats` yalnızca son mesajı izler).
+
+## 4.0'da eklenenler (kısa)
+- Sürüm: `APP_V=40`, `APP_VER="4.0"` ve `<head>`'deki `<meta name="kadraj-version" content="40">` birlikte artırılmalı (sürüm denetimi bu etiketi okur; `meta/_surum` belgesi en yüksek sürümü tutar; iki sürüm geride kalan istemci kapanır).
+- Kancalar: `ACT` (data-act eylemleri), `HOOKS.after/enter/profiles/boot` + `runHooks`. Aktiflik: `isActive`, `activeLabel`, `activeUsers`, `lastSeenAt`.
+- Blok A (`/*@js:A{*/`): `#intro` açılış animasyonu, karşılama ekranı (`welScreen`), sürüm denetimi (`verWatch`, `fetchRemoteVersion`, `hardReload`, `showVersionBlock`), `showWhatsNew` (`WN_ITEMS`).
+- Blok B: vurgu renkleri (`applyAccent`, `effAccent`), `themeSwitch`, tema eşitleme (`profiles.prefs`), yönetici ortak teması (`admin/tema`), ortak sohbet temaları (`chats/{cid}.theme`, `KB_THEMES`, yeni `applyWp`/`wallpaperMenu`), yeni `vSettings` (`data-set` anahtarları).
+- Ayar bayrakları: showActive, readReceipts, hideLikes, nMsg/nLike/nComment/nPost, enterSend, haptics, dataSaver, reduceMotion, themeSync, accent.
+- Yapılmadı (ileride): çoklu fotoğraf, hikâyeye tepki, öne çıkanlar, sohbet araması, iletme, 2 dk sahne, akış zenginleştirme, satranç bulmacası. Yarım iş dalları: `w40-C`/`w40-C2` (yerel), bulmaca listesi doğrulayıcısı oturum notlarında.
