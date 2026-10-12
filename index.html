@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
 <meta charset="utf-8">
-<meta name="kadraj-version" content="40">
+<meta name="kadraj-version" content="40100">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0C7A63">
 <link rel="manifest" href="manifest.webmanifest">
@@ -1068,8 +1068,13 @@ async function sha(s){try{const b=await crypto.subtle.digest("SHA-256",new TextE
 function richText(t){return esc(t).replace(/(#[\wçğıöşüÇĞİÖŞÜ]+)/g,'<span class="ht">$1</span>').replace(/(^|\s)@([a-z0-9._]+)/gi,'$1<button class="ht" data-mention="$2">@$2</button>')}
 const vib=ms=>{try{if(settings.haptics===false)return;navigator.vibrate&&navigator.vibrate(ms)}catch{}};
 /* ============ 4.0 kancalar ============ */
-/* Sürüm: APP_V tamsayı (4.0 → 40). Başlıktaki <meta name="kadraj-version"> ile aynı tutulmalı. */
-const APP_V=40,APP_VER="4.0";
+/* Sürüm: ana.ara.yama (4.1.0). Hata düzeltme ve küçük şeyler → yama artar (4.1.1); büyük güncelleme → ara artar (4.2.0).
+   APP_V = ana*10000 + ara*100 + yama (4.1.0 → 40100). Başlıktaki <meta name="kadraj-version"> ile aynı tutulmalı.
+   Eski biçim (4.0 → 40) verNorm ile çevrilir. "İki sürüm geride" ara sürüm sayısıyla ölçülür (yamalar engellemez). */
+const APP_V=40100,APP_VER="4.1.0";
+const verNorm=x=>{x=Math.max(0,Math.floor(+x||0));return x<1000?Math.floor(x/10)*10000+(x%10)*100:x};
+const verLvl=x=>Math.floor(verNorm(x)/100);
+const verGap=x=>verLvl(x)-verLvl(APP_V);
 /* data-act="x" olan düğmeler için ek eylemler: ACT.x=(t,d,e)=>{...} (tıklama dağıtıcısının sonunda çağrılır) */
 const ACT={};
 /* Kancalar: after(routeName) her render sonrası · enter(fresh) uygulamaya girince · profiles(map) profiller gelince · boot() açılışta */
@@ -3097,7 +3102,7 @@ function welWire(){const root=$(".auth.wel");if(!root)return;const art=$(".wel-a
 
 /* ---- A · Sürüm denetimi ---- */
 const VER={known:null,unsub:null,writes:0,chk:null,chkP:null,blocked:false,skip:false,lastEval:0};
-const verStr=v=>{v=Math.max(0,Math.floor(+v||0));return Math.floor(v/10)+"."+(v%10)};
+const verStr=v=>{v=verNorm(v);return Math.floor(v/10000)+"."+(Math.floor(v/100)%100)+"."+(v%100)};
 function verCleanUrl(){try{const q=new URLSearchParams(location.search);if(!q.has("v")&&!q.has("surum"))return;q.delete("v");q.delete("surum");const s=q.toString();history.replaceState(history.state,"",location.pathname+(s?"?"+s:"")+location.hash)}catch{}}
 /* Yayındaki index.html'in yalnızca başını okuyup <meta name="kadraj-version"> değerini döndürür; hata olursa null. */
 async function fetchRemoteVersion(){let rd=null,to=0;
@@ -3106,9 +3111,9 @@ async function fetchRemoteVersion(){let rd=null,to=0;
   if(!res||!(res.ok||res.status===206))return null;
   const re=/name=["']kadraj-version["']\s+content=["'](\d+)["']/;let txt="";
   if(res.body&&res.body.getReader&&typeof TextDecoder==="function"){rd=res.body.getReader();const dec=new TextDecoder();let n=0;
-   while(n<65536){const{done,value}=await rd.read();if(done)break;n+=value.length;txt+=dec.decode(value,{stream:true});const m=txt.match(re);if(m)return+m[1];if(/<\/head>/i.test(txt))break}}
+   while(n<65536){const{done,value}=await rd.read();if(done)break;n+=value.length;txt+=dec.decode(value,{stream:true});const m=txt.match(re);if(m)return verNorm(+m[1]);if(/<\/head>/i.test(txt))break}}
   else txt=(await res.text()).slice(0,65536);
-  const m=txt.match(re);return m?+m[1]:null}
+  const m=txt.match(re);return m?verNorm(+m[1]):null}
  catch(e){return null}
  finally{clearTimeout(to);if(rd)try{rd.cancel().catch(()=>{})}catch{}setTimeout(verTidyCache,4000)}}
 /* Sürüm sorguları ve ?v= ile açılan sayfalar önbellekte ayrı kayıt bırakmasın */
@@ -3124,8 +3129,8 @@ VER.nav=u=>location.replace(u);
 function verWatch(){if(VER.unsub){try{VER.unsub()}catch{}VER.unsub=null}
  if(S.mode!=="cloud"||!DB||!S.authed||S.guest||VER.blocked)return;
  try{VER.unsub=DB.watchDoc("meta/_surum",verOnDoc)}catch(e){console.warn("sürüm",e)}}
-function verOnDoc(d){const raw=d&&d.v;const v=typeof raw==="number"&&isFinite(raw)?Math.floor(raw):null;
- if(v!=null&&v>APP_V+20)return;
+function verOnDoc(d){const raw=d&&d.v;const v=typeof raw==="number"&&isFinite(raw)?verNorm(raw):null;
+ if(v!=null&&verGap(v)>20)return;
  if(v==null||v<APP_V){VER.known=APP_V;verBar(null);
   if(S.mode==="cloud"&&S.authed&&!S.guest&&S.uid&&VER.writes<3){VER.writes++;write(()=>DB.set("meta/_surum",{v:APP_V,ver:APP_VER,at:now(),by:S.uid}),{quiet:true})}return}
  VER.known=v;verEvaluate()}
@@ -3134,8 +3139,8 @@ async function verVerify(v){const c=VER.chk;if(c&&c.v===v&&now()-c.at<10*60e3)re
 /* Son bilinen sürüm değerine göre çubuk ya da engel ekranı */
 async function verEvaluate(v=VER.known){VER.lastEval=now();if(VER.blocked)return;
  if(v==null)return;if(v<=APP_V)return verBar(null);
- if(v>=APP_V+2){const r=await verVerify(v);if(VER.known!==v&&VER.known!=null&&VER.known<v)return;
-  if(r!=null&&r>=APP_V+2)return showVersionBlock(r);if(r==null)return verBar(v);return verBar(r>APP_V?r:null)}
+ if(verGap(v)>=2){const r=await verVerify(v);if(VER.known!==v&&VER.known!=null&&VER.known<v)return;
+  if(r!=null&&verGap(r)>=2)return showVersionBlock(r);if(r==null)return verBar(v);return verBar(r>APP_V?r:null)}
  verBar(v)}
 function verBar(v,force){let el=$("#verBar");
  if(v==null||v<=APP_V||VER.blocked){if(el)el.remove();return}
@@ -3152,7 +3157,7 @@ const VB_ART=`<svg viewBox="0 0 176 150" aria-hidden="true"><circle class="a1" c
  <rect class="a3" x="72" y="101" width="32" height="5" rx="2.5"/><rect class="a3" x="78" y="111" width="20" height="5" rx="2.5"/>
  <circle class="a6" cx="118" cy="110" r="22"/><svg x="104" y="96" width="28" height="28" viewBox="0 0 24 24"><g class="bob"><path class="a7" d="M12 18.5V6M6.5 11.5 12 6l5.5 5.5"/></g></svg></svg>`;
 function showVersionBlock(r){if(VER.skip)return;VER.blocked=true;verBar(null);if(VER.unsub){try{VER.unsub()}catch{}VER.unsub=null}
- const n=Math.max(2,Math.floor(r)-APP_V);const behind=n===2?"iki":n===3?"üç":"birkaç";
+ const n=Math.max(2,verGap(r));const behind=n===2?"iki":n===3?"üç":"birkaç";
  let el=$("#verBlock");if(!el){el=document.createElement("div");el.id="verBlock";el.setAttribute("role","alertdialog");el.setAttribute("aria-modal","true");el.setAttribute("aria-labelledby","vbT");document.body.appendChild(el)}
  el.innerHTML=`<div class="vb-card"><div class="vb-art">${VB_ART}</div><h2 id="vbT">Bu sürüm artık kullanılmıyor</h2><p>Kadraj ${verStr(r)} yayında. Kullandığın ${esc(APP_VER)} sürümü ${behind} sürüm geride kaldığı için kapatıldı. Devam etmek için güncelle.</p>
  <div class="vb-vers" aria-hidden="true"><span class="old">${esc(APP_VER)}</span>${I("next")}<span class="new">${verStr(r)}</span></div>
@@ -3167,7 +3172,7 @@ async function checkVersion(manual){
  if(!manual)return verEvaluate();
  const r=await fetchRemoteVersion();
  if(r==null){toast("Sürüm denetlenemedi. İnternet bağlantını kontrol et.");return null}
- if(r>=APP_V+2){VER.skip=false;showVersionBlock(r);return r}
+ if(verGap(r)>=2){VER.skip=false;showVersionBlock(r);return r}
  if(r>APP_V){VER.known=Math.max(VER.known||0,r);SS.del("kadraj_verbar_off");verBar(r,true);toast(`Kadraj ${verStr(r)} hazır. Yenile'ye dokun.`);return r}
  toast(`Kadraj güncel (${APP_VER})`);return r}
 HOOKS.enter.push(()=>verWatch());
@@ -3176,6 +3181,8 @@ setTimeout(verTidyCache,9000);
 
 /* ---- A · Neler yeni ---- */
 const WN_ITEMS=[
+ {ic:"reels",g:"linear-gradient(135deg,#f97316,#db2777)",t:"Sahneler 2 dakikaya kadar",d:"Galeriden 2 dakikalık video, kamerayla 60 saniye çekim",go:"reels"},
+ {ic:"grid",g:"linear-gradient(135deg,#0ea5e9,#6366f1)",t:"Tablette tam ekran",d:"Tablet ve bilgisayarda yanlarda boşluk kalmıyor",go:"feed"},
  {ic:"spark",g:"linear-gradient(135deg,#0c7a63,#18b38e)",t:"Yeni açılış ve görünüm",d:"Animasyonlu giriş, 7 vurgu rengi, yumuşak tema geçişi",go:"settings"},
  {ic:"k4pal",g:"linear-gradient(135deg,#7c3aed,#ec4899)",t:"Ortak sohbet temaları",d:"Seçtiğin tema sohbetteki herkes için aynı anda değişir",go:"chats"},
  {ic:"devices",g:"linear-gradient(135deg,#14a06b,#0e7490)",t:"Tema her yerde aynı",d:"Temanı tüm cihazlarında eşitle; yönetici herkese ortak tema seçebilir",go:"settings"},
@@ -3183,18 +3190,18 @@ const WN_ITEMS=[
  {ic:"lock",g:"linear-gradient(135deg,#4338ca,#0ea5e9)",t:"Gizlilik senin elinde",d:"Aktiflik durumunu, okundu bilgisini ve beğeni sayılarını gizle",go:"settings"},
  {ic:"rotate",g:"linear-gradient(135deg,#b45309,#f5b921)",t:"Hep güncel",d:"Yeni sürüm çıkınca haber verir, tek dokunuşla güncellersin",go:"settings"}];
 const WN_MARK=`<svg class="wn-mark" viewBox="0 0 24 24" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path pathLength="1" d="M2.5 8V5a2.5 2.5 0 0 1 2.5-2.5h3"/><path pathLength="1" d="M16 2.5h3A2.5 2.5 0 0 1 21.5 5v3"/><path pathLength="1" d="M21.5 16v3a2.5 2.5 0 0 1-2.5 2.5h-3"/><path pathLength="1" d="M8 21.5H5A2.5 2.5 0 0 1 2.5 19v-3"/><circle cx="12" cy="12" r="3.4"/></svg>`;
-function showWhatsNew(force){if($('#overlay [data-layer="whatsnew"]'))return;if(!force&&+(LS.get("kadraj_seen_ver",0)||0)>=APP_V)return;
+function showWhatsNew(force){if($('#overlay [data-layer="whatsnew"]'))return;if(!force&&verLvl(LS.get("kadraj_seen_ver",0)||0)>=verLvl(APP_V))return;
  const items=WN_ITEMS.map((x,i)=>`<button type="button" class="wn-item" data-act="wnGo" data-r="${x.go}" style="--i:${i};--g:${x.g}"><span class="wn-ic">${I(x.ic)}</span><span class="wn-t"><b>${esc(x.t)}</b><span>${esc(x.d)}</span></span>${I("next")}</button>`).join("");
  openLayer("whatsnew",`<div class="full wn" role="dialog" aria-modal="true" aria-label="Kadraj ${esc(APP_VER)} ile gelenler"><button class="ib plain wn-x" data-act="close" aria-label="Kapat">${I("close")}</button>
- <div class="body"><div class="wn-hero"><i class="wn-blob b1"></i><i class="wn-blob b2"></i><i class="wn-blob b3"></i>${WN_MARK}<div class="wn-badge">Yeni sürüm</div><h2 class="wn-title">Kadraj ${esc(APP_VER)}</h2><p class="wn-sub">Bugüne kadarki en büyük güncelleme. İşte seni bekleyenler:</p></div>
+ <div class="body"><div class="wn-hero"><i class="wn-blob b1"></i><i class="wn-blob b2"></i><i class="wn-blob b3"></i>${WN_MARK}<div class="wn-badge">Yeni sürüm</div><h2 class="wn-title">Kadraj ${esc(APP_VER)}</h2><p class="wn-sub">Son güncellemelerle gelenler:</p></div>
  <div class="wn-list">${items}</div></div>
  <div class="wn-foot"><button type="button" class="btn block" data-act="wnOk">Hadi başlayalım${I("next")}</button></div></div>`,{noScrim:true,onClose:()=>LS.set("kadraj_seen_ver",APP_V)})}
 ACT.wnOk=()=>{vib(12);closeLayer("whatsnew")};
 ACT.wnGo=(t,d)=>{closeLayer("whatsnew");const r=d.r;if(!S.authed)return;if(r==="profile"&&S.guest)return go("invite");if(["feed","explore","reels","chats","profile"].includes(r))return tab(r);go(r)};
 /* Otomatik test tarayıcılarında (navigator.webdriver) kendiliğinden açılmaz; testte window.KADRAJ_TEST_WN=true ile açılır. */
-function wnAuto(fresh){if(+(LS.get("kadraj_seen_ver",0)||0)>=APP_V)return;if(fresh){LS.set("kadraj_seen_ver",APP_V);return}if(navigator.webdriver&&!window.KADRAJ_TEST_WN)return;
+function wnAuto(fresh){if(verLvl(LS.get("kadraj_seen_ver",0)||0)>=verLvl(APP_V))return;if(fresh){LS.set("kadraj_seen_ver",APP_V);return}if(navigator.webdriver&&!window.KADRAJ_TEST_WN)return;
  const uid=S.uid,t0=now();
- introGone().then(()=>{const tryShow=n=>{if(!S.authed||S.guest||S.uid!==uid||VER.blocked)return;if(+(LS.get("kadraj_seen_ver",0)||0)>=APP_V)return;
+ introGone().then(()=>{const tryShow=n=>{if(!S.authed||S.guest||S.uid!==uid||VER.blocked)return;if(verLvl(LS.get("kadraj_seen_ver",0)||0)>=verLvl(APP_V))return;
   if($("#overlay .layer")){if(n<8)setTimeout(()=>tryShow(n+1),1500);return}showWhatsNew(false)};
   setTimeout(()=>tryShow(0),Math.max(450,1200-(now()-t0)))})}
 HOOKS.enter.push(fresh=>wnAuto(fresh));
