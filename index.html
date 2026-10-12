@@ -879,6 +879,127 @@ html.reduce-motion .wn *,html.reduce-motion .wn{animation:none!important}
 /*}@css:A*/
 
 /*@css:B{*/
+/* ---- B · Temalar ve Ayarlar (4.0) ---- */
+/* yumuşak tema geçişi: View Transitions (daire ya da çapraz geçiş), yoksa kısa renk geçişi */
+html.vt-fade::view-transition-old(root),html.vt-fade::view-transition-new(root){animation-duration:.38s;animation-timing-function:ease}
+html.vt-circle::view-transition-old(root),html.vt-circle::view-transition-new(root){animation:none;mix-blend-mode:normal}
+html.vt-circle::view-transition-old(root){z-index:1}
+html.vt-circle::view-transition-new(root){z-index:2}
+html.theme-fade body,html.theme-fade body *,html.theme-fade body *::before,html.theme-fade body *::after{transition:background-color .32s ease,color .32s ease,border-color .32s ease,fill .32s ease,stroke .32s ease,box-shadow .32s ease!important}
+html.th-anim #top [data-act="theme"] svg.i{animation:thspin .6s cubic-bezier(.2,1.3,.4,1)}
+@keyframes thspin{from{transform:rotate(-140deg) scale(.3);opacity:0}}
+/* Ayarlar > Animasyonları azalt */
+html.reduce-motion *,html.reduce-motion *::before,html.reduce-motion *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+/* vurgu rengine uyan gölgeler ve degradeler */
+.dock .create{box-shadow:0 10px 22px rgba(12,122,99,.35);box-shadow:0 10px 22px color-mix(in srgb,var(--accent) 38%,transparent)}
+html[data-accent]:not([data-accent="kadraj"]) .square{background:linear-gradient(135deg,var(--accent),color-mix(in srgb,var(--accent) 48%,#0b1020))}
+html[data-mode="dark"][data-accent]:not([data-accent="kadraj"]) .square{background:linear-gradient(135deg,color-mix(in srgb,var(--accent) 58%,#000),color-mix(in srgb,var(--accent) 32%,#0b1020))}
+html[data-accent="grafit"] .square{background:linear-gradient(135deg,#3b4352,#0d1118)}
+html[data-accent]:not([data-accent="kadraj"]) .square.chesscard,html[data-accent]:not([data-accent="kadraj"]) .adm-hero{background:linear-gradient(135deg,#1f2937,color-mix(in srgb,var(--accent) 70%,#000))}
+.gm-av i{color:var(--accent-ink)}
+html[data-accent]:not([data-accent="kadraj"]) .cmk .sel{background:rgba(63,211,171,.55);background:color-mix(in srgb,var(--accent) 52%,transparent)}
+html[data-accent]:not([data-accent="kadraj"]) .call{background:radial-gradient(120% 80% at 50% 0%,color-mix(in srgb,var(--accent) 42%,#06100d),#06100d 70%)}
+
+/* Ayarlar */
+.setq{position:sticky;top:0;z-index:4;background:var(--bg);padding:2px 16px 10px}
+.setq .in{min-height:2.8rem;border-radius:14px}
+.setprof{display:flex;align-items:center;gap:14px;width:calc(100% - 24px);margin:2px 12px 4px;padding:14px;border-radius:var(--r);background:var(--surface);border:1px solid var(--line);text-align:left}
+.setprof .t{flex:1;min-width:0;display:grid;line-height:1.25}
+.setprof b{font:600 1.05rem/1.3 var(--f-display);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.setprof small{color:var(--muted);font-size:.85rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.setprof em{font-style:normal;color:var(--accent);font-weight:700;font-size:.82rem;margin-top:4px}
+.setprof .chev,.sxs .chev{width:1.15rem;height:1.15rem;color:var(--muted);flex:none;stroke-width:2.2}
+.setprof:active{transform:scale(.98)}
+.setprof{transition:transform .15s cubic-bezier(.2,.8,.2,1)}
+.sxh{margin:18px 28px 7px;font:600 .66rem/1 var(--f-mono);text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
+.sxs .set{margin:0 12px 4px}
+.sxs .srow{position:relative;gap:12px;padding:10px 14px;min-height:3.4rem;margin-bottom:-1px}
+.sxs .srow+.srow{border-top:0}
+.sxs .srow::after{content:"";position:absolute;left:56px;right:0;bottom:0;height:1px;background:var(--line);pointer-events:none}
+.sxs .srow>svg.i{color:var(--muted)}
+.sxs .srow .t{font-weight:600;font-size:.97rem;line-height:1.3}
+.sxs .srow .t small{font-size:.79rem;line-height:1.32;margin-top:2px}
+.sxs .srow .val{color:var(--muted);font-size:.86rem;text-align:right;max-width:48%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:none}
+.sxs .srow.red .t{color:var(--heart)}
+.sxs .srow .btn.sm{flex:none;min-height:2.1rem;padding:0 .85rem}
+.sic{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;flex:none;background:var(--c,var(--accent));color:#fff;box-shadow:inset 0 0 0 .5px rgba(0,0,0,.1)}
+.sic svg.i{width:18px;height:18px;stroke-width:2.1}
+.sxs .sblk{flex-direction:column;align-items:stretch;gap:12px;padding-bottom:14px}
+.sblk .sbh{display:flex;align-items:center;gap:12px}
+.sblk .sbh .t{flex:1;min-width:0}
+.sxs .sblk .seg{margin:0}
+.sxs .sblk .cthemes{padding:0;gap:6px}
+.ngrp.off .srow:not(.nmaster){opacity:.42}
+.sw input:disabled{cursor:default}
+.accnote{font-size:.79rem;color:var(--muted);margin:-2px 0 0;line-height:1.35}
+.thc{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.thc button{display:grid;justify-items:center;gap:7px;font-weight:700;font-size:.84rem;color:var(--muted);padding:0;min-width:0}
+.thc button[aria-pressed="true"]{color:var(--fg)}
+.mk{position:relative;display:block;width:100%;aspect-ratio:4/5;border-radius:16px;overflow:hidden;border:1.5px solid var(--line);transition:box-shadow .2s,border-color .2s,transform .15s}
+.thc button:active .mk{transform:scale(.96)}
+.thc button[aria-pressed="true"] .mk{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 24%,transparent)}
+.mk>span{position:absolute;inset:0;padding:13% 11%;display:flex;flex-direction:column;gap:9%}
+.mkl{background:var(--lb)}.mkd{background:var(--db)}
+.mk.light .mkd,.mk.dark .mkl{display:none}
+.mk.system .mkd{clip-path:polygon(100% 0,100% 100%,0 100%)}
+.mk i{display:block;height:12%;border-radius:6px;width:78%}
+.mk i+i{width:56%}
+.mkl i{background:#fff;box-shadow:0 0 0 1px var(--ll)}
+.mkd i{background:var(--ds)}
+.mk b{position:absolute;right:11%;bottom:12%;width:48%;height:15%;border-radius:8px 8px 3px 8px}
+.mkl b{background:var(--la)}.mkd b{background:var(--da)}
+.thc .rd{width:18px;height:18px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;transition:.2s}
+.thc button[aria-pressed="true"] .rd{border-color:var(--accent);background:var(--accent)}
+.thc button[aria-pressed="true"] .rd::after{content:"";width:6px;height:6px;border-radius:50%;background:var(--accent-ink)}
+.accg{display:grid;grid-template-columns:repeat(4,1fr);gap:14px 6px}
+.accg button{display:grid;justify-items:center;gap:6px;font-size:.72rem;font-weight:600;color:var(--muted);min-width:0;padding:0}
+.accg button>span:last-child{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.accg .dot{width:2.5rem;height:2.5rem;border-radius:50%;background:var(--sw);display:grid;place-items:center;color:var(--si,#fff);transition:transform .2s cubic-bezier(.2,1.4,.4,1),box-shadow .2s}
+.accg .dot svg.i{width:1.15rem;height:1.15rem;stroke-width:3.2;opacity:0;transform:scale(.4);transition:opacity .2s,transform .25s cubic-bezier(.2,1.4,.4,1)}
+.accg .dot.auto{background:conic-gradient(from 210deg,#0C7A63,#1A5FD0,#6D28D9,#BE185D,#C81E3A,#C2410C,#0C7A63)}
+.accg .dot.auto svg.i{color:#fff;filter:drop-shadow(0 1px 2px rgba(0,0,0,.45))}
+.accg button[aria-pressed="true"]{color:var(--fg)}
+.accg button[aria-pressed="true"] .dot{box-shadow:0 0 0 3px var(--surface),0 0 0 5px var(--sw)}
+.accg button[aria-pressed="true"] .dot svg.i{opacity:1;transform:none}
+.accg button:active .dot{transform:scale(.9)}
+.sheet .accg{padding:2px 16px 10px}
+.setfoot{display:grid;justify-items:center;gap:8px;padding:16px 0 30px;color:var(--muted);font:500 .7rem/1 var(--f-mono);letter-spacing:.04em}
+.setfoot .vfmark{width:1.6rem;height:1.6rem}
+#setEmpty{padding-top:28px}
+
+/* ortak sohbet temaları */
+.msgs[data-bub] .mrow.me .msg{background:var(--bub);color:var(--bub-ink);border-color:transparent}
+.msgs[data-bub] .mrow.me .msg .ht{color:inherit;text-decoration:underline;text-underline-offset:2px}
+.msgs[data-bub] .mrow.me .audm .ap{background:var(--bub-ink);color:var(--bub-c)}
+.msgs[data-bub] .mrow.me .quote{background:rgba(127,127,127,.2);background:color-mix(in srgb,var(--bub-ink) 16%,transparent)}
+.msgs[data-bub] .mrow.me .gmsg .gi{background:var(--bub-ink);color:var(--bub-c)}
+.msgs[data-dk]>.empty{color:rgba(255,255,255,.85)}
+.msgs.wp .typing{box-shadow:var(--shadow-s)}
+.thsheet .body{padding-bottom:0}
+.thtop{position:sticky;top:0;z-index:3;background:var(--bg);padding:0 16px 4px}
+.thpv{position:relative;height:9.4rem;border-radius:20px;overflow:hidden;background:var(--bg);border:1px solid var(--line);display:flex;flex-direction:column;justify-content:flex-end;gap:6px;padding:12px}
+.thpv .thbg{position:absolute;inset:0}
+.thpv .b{position:relative;max-width:74%;align-self:flex-start;padding:7px 12px;border-radius:16px 16px 16px 5px;background:var(--surface);border:1px solid var(--line);font-size:.8rem;line-height:1.3;color:var(--fg);animation:msgin .4s cubic-bezier(.2,1.25,.4,1) both}
+.thpv .b:nth-child(3){animation-delay:.06s}.thpv .b:nth-child(4){animation-delay:.12s}
+.thpv .b.me{align-self:flex-end;border-radius:16px 16px 5px 16px;background:var(--pb,var(--accent));color:var(--pi,var(--accent-ink));border-color:transparent;transition:background .25s,color .25s}
+.thseg{margin-top:10px}
+.thhint{margin:8px 2px 2px;font-size:.8rem;color:var(--muted);min-height:1.1em;line-height:1.35}
+.thgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px 10px;padding:8px 16px}
+.thgrid button{display:grid;justify-items:center;gap:6px;font-size:.72rem;font-weight:700;color:var(--muted);min-width:0;padding:0}
+.thgrid .tw{position:relative;width:100%;aspect-ratio:1;border-radius:18px;border:1px solid var(--line);background:var(--bg);overflow:hidden;display:grid;place-items:center;color:var(--muted);transition:transform .15s,box-shadow .2s}
+.thgrid .twb{position:absolute;inset:0}
+.thgrid .tw svg.i{position:relative;width:1.3rem;height:1.3rem}
+.thgrid .tw.ph svg.i{color:#fff;filter:drop-shadow(0 1px 3px rgba(0,0,0,.5))}
+.thgrid .tw i{position:absolute;right:8px;bottom:8px;width:44%;height:24%;border-radius:9px 9px 3px 9px;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.thgrid button[aria-pressed="true"]{color:var(--fg)}
+.thgrid button[aria-pressed="true"] .tw{box-shadow:0 0 0 2.5px var(--bg),0 0 0 5px var(--accent)}
+.thgrid button:active .tw{transform:scale(.93)}
+.thgrid .lb{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.thall{margin:2px 2px 4px;font-size:.88rem}
+.composer[data-bub] .send{background:var(--bub);color:var(--bub-ink)}
+.composer[data-bub] .cplus{color:var(--bub-c);background:rgba(127,127,127,.14);background:color-mix(in srgb,var(--bub-c) 14%,transparent)}
+.composer[data-bub] textarea:focus{border-color:var(--bub-c)}
+.thfoot{position:sticky;bottom:0;z-index:3;padding:14px 16px 14px;background:var(--bg);background:linear-gradient(transparent,var(--bg) 32%)}
 /*}@css:B*/
 
 /*@css:C{*/
@@ -1039,9 +1160,9 @@ const S={mode:"local",uid:null,viewer:null,isOwner:false,canWrite:true,authed:fa
  online:new Set(),typing:{},route:{name:"feed",params:{}},stack:[],feedSeg:"all",
  muted:LS.get("kadraj_muted",false),caps:{},profTab:"posts",bootAt:now(),msgs:[],games:{}};
 let DB=null;
-const settings=Object.assign({theme:"system",autoplay:true,notify:true,scale:1},LS.get("kadraj_settings",{}));
+const settings=Object.assign({theme:"system",autoplay:true,notify:true,scale:1,accent:"auto",themeSync:true,showActive:true,readReceipts:true,hideLikes:false,nMsg:true,nLike:true,nComment:true,nFollow:true,nPost:true,enterSend:true,msgSound:true,haptics:true,dataSaver:false,reduceMotion:false},LS.get("kadraj_settings",{}));
 function saveSettings(){LS.set("kadraj_settings",settings)}
-function applyTheme(){const r=document.documentElement;if(settings.theme==="system")r.removeAttribute("data-app-theme");else r.setAttribute("data-app-theme",settings.theme);r.style.setProperty("--scale",settings.scale||1)}
+function applyTheme(){const r=document.documentElement;if(settings.theme==="system")r.removeAttribute("data-app-theme");else r.setAttribute("data-app-theme",settings.theme);r.style.setProperty("--scale",settings.scale||1);applyAccent()}
 applyTheme();
 function isDark(){if(settings.theme!=="system")return settings.theme==="dark";const h=document.documentElement.getAttribute("data-theme");if(h)return h==="dark";try{return matchMedia("(prefers-color-scheme: dark)").matches}catch{return false}}
 
@@ -1416,13 +1537,13 @@ function vActivity(){const list=activity();const seen=LS.get("kadraj_act_"+S.uid
 
 /* --- Sohbet merkezi --- */
 /* --- Sohbet --- */
-/* sohbet duvar kağıdı (3.9): yalnızca bu cihazda; settings.wp[key] ya da settings.wp["*"] */
+/* sohbet duvar kağıdı (3.9): yalnızca bu cihazda; settings.wp[key] ya da settings.wp["*"]. 4.0: ortak sohbet temaları, yeni applyWp ve wallpaperMenu B bloğunda; eskileri ...Old */
 const WP_HEART="data:image/svg+xml,"+encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 56 56"><g fill="#ff3b5c" fill-opacity=".16"><path transform="translate(4 4) scale(.75)" d="${IP.heart.match(/d="([^"]+)"/)[1]}"/><path transform="translate(32 30) scale(.6)" d="${IP.heart.match(/d="([^"]+)"/)[1]}"/></g></svg>`);
 const WALLS=[["none","Yok",""],["dusk","Gün batımı","linear-gradient(160deg,rgba(255,94,98,.32),rgba(255,153,102,.2) 50%,rgba(120,80,220,.3))"],["ocean","Okyanus","linear-gradient(180deg,rgba(0,150,255,.26),rgba(0,210,190,.22))"],["mint","Nane","radial-gradient(circle at 20% 10%,rgba(120,230,170,.42),transparent 60%),radial-gradient(circle at 90% 90%,rgba(80,170,255,.36),transparent 55%)"],["night","Gece","linear-gradient(180deg,#0f1530,#2a1b4a)"],["dots","Noktalı","radial-gradient(rgba(127,127,127,.32) 1.4px,transparent 1.7px) 0 0/18px 18px"],["grid","Kareli","linear-gradient(rgba(127,127,127,.16) 1px,transparent 1px) 0 0/22px 22px,linear-gradient(90deg,rgba(127,127,127,.16) 1px,transparent 1px) 0 0/22px 22px"],["hearts","Kalpler",`url("${WP_HEART}") 0 0/56px 56px`]];
 const wpLsKey=key=>"kadraj_wp_"+String(key).replace(/[^\w:-]/g,"_");
 function wpOf(key){const w=settings.wp||{};const id=w[key]||w["*"]||"none";if(id==="photo"){const src=LS.get(wpLsKey(w[key]==="photo"?key:"*"));return src?{id:"photo:"+src.length,bg:`linear-gradient(rgba(0,0,0,.12),rgba(0,0,0,.12)),url("${src}") center/cover no-repeat`}:{id:"none",bg:""}}const x=WALLS.find(a=>a[0]===id)||WALLS[0];return{id:x[0],bg:x[2]}}
-function applyWp(box,key){const w=wpOf(key);if(box.dataset.wp===w.id)return;box.dataset.wp=w.id;box.style.background=w.bg;box.classList.toggle("wp",!!w.bg)}
-function wallpaperMenu(){const key=S.route.params.key;const w=settings.wp||{};const cur=w[key]||w["*"]||"none";
+function applyWpOld(box,key){const w=wpOf(key);if(box.dataset.wp===w.id)return;box.dataset.wp=w.id;box.style.background=w.bg;box.classList.toggle("wp",!!w.bg)}
+function wallpaperMenuOld(){const key=S.route.params.key;const w=settings.wp||{};const cur=w[key]||w["*"]||"none";
  const l=sheet("wp","Sohbet duvar kağıdı",`<p class="muted" style="margin:0 18px 10px;font-size:.84rem">Yalnızca senin cihazında görünür.</p><div class="wpgrid">${WALLS.map(([id,lb,bg])=>`<button type="button" data-wpid="${id}" class="${cur===id?"on":""}" style="background:${esc(bg)}"><span>${esc(lb)}</span></button>`).join("")}</div>
  <button class="opt" id="wpPh">${I("image")}${cur==="photo"?"Başka fotoğraf seç":"Fotoğraftan seç"}</button><label class="opt" style="cursor:pointer"><input type="checkbox" id="wpAll" ${w["*"]&&!w[key]?"checked":""}> Bütün sohbetlerde kullan</label><button class="opt" data-act="close">${I("close")}Kapat</button>`);
  const save=id=>{const all=$("#wpAll",l).checked;const nw={...(settings.wp||{})};if(all){nw["*"]=id;delete nw[key]}else nw[key]=id;settings.wp=nw;saveSettings();const box=$("#msgs");if(box)applyWp(box,key);closeLayer("wp");toast(id==="none"?"Duvar kağıdı kaldırıldı":"Duvar kağıdı değişti")};
@@ -1452,7 +1573,7 @@ function vInvite(){const cloud=S.mode==="cloud";
  <div class="box">${[["globe","Meydan","Uygulamadaki herkesin canlı ortak sohbeti"],["chat","Birebir mesaj","Fotoğraf ve paylaşım gönder, çift dokunarak kalp bırak, uzun basarak geri al"],["users","Grup sohbeti","İstediğin arkadaşlarla grup kur, @rota'yı çağır"],["phone","Sesli ve görüntülü arama","Birebir sohbetin üstündeki telefon ve kamera düğmeleri"],["mic","Sesli mesaj","Mesaj kutusu boşken mikrofona dokun, konuş, gönder"],["hand","Dürt","Şu an açık olan arkadaşına titreşimli dürtme gönder"],["reply","Hikâye yanıtı","Bir hikâyeye yazdığın yanıt mesaj olarak gider"],["send","Paylaşım gönder","Her kartın altındaki uçak düğmesiyle"]].map(([ic,b,s])=>`<div class="srow">${I(ic)}<span class="t">${b}<small>${s}</small></span></div>`).join("")}</div>`}
 
 /* --- Ayarlar --- */
-function vSettings(){const p=me();const sw=(id,on,label,sub)=>`<label class="srow"><span class="t">${label}${sub?`<small>${sub}</small>`:""}</span><span class="sw"><input type="checkbox" id="${id}" ${on?"checked":""}><span></span></span></label>`;
+function vSettingsOld(){const p=me();const sw=(id,on,label,sub)=>`<label class="srow"><span class="t">${label}${sub?`<small>${sub}</small>`:""}</span><span class="sw"><input type="checkbox" id="${id}" ${on?"checked":""}><span></span></span></label>`;
  const remembered=S.mode==="cloud"?LS.get("kadraj_fb_remember",true):LS.get("kadraj_session")===S.uid;
  return`<div class="set"><h3>Görünüm</h3><div class="seg" role="group" aria-label="Tema">${[["light","sun","Açık"],["dark","moon","Koyu"],["system","auto","Sistem"]].map(([v,ic,l])=>`<button data-theme-set="${v}" aria-pressed="${settings.theme===v}">${I(ic)}${l}</button>`).join("")}</div><h3>Yazı boyutu</h3><div class="seg" role="group" aria-label="Yazı boyutu">${[[1,"Normal"],[1.1,"Büyük"],[1.2,"Çok büyük"]].map(([v,l])=>`<button data-scale="${v}" aria-pressed="${(settings.scale||1)==v}">${l}</button>`).join("")}</div></div>
  <div class="set"><h3>Hesap</h3>${S.mode==="cloud"&&FB&&FB.auth&&FB.auth.currentUser&&FB.auth.currentUser.email?`<div class="kv"><span>Giriş e-postan</span><span class="mono" style="text-align:right;overflow-wrap:anywhere">${esc(FB.auth.currentUser.email)}</span></div>`:""}<button class="srow" data-go="edit">${I("edit")}<span class="t">Profili düzenle<small>Ad, kullanıcı adı, biyografi, fotoğraf</small></span></button><button class="srow" data-act="changepw">${I("key")}<span class="t">Şifreyi değiştir</span></button>${sw("setPrivate",p.private,"Gizli hesap","Paylaşımlarını yalnızca takipçilerin görür")}</div>
@@ -1521,8 +1642,8 @@ document.addEventListener("click",async e=>{const t=e.target.closest("button,[da
  if(d.ptab){S.profTab=d.ptab;return render(false)}
  if(d.people)return go("people",{uid:d.uid,type:d.people});
  if(d.swap){S.route.params.type=d.swap;return render(false)}
- if(d.themeSet){settings.theme=d.themeSet;saveSettings();applyTheme();return render(false)}
- if(d.scale){settings.scale=+d.scale;saveSettings();applyTheme();return render(false)}
+ if(d.themeSet)return setThemePref({theme:d.themeSet});
+ if(d.scale)return setThemePref({scale:+d.scale});
  if(d.chip){if(d.chip==="Test bildirimleri oluştur")return runTest();if(d.chip==="Satranç oynayalım"){return go("chess")}const inp=$("#msgIn");if(inp){inp.value=d.chip;$("#composer").requestSubmit()}return}
  const a=d.act;if(!a)return;
  if(a==="back")return back();
@@ -1531,7 +1652,7 @@ document.addEventListener("click",async e=>{const t=e.target.closest("button,[da
  if(a==="recsend")return stopRec(true);
  if(a==="noreply"){S.replyTo=null;return drawReply()}
  if(a==="close"){const l=t.closest(".layer");if(l)closeLayer(l.dataset.layer);return}
- if(a==="theme"){settings.theme=isDark()?"light":"dark";saveSettings();applyTheme();return render(false)}
+ if(a==="theme")return setThemePref({theme:isDark()?"light":"dark"});
  if(a==="create")return openCreate();
  if(a==="newreel")return openComposer("reel");
  if(a==="addstory")return openComposer("story");
@@ -2577,7 +2698,7 @@ async function admTry(v){v=(v||"").trim();if(v.length<16||v.length>64)return fal
  S.admin=true;LS.set("kadraj_admin_"+S.uid,true);S.q="";vib(30);toast("Yönetici paneli açıldı");admWatchReports();admLog("Yönetici paneline girildi");go("admin");return true}
 /* paylaşımlı yönetici verisi: duyuru, yasak listesi, onaylı rozetler, öne çıkan, botlar */
 function admSubscribe(){
- DB.watchCol("admin",docs=>{const m={};for(const d of docs)m[d.id]=d;const old=S.adm||{};S.adm=m;S.admRulesOk=true;
+ DB.watchCol("admin",docs=>{const m={};for(const d of docs)m[d.id]=d;const old=S.adm||{};S.adm=m;S.admRulesOk=true;temaSnap(old.tema,m.tema);
   const a=m.duyuru,o=old.duyuru;if(a&&a.text&&a.at>(o&&o.at||0)&&notifReady&&settings.notify&&S.authed&&a.by!==S.uid)toast("Duyuru: "+a.text.slice(0,90));
   if(S.authed&&S.uid&&!S.admin&&isBanned(S.uid))kickBanned();if(!!(old.bakim&&old.bakim.on)!==bakimOn()&&S.authed)render(false);scheduleRefresh()},{limit:20,onError:e=>{S.admRulesOk=false;scheduleRefresh()}});
  DB.watchCol("bots",docs=>{setCustomBots(docs);scheduleRefresh()},{limit:50,onError:()=>{}})}
@@ -2633,7 +2754,7 @@ function vAdmin(){if(!S.admin)return`<div class="empty"><span class="ic">${I("lo
  h+=`<h3 class="sec-h"><span>Botlar</span><button class="btn sm" data-adm="botnew">${I("add")}Bot ekle</button></h3><div class="box"><div class="row">${avatar("bot:rota",44,{click:false,ring:false})}<div class="t"><div><b>Rota</b>${badge("bot:rota")}</div><div class="s">Yerleşik rehber ve satranç rakibi</div></div></div>${cb.map(b=>`<div class="row">${avatar(b.uid,44,{click:false,ring:false})}<div class="t"><div><b>${esc(b.name)}</b>${badge(b.uid)}</div><div class="s">@${esc(b.username)} · ${b.replies.length} hazır yanıt</div></div><button class="ib" data-adm="botsay" data-u="${esc(b.uid)}" aria-label="Bot olarak Meydan'a yaz">${I("globe")}</button><button class="ib" data-adm="botedit" data-u="${esc(b.uid)}" aria-label="Botu düzenle">${I("edit")}</button><button class="ib" data-adm="botdel" data-u="${esc(b.uid)}" aria-label="Botu sil">${I("trash")}</button></div>`).join("")}</div>`;
  const recent=posts.filter(p=>S.profiles[p.uid]).sort((a,b)=>b.at-a.at).slice(0,15);const pin=pinnedId();
  h+=`<h3 class="sec-h"><span>Son paylaşımlar</span></h3>${recent.length?`<div class="box">${recent.map(p=>{const th=postThumb(p);return`<div class="row"><button class="adm-th" data-open="${esc(p.id)}">${th?`<img src="${esc(th)}" alt="">`:I(p.kind==="poll"?"poll":"type")}</button><div class="t"><div><b>@${esc(P(p.uid).username)}</b>${pin===p.id?' <span class="tag">öne çıkan</span>':""}</div><div class="s">${esc((p.caption||p.text||p.question||"").slice(0,60)||({reel:"sahne",photo:"fotoğraf"}[p.kind]||p.kind))} · ${ago(p.at)}</div></div><button class="ib" data-adm="pin" data-u="${esc(p.id)}" aria-label="Öne çıkar">${I("spark")}</button><button class="ib" data-adm="postdel" data-u="${esc(p.id)}" aria-label="Paylaşımı kaldır">${I("trash")}</button></div>`}).join("")}</div>`:`<div class="empty" style="padding:16px">Henüz paylaşım yok.</div>`}`;
- h+=`<h3 class="sec-h"><span>Araçlar</span></h3><div class="set"><button class="srow" data-adm="meydanclr">${I("globe")}<span class="t">Meydan'ı temizle<small>Ortak sohbetteki tüm mesajlar silinir</small></span></button><button class="srow" data-adm="storyclr">${I("eye")}<span class="t">Eski hikâyeleri temizle<small>24 saati geçmiş hikâyeleri veritabanından siler</small></span></button><label class="srow"><span class="t">Bakım modu<small>Açıkken yönetici dışında kimse uygulamayı kullanamaz</small></span><span class="sw"><input type="checkbox" id="admBk" ${bakimOn()?"checked":""}><span></span></span></label><button class="srow" data-adm="childmode">${I("lock")}<span class="t">Çocuk modu<small>Bir hesaba küfür süzgeci ve güvenli sohbet öner</small></span></button>${pin?`<button class="srow" data-adm="unpin">${I("spark")}<span class="t">Öne çıkanı kaldır</span></button>`:""}</div>`;
+ h+=`<h3 class="sec-h"><span>Araçlar</span></h3><div class="set">${admTemaRow()}<button class="srow" data-adm="meydanclr">${I("globe")}<span class="t">Meydan'ı temizle<small>Ortak sohbetteki tüm mesajlar silinir</small></span></button><button class="srow" data-adm="storyclr">${I("eye")}<span class="t">Eski hikâyeleri temizle<small>24 saati geçmiş hikâyeleri veritabanından siler</small></span></button><label class="srow"><span class="t">Bakım modu<small>Açıkken yönetici dışında kimse uygulamayı kullanamaz</small></span><span class="sw"><input type="checkbox" id="admBk" ${bakimOn()?"checked":""}><span></span></span></label><button class="srow" data-adm="childmode">${I("lock")}<span class="t">Çocuk modu<small>Bir hesaba küfür süzgeci ve güvenli sohbet öner</small></span></button>${pin?`<button class="srow" data-adm="unpin">${I("spark")}<span class="t">Öne çıkanı kaldır</span></button>`:""}</div>`;
  const lg=(S.adm&&S.adm.log&&S.adm.log.items)||[];
  if(lg.length)h+=`<h3 class="sec-h"><span>Son işlemler</span></h3><div class="box adm-log">${lg.slice(0,12).map(x=>`<div class="row"><span class="dotx"></span><div class="t"><div>${esc(x.x)}</div><div class="s">${ago(x.t)}${x.by&&x.by!==S.uid?" · @"+esc(P(x.by).username):""}</div></div></div>`).join("")}</div>`;
  h+=`<h3 class="sec-h"><span>Kurulum</span></h3><div class="box adm-box"><p class="muted" style="margin:0;font-size:.85rem">Panel işlemlerinin (hesap kapatma, duyuru, bot, rozet) çalışması için bu kuralları bir kez Firebase'de <b>Firestore Database › Kurallar</b>'a yapıştırıp <b>Yayınla</b>'ya bas. İçinde senin hesap kimliğin var; yalnızca sen yönetici olursun.</p><div class="kv"><span>Hesap kimliğin</span><span class="mono">${esc(S.uid)}</span></div><pre class="adm-rules">${esc(rulesText([S.uid]))}</pre><button class="btn sec" data-adm="copyrules">${I("copy")}Kuralları kopyala</button></div>`;
@@ -3043,6 +3164,325 @@ HOOKS.enter.push(fresh=>wnAuto(fresh));
 /*}@js:A*/
 
 /*@js:B{*/
+/* ===== B · Temalar ve Ayarlar (4.0) =====
+   - Vurgu rengi: settings.accent ("auto" = yöneticinin ortak teması admin/tema, yoksa Kadraj yeşili). applyTheme() → applyAccent().
+   - themeSwitch(fn,{x,y,fade}): her şey aynı anda değişsin diye View Transitions (daire ya da çapraz geçiş), yoksa kısa renk geçişi.
+   - Cihazlar arası eşitleme: profiles/{uid}.prefs={theme,accent,scale,at} (settings.themeSync).
+   - Ortak sohbet temaları: chats/{cid}.theme={id,by,at,ref}; fotoğraflı tema vchunks/wp-<cid> {d}. Meydan ve botlarda tema cihaza özel (3.9).
+   - Yeni Ayarlar ekranı (vSettings) ve genel data-set anahtarları. Not: applyTheme() açılışta bu bloktan önce çalışır,
+     bu yüzden onun çağırdığı her şey burada function bildirimi olarak durur (const kullanılmaz). */
+Object.assign(IP,{
+ palette:'<path d="M12 3.2a8.8 8.8 0 1 0 0 17.6c1.1 0 1.8-.8 1.8-1.7 0-.5-.2-.9-.5-1.2a1.7 1.7 0 0 1 1.3-2.9h2.2a4 4 0 0 0 4-4c0-4.3-4-7.8-8.8-7.8z"/><circle cx="7.6" cy="11.6" r="1.25" fill="currentColor" stroke="none"/><circle cx="10.2" cy="7.6" r="1.25" fill="currentColor" stroke="none"/><circle cx="14.9" cy="7.8" r="1.25" fill="currentColor" stroke="none"/>',
+ contrast:'<circle cx="12" cy="12" r="8.6"/><path d="M12 3.4a8.6 8.6 0 0 1 0 17.2z" fill="currentColor" stroke="none"/>',
+ dcheck:'<path d="m2.5 12.6 4.4 4.4 9-9.6"/><path d="m12.4 16.4.6.6 9-9.6"/>',
+ vibrate:'<rect x="7.5" y="3.5" width="9" height="17" rx="2"/><path d="M4 8.5v7M20 8.5v7M11 17.5h2"/>',
+ leaf:'<path d="M4.5 19.5c0-8.6 5.6-15 15-15 0 9.4-6.4 15-15 15z"/><path d="M4.5 19.5 13 11"/>',
+ db:'<ellipse cx="12" cy="5.6" rx="7.5" ry="2.6"/><path d="M4.5 5.6V12c0 1.4 3.4 2.6 7.5 2.6s7.5-1.2 7.5-2.6V5.6M4.5 12v6.4c0 1.4 3.4 2.6 7.5 2.6s7.5-1.2 7.5-2.6V12"/>',
+ enterk:'<path d="M19.5 4.5v7a3 3 0 0 1-3 3h-12"/><path d="m8.5 10.5-4 4 4 4"/>',
+ motion:'<path d="M3 8h9M3 12h13M3 16h7"/><circle cx="18" cy="8" r="1.4" fill="currentColor" stroke="none"/><circle cx="14" cy="16" r="1.4" fill="currentColor" stroke="none"/>',
+ gift:'<rect x="3.5" y="8" width="17" height="4.5" rx="1"/><path d="M5 12.5V20a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-7.5M12 8v13M12 8C10.5 4.6 7 4 6.6 5.8 6.2 7.6 9.5 8 12 8zm0 0c1.5-3.4 5-4 5.4-2.2.4 1.8-2.9 2.2-5.4 2.2z"/>',
+ mail:'<rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m3.5 7 8.5 6 8.5-6"/>',
+ radio:'<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="3.6" fill="currentColor" stroke="none"/>',
+ devices:'<rect x="2.5" y="4.5" width="13" height="10" rx="1.6"/><path d="M6 18.5h6"/><rect x="16.5" y="8.5" width="5" height="11" rx="1.4"/>',
+ mobile:'<rect x="6" y="2.5" width="12" height="19" rx="2.6"/><path d="M10.5 18.5h3"/>'});
+
+/* ---------- vurgu renkleri ---------- */
+/* l/d: [accent, accent-ink, accent-soft] (açık / koyu). Yazı ile zemin kontrastı her ikisinde en az 4.5. h/m: zemin tonları için renk açısı ve doygunluk çarpanı. */
+function accentPal(){return accentPal.t||(accentPal.t={
+ kadraj:{n:"Kadraj",h:160,m:1,keep:1,l:["#0C7A63","#FFFFFF","#D9F0E8"],d:["#3FD3AB","#04140F","#12302A"]},
+ okyanus:{n:"Okyanus",h:214,m:1,l:["#1A5FD0","#FFFFFF","#DDE8FA"],d:["#6CB4FF","#03121F","#10243D"]},
+ gunbatimi:{n:"Gün batımı",h:22,m:.62,l:["#C2410C","#FFFFFF","#FCE6D8"],d:["#FF9A5A","#1F0D02","#3A2214"]},
+ mor:{n:"Mor",h:262,m:.85,l:["#6D28D9","#FFFFFF","#ECE3FD"],d:["#B794FF","#170B2E","#261C42"]},
+ pembe:{n:"Pembe",h:330,m:.66,l:["#BE185D","#FFFFFF","#FCE0EC"],d:["#FF7EB6","#2A0716","#3D1629"]},
+ kiraz:{n:"Kiraz",h:352,m:.58,l:["#C81E3A","#FFFFFF","#FBE0E4"],d:["#FF6B7D","#2B0409","#3D1519"]},
+ grafit:{n:"Grafit",h:220,m:.3,l:["#1F2937","#FFFFFF","#E6E8EC"],d:["#E5E7EB","#111827","#262A31"]}})}
+function kbHex(h,s,l){s/=100;l/=100;const k=n=>(n+h/30)%12,a=s*Math.min(l,1-l),f=n=>l-a*Math.max(-1,Math.min(k(n)-3,9-k(n),1));return"#"+[f(0),f(8),f(4)].map(x=>Math.round(x*255).toString(16).padStart(2,"0")).join("")}
+/* geçerli vurgu: kullanıcının seçimi; "auto" ise yöneticinin ortak teması (ilk anlık görüntü gelene kadar son bilinen değer) */
+function effAccent(){const pal=accentPal();const a=settings.accent||"auto";if(a!=="auto")return pal[a]?a:"kadraj";const c=communityAccent();return c&&pal[c]?c:"kadraj"}
+function communityAccent(){if(S.adm){const t=S.adm.tema;return(t&&t.accent)||""}return settings.commAccent||""}
+function accentVars(id,dark){const p=accentPal()[id]||accentPal().kadraj;const c=dark?p.d:p.l;const v={"--accent":c[0],"--accent-ink":c[1],"--accent-soft":c[2]};
+ if(!p.keep){const h=p.h,m=p.m;if(dark)Object.assign(v,{"--bg":kbHex(h,26*m,5.4),"--surface":kbHex(h,22*m,8.8),"--surface-2":kbHex(h,19*m,12.8),"--line":kbHex(h,16*m,18),"--fg":kbHex(h,22*m,92.5),"--muted":kbHex(h,11*m,61)});
+  else Object.assign(v,{"--bg":kbHex(h,18*m,95.6),"--surface-2":kbHex(h,22*m,92.2),"--line":kbHex(h,18*m,86.6),"--fg":kbHex(h,34*m,10),"--muted":kbHex(h,10*m,38)})}
+ return v}
+function applyAccent(){const r=document.documentElement;const dark=isDark();const id=effAccent();const v=accentVars(id,dark);
+ for(const k of["--accent","--accent-ink","--accent-soft","--bg","--surface","--surface-2","--line","--fg","--muted"]){if(v[k])r.style.setProperty(k,v[k]);else r.style.removeProperty(k)}
+ r.setAttribute("data-accent",id);r.setAttribute("data-mode",dark?"dark":"light");r.classList.toggle("reduce-motion",settings.reduceMotion===true);
+ const m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",v["--bg"]||(dark?"#0A110F":"#F2F5F2"))}
+/* sistem teması değişince (Sistem seçiliyse) hemen uygula */
+try{const mq=matchMedia("(prefers-color-scheme: dark)");const f=()=>{if((settings.theme||"system")==="system")themeSwitch(()=>{applyTheme();if(S.authed){renderTop();if(S.route.name==="settings")render(false)}},{fade:true})};if(mq.addEventListener)mq.addEventListener("change",f);else if(mq.addListener)mq.addListener(f)}catch{}
+
+/* ---------- yumuşak geçiş ---------- */
+let kbPtr=null;
+document.addEventListener("pointerdown",e=>{kbPtr={x:e.clientX,y:e.clientY,t:Date.now()}},true);
+function kbReduce(){if(settings.reduceMotion===true)return true;try{return matchMedia("(prefers-reduced-motion: reduce)").matches}catch{return false}}
+/* fn: arayüzü yeni temaya geçiren işlev. opts.fade: çapraz geçiş (uzaktan gelen değişiklikler), yoksa son dokunulan noktadan büyüyen daire. */
+function themeSwitch(fn,o={}){const run=()=>{try{fn()}catch(e){console.warn("tema",e)}};const r=document.documentElement;
+ if(kbReduce()||document.visibilityState==="hidden"){run();return}
+ const tok=themeSwitch.n=(themeSwitch.n||0)+1;const clean=()=>{if(themeSwitch.n===tok)r.classList.remove("vt-circle","vt-fade","th-anim","theme-fade")};
+ if(typeof document.startViewTransition==="function"){const circle=!o.fade;
+  let p=null;if(circle)p=o.x!=null?{x:o.x,y:o.y}:(kbPtr&&Date.now()-kbPtr.t<2500?kbPtr:{x:innerWidth-40,y:40});
+  r.classList.remove("vt-circle","vt-fade");r.classList.add(circle?"vt-circle":"vt-fade","th-anim");
+  let vt;try{vt=document.startViewTransition(run)}catch(e){clean();run();return}
+  vt.ready.then(()=>{if(!circle)return;const R=Math.hypot(Math.max(p.x,innerWidth-p.x),Math.max(p.y,innerHeight-p.y))+8;
+   try{r.animate({clipPath:[`circle(0px at ${p.x}px ${p.y}px)`,`circle(${R}px at ${p.x}px ${p.y}px)`]},{duration:560,easing:"cubic-bezier(.4,0,.2,1)",pseudoElement:"::view-transition-new(root)"})}catch{}}).catch(()=>{});
+  vt.finished.then(()=>setTimeout(clean,60),()=>setTimeout(clean,60));if(vt.updateCallbackDone)vt.updateCallbackDone.catch(()=>{});return}
+ r.classList.add("theme-fade","th-anim");run();setTimeout(clean,380)}
+
+/* ---------- tema tercihleri ve cihazlar arası eşitleme ---------- */
+const KB_THEMES=["light","dark","system"],KB_SCALES=[1,1.1,1.2];
+function pushPrefs(){if(settings.themeSync===false||!S.authed||S.guest||!S.uid||!S.profiles[S.uid])return Promise.resolve(false);
+ const prefs={theme:settings.theme||"system",accent:settings.accent||"auto",scale:+settings.scale||1,at:settings.prefsAt||now()};
+ S.profiles={...S.profiles,[S.uid]:{...S.profiles[S.uid],prefs}};return write(()=>DB.update("profiles/"+S.uid,{prefs}),{quiet:true})}
+/* kullanıcı bu cihazda tema/vurgu/yazı boyutunu değiştirdi */
+function setThemePref(patch,o={}){let ch=false;for(const[k,v]of Object.entries(patch))if(settings[k]!==v){settings[k]=v;ch=true}if(!ch)return;
+ settings.prefsAt=now();saveSettings();vib(8);
+ themeSwitch(()=>{applyTheme();renderTop();if(S.route.name==="settings")render(false)},o);pushPrefs()}
+/* profilde daha yeni tercih varsa (başka cihazda değişti) uygula */
+function pullPrefs(p,instant){if(!p||!p.prefs||settings.themeSync===false||!S.authed||S.guest)return;const pr=p.prefs;if(!((+pr.at||0)>(settings.prefsAt||0)))return;
+ const patch={};if(KB_THEMES.includes(pr.theme))patch.theme=pr.theme;if(pr.accent==="auto"||accentPal()[pr.accent])patch.accent=pr.accent;if(KB_SCALES.includes(+pr.scale))patch.scale=+pr.scale;
+ const ch=Object.keys(patch).some(k=>settings[k]!==patch[k]);Object.assign(settings,patch);settings.prefsAt=+pr.at;saveSettings();if(!ch)return;
+ const go=()=>{applyTheme();renderTop();if(S.route.name==="settings")scheduleRefresh()};if(instant)go();else themeSwitch(go,{fade:true})}
+HOOKS.profiles.push(m=>{if(S.uid)pullPrefs(m[S.uid])});
+HOOKS.enter.push(()=>{const p=S.profiles[S.uid];const at=(p&&p.prefs&&+p.prefs.at)||0;if(at>(settings.prefsAt||0))pullPrefs(p,true);else if((settings.prefsAt||0)>at)pushPrefs()});
+
+/* ---------- topluluk teması (yönetici: admin/tema) ---------- */
+/* admSubscribe her anlık görüntüde çağırır */
+function temaSnap(o,n){const oa=(o&&o.accent)||"",na=(n&&n.accent)||"";const first=!temaSnap.init;temaSnap.init=true;
+ if((settings.commAccent||"")!==na){settings.commAccent=na;saveSettings()}
+ if((settings.accent||"auto")!=="auto")return;
+ if(document.documentElement.getAttribute("data-accent")===effAccent())return;
+ const go=()=>{applyTheme();if(S.authed){renderTop();if(S.route.name==="settings")scheduleRefresh()}};
+ if(first){go();return}
+ themeSwitch(go,{fade:true});
+ if(oa!==na&&S.authed&&!(n&&n.by===S.uid))toast(na?"Kadraj'ın ortak teması değişti":"Kadraj'ın ortak teması kaldırıldı")}
+function admTemaRow(){const t=S.adm&&S.adm.tema;const p=t&&t.accent&&accentPal()[t.accent];return`<button class="srow" data-act="admtema">${I("palette")}<span class="t">Ortak tema<small>${p?"Şu an: "+esc(t.title||p.n):"Herkesin vurgu rengini aynı anda değiştir"}</small></span></button>`}
+ACT.admtema=()=>{if(!S.admin)return;const pal=accentPal();const cur=(S.adm&&S.adm.tema)||{};let sel=pal[cur.accent]?cur.accent:"okyanus";const dark=isDark();
+ const ago2=t=>{const a=ago(t||now());return a==="şimdi"?"az önce":a+" önce"};
+ const l=sheet("admtema","Ortak tema",`<p class="muted" style="margin:0 18px 12px;font-size:.86rem;line-height:1.4">Seçtiğin renk, vurgu rengi <b>Otomatik</b> olan herkeste aynı anda değişir. Kendi rengini seçenler etkilenmez.</p>
+ ${pal[cur.accent]?`<div class="adm-cur" style="margin:0 16px 14px">${I("palette")}<span>Şu an: <b>${esc(cur.title||pal[cur.accent].n)}</b><small>${ago2(cur.at)} · @${esc(P(cur.by).username)}</small></span></div>`:""}
+ <div class="accg">${Object.entries(pal).map(([k,p])=>`<button type="button" data-ac="${k}" aria-pressed="${sel===k}"><span class="dot" style="--sw:${dark?p.d[0]:p.l[0]};--si:${dark?p.d[1]:p.l[1]}">${I("check")}</span><span>${esc(p.n)}</span></button>`).join("")}</div>
+ <div class="form" style="padding-top:6px"><div class="field"><label for="admTmT">Başlık (isteğe bağlı)</label><input class="in" id="admTmT" maxlength="40" placeholder="Örn. Bahar teması" value="${esc(cur.title&&pal[cur.accent]&&cur.title!==pal[cur.accent].n?cur.title:"")}"></div>
+ <button class="btn block" type="button" id="admTmGo">${I("users")}Herkese uygula</button>${pal[cur.accent]?`<button class="btn sec block" type="button" id="admTmX">Ortak temayı kaldır</button>`:""}</div>`);
+ $$("[data-ac]",l).forEach(b=>b.onclick=()=>{sel=b.dataset.ac;vib(8);$$("[data-ac]",l).forEach(x=>x.setAttribute("aria-pressed",x===b))});
+ $("#admTmGo",l).onclick=async()=>{const title=($("#admTmT",l).value||"").trim().slice(0,40)||pal[sel].n;if(await admSet("tema",{accent:sel,title})){admLog("Ortak tema: "+title);closeLayer("admtema");toast("Ortak tema herkese uygulandı");if(S.route.name==="admin")render(false)}};
+ const x=$("#admTmX",l);if(x)x.onclick=async()=>{if(await admSet("tema",{accent:"",title:""})){admLog("Ortak tema kaldırıldı");closeLayer("admtema");toast("Ortak tema kaldırıldı");if(S.route.name==="admin")render(false)}}};
+
+/* ---------- ortak sohbet temaları ---------- */
+/* bub: benim balonum (renk ya da degrade), c: düz renk karşılığı, ink: balon yazısı. dark: koyu zemin. 3.9 kimlikleri (none, dusk, ocean, mint, night, dots, grid, hearts) korunur. */
+function chatThemes(){if(chatThemes.t)return chatThemes.t;const hz=`url("${WP_HEART}") 0 0/56px 56px`;return chatThemes.t=[
+ {id:"none",label:"Yok",bg:""},
+ {id:"ocean",label:"Okyanus",bg:"linear-gradient(180deg,rgba(0,150,255,.26),rgba(0,210,190,.22))",bub:"linear-gradient(150deg,#1366D6,#0B6FA0)",c:"#1366D6",ink:"#fff"},
+ {id:"dusk",label:"Gün batımı",bg:"linear-gradient(160deg,rgba(255,94,98,.32),rgba(255,153,102,.2) 50%,rgba(120,80,220,.3))",bub:"linear-gradient(135deg,#D62B55,#6A35D9)",c:"#A0309A",ink:"#fff"},
+ {id:"mint",label:"Nane",bg:"radial-gradient(circle at 20% 10%,rgba(120,230,170,.42),transparent 60%),radial-gradient(circle at 90% 90%,rgba(80,170,255,.36),transparent 55%)",bub:"#0B7A5E",c:"#0B7A5E",ink:"#fff"},
+ {id:"night",label:"Gece",dark:1,bg:"radial-gradient(rgba(255,255,255,.5) 1px,transparent 1.6px) 0 0/44px 44px,radial-gradient(rgba(255,255,255,.28) 1px,transparent 1.6px) 22px 22px/44px 44px,linear-gradient(180deg,#0f1530,#2a1b4a)",bub:"linear-gradient(135deg,#4F46E5,#7C3AED)",c:"#5B3FE8",ink:"#fff"},
+ {id:"lavender",label:"Lavanta",bg:"linear-gradient(165deg,rgba(167,139,250,.36),rgba(244,114,182,.18))",bub:"#6B3FD0",c:"#6B3FD0",ink:"#fff"},
+ {id:"hearts",label:"Aşk",bg:`${hz},linear-gradient(180deg,rgba(255,94,138,.2),rgba(255,154,190,.1))`,bub:"linear-gradient(135deg,#C2185B,#D81B60)",c:"#C2185B",ink:"#fff"},
+ {id:"forest",label:"Orman",bg:"radial-gradient(circle at 15% 0%,rgba(74,222,128,.26),transparent 55%),linear-gradient(180deg,rgba(22,101,52,.18),rgba(20,83,45,.36))",bub:"#2F6B3A",c:"#2F6B3A",ink:"#fff"},
+ {id:"coffee",label:"Kahve",bg:"radial-gradient(circle at 80% 8%,rgba(255,214,170,.35),transparent 50%),linear-gradient(170deg,rgba(196,148,104,.34),rgba(120,78,46,.24))",bub:"#7A4A2A",c:"#7A4A2A",ink:"#fff"},
+ {id:"neon",label:"Neon",dark:1,bg:"radial-gradient(circle at 18% 12%,rgba(0,213,255,.38),transparent 42%),radial-gradient(circle at 86% 88%,rgba(184,77,255,.45),transparent 48%),#0a0a1f",bub:"linear-gradient(135deg,#00D5FF,#B84DFF)",c:"#5FA0FF",ink:"#0A0A1F"},
+ {id:"candy",label:"Pamuk şeker",bg:"linear-gradient(160deg,rgba(255,143,199,.38),rgba(143,184,255,.38))",bub:"linear-gradient(135deg,#FF8FC7,#8FB8FF)",c:"#C7A3E3",ink:"#2A1033"},
+ {id:"dots",label:"Noktalı",bg:"radial-gradient(rgba(127,127,127,.32) 1.4px,transparent 1.7px) 0 0/18px 18px"},
+ {id:"grid",label:"Kareli",bg:"linear-gradient(rgba(127,127,127,.16) 1px,transparent 1px) 0 0/22px 22px,linear-gradient(90deg,rgba(127,127,127,.16) 1px,transparent 1px) 0 0/22px 22px"}]}
+const kbThLabel=id=>id==="photo"?"Fotoğraf":(chatThemes().find(t=>t.id===id)||{label:"Yok"}).label;
+const kbPhotoBg=d=>d?`linear-gradient(rgba(0,0,0,.12),rgba(0,0,0,.12)),url("${d}") center/cover no-repeat`:"";
+/* başkasının yazdığı veriyi stile koymadan önce denetle */
+const kbOkImg=d=>typeof d==="string"&&d.length<1e6&&/^data:image\/(jpeg|png|webp);base64,[A-Za-z0-9+/=]+$/.test(d)?d:null;
+const kbOkHex=c=>typeof c==="string"&&/^#[0-9a-fA-F]{6}$/.test(c)?c:null;
+function kbLum(hex){const [r,g,b]=[1,3,5].map(i=>parseInt(hex.slice(i,i+2),16)/255).map(v=>v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4));return .2126*r+.7152*g+.0722*b}
+/* fotoğraftan balon rengi: doygun bölgelerin ortalaması, beyaz yazıyla en az 4.6 kontrast olacak kadar koyu */
+function kbTone(img){try{const c=document.createElement("canvas");c.width=c.height=16;const x=c.getContext("2d");coverDraw(x,img,16,16);const d=x.getImageData(0,0,16,16).data;let R=0,G=0,B=0,W=0;
+ for(let i=0;i<d.length;i+=4){const r=d[i],g=d[i+1],b=d[i+2];const mx=Math.max(r,g,b),mn=Math.min(r,g,b);const w=Math.pow((mx-mn)/255,2)+.03;R+=r*w;G+=g*w;B+=b*w;W+=w}
+ const r=R/W/255,g=G/W/255,b=B/W/255;const mx=Math.max(r,g,b),mn=Math.min(r,g,b);let h=0,sat=0,l=(mx+mn)/2;
+ if(mx!==mn){const dd=mx-mn;sat=l>.5?dd/(2-mx-mn):dd/(mx+mn);h=mx===r?(g-b)/dd+(g<b?6:0):mx===g?(b-r)/dd+2:(r-g)/dd+4;h*=60}
+ sat=Math.max(Math.min(sat,.75),.32);l=Math.min(l,.46);let hex=kbHex(h,sat*100,l*100);while(1.05/(kbLum(hex)+.05)<4.6&&l>.1){l-=.03;hex=kbHex(h,sat*100,l*100)}return hex}catch(e){return null}}
+/* fotoğraflı ortak tema önbelleği: bellekte + (bulutta) localStorage kadraj_wpc_<cid> {at,d,t}; en fazla 4 sohbet */
+const KB_WPC={},KB_WPC_ING={};
+function wpcGet(cid,sh){if(!sh||typeof sh.ref!=="string"||!/^wp-[\w-]{1,80}$/.test(sh.ref))return null;const m=KB_WPC[cid];if(m&&m.at===sh.at)return m.d;
+ if(S.mode!=="local"){const c=LS.get("kadraj_wpc_"+cid);if(c&&c.at===sh.at&&kbOkImg(c.d)){KB_WPC[cid]=c;return c.d}}
+ const tag=cid+":"+sh.at;const ing=KB_WPC_ING[tag];if(!ing||now()-ing>30e3){KB_WPC_ING[tag]=now();
+  Promise.resolve().then(()=>DB.get("vchunks/"+sh.ref)).then(doc=>{const d=doc&&kbOkImg(doc.d);if(!d)return;wpcPut(cid,sh.at,d);wpReapply(cid)}).catch(e=>console.warn("tema fotoğrafı",e))}
+ return null}
+function wpcPut(cid,at,d){KB_WPC[cid]={at,d};if(S.mode==="local")return;const key="kadraj_wpc_"+cid;const v={at,d,t:now()};if(LS.set(key,v)){wpcTrim(key,3);return}wpcTrim(key,0);LS.set(key,v)}
+function wpcTrim(keep,max){try{const ks=[];for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.startsWith("kadraj_wpc_")&&k!==keep)ks.push(k)}if(ks.length<=max)return;ks.map(k=>[k,(LS.get(k)||{}).t||0]).sort((a,b)=>b[1]-a[1]).slice(max).forEach(([k])=>LS.del(k))}catch{}}
+function wpReapply(cid){const box=$("#msgs");if(!box||S.route.name!=="chat")return;const key=S.route.params.key;let k=null;try{k=keyInfo(key)}catch{}if(k&&k.cid===cid)applyWp(box,key)}
+function kbTheme(id,ctx){if(id==="photo"){const d=kbOkImg(ctx.src==="shared"?wpcGet(ctx.cid,ctx.sh):LS.get(wpLsKey(ctx.src==="*"?"*":ctx.src)));
+  const tone=kbOkHex(ctx.src==="shared"?ctx.sh&&ctx.sh.c:(settings.wpTone||{})[ctx.src==="*"?"*":ctx.src]);
+  return{id:"photo",label:"Fotoğraf",bg:kbPhotoBg(d),img:d,dark:1,src:ctx.src,bub:tone||"",c:tone||"",ink:"#fff",key:`photo:${ctx.src}:${ctx.sh?ctx.sh.at:""}:${d?d.length:0}:${tone||""}`}}
+ const t=chatThemes().find(x=>x.id===id)||chatThemes()[0];return{...t,src:ctx.src,key:t.id==="none"?"none":`${t.id}:${ctx.sh?ctx.sh.at:""}`}}
+/* geçerli tema. Ortak tema (DM/grup) bu sohbet için cihaza özel seçimden yeniyse o kazanır; "Yalnızca bende" daha yeni seçildiyse kişisel tema görünür.
+   3.9'dan kalan (zamansız) kişisel seçimler ortak temanın gerisinde kalır. Sıra: ortak > sohbete özel > varsayılan "*". */
+function chatThemeOf(key){const w=settings.wp||{},wa=settings.wpAt||{};let k=null;if(key&&key!=="*"){try{k=keyInfo(key)}catch{}}
+ const sh=k&&(k.type==="dm"||k.type==="group")&&S.chats[k.cid]&&S.chats[k.cid].theme;const per=key!=="*"&&w[key]?{id:w[key],at:+wa[key]||0}:null;
+ if(sh&&sh.id&&(!per||per.at<=(+sh.at||0))){if(sh.id!=="none")return kbTheme(sh.id,{src:"shared",cid:k.cid,sh});return w["*"]?kbTheme(w["*"],{src:"*"}):kbTheme("none",{src:"shared"})}
+ if(per)return kbTheme(per.id,{src:key});if(w["*"])return kbTheme(w["*"],{src:"*"});return kbTheme("none",{src:""})}
+/* renderMsgs her çizimde çağırır; değişiklik varsa (karşı taraf temayı değiştirdiyse) yumuşak geçişle uygular */
+function applyWp(box,key){const w=chatThemeOf(key);if(box.dataset.wp===w.key)return;const first=!box.dataset.wp;box.dataset.wp=w.key;
+ const set=()=>{box.style.background=w.bg||"";box.classList.toggle("wp",!!w.bg);box.toggleAttribute("data-dk",!!(w.dark&&w.bg));const cp=box.id==="msgs"?$("#composer"):null;
+  for(const el of[box,cp]){if(!el)continue;if(w.bub){el.dataset.bub=w.id;el.style.setProperty("--bub",w.bub);el.style.setProperty("--bub-c",w.c||"#333");el.style.setProperty("--bub-ink",w.ink||"#fff")}
+   else{delete el.dataset.bub;for(const p of["--bub","--bub-c","--bub-ink"])el.style.removeProperty(p)}}};
+ if(first)set();else themeSwitch(set,{fade:true})}
+/* ortak temayı değiştir: önce sohbete küçük bir not (DM'de sohbet belgesini de oluşturur), sonra chats/{cid}.theme */
+async function setSharedTheme(key,id,photo,tone){let k=null;try{k=keyInfo(key)}catch{}if(!k||!(k.type==="dm"||k.type==="group"))return false;if(!guard())return false;
+ const at=now();let ref=null;const prev=(S.chats[k.cid]||{}).theme;
+ if(id==="photo"){if(!photo)return false;ref="wp-"+k.cid;if(!await write(()=>DB.set("vchunks/"+ref,{d:photo,at,by:S.uid})))return false;wpcPut(k.cid,at,photo)}
+ const nm=(me().name||me().username||"").trim();
+ await sendMessage(key,{text:id==="none"?`${nm} sohbet temasını kaldırdı`:`${nm} sohbet temasını “${kbThLabel(id)}” yaptı`,sys:"theme"});
+ const theme={id,by:S.uid,at,ref:ref||null,c:id==="photo"&&kbOkHex(tone)||null};
+ const ok=await write(async()=>{try{await DB.update("chats/"+k.cid,{theme})}catch(e){const c=e&&e.code;if(k.type==="dm"&&(c==="invalid_argument"||c==="not-found"))await DB.set("chats/"+k.cid,{members:[S.uid,k.uid].sort(),updatedAt:at,reads:{[S.uid]:at},theme});else throw e}});
+ if(!ok)return false;
+ const c=S.chats[k.cid]||{};S.chats={...S.chats,[k.cid]:{...c,theme}};
+ if(id!=="photo"&&prev&&prev.ref)DB.del("vchunks/"+prev.ref).catch(()=>{});
+ if(settings.wp&&settings.wp[key]){const w={...settings.wp},wa={...(settings.wpAt||{})};delete w[key];delete wa[key];settings.wp=w;settings.wpAt=wa;saveSettings()}
+ return true}
+/* tema seçici: canlı önizleme, tema ızgarası, fotoğraf; DM/grupta "Herkes için" / "Yalnızca bende". key "*" = varsayılan tema (Ayarlar). */
+function wallpaperMenu(key){key=typeof key==="string"&&key?key:(S.route.params&&S.route.params.key);if(!key)return;
+ const def=key==="*";let k=null;if(!def){try{k=keyInfo(key)}catch{}}const canShare=!!k&&(k.type==="dm"||k.type==="group");
+ const cur=chatThemeOf(key);const sh=canShare?(S.chats[k.cid]||{}).theme:null;
+ const st={sel:cur.id,photo:null,img:cur.img||null,tone:cur.id==="photo"?cur.c||null:null,mode:canShare&&cur.src!==key?"all":"me"};
+ const list=[...chatThemes(),{id:"photo",label:"Fotoğraf"}];
+ const tile=t=>{const img=t.id==="photo"?(st.photo||st.img):null;const bg=t.id==="photo"?(img?`url("${img}") center/cover no-repeat`:""):t.bg;
+  return`<button type="button" data-th="${t.id}" aria-pressed="${st.sel===t.id}" aria-label="${t.id==="photo"?"Fotoğraftan seç":esc(t.label)}"><span class="tw ${t.id==="photo"?"ph":""}"><span class="twb" style="background:${esc(bg||"")}"></span>${t.id==="none"?I("close"):t.id==="photo"?I(img?"edit":"image"):`<i style="background:${esc(t.bub||"var(--accent)")}"></i>`}</span><span class="lb">${esc(t.label)}</span></button>`};
+ const l=sheet("wp",def?"Varsayılan sohbet teması":"Sohbet teması",`<div class="thtop"><div class="thpv" id="thPv"><span class="thbg"></span><span class="b">Yeni temayı gördün mü?</span><span class="b me">Bayıldım, çok yakışmış!</span><span class="b" id="thPv3"></span></div>
+  ${canShare?`<div class="seg thseg" role="group" aria-label="Kim görsün"><button type="button" data-thm="all">${I("users")}Herkes için</button><button type="button" data-thm="me">${I("lock")}Yalnızca bende</button></div>`:""}<p class="thhint" id="thHint"></p>${!def&&!canShare?`<label class="check thall"><input type="checkbox" id="wpAll"> Bütün sohbetlerde kullan</label>`:""}</div>
+  <div class="thgrid" id="thGrid">${list.map(tile).join("")}</div>
+  <div class="thfoot"><button class="btn block" type="button" id="thGo">Uygula</button></div>`);
+ const shEl=l.querySelector(".sheet");if(shEl)shEl.classList.add("thsheet");
+ const draw=()=>{const t=st.sel==="photo"?{bg:kbPhotoBg(st.photo||st.img),dark:1,bub:st.tone||"",ink:"#fff"}:(list.find(x=>x.id===st.sel)||list[0]);const pv=$("#thPv",l);
+  pv.querySelector(".thbg").style.background=t.bg||"";pv.style.setProperty("--pb",t.bub||"var(--accent)");pv.style.setProperty("--pi",t.ink||"var(--accent-ink)");
+  $$("[data-th]",l).forEach(b=>b.setAttribute("aria-pressed",b.dataset.th===st.sel));$$("[data-thm]",l).forEach(b=>b.setAttribute("aria-pressed",b.dataset.thm===st.mode));
+  const all=canShare&&st.mode==="all";$("#thPv3",l).textContent=all?"Herkes aynı anda görüyor":def?"Bütün sohbetlerinde":"Yalnızca sende görünüyor";
+  $("#thHint",l).textContent=def?"Ortak teması olmayan sohbetlerde görünür. Yalnızca bu cihazda saklanır.":all?`Sohbetteki ${k.type==="group"?"herkes":"ikiniz de"} yeni temayı aynı anda görür; sohbete küçük bir not düşer.`:canShare?"Yalnızca bu cihazda değişir, karşı taraf görmez.":"Yalnızca senin cihazında görünür.";
+  $("#thGo",l).textContent=all?"Herkes için uygula":"Uygula"};
+ const pickPhoto=async()=>{const r=await pickImage({title:"Tema fotoğrafı",draw:false});if(!r||!r.img)return;const img=r.img;const ratio=(img.naturalWidth||img.width)/(img.naturalHeight||img.height)||.56;const w=720,hh=Math.round(w/Math.min(Math.max(ratio,.4),1.2));
+  let d;try{d=encode(toCanvas(img,w,hh),300000,.8)}catch(e){console.warn(e);return toast("Fotoğraf hazırlanamadı. Başka bir fotoğraf dene.")}st.photo=d;st.tone=kbTone(img);st.sel="photo";
+  const pb=$('[data-th="photo"]',l);if(pb){pb.outerHTML=tile({id:"photo",label:"Fotoğraf"});wire()}draw()};
+ const wire=()=>$$("[data-th]",l).forEach(b=>b.onclick=()=>{const id=b.dataset.th;vib(8);if(id==="photo"&&(st.sel==="photo"||!(st.photo||st.img)))return pickPhoto();st.sel=id;draw()});
+ wire();$$("[data-thm]",l).forEach(b=>b.onclick=()=>{st.mode=b.dataset.thm;draw()});
+ $("#thGo",l).onclick=async e=>{const b=e.currentTarget;if(b.disabled)return;const img=st.photo||st.img;if(st.sel==="photo"&&!img)return pickPhoto();
+  if(canShare&&st.mode==="all"){if(sh&&sh.id===st.sel&&cur.src==="shared"&&!st.photo){closeLayer("wp");return}
+   b.disabled=true;b.textContent="Uygulanıyor…";const ok=await setSharedTheme(key,st.sel,st.sel==="photo"?img:null,st.tone);
+   if(!ok){b.disabled=false;draw();return}closeLayer("wp");vib(15);const box=$("#msgs");if(box)applyWp(box,key);return}
+  const allEl=$("#wpAll",l);const target=def||(allEl&&allEl.checked)?"*":key;
+  if(st.sel==="photo"){if(!LS.set(wpLsKey(target),img))return toast("Fotoğraf çok büyük, kaydedilemedi.");settings.wpTone={...(settings.wpTone||{}),[target]:st.tone||null}}
+  const w={...(settings.wp||{})},wa={...(settings.wpAt||{})};if(target==="*"){w["*"]=st.sel;if(!def){delete w[key];delete wa[key]}}else{w[key]=st.sel;wa[key]=now()}
+  settings.wp=w;settings.wpAt=wa;saveSettings();closeLayer("wp");vib(12);const box=$("#msgs");if(box&&!def)applyWp(box,key);if(S.route.name==="settings")render(false);
+  toast(def?"Varsayılan sohbet teması kaydedildi":st.sel==="none"?"Sohbet teması kaldırıldı":canShare?"Tema yalnızca sende değişti":"Sohbet teması değişti")};
+ draw()}
+function wallpaperMenuFor(key){return wallpaperMenu(key)}
+
+/* ---------- Ayarlar ---------- */
+function kbFold(s){return String(s||"").toLocaleLowerCase("tr").replace(/ı/g,"i").replace(/\u0307/g,"").replace(/ğ/g,"g").replace(/ü/g,"u").replace(/ş/g,"s").replace(/ö/g,"o").replace(/ç/g,"c").replace(/[âà]/g,"a").replace(/î/g,"i").replace(/û/g,"u")}
+function kbMB(n){n=+n||0;return n<1048576?Math.max(1,Math.round(n/1024))+" KB":(n/1048576).toFixed(1).replace(".",",")+" MB"}
+function vSettings(){const p=me();const pal=accentPal();const dark=isDark();const acc=settings.accent||"auto";const eff=effAccent();
+ const remembered=S.mode==="cloud"?LS.get("kadraj_fb_remember",true):LS.get("kadraj_session")===S.uid;
+ const ic=(n,c)=>`<span class="sic" style="--c:${c}">${I(n)}</span>`;const kw=(...a)=>esc(kbFold(a.join(" ").replace(/<[^>]+>/g," ")));
+ const sm=s=>s?`<small>${s}</small>`:"";
+ const tog=o=>`<label class="srow ${o.cls||""}" data-k="${kw(o.t,o.s,o.k)}">${ic(o.ic,o.c)}<span class="t">${o.t}${sm(o.s)}</span><span class="sw"><input type="checkbox" ${o.id?`id="${o.id}"`:`data-set="${o.f}"`} ${o.on?"checked":""} ${o.dis?"disabled":""} aria-label="${esc(o.t)}"><span></span></span></label>`;
+ const btn=o=>`<button class="srow ${o.red?"red":""}" ${o.a} data-k="${kw(o.t,o.s,o.k)}">${ic(o.ic,o.c)}<span class="t">${o.t}${sm(o.s)}</span>${o.v!=null?`<span class="val">${o.v}</span>`:""}${o.chev===false?"":I("next","chev")}</button>`;
+ const kv=o=>`<div class="srow" data-k="${kw(o.t,o.v,o.k)}">${ic(o.ic,o.c)}<span class="t">${o.t}${sm(o.s)}</span><span class="val ${o.mono?"mono":""}" ${o.vid?`id="${o.vid}"`:""}>${o.v}</span></div>`;
+ const sec=(id,title,body)=>body?`<section class="sxs" data-sec="${id}" data-t="${esc(kbFold(title))}"><h3 class="sxh">${title}</h3><div class="set">${body}</div></section>`:"";
+ const on=f=>settings[f]!==false;
+ /* Görünüm */
+ const vl=accentVars(eff,false),vd=accentVars(eff,true);
+ const mkv=`--lb:${vl["--bg"]||"#F2F5F2"};--ll:${vl["--line"]||"#D9E2DC"};--la:${vl["--accent"]};--db:${vd["--bg"]||"#0A110F"};--ds:${vd["--surface-2"]||"#19261F"};--da:${vd["--accent"]}`;
+ const thLbl={light:"Açık",dark:"Koyu",system:"Sistem"};const curTh=settings.theme||"system";
+ const thCards=`<div class="thc" role="group" aria-label="Tema">${["light","dark","system"].map(v=>`<button data-theme-set="${v}" aria-pressed="${curTh===v}"><span class="mk ${v}" style="${mkv}"><span class="mkl"><i></i><i></i><b></b></span><span class="mkd"><i></i><i></i><b></b></span></span><span>${thLbl[v]}</span><span class="rd"></span></button>`).join("")}</div>`;
+ const autoId=pal[communityAccent()]?communityAccent():"kadraj";const sw=id=>dark?pal[id].d:pal[id].l;
+ const accBtns=[["auto","Otomatik"],...Object.entries(pal).map(([k,v])=>[k,v.n])].map(([k,n])=>{const c=sw(k==="auto"?autoId:k);return`<button data-act="accent" data-v="${k}" aria-pressed="${acc===k}" aria-label="${esc(n)}"><span class="dot ${k==="auto"?"auto":""}" style="--sw:${c[0]};--si:${c[1]}">${I("check")}</span><span>${esc(n)}</span></button>`}).join("");
+ const comm=S.adm&&S.adm.tema&&pal[S.adm.tema.accent]?S.adm.tema:null;
+ const accNote=acc==="auto"?(comm?`Otomatik: Kadraj'ın ortak teması “${esc(comm.title||pal[comm.accent].n)}” kullanılıyor.`:"Otomatik: Yönetici ortak bir tema seçerse herkesle aynı anda değişir."):"";
+ let h=`<div class="search setq"><input class="in" id="setQ" type="search" placeholder="Ayarlarda ara" autocomplete="off" aria-label="Ayarlarda ara"></div>`;
+ h+=`<button class="setprof" data-go="edit" data-k="${kw("profili düzenle hesap ad kullanıcı adı biyografi fotoğraf",p.name,p.username)}">${avatar(S.uid,56,{click:false,ring:false,online:false})}<span class="t"><b>${esc(p.name)}</b><small>@${esc(p.username)}</small><em>Profili düzenle</em></span>${I("next","chev")}</button>`;
+ h+=sec("gorunum","Görünüm",
+  `<div class="srow sblk" data-k="${kw("tema görünüm açık koyu karanlık gece modu sistem aydınlık")}"><div class="sbh">${ic("contrast","#5E5CE6")}<span class="t">Tema</span><span class="val">${thLbl[curTh]}</span></div>${thCards}</div>`+
+  `<div class="srow sblk" data-k="${kw("vurgu rengi renk tema otomatik ortak",Object.values(pal).map(x=>x.n).join(" "))}"><div class="sbh">${ic("palette","#FF9F0A")}<span class="t">Vurgu rengi</span><span class="val">${acc==="auto"?"Otomatik":esc(pal[acc]?pal[acc].n:"")}</span></div><div class="accg">${accBtns}</div>${accNote?`<p class="accnote">${accNote}</p>`:""}</div>`+
+  `<div class="srow sblk" data-k="${kw("yazı boyutu büyük küçük metin font okunabilirlik")}"><div class="sbh">${ic("type","#0A84FF")}<span class="t">Yazı boyutu</span></div><div class="seg" role="group" aria-label="Yazı boyutu">${[[1,"Normal"],[1.1,"Büyük"],[1.2,"Çok büyük"]].map(([v,l])=>`<button data-scale="${v}" aria-pressed="${(settings.scale||1)==v}">${l}</button>`).join("")}</div></div>`+
+  tog({f:"themeSync",on:on("themeSync"),ic:"devices",c:"#30B0C7",t:"Tema tüm cihazlarımda aynı olsun",s:"Tema, vurgu rengi ve yazı boyutu hesabınla eşitlenir",k:"senkron eşitle telefon bilgisayar"})+
+  tog({f:"reduceMotion",on:settings.reduceMotion===true,ic:"motion",c:"#8E8E93",t:"Animasyonları azalt",s:"Geçişler ve hareketli efektler sadeleşir",k:"hareket animasyon erişilebilirlik"}));
+ const email=S.mode==="cloud"&&FB&&FB.auth&&FB.auth.currentUser&&FB.auth.currentUser.email;
+ h+=sec("hesap","Hesap",(email?kv({ic:"mail",c:"#0A84FF",t:"Giriş e-postan",v:esc(email),k:"eposta mail"}):"")+btn({a:'data-act="changepw"',ic:"key",c:"#8E8E93",t:"Şifreyi değiştir",k:"parola güvenlik"}));
+ h+=sec("gizlilik","Gizlilik",
+  tog({id:"setPrivate",on:p.private,ic:"lock",c:"#636366",t:"Gizli hesap",s:"Paylaşımlarını yalnızca takipçilerin görür",k:"kapalı hesap"})+
+  tog({f:"showActive",on:on("showActive"),ic:"radio",c:"#34C759",t:"Aktiflik durumu",s:"Kapalıysa sen de başkalarının aktifliğini göremezsin",k:"çevrimiçi son görülme aktif"})+
+  tog({f:"readReceipts",on:on("readReceipts"),ic:"dcheck",c:"#0A84FF",t:"Okundu bilgisi",s:"Kapalıysa mesajları okuduğunu karşı taraf görmez",k:"görüldü okundu"})+
+  tog({f:"hideLikes",on:settings.hideLikes===true,ic:"heart",c:"#FF375F",t:"Beğeni sayılarını gizle",s:"Başkalarının paylaşımlarında beğeni sayısı görünmez",k:"beğeni sayı"}));
+ const perm=typeof notifPerm==="function"?notifPerm():"unsupported";
+ const pm={granted:["Açık","Uygulama kapalıyken de haber verir"],denied:["Engellendi","İzin vermek için tarayıcı ayarlarını aç"],default:["Kapalı","Uygulama kapalıyken de haber almak için izin ver"],unsupported:["Yok","Bu tarayıcı telefon bildirimlerini desteklemiyor"]}[perm]||["",""];
+ const nOn=!!settings.notify;const cat=(f,i,c,t,s,k)=>tog({f,on:on(f),dis:!nOn,ic:i,c,t,s,k});
+ h+=sec("bildirim","Bildirimler",`<div class="ngrp ${nOn?"":"off"}">`+tog({id:"setNotify",on:nOn,cls:"nmaster",ic:"bell",c:"#FF3B30",t:"Uygulama içi bildirimler",s:"Mesaj, beğeni ve dürtmelerde üstte uyarı",k:"bildirim uyarı"})+
+  cat("nMsg","chat","#0A84FF","Mesajlar","","sohbet mesaj bildirimi")+cat("nLike","heart","#FF375F","Beğeniler","","beğeni bildirimi")+cat("nComment","comment","#FF9F0A","Yorumlar","","yorum bildirimi")+cat("nFollow","users","#5E5CE6","Yeni takipçiler","","takip bildirimi")+cat("nPost","image","#34C759","Yeni paylaşımlar","Takip ettiklerin paylaşınca","paylaşım bildirimi")+`</div>`+
+  `<div class="srow" data-k="${kw("telefon bildirimleri izin push sistem",pm[0],pm[1])}">${ic("mobile","#8E8E93")}<span class="t">Telefon bildirimleri<small>${pm[1]}</small></span>${perm==="default"?`<button class="btn sm" data-act="notifperm">İzin ver</button>`:`<span class="val">${pm[0]}</span>`}</div>`);
+ const defTh=chatThemeOf("*");
+ h+=sec("sohbet","Sohbet",
+  tog({f:"enterSend",on:on("enterSend"),ic:"enterk",c:"#0A84FF",t:"Enter ile gönder",s:"Kapalıysa Enter yeni satıra geçer",k:"klavye gönder satır"})+
+  tog({f:"msgSound",on:on("msgSound"),ic:"vol",c:"#FF9F0A",t:"Mesaj sesleri",s:"Gönderirken ve mesaj gelince hafif ses",k:"ses ton"})+
+  btn({a:'data-act="wpdefault"',ic:"palette",c:"#AF52DE",t:"Varsayılan sohbet teması",s:"Ortak teması olmayan sohbetlerde",v:esc(defTh.label||"Yok"),k:"duvar kağıdı arka plan tema balon"}));
+ h+=sec("medya","Medya ve dokunuş",
+  tog({id:"setAutoplay",on:!!settings.autoplay,ic:"play",c:"#FF2D55",t:"Sahneleri otomatik oynat",s:"Kapatırsan dokununca başlar",k:"video reels oynatma"})+
+  tog({f:"dataSaver",on:settings.dataSaver===true,ic:"leaf",c:"#34C759",t:"Veri tasarrufu",s:"Sahneler önceden yüklenmez, daha az internet harcar",k:"mobil veri internet kota"})+
+  tog({f:"haptics",on:on("haptics"),ic:"vibrate",c:"#FF9F0A",t:"Titreşim",s:"Beğeni, dürtme ve bildirimlerde hafif titreşim",k:"haptik titreşim"}));
+ h+=sec("satranc","Satranç",
+  tog({f:"chessSound",on:on("chessSound"),ic:"vol",c:"#A2845E",t:"Satranç sesleri",s:"Hamle, taş alma ve şah sesleri",k:"satranç ses"})+
+  tog({f:"evalBar",on:on("evalBar"),ic:"poll",c:"#5E5CE6",t:"Değerlendirme çubuğu",s:"Tahtanın yanında kimin önde olduğunu gösterir",k:"satranç değerlendirme"})+
+  `<div class="srow sblk" data-k="${kw("tahta teması satranç renk",Object.values(CTHEMES).map(x=>x[2]).join(" "))}"><div class="sbh">${ic("knight","#30B0C7")}<span class="t">Tahta teması</span></div><div class="cthemes">${Object.entries(CTHEMES).map(([k2,[a,b,n]])=>`<button data-cth="${k2}" aria-pressed="${(settings.board||"kadraj")===k2}"><i style="background:linear-gradient(135deg,${a} 50%,${b} 50%)"></i>${n}</button>`).join("")}</div></div>`);
+ const sa=typeof isStandalone==="function"&&isStandalone();
+ h+=sec("depolama","Uygulama ve depolama",
+  btn({a:'data-act="install"',ic:"home",c:"#34C759",t:sa?"Ana ekranda açık":"Ana ekrana ekle",s:sa?"Kadraj uygulama olarak çalışıyor":"Telefonunda simgesiyle dursun, tam ekran açılsın",k:"yükle kur pwa"})+
+  kv({ic:"db",c:"#8E8E93",t:"Bu cihazda kullanılan",s:"Fotoğraflar, videolar ve uygulama dosyaları",v:(S._stUse&&S._stUse.s)||"…",vid:"stUse",k:"depolama alan boyut"})+
+  btn({a:'data-act="clearcache"',ic:"trash",c:"#FF9F0A",t:"Önbelleği temizle",s:"Hesabın, mesajların ve ayarların yerinde kalır",k:"önbellek temizle cache"}));
+ h+=sec("yardim","Yardım",
+  btn({a:'data-act="invite"',ic:"users",c:"#0A84FF",t:"Arkadaşlarını davet et",s:"Birlikte kullanmanın yolu",k:"davet bağlantı"})+
+  btn({a:'data-msg="bot:rota"',ic:"spark",c:"#0C7A63",t:"Rota'ya sor",s:"Yapay zekâ rehberi",k:"yardım yapay zeka asistan"})+
+  btn({a:'data-act="whatsnew"',ic:"gift",c:"#FF2D55",t:"Neler yeni?",s:`Kadraj ${APP_VER} yenilikleri`,k:"yenilikler sürüm güncelleme"}));
+ h+=sec("hakkinda","Hakkında",
+  kv({ic:"info",c:"#8E8E93",t:"Sürüm",v:`Kadraj ${APP_VER} · Firebase`,mono:1,k:"versiyon"})+
+  btn({a:'data-act="checkver"',ic:"rotate",c:"#0A84FF",t:"Güncellemeleri denetle",k:"güncelle yeni sürüm"})+
+  kv({ic:"globe",c:"#30B0C7",t:"Veri",s:S.mode==="cloud"?"Arkadaşlarınla canlı":"Yalnızca bu cihazda",v:S.mode==="cloud"?"Firebase":"Demo",k:"firebase demo"})+
+  kv({ic:"radio",c:"#34C759",t:"Şu an açık",v:`${S.online.size+1} kişi`,k:"çevrimiçi aktif"})+
+  kv({ic:"spark",c:"#5E5CE6",t:"Rota",v:S.caps.sample?"Yapay zekâ bağlı":"Hazır yanıtlar",k:"yapay zeka"}));
+ h+=sec("oturum","Oturum",
+  tog({id:"setRemember",on:remembered,ic:"check",c:"#34C759",t:"Beni hatırla",s:"Açıkken bu cihazda şifre sorulmaz",k:"oturum giriş"})+
+  btn({a:'data-act="logout"',ic:"logout",c:"#FF3B30",t:"Çıkış yap",s:"@"+esc(p.username),chev:false,k:"çıkış oturum kapat"}));
+ if(S.admin)h+=sec("yonetici","Yönetici",btn({a:'data-go="admin"',ic:"key",c:"#1F2937",t:"Yönetici paneli",s:"Kullanıcılar, botlar, duyuru, ortak tema",k:"admin"}));
+ h+=sec("gelismis","Gelişmiş",
+  btn({a:'data-act="resetcfg"',ic:"link",c:"#8E8E93",t:S.mode==="cloud"?"Firebase bağlantısını değiştir":"Firebase'i kur",s:S.mode==="cloud"?"Kurulum ekranına döner":"Arkadaşlarınla konuşmak için gerekli",k:"firebase bağlantı kurulum"})+
+  btn({a:'data-act="delacct"',ic:"trash",c:"#FF3B30",red:1,t:"Hesabı sil",s:"Profil, paylaşımlar ve hikâyeler kalıcı olarak silinir",chev:false,k:"hesap sil"}));
+ h+=`<div class="empty" id="setEmpty" hidden><span class="ic">${I("search")}</span><b>Sonuç yok</b><span>“<span id="setEmptyQ"></span>” için bir ayar bulunamadı.</span></div>`;
+ h+=`<div class="setfoot">${VF}<span>Kadraj ${APP_VER}</span></div>`;
+ return h}
+function kbFilterSettings(){const q=kbFold(S.setQ||"").trim();const words=q?q.split(/\s+/):[];let any=false;
+ for(const s of $$("#main .sxs")){const tm=!!q&&(s.dataset.t||"").includes(q);let vis=0;for(const r of $$("[data-k]",s)){const ok=!q||tm||words.every(w=>r.dataset.k.includes(w));r.hidden=!ok;if(ok)vis++}s.hidden=!vis;if(vis)any=true}
+ const pc=$("#main .setprof");if(pc){const ok=!q||words.every(w=>pc.dataset.k.includes(w));pc.hidden=!ok;if(ok)any=true}
+ const e=$("#setEmpty");if(e){e.hidden=any||!q;const eq=$("#setEmptyQ");if(eq)eq.textContent=(S.setQ||"").trim()}
+ const f=$("#main .setfoot");if(f)f.hidden=!!q}
+async function kbFillStorage(){const c=S._stUse;if(c&&now()-c.t<20e3){const el=$("#stUse");if(el)el.textContent=c.s;return}
+ let s="Bilinmiyor";try{let n=0;try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);n+=(k.length+(localStorage.getItem(k)||"").length)*2}}catch{}if(navigator.storage&&navigator.storage.estimate){const e=await navigator.storage.estimate();n+=e.usage||0}s=kbMB(n)}catch{}
+ S._stUse={t:now(),s};const el=$("#stUse");if(el)el.textContent=s}
+function kbOnFlag(f,v){settings[f]=v;saveSettings();
+ if(f==="reduceMotion")document.documentElement.classList.toggle("reduce-motion",v);
+ else if(f==="showActive"){try{const r=S.caps.room;if(r&&r.presence)Promise.resolve(r.presence({})).catch(()=>{})}catch{}setTimeout(scheduleRefresh,300);toast(v?"Aktiflik durumun yeniden görünür":"Aktiflik durumun gizlendi")}
+ else if(f==="themeSync"){if(v){settings.prefsAt=now();saveSettings();pushPrefs();toast("Tema artık bütün cihazlarında aynı")}}
+ else if(f==="haptics"&&v)vib(25)}
+HOOKS.after.push(r=>{if(r!=="settings"){S.setQ="";return}
+ for(const el of $$("#main input[data-set]"))el.onchange=()=>kbOnFlag(el.dataset.set,el.checked);
+ const n=$("#setNotify");if(n)n.addEventListener("change",()=>{const g=n.closest(".ngrp");if(!g)return;g.classList.toggle("off",!n.checked);$$("input[data-set]",g).forEach(i=>i.disabled=!n.checked)});
+ const q=$("#setQ");if(q){q.value=S.setQ||"";q.oninput=()=>{S.setQ=q.value;kbFilterSettings()};if(S.setQ)kbFilterSettings()}
+ kbFillStorage()});
+ACT.accent=(t,d)=>setThemePref({accent:d.v||"auto"});
+ACT.wpdefault=()=>wallpaperMenu("*");
+ACT.notifperm=async()=>{await askNotif(false);if(S.route.name==="settings")render(false)};
+ACT.whatsnew=()=>{try{showWhatsNew(true)}catch(e){console.warn(e)}};
+ACT.checkver=()=>{try{checkVersion(true)}catch(e){console.warn(e)}};
+ACT.clearcache=()=>dialog("Önbellek temizlensin mi?","Uygulama dosyaları ve sohbet teması fotoğrafları bu cihazdan silinir. Hesabın, mesajların ve ayarların yerinde kalır.",[{label:"Temizle",fn:async()=>{
+ try{if(window.caches)for(const k of await caches.keys())await caches.delete(k)}catch{}
+ try{const ks=[];for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.startsWith("kadraj_wpc_"))ks.push(k)}ks.forEach(k=>LS.del(k))}catch{}
+ for(const k of Object.keys(KB_WPC))delete KB_WPC[k];for(const k of Object.keys(KB_WPC_ING))delete KB_WPC_ING[k];S._stUse=null;toast("Önbellek temizlendi");if(S.route.name==="settings")kbFillStorage()}},{label:"Vazgeç"}]);
+
+/* Rota'nın hazır yanıtları: yeni görünüm ve ayarlar (öne eklenir, daha genel kalıpları gölgelemeyecek kadar dar) */
+try{FAQ.unshift(
+ [/sohbet tema|duvar ka[gğ]ı?d|sohbet(in)? arka ?plan|balon reng/i,"Sohbetin sağ üstündeki **resim** düğmesine dokun, bir tema seç ve önizlemeye bak.\n- **Herkes için uygula**: birebir ve grup sohbetlerinde tema herkeste aynı anda değişir, sohbete küçük bir not düşer.\n- **Yalnızca bende**: tema sadece senin cihazında değişir.\n- **Fotoğraf**: kendi fotoğrafını tema yapabilirsin; balon rengi fotoğrafa göre seçilir.\nBütün sohbetler için varsayılan temayı **Ayarlar > Sohbet**'ten seçebilirsin."],
+ [/vurgu reng|koyu tema|karanl[ıi]k mod|gece modu|a[cç][ıi]k tema|temay[ıi] (de[gğ]i[sş]|nas[ıi]l)|uygulaman[ıi]n reng/i,"Görünümü **Ayarlar > Görünüm**'den değiştirebilirsin:\n- **Tema**: Açık, Koyu ya da Sistem\n- **Vurgu rengi**: Kadraj, Okyanus, Gün batımı, Mor, Pembe, Kiraz, Grafit ya da **Otomatik** (yönetici ortak bir tema seçerse herkesle aynı anda değişir)\n- **Tema tüm cihazlarımda aynı olsun** açıksa seçimin hesabınla eşitlenir.\nAkış'ın üstündeki güneş/ay düğmesi de temayı tek dokunuşla değiştirir."],
+ [/ayarlar|aktiflik|okundu bilgisi|bildirim t[üu]r|veri tasarruf|titre[sş]im/i,"**Ayarlar**'a profilindeki dişli simgesinden girersin. En üstteki arama kutusuna yazarak istediğin ayarı hemen bulursun:\n- **Gizlilik**: gizli hesap, aktiflik durumu, okundu bilgisi, beğeni sayılarını gizleme\n- **Bildirimler**: mesaj, beğeni, yorum, takip ve paylaşım bildirimlerini ayrı ayrı aç ya da kapat\n- **Medya ve dokunuş**: sahneleri otomatik oynatma, veri tasarrufu, titreşim"])}catch(e){}
 /*}@js:B*/
 
 /*@js:C{*/
