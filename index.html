@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
 <meta charset="utf-8">
-<meta name="kadraj-version" content="40100">
+<meta name="kadraj-version" content="40101">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0C7A63">
 <link rel="manifest" href="manifest.webmanifest">
@@ -1012,6 +1012,7 @@ html[data-accent]:not([data-accent="kadraj"]) .call{background:radial-gradient(1
 /*}@css:D2*/
 
 /*@css:E{*/
+.reel.buf::after{content:"";position:absolute;left:50%;top:45%;width:42px;height:42px;margin:-21px;border-radius:50%;border:3px solid rgba(255,255,255,.3);border-top-color:#fff;animation:sp .8s linear infinite;z-index:4;pointer-events:none}
 /*}@css:E*/
 /* 4.0: tablet ve geniş ekran uyumu: içerik ekranı doldursun, yanlarda boş şerit kalmasın */
 @media (min-width:560px){
@@ -1071,7 +1072,7 @@ const vib=ms=>{try{if(settings.haptics===false)return;navigator.vibrate&&navigat
 /* Sürüm: ana.ara.yama (4.1.0). Hata düzeltme ve küçük şeyler → yama artar (4.1.1); büyük güncelleme → ara artar (4.2.0).
    APP_V = ana*10000 + ara*100 + yama (4.1.0 → 40100). Başlıktaki <meta name="kadraj-version"> ile aynı tutulmalı.
    Eski biçim (4.0 → 40) verNorm ile çevrilir. "İki sürüm geride" ara sürüm sayısıyla ölçülür (yamalar engellemez). */
-const APP_V=40100,APP_VER="4.1.0";
+const APP_V=40101,APP_VER="4.1.1";
 const verNorm=x=>{x=Math.max(0,Math.floor(+x||0));return x<1000?Math.floor(x/10)*10000+(x%10)*100:x};
 const verLvl=x=>Math.floor(verNorm(x)/100);
 const verGap=x=>verLvl(x)-verLvl(APP_V);
@@ -1625,7 +1626,7 @@ function afterRender(){const r=S.route.name;runHooks("after",r);if(r==="chessgam
  if(r==="reels"){io=new IntersectionObserver(es=>{for(const e of es){if(e.isIntersecting&&e.intersectionRatio>.6)activateReel(e.target);else if(e.target===activeReel)deactivateReel(e.target)}},{threshold:[0,.6]});$$(".reel").forEach(el=>io.observe(el));hydrateVideos();
   const start=S.route.params.start;if(start){const el=$(`.reel[data-pid="${CSS.escape(start)}"]`);if(el)main().scrollTop=el.offsetTop}}}
 function activateReel(el){if(activeReel===el)return;if(activeReel)deactivateReel(activeReel);activeReel=el;const p=postById(el.dataset.pid);const v=el.querySelector("video");
- if(v){v.muted=S.muted||v.dataset.mus==="1";v.preload="auto";if(settings.autoplay)v.play().catch(()=>{if(!v.muted){v.muted=true;v.play().catch(()=>{});S.needUnmute=true;const h=el.querySelector(".rhint");if(h)h.hidden=false}});const nx=el.nextElementSibling&&el.nextElementSibling.querySelector("video");if(nx&&nx.preload!=="auto"&&!settings.dataSaver)nx.preload="auto";const bar=el.querySelector(".rprog i");v.ontimeupdate=()=>{if(bar&&v.duration)bar.style.width=(v.currentTime/v.duration*100)+"%"};v.onplay=()=>el.classList.remove("paused");v.onpause=()=>{if(activeReel===el)el.classList.add("paused")}}
+ if(v){v.muted=S.muted||v.dataset.mus==="1";v.preload="auto";if(settings.autoplay)v.play().catch(()=>{if(!v.muted){v.muted=true;v.play().catch(()=>{});S.needUnmute=true;const h=el.querySelector(".rhint");if(h)h.hidden=false}});const nx=el.nextElementSibling&&el.nextElementSibling.querySelector("video");if(nx&&nx.preload!=="auto"&&!settings.dataSaver)nx.preload="auto";const bar=el.querySelector(".rprog i");v.ontimeupdate=()=>{if(bar&&v.duration)bar.style.width=(v.currentTime/v.duration*100)+"%"};v.onplay=()=>el.classList.remove("paused");v.onwaiting=()=>el.classList.add("buf");v.onplaying=()=>el.classList.remove("buf");v.oncanplay=()=>el.classList.remove("buf");v.onpause=()=>{if(activeReel===el)el.classList.add("paused")}}
  const sl=$$(".slide",el);if(sl.length){let i=0;sl.forEach((s,j)=>s.classList.toggle("on",j===0));if(sl.length>1)el._t=setInterval(()=>{sl[i].classList.remove("on");i=(i+1)%sl.length;sl[i].classList.add("on")},3200)}
  if(p&&p.music&&p.music!=="none"&&!S.muted)Music.start(p.music);else Music.stop()}
 function deactivateReel(el){const v=el.querySelector("video");if(v)v.pause();if(el._t){clearInterval(el._t);el._t=null}if(activeReel===el){activeReel=null;Music.stop()}}
@@ -1954,7 +1955,9 @@ function videoPoster(url){return new Promise(res=>{const v=document.createElemen
 /* video parçaları */
 const vcache={};
 const RB={};function RV(x){if(!x)return x;const d=ASSETS[x];if(!d)return x;if(RB[x])return RB[x];try{const i=d.indexOf(",");const mime=d.slice(5,d.indexOf(";"))||"video/mp4";const bin=atob(d.slice(i+1));const u=new Uint8Array(bin.length);for(let k=0;k<bin.length;k++)u[k]=bin.charCodeAt(k);return RB[x]=URL.createObjectURL(new Blob([u],{type:mime}))}catch{return d}}
-const vsrc=p=>!p.video?"":p.video.startsWith("chunk:")?(vcache[p.video]||""):RV(p.video);
+/* Cloudinary videoları akıcı oynasın: 720p, H.264 MP4, otomatik kalite (Cloudinary ilk izlemede dönüştürür ve önbellekler) */
+const cldPlay=u=>typeof u==="string"&&/^https:\/\/res\.cloudinary\.com\/[^/]+\/video\/upload\/v\d+\//.test(u)?u.replace("/video/upload/","/video/upload/f_mp4,vc_h264,q_auto,w_720,c_limit/").replace(/\.(webm|mov|mkv|3gp|m4v|avi)$/i,".mp4"):u;
+const vsrc=p=>!p.video?"":p.video.startsWith("chunk:")?(vcache[p.video]||""):cldPlay(RV(p.video));
 const vref=p=>p.video&&p.video.startsWith("chunk:")?` data-vref="${esc(p.video)}"`:"";
 async function resolveVideo(ref){if(vcache[ref])return vcache[ref];const[,vid,n]=ref.split(":");const parts=await Promise.all([...Array(+n)].map((_,i)=>DB.get(`vchunks/${vid}-${i}`).catch(()=>null)));if(parts.some(x=>!x))return null;
  if(parts[0].b&&parts[0].b.toUint8Array)return vcache[ref]=URL.createObjectURL(new Blob(parts.map(x=>x.b.toUint8Array()),{type:parts[0].m||"video/mp4"}));
