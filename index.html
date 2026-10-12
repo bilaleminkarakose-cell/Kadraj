@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
 <meta charset="utf-8">
-<meta name="kadraj-version" content="40200">
+<meta name="kadraj-version" content="40201">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0C7A63">
 <link rel="manifest" href="manifest.webmanifest">
@@ -1082,7 +1082,7 @@ const vib=ms=>{try{if(settings.haptics===false)return;navigator.vibrate&&navigat
 /* Sürüm: ana.ara.yama (4.1.0). Hata düzeltme ve küçük şeyler → yama artar (4.1.1); büyük güncelleme → ara artar (4.2.0).
    APP_V = ana*10000 + ara*100 + yama (4.1.0 → 40100). Başlıktaki <meta name="kadraj-version"> ile aynı tutulmalı.
    Eski biçim (4.0 → 40) verNorm ile çevrilir. "İki sürüm geride" ara sürüm sayısıyla ölçülür (yamalar engellemez). */
-const APP_V=40200,APP_VER="4.2.0";
+const APP_V=40201,APP_VER="4.2.1";
 const verNorm=x=>{x=Math.max(0,Math.floor(+x||0));return x<1000?Math.floor(x/10)*10000+(x%10)*100:x};
 const verLvl=x=>Math.floor(verNorm(x)/100);
 const verGap=x=>verLvl(x)-verLvl(APP_V);
@@ -3624,7 +3624,7 @@ function fbForgot(prefill){S.inReset=false;authShell(`<div>${brandLine}<h2>Şifr
  $("#fgBack").onclick=()=>fbLogin();$("#fgMail").onclick=()=>fbFindMail($("#fgId").value.trim());
  $("#fgF").onsubmit=async e=>{e.preventDefault();const err=$("#fgErr");const btn=$("#fgF button[type=submit]");btn.disabled=true;
   try{const mail=await resolveLogin($("#fgId").value);await sendReset(mail);fbMailSent(mail)}catch(ex){err.textContent=loginErr(ex);btn.disabled=false}}}
-function sendReset(mail){return FB.A.sendPasswordResetEmail(FB.auth,mail,{url:APP_URL})}
+async function sendReset(mail){try{return await FB.A.sendPasswordResetEmail(FB.auth,mail,{url:APP_URL})}catch(ex){if(ex&&/continue-uri|unauthorized-domain/.test(ex.code||""))return FB.A.sendPasswordResetEmail(FB.auth,mail);throw ex}}
 function fbMailSent(mail){authShell(`<div>${brandLine}</div><div class="fg-card"><span class="fg-ic">${I("send")}</span><h2 style="margin:0">E-postana bak</h2><span class="muted">Şifre yenileme bağlantısını şu adrese gönderdik:</span><span class="fg-mail">${esc(maskMail(mail))}</span>
  <ol class="fg-steps"><li>E-postanı aç. Göremezsen <b>Spam / Gereksiz</b> klasörüne de bak.</li><li><b>Kadraj</b>'dan gelen e-postadaki bağlantıya dokun.</li><li>Kadraj açılınca yeni şifreni belirle; otomatik giriş yaparsın.</li></ol></div>
  <button class="btn sec block" id="msAgain" disabled>Tekrar gönder (60)</button><button class="btn ghost" id="msBack">Girişe dön</button>`);
