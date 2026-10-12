@@ -13,7 +13,7 @@ Bu dosya, `index.html` okunarak çıkarılmış ayrıntılı bir haritadır. Yen
 ## Dosyalar
 - `index.html`: Uygulamanın tamamı (HTML, CSS ve JS). Saf JS, kütüphane yok, `"use strict"`.
 - `sw.js`: Service worker. Önce ağdan çeker, ağ yoksa önbellekten açar (önbellek adı `kadraj-v36`). Önce ağ denendiği için sürüm değişince önbellek adını değiştirmek zorunlu değil.
-- `manifest.webmanifest`, `icon-192.png` ve `icon-512.png`: PWA dosyaları.
+- `manifest.webmanifest`, `icon-192.png`, `icon-512.png` ve `icon-maskable-512.png`: PWA dosyaları. 4.4.2'den beri simge: yeşil degrade, vizör köşeleri içinde K ve turuncu nokta (`<link rel=icon>` `?v=` ile önbellek kırılır).
 
 ## index.html yapısı (yukarıdan aşağı)
 1. **CSS**: Renkler `:root` değişkenlerinde (`--bg`, `--surface`, `--surface-2`, `--line`, `--fg`, `--muted`, `--accent` (#0C7A63), `--accent-ink`, `--accent-soft`, `--sun`, `--heart`, `--ok`). Koyu tema üç yerde tanımlı: `prefers-color-scheme`, `[data-theme]` ve `[data-app-theme]`. Fontlar: `--f-display` Unbounded, `--f-body` Figtree, `--f-mono` JetBrains Mono. Yazı boyutu `--scale` ile ayarlanır. Bölümler: dok, kartlar, ızgara (`.tile`), sohbet (`.msgs`, `.mrow`, `.msg`, `.react`, `.rxpick`, `.wpgrid`), profil, reels, katmanlar (`.sheet`, `.dialog`, `.full`), oluştur, hikâye (`.sv`), ayarlar, arama (`.call`), satranç (`.chess`, `.cboard`, `.pc`...), Rota yüzü (`.rbot`), yönetici (`.adm-*`). Animasyon anahtarları: `enter` (sayfa geçişi, `main.enter`), `msgin`, `toastin`, `dockpop`, `burst`, `up`, `fade`, `cpop`, `cfall` (konfeti). `prefers-reduced-motion` tüm animasyonları kapatır.
@@ -129,7 +129,7 @@ Bu dosya, `index.html` okunarak çıkarılmış ayrıntılı bir haritadır. Yen
 - Tepki bildirimi yok (`notifyChats` yalnızca son mesajı izler).
 
 ## 4.0'da eklenenler (kısa)
-- Sürüm (şu an 4.4.1): `APP_V=40401`, `APP_VER="4.4.1"` ve `<head>`'deki `<meta name="kadraj-version" content="40401">` birlikte artırılmalı; eski biçim (40) `verNorm` ile çevrilir (sürüm denetimi bu etiketi okur; `meta/_surum` belgesi en yüksek sürümü tutar; iki sürüm geride kalan istemci kapanır).
+- Sürüm (şu an 4.4.2): `APP_V=40402`, `APP_VER="4.4.2"` ve `<head>`'deki `<meta name="kadraj-version" content="40402">` birlikte artırılmalı; eski biçim (40) `verNorm` ile çevrilir (sürüm denetimi bu etiketi okur; `meta/_surum` belgesi en yüksek sürümü tutar; iki sürüm geride kalan istemci kapanır).
 - Kancalar: `ACT` (data-act eylemleri), `HOOKS.after/enter/profiles/boot` + `runHooks`. Aktiflik: `isActive`, `activeLabel`, `activeUsers`, `lastSeenAt`.
 - Blok A (`/*@js:A{*/`): `#intro` açılış animasyonu, karşılama ekranı (`welScreen`), sürüm denetimi (`verWatch`, `fetchRemoteVersion`, `hardReload`, `showVersionBlock`), `showWhatsNew` (`WN_ITEMS`).
 - Blok B: vurgu renkleri (`applyAccent`, `effAccent`), `themeSwitch`, tema eşitleme (`profiles.prefs`), yönetici ortak teması (`admin/tema`), ortak sohbet temaları (`chats/{cid}.theme`, `KB_THEMES`, yeni `applyWp`/`wallpaperMenu`), yeni `vSettings` (`data-set` anahtarları).
