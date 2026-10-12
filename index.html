@@ -2847,7 +2847,7 @@ function admUserSheet(uid){const p=P(uid);const self=uid===S.uid;const n=Object.
  <button class="opt" id="auV">${I("check")}${isVerified(uid)?"Onaylı rozetini kaldır":"Onaylı rozeti ver"}</button>${isChild(uid)?`<button class="opt" id="auCk">${I("lock")}Çocuk modunu kapat</button>`:childInvites()[uid]?`<button class="opt" id="auCp">${I("close")}Çocuk modu önerisini geri çek</button>`:`<button class="opt" id="auC">${I("lock")}Çocuk modu öner</button>`}
  ${n?`<button class="opt" id="auP">${I("grid")}Tüm paylaşımlarını sil (${n})</button>`:""}${ns?`<button class="opt" id="auS">${I("eye")}Hikâyelerini sil (${ns})</button>`:""}
  ${self?"":muteOf(uid)?`<button class="opt" id="auMu">${I("vol")}Susturmayı kaldır</button>`:`<button class="opt" id="auM">${I("mute")}Sustur</button>`}
- ${S.mode==="cloud"?`<button class="opt" id="auK">${I("key")}Kadraj Anahtarını göster</button>`:""}
+ ${S.mode==="cloud"&&!self?`<button class="opt" id="auK">${I("key")}Kadraj Anahtarını göster</button>`:""}
  ${self?"":`<button class="opt red" id="auX">${I("trash")}Hesabı kapat ve sil</button>`}<button class="opt" data-act="close">${I("close")}Vazgeç</button>`);
  const auk=$("#auK",l);if(auk)auk.onclick=()=>{closeLayer("admu");admKeySheet(uid)};
  const setMute=async until=>{const list={...((S.adm&&S.adm.mute&&S.adm.mute.list)||{}),[uid]:{until,name:p.name}};if(await admSet("mute",{list})){toast(until?`@${p.username} susturuldu`:"Susturma kaldırıldı");admLog(until?`@${p.username} susturuldu`:`@${p.username} susturması kaldırıldı`);render(false)}};
@@ -2869,7 +2869,8 @@ function admKeySheet(uid){if(!S.admin)return;const p=P(uid);
   let kr=null;try{kr=await DB.get("kurtar/"+uid)}catch{return fail("Okunamadı. Firebase kurallarını yönetici panelinden kopyalayıp yeniden yayınla.")}
   if(!kr||!kr.c)return fail("Bu kişinin anahtarı henüz yedeklenmemiş. Yeni sürümde bir kez giriş yapmış olması gerekir.");
   let code=null;try{code=await kurtarOpen(kr,mail)}catch{return fail("E-posta tutmuyor. Kişinin kayıt olduğu adresi harfi harfine sor.")}
-  await DB.update("kurtar/"+uid,{seen:{at:now(),by:S.uid}}).catch(()=>{});admLog(`@${p.username} Kadraj Anahtarı e-posta onayıyla görüntülendi`);
+  const un=await DB.get("unames/"+p.username).catch(()=>null);if(un&&un.uid===uid&&un.rk&&!await kaUnlock(code,un.rk).then(()=>true,()=>false))return fail("Yedeklenen anahtar güncel değil. Kişi Kadraj'ı bu sürümde bir kez açınca yedek yenilenir.");
+  if(!await write(()=>DB.update("kurtar/"+uid,{seen:{at:now(),by:S.uid}}),{quiet:true}))return fail("Görüntüleme kaydedilemedi, anahtar gösterilmedi. Tekrar dene.");admLog(`@${p.username} Kadraj Anahtarı e-posta onayıyla görüntülendi`);
   $("#akF",l).outerHTML=`<div class="form"><div class="kp-key"><b style="font:600 1rem var(--f-display);display:flex;gap:8px;align-items:center">${I("key")}@${esc(p.username)} anahtarı</b><div class="code">${esc(code)}</div>
    <div class="row2"><button class="btn sec sm" id="akC">${I("copy")}Kopyala</button></div>
    <small class="muted">Bunu yalnızca @${esc(p.username)} kişisine ilet. Giriş ekranında <b>Şifremi unuttum › Kadraj Anahtarı ile yenile</b>'ye dokunup kullanıcı adını (<b>${esc(p.username)}</b>), bu anahtarı ve yeni şifresini yazsın. O girişte anahtarı kendiliğinden yenilenir; bu anahtar bir daha çalışmaz.</small></div></div>`;
@@ -3053,7 +3054,7 @@ function fbChangePw(){const l=sheet("pw","Şifreyi değiştir",`<form class="for
 function fbDelete(){const l=sheet("del","Hesabı sil",`<form class="form" id="dlF"><p class="muted" style="margin:0">Profilin, paylaşımların ve hikâyelerin kalıcı olarak silinir. Onaylamak için şifreni yaz.</p><div class="field"><label for="dl0">Şifre</label><input class="in" id="dl0" type="password" autocomplete="current-password"></div><div class="err" id="dlE"></div><button class="btn block" style="background:var(--heart);color:#fff">Hesabı kalıcı olarak sil</button></form>`);
  $("#dlF",l).onsubmit=async e=>{e.preventDefault();const er=$("#dlE",l);try{const{A,auth}=FB;const u=auth.currentUser;await A.reauthenticateWithCredential(u,A.EmailAuthProvider.credential(u.email,$("#dl0",l).value));const uid=S.uid;
   for(const p of Object.values(S.posts).filter(p=>p.uid===uid)){await DB.del("posts/"+p.id).catch(()=>{});await DB.del("meta/"+p.id).catch(()=>{});delChunks(p.video)}for(const st of Object.values(S.stories).filter(x=>x.uid===uid))await DB.del("stories/"+st.id).catch(()=>{});
-  const un0=(S.profiles[uid]||{}).username;if(un0)await DB.del("unames/"+un0).catch(()=>{});await DB.del("presence/"+uid).catch(()=>{});await DB.del(`data/users/${uid}/saved`).catch(()=>{});await DB.del("profiles/"+uid).catch(()=>{});
+  const un0=(S.profiles[uid]||{}).username;if(un0)await DB.del("unames/"+un0).catch(()=>{});await DB.del("presence/"+uid).catch(()=>{});await DB.del(`data/users/${uid}/saved`).catch(()=>{});await DB.del("kurtar/"+uid).catch(()=>{});await DB.del(`data/users/${uid}/posta`).catch(()=>{});await DB.del("profiles/"+uid).catch(()=>{});
   endSession();await A.deleteUser(u);toast("Hesabın silindi")}catch(ex){er.textContent=authErr(ex)}}}
 
 /* ============ Açılış ============ */
@@ -3697,19 +3698,30 @@ async function kaLock(code,pw){const salt=crypto.getRandomValues(new Uint8Array(
 async function kaUnlock(code,rk){const pt=await crypto.subtle.decrypt({name:"AES-GCM",iv:kub64(rk.i)},await kaKey(code,kub64(rk.s)),kub64(rk.c));return new TextDecoder().decode(pt)}
 function postaAdd(po,t,b,ic){po.msgs=[{id:rid(),t,b,ic:ic||"mail",at:now(),r:0},...(po.msgs||[])].slice(0,50)}
 const postaUnread=()=>((S.posta&&S.posta.msgs)||[]).filter(m=>!m.r).length;
+/* 4.3.0 sürümü (yönetici kurtarması yok); kullanılmıyor */
+async function kasaSealOld(uid,pw,{create=true,note,rotate=false}={}){if(S.mode!=="cloud"||!uid||!pw||!(window.crypto&&crypto.subtle))return null;
+ const prof=(S.profiles&&S.profiles[uid])||await DB.get("profiles/"+uid).catch(()=>null);const un=prof&&prof.username;if(!un)return null;
+ const path=`data/users/${uid}/posta`;const po=(await DB.get(path).catch(()=>null))||{msgs:[]};po.msgs=po.msgs||[];let fresh=false;
+ if(!po.code){if(!create)return null;po.code=kaNew();fresh=true}
+ if(rotate){po.code=kaNew();postaAdd(po,"Yeni Kadraj Anahtarın",`Yeni anahtarın:\n${po.code}\n\nEski anahtarın artık çalışmaz. Yenisini bir yere yaz.`,"key")}
+ const rk=await kaLock(po.code,pw);const cur=await DB.get("unames/"+un).catch(()=>null);
+ const email=(FB&&FB.auth&&FB.auth.currentUser&&FB.auth.currentUser.email)||(cur&&cur.email)||"";
+ await DB.set("unames/"+un,{...(cur&&cur.uid===uid?cur:{}),uid,email,rk,at:now()});
+ if(fresh)postaAdd(po,"Kadraj Anahtarın hazır",`Kadraj Anahtarın:\n${po.code}\n\nŞifreni unutursan giriş ekranında Şifremi unuttum > Kadraj Anahtarı ile yenile'ye dokun; kullanıcı adını, bu anahtarı ve yeni şifreni yaz. E-posta gerekmez.\n\nAnahtarı bir yere yaz ya da ekran görüntüsünü al: şifreni unuttuğunda bu kutuyu açamazsın. Kimseyle paylaşma.`,"key");
+ if(note)postaAdd(po,note.t,note.b,note.ic);po.at=now();await DB.set(path,po);if(uid===S.uid)S.posta=po;return po}
 /* şifre biliniyorken anahtarı oluştur ya da yenile (uid'nin kendi oturumunda çalışır) */
 async function kasaSeal(uid,pw,{create=true,note,rotate=false}={}){if(S.mode!=="cloud"||!uid||!pw||!(window.crypto&&crypto.subtle))return null;
  const prof=(S.profiles&&S.profiles[uid])||await DB.get("profiles/"+uid).catch(()=>null);const un=prof&&prof.username;if(!un)return null;
  const path=`data/users/${uid}/posta`;const po=(await DB.get(path).catch(()=>null))||{msgs:[]};po.msgs=po.msgs||[];let fresh=false;
  if(!po.code){if(!create)return null;po.code=kaNew();fresh=true}
- const kr=await DB.get("kurtar/"+uid).catch(()=>null);const ks=kr&&kr.seen&&kr.seen.at||0;
+ const kr=await DB.get("kurtar/"+uid).catch(()=>undefined);const ks=kr&&kr.seen&&kr.seen.at||0;
  if(!fresh&&ks>(po.kAck||0)){rotate=true;po.kAck=ks;postaAdd(po,"Yönetici anahtarını görüntüledi","Uygulamanın yöneticisi, e-postanı yazarak (senin onayınla) Kadraj Anahtarını görüntüledi. Güvenliğin için anahtarın yenilendi; eski anahtar artık çalışmaz.","key")}
  if(rotate){po.code=kaNew();postaAdd(po,"Yeni Kadraj Anahtarın",`Yeni anahtarın:\n${po.code}\n\nEski anahtarın artık çalışmaz. Yenisini bir yere yaz.`,"key")}
  const rk=await kaLock(po.code,pw);const cur=await DB.get("unames/"+un).catch(()=>null);
  const email=(FB&&FB.auth&&FB.auth.currentUser&&FB.auth.currentUser.email)||(cur&&cur.email)||"";
  await DB.set("unames/"+un,{...(cur&&cur.uid===uid?cur:{}),uid,email,rk,at:now()});
  if(fresh)postaAdd(po,"Kadraj Anahtarın hazır",`Kadraj Anahtarın:\n${po.code}\n\nŞifreni unutursan giriş ekranında Şifremi unuttum > Kadraj Anahtarı ile yenile'ye dokun; kullanıcı adını, bu anahtarı ve yeni şifreni yaz. E-posta gerekmez.\n\nAnahtarı bir yere yaz ya da ekran görüntüsünü al: şifreni unuttuğunda bu kutuyu açamazsın. Kimseyle paylaşma.`,"key");
- if(note)postaAdd(po,note.t,note.b,note.ic);if(po.krFor!==po.code||!kr||rotate){if(await kurtarPut(uid,po.code,email))po.krFor=po.code}
+ if(note)postaAdd(po,note.t,note.b,note.ic);if(kr!==undefined&&(po.krFor!==po.code||!kr||rotate)){if(await kurtarPut(uid,po.code,email,rotate?null:kr&&kr.seen))po.krFor=po.code}
  po.at=now();await DB.set(path,po);if(uid===S.uid)S.posta=po;return po}
 /* 4.3.1 Yönetici kurtarması: anahtar, kişinin kayıt e-postasından türetilen anahtarla (PBKDF2+AES-GCM) şifrelenip
    kurtar/{uid} içinde durur; yalnızca kişinin kendisi ve yönetici okuyabilir. Yönetici anahtarı ancak kişinin e-postasını
@@ -3717,15 +3729,15 @@ async function kasaSeal(uid,pw,{create=true,note,rotate=false}={}){if(S.mode!=="
 const krMail=m=>"kadraj-kurtar:"+String(m||"").trim().toLowerCase();
 async function krKey(email,salt){const base=await crypto.subtle.importKey("raw",new TextEncoder().encode(krMail(email)),"PBKDF2",false,["deriveKey"]);
  return crypto.subtle.deriveKey({name:"PBKDF2",salt,iterations:150000,hash:"SHA-256"},base,{name:"AES-GCM",length:256},false,["encrypt","decrypt"])}
-async function kurtarPut(uid,code,email){if(!uid||!code||!email||!(window.crypto&&crypto.subtle))return false;
+async function kurtarPut(uid,code,email,seen){if(!uid||!code||!email||!(window.crypto&&crypto.subtle))return false;
  try{const salt=crypto.getRandomValues(new Uint8Array(16)),iv=crypto.getRandomValues(new Uint8Array(12));
   const ct=new Uint8Array(await crypto.subtle.encrypt({name:"AES-GCM",iv},await krKey(email,salt),new TextEncoder().encode(kaNorm(code))));
-  await DB.set("kurtar/"+uid,{v:1,s:kb64(salt),i:kb64(iv),c:kb64(ct),at:now()});return true}catch(e){console.warn("kurtar",e);return false}}
+  await DB.set("kurtar/"+uid,{v:1,s:kb64(salt),i:kb64(iv),c:kb64(ct),at:now(),...(seen&&seen.at?{seen}:{})});return true}catch(e){console.warn("kurtar",e);return false}}
 async function kurtarOpen(kr,email){const pt=await crypto.subtle.decrypt({name:"AES-GCM",iv:kub64(kr.i)},await krKey(email,kub64(kr.s)),kub64(kr.c));return kaFmt(new TextDecoder().decode(pt))}
 async function kurtarSync(uid){const po=S.posta;if(!po||!po.code||uid!==S.uid)return;
  const kr=await DB.get("kurtar/"+uid).catch(()=>undefined);if(kr===undefined)return;let ch=false;
  const email=(FB&&FB.auth&&FB.auth.currentUser&&FB.auth.currentUser.email)||"";
- if((!kr||po.krFor!==po.code)&&await kurtarPut(uid,po.code,email)){po.krFor=po.code;ch=true}
+ if((!kr||po.krFor!==po.code)&&await kurtarPut(uid,po.code,email,kr&&kr.seen&&kr.seen.at>(po.kAck||0)?kr.seen:null)){po.krFor=po.code;ch=true}
  const ks=kr&&kr.seen&&kr.seen.at||0;if(ks>(po.kAck||0)&&ks>(po.kNote||0)){po.kNote=ks;postaAdd(po,"Yönetici anahtarını görüntüledi","Uygulamanın yöneticisi, e-postanı yazarak (senin onayınla) Kadraj Anahtarını görüntüledi. Şifreni bir sonraki girişinde anahtarın kendiliğinden yenilenir; hemen yenilemek için: Kadraj Posta › Yeni anahtar oluştur.","key");ch=true}
  if(ch){await DB.set(`data/users/${uid}/posta`,po).catch(()=>{});S.posta=po}}
 HOOKS.enter.push(()=>{if(S.mode!=="cloud")return;const pw=KASA.pw;KASA.pw=null;const uid=S.uid;
