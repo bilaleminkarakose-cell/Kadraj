@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
 <meta charset="utf-8">
-<meta name="kadraj-version" content="40301">
+<meta name="kadraj-version" content="40302">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0C7A63">
 <link rel="manifest" href="manifest.webmanifest">
@@ -1095,7 +1095,7 @@ const vib=ms=>{try{if(settings.haptics===false)return;navigator.vibrate&&navigat
 /* Sürüm: ana.ara.yama (4.1.0). Hata düzeltme ve küçük şeyler → yama artar (4.1.1); büyük güncelleme → ara artar (4.2.0).
    APP_V = ana*10000 + ara*100 + yama (4.1.0 → 40100). Başlıktaki <meta name="kadraj-version"> ile aynı tutulmalı.
    Eski biçim (4.0 → 40) verNorm ile çevrilir. "İki sürüm geride" ara sürüm sayısıyla ölçülür (yamalar engellemez). */
-const APP_V=40301,APP_VER="4.3.1";
+const APP_V=40302,APP_VER="4.3.2";
 const verNorm=x=>{x=Math.max(0,Math.floor(+x||0));return x<1000?Math.floor(x/10)*10000+(x%10)*100:x};
 const verLvl=x=>Math.floor(verNorm(x)/100);
 const verGap=x=>verLvl(x)-verLvl(APP_V);
@@ -2740,11 +2740,21 @@ function gameMsgHtml(m){const d=(S.games||{})[m.game];const st=!d?"Oyun kartı":
    çocuk kabul ederse kendi hesabına child:true yazılır. Kimse çocuğun özel mesajlarını okumaz.
    Modda: küfür süzgeci (giden metin maskelenir), Meydan kapalı, sadece karşılıklı takipleşilen
    arkadaşlarla mesajlaşma. */
-const isChild=uid=>!!(P(uid)||{}).child;
+const isChildOld=uid=>!!(P(uid)||{}).child;
+/* 4.3.2: yönetici kapattıysa (admin/childinv.list[uid].off, açılıştan sonraysa) çocuk modu kapalı sayılır */
+const isChild=uid=>{const c=(P(uid)||{}).child;if(!c)return false;const o=(((S.adm&&S.adm.childinv&&S.adm.childinv.list)||{})[uid]||{}).off;return!(o&&o>=+c)};
 const childInvites=()=>(S.adm&&S.adm.childinv&&S.adm.childinv.list)||{};
 const BADWORDS=["amk","aq","amq","oç","oc.","piç","pic","yavşak","yavsak","orospu","oospu","kahpe","gavat","ibne","ipne","pezevenk","sikerim","sikeyim","siktir","sik","sikik","siksem","göt","got ver","gotunu","amcık","amcik","amına","amina","amına k","anan","ananı","ananin","anani","babanı","sülale","sulale","pusht","puşt","şerefsiz","serefsiz","dassak","taşak","tasak","yarrak","yarak","yarrağ","mal mısın","gerizekalı","gerizekali","salak","aptal","bok","boktan","kavat","kaltak","sürtük","surtuk","döl","dol.","meme","am ","amcıklar"];
 const BAD_RE=new RegExp("("+BADWORDS.map(w=>w.replace(/[.*+?^${}()|[\]\\]/g,"\\$&").replace(/\s+$/,"")).sort((a,b)=>b.length-a.length).join("|")+")","gi");
-function cleanText(t){if(!t)return t;return String(t).replace(BAD_RE,m=>m[0]+"*".repeat(Math.max(1,m.trim().length-1)))}
+function cleanTextOld(t){if(!t)return t;return String(t).replace(BAD_RE,m=>m[0]+"*".repeat(Math.max(1,m.trim().length-1)))}
+/* 4.3.2: kelimelerin içinde aramaz (selam, klasik, götür, koç, inanan, dolu bozulmaz). Kısa ve başka kelimelerin içinde geçenler
+   yalnızca tam kelime olarak (BAD_EXACT), uzunlar kelime başında (BAD_STEM, ekleriyle) yakalanır. */
+const BAD_EXACT=new Set(["am","amk","aq","amq","oç","oc","pic","sik","siki","sikim","göt","got","götü","götün","götünü","götüne","gotu","gotun","gotunu","anan","ananı","anani","ananin","ananın","anana","babanı","banani","bok","boku","boka","boktan","döl","meme"].map(w=>w.toLocaleLowerCase("tr")));
+const BAD_STEM=["orospu","oospu","yavşak","yavsak","kahpe","gavat","kavat","ibne","ipne","pezevenk","siktir","sikerim","sikeyim","sikik","siksem","sikiş","sikis","amcık","amcik","amına","aminak","aminakoy","şerefsiz","serefsiz","dassak","taşak","tasak","yarrak","yarrağ","yarak","gerizekalı","gerizekali","salak","aptal","kaltak","sürtük","surtuk","pusht","puşt","piç","sülale","sulale"];
+const BAD_PHRASE=/(^|[^\p{L}])((?:mal m[ıi]s[ıi]n)|(?:g[oö]t ver))(?=$|[^\p{L}])/giu;
+const badMask=w=>{const a=[...w];return a[0]+"*".repeat(Math.max(1,a.length-1))};
+function badWord(w){const l=w.toLocaleLowerCase("tr");return BAD_EXACT.has(l)||BAD_STEM.some(x=>l.startsWith(x))}
+function cleanText(t){if(!t)return t;return String(t).replace(BAD_PHRASE,(m,a,b)=>a+badMask(b)).replace(/[\p{L}\p{N}]+/gu,w=>badWord(w)?badMask(w):w)}
 function childBlockMeydan(){if(isChild(S.uid)){toast("Çocuk modunda Meydan kapalı. Buradan arkadaşlarınla konuşabilirsin.");return true}return false}
 function childCanDM(uid){if(!isChild(S.uid)||S.admin)return true;if(BOT[uid]&&BOT[uid].ai)return true;/* sadece karşılıklı takip */return isFollowing(S.uid,uid)&&isFollowing(uid,S.uid)}
 function childGate(uid){if(childCanDM(uid))return true;toast("Çocuk modunda yalnızca karşılıklı arkadaş olduğun kişilerle mesajlaşabilirsin.");return false}
@@ -2844,16 +2854,16 @@ function vAdmin(){if(!S.admin)return`<div class="empty"><span class="ic">${I("lo
 function admUserSheet(uid){const p=P(uid);const self=uid===S.uid;const n=Object.values(S.posts).filter(x=>x.uid===uid).length;const ns=Object.values(S.stories).filter(x=>x.uid===uid).length;
  const l=sheet("admu","",`<div class="row" style="padding:4px 20px 12px">${avatar(uid,52,{click:false,ring:false})}<div class="t"><div><b>${esc(p.name)}</b>${badge(uid)}</div><div class="s">@${esc(p.username)} · ${n} paylaşım · ${ns} hikâye</div></div></div>
  <button class="opt" data-prof="${esc(uid)}">${I("info")}Profili gör</button>
- <button class="opt" id="auV">${I("check")}${isVerified(uid)?"Onaylı rozetini kaldır":"Onaylı rozeti ver"}</button>${isChild(uid)?`<button class="opt" id="auCk">${I("lock")}Çocuk modunu kapat</button>`:childInvites()[uid]?`<button class="opt" id="auCp">${I("close")}Çocuk modu önerisini geri çek</button>`:`<button class="opt" id="auC">${I("lock")}Çocuk modu öner</button>`}
+ <button class="opt" id="auV">${I("check")}${isVerified(uid)?"Onaylı rozetini kaldır":"Onaylı rozeti ver"}</button>${isChild(uid)?`<button class="opt" id="auCk">${I("lock")}Çocuk modunu kapat</button>`:(childInvites()[uid]||{}).at?`<button class="opt" id="auCp">${I("close")}Çocuk modu önerisini geri çek</button>`:`<button class="opt" id="auC">${I("lock")}Çocuk modu öner</button>`}
  ${n?`<button class="opt" id="auP">${I("grid")}Tüm paylaşımlarını sil (${n})</button>`:""}${ns?`<button class="opt" id="auS">${I("eye")}Hikâyelerini sil (${ns})</button>`:""}
  ${self?"":muteOf(uid)?`<button class="opt" id="auMu">${I("vol")}Susturmayı kaldır</button>`:`<button class="opt" id="auM">${I("mute")}Sustur</button>`}
  ${S.mode==="cloud"&&!self?`<button class="opt" id="auK">${I("key")}Kadraj Anahtarını göster</button>`:""}
  ${self?"":`<button class="opt red" id="auX">${I("trash")}Hesabı kapat ve sil</button>`}<button class="opt" data-act="close">${I("close")}Vazgeç</button>`);
  const auk=$("#auK",l);if(auk)auk.onclick=()=>{closeLayer("admu");admKeySheet(uid)};
  const setMute=async until=>{const list={...((S.adm&&S.adm.mute&&S.adm.mute.list)||{}),[uid]:{until,name:p.name}};if(await admSet("mute",{list})){toast(until?`@${p.username} susturuldu`:"Susturma kaldırıldı");admLog(until?`@${p.username} susturuldu`:`@${p.username} susturması kaldırıldı`);render(false)}};
- const ac=$("#auC",l);if(ac)ac.onclick=async()=>{closeLayer("admu");const list={...childInvites(),[uid]:{at:now(),by:S.uid}};if(await admSet("childinv",{list})){admLog(`@${p.username} için çocuk modu önerildi`);toast(`@${p.username} kabul edince çocuk modu açılır`)}};
- const acp=$("#auCp",l);if(acp)acp.onclick=async()=>{closeLayer("admu");const list={...childInvites()};delete list[uid];if(await admSet("childinv",{list}))toast("Öneri geri çekildi")};
- const ack=$("#auCk",l);if(ack)ack.onclick=()=>{closeLayer("admu");dialog("Çocuk modu kapatılsın mı?",`@${esc(p.username)} hesabındaki küfür süzgeci ve sohbet kısıtı kalkar.`,[{label:"Kapat",cls:"danger",fn:async()=>{const list={...childInvites()};delete list[uid];await admSet("childinv",{list});if(await write(()=>DB.update("profiles/"+uid,{child:0}))){admLog(`@${p.username} çocuk modu kapatıldı`);toast("Çocuk modu kapatıldı");render(false)}}},{label:"Vazgeç"}])};
+ const ac=$("#auC",l);if(ac)ac.onclick=async()=>{closeLayer("admu");const cur=childInvites()[uid]||{};const list={...childInvites(),[uid]:{...(cur.off?{off:cur.off}:{}),at:now(),by:S.uid}};if(await admSet("childinv",{list})){admLog(`@${p.username} için çocuk modu önerildi`);toast(`@${p.username} kabul edince çocuk modu açılır`)}};
+ const acp=$("#auCp",l);if(acp)acp.onclick=async()=>{closeLayer("admu");const list={...childInvites()};const cur=list[uid]||{};if(cur.off)list[uid]={off:cur.off,by:cur.by||S.uid};else delete list[uid];if(await admSet("childinv",{list})){S.adm={...(S.adm||{}),childinv:{list}};admLog(`@${p.username} çocuk modu önerisi geri çekildi`);toast("Öneri geri çekildi");render(false)}};
+ const ack=$("#auCk",l);if(ack)ack.onclick=()=>{closeLayer("admu");dialog("Çocuk modu kapatılsın mı?",`@${esc(p.username)} hesabındaki küfür süzgeci ve sohbet kısıtı kalkar.`,[{label:"Kapat",cls:"danger",fn:async()=>{const list={...childInvites(),[uid]:{off:now(),by:S.uid}};if(await admSet("childinv",{list})){S.adm={...(S.adm||{}),childinv:{list}};admLog(`@${p.username} çocuk modu kapatıldı`);toast("Çocuk modu kapatıldı");render(false)}}},{label:"Vazgeç"}])};
  const am=$("#auM",l);if(am)am.onclick=()=>{closeLayer("admu");const l2=sheet("admmu",`@${p.username} ne kadar susturulsun?`,[["1 saat",H],["1 gün",24*H],["1 hafta",168*H],["Süresiz",1e13]].map(([lb,d])=>`<button class="opt" data-mu="${d}">${I("mute")}${lb}</button>`).join("")+`<p class="muted" style="margin:6px 20px 14px;font-size:.82rem">Susturulan kişi uygulamayı görmeye devam eder ama paylaşım, yorum ve mesaj gönderemez.</p>`);$$("[data-mu]",l2).forEach(b=>b.onclick=()=>{closeLayer("admmu");setMute(now()+(+b.dataset.mu))})};
  const amu=$("#auMu",l);if(amu)amu.onclick=()=>{closeLayer("admu");setMute(0)};
  $("#auV",l).onclick=async()=>{closeLayer("admu");const cur={...((S.adm&&S.adm.verified&&S.adm.verified.list)||{})};if(cur[uid])delete cur[uid];else cur[uid]=now();if(await admSet("verified",{list:cur})){toast(cur[uid]?`@${p.username} artık onaylı`:"Rozet kaldırıldı");admLog(cur[uid]?`@${p.username} onaylı rozet aldı`:`@${p.username} rozeti kaldırıldı`)}};
@@ -2875,6 +2885,8 @@ function admKeySheet(uid){if(!S.admin)return;const p=P(uid);
    <div class="row2"><button class="btn sec sm" id="akC">${I("copy")}Kopyala</button></div>
    <small class="muted">Bunu yalnızca @${esc(p.username)} kişisine ilet. Giriş ekranında <b>Şifremi unuttum › Kadraj Anahtarı ile yenile</b>'ye dokunup kullanıcı adını (<b>${esc(p.username)}</b>), bu anahtarı ve yeni şifresini yazsın. O girişte anahtarı kendiliğinden yenilenir; bu anahtar bir daha çalışmaz.</small></div></div>`;
   $("#akC",l).onclick=()=>copyText(code,"Anahtar kopyalandı")}}
+/* 4.3.2: yönetici çocuk modunu kapattıysa kişinin kendi cihazı profilindeki bayrağı da temizler */
+HOOKS.enter.push(()=>setTimeout(()=>{const me=S.uid,c=me&&(P(me)||{}).child;if(c&&!isChild(me))write(()=>DB.update("profiles/"+me,{child:0}),{quiet:true}).then(ok=>{if(ok&&S.uid===me){S.profiles={...S.profiles,[me]:{...S.profiles[me],child:0}};scheduleRefresh()}})},2500));
 async function admSet(id,doc){return write(()=>DB.set("admin/"+id,{...doc,by:S.uid,at:doc.at||now()}))}
 async function admWipe(uid,{posts=true,stories=true}={}){let k=0;
  if(posts)for(const p of Object.values(S.posts).filter(p=>p.uid===uid)){await DB.del("posts/"+p.id).catch(()=>{});DB.del("meta/"+p.id).catch(()=>{});if(p.video&&String(p.video).startsWith("chunk:")){const[,vid,c]=p.video.split(":");for(let i=0;i<+c;i++)DB.del(`vchunks/${vid}-${i}`).catch(()=>{})}const ps={...S.posts};delete ps[p.id];S.posts=ps;k++}
