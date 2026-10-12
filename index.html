@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
 <meta charset="utf-8">
-<meta name="kadraj-version" content="40201">
+<meta name="kadraj-version" content="40300">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0C7A63">
 <link rel="manifest" href="manifest.webmanifest">
@@ -1023,6 +1023,19 @@ html[data-accent]:not([data-accent="kadraj"]) .call{background:radial-gradient(1
 .fg-steps{text-align:left;margin:4px 0 0;padding-left:20px;display:grid;gap:6px;font-size:.92rem;color:var(--muted)}
 .fg-mail{font:600 1.05rem/1.3 var(--f-body);color:var(--fg);word-break:break-all}
 .pwrow{position:relative}.pwrow .in{padding-right:48px}.pwrow .eye{position:absolute;right:6px;top:50%;transform:translateY(-50%);width:38px;height:38px;display:grid;place-items:center;color:var(--muted)}
+.kp-head{display:flex;align-items:center;gap:12px;padding:6px 16px 14px}
+.kp-addr{font:600 .95rem/1.2 var(--f-mono);color:var(--accent)}
+.kp-key{margin:0 12px 14px;padding:18px 16px;border-radius:22px;background:linear-gradient(135deg,color-mix(in srgb,var(--accent) 16%,var(--surface)),var(--surface));border:1px solid var(--line);display:grid;gap:10px}
+.kp-key .code{font:700 1.45rem/1.2 var(--f-mono);letter-spacing:.08em;text-align:center;padding:12px;border-radius:14px;background:var(--bg);border:1.5px dashed color-mix(in srgb,var(--accent) 50%,var(--line));user-select:all;-webkit-user-select:all}
+.kp-key .row2{display:flex;gap:8px}.kp-key .row2 .btn{flex:1}
+.kp-msg{display:flex;gap:12px;padding:12px 14px;width:100%;text-align:left;align-items:flex-start}
+.kp-msg+.kp-msg{border-top:1px solid var(--line)}
+.kp-msg .ic{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent);flex:none}
+.kp-msg .ic svg.i{width:1.15rem;height:1.15rem}
+.kp-msg .t{flex:1;min-width:0}.kp-msg .t b{display:block}.kp-msg .t small{color:var(--muted);font-size:.78rem}
+.kp-msg .t p{margin:6px 0 0;font-size:.9rem;white-space:pre-wrap;overflow-wrap:anywhere}
+.kp-msg.new .t b::after{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--heart);margin-left:6px;vertical-align:2px}
+.kcode{font-family:var(--f-mono);letter-spacing:.08em;text-transform:uppercase}
 /*}@css:E*/
 /* 4.0: tablet ve geniş ekran uyumu: içerik ekranı doldursun, yanlarda boş şerit kalmasın */
 @media (min-width:560px){
@@ -1082,7 +1095,7 @@ const vib=ms=>{try{if(settings.haptics===false)return;navigator.vibrate&&navigat
 /* Sürüm: ana.ara.yama (4.1.0). Hata düzeltme ve küçük şeyler → yama artar (4.1.1); büyük güncelleme → ara artar (4.2.0).
    APP_V = ana*10000 + ara*100 + yama (4.1.0 → 40100). Başlıktaki <meta name="kadraj-version"> ile aynı tutulmalı.
    Eski biçim (4.0 → 40) verNorm ile çevrilir. "İki sürüm geride" ara sürüm sayısıyla ölçülür (yamalar engellemez). */
-const APP_V=40201,APP_VER="4.2.1";
+const APP_V=40300,APP_VER="4.3.0";
 const verNorm=x=>{x=Math.max(0,Math.floor(+x||0));return x<1000?Math.floor(x/10)*10000+(x%10)*100:x};
 const verLvl=x=>Math.floor(verNorm(x)/100);
 const verGap=x=>verLvl(x)-verLvl(APP_V);
@@ -1461,7 +1474,7 @@ function renderTop(){if(!S.authed)return;const r=S.route.name;const t=$("#top");
  if(r==="feed"){const a=newActivity();h=`<div class="brand">${VF}<span class="wordmark">kadraj</span></div><div class="acts"><button class="ib" data-go="chess" aria-label="Satranç">${I("knight")}${myTurnGames()?'<i class="dot"></i>':""}</button>${themeBtn}<button class="ib" data-go="activity" aria-label="Bildirimler">${I("bell")}${a?'<i class="dot"></i>':""}</button></div>`}
  else if(r==="explore")h=`<h1>Keşfet</h1>${themeBtn}`;
  else if(r==="chats")h=`<h1>Sohbet</h1><div class="acts"><button class="ib" data-act="invite" aria-label="Arkadaş davet et">${I("link")}</button><button class="ib" data-act="newgroup" aria-label="Grup kur">${I("users")}</button><button class="ib" data-act="newchat" aria-label="Yeni sohbet">${I("edit")}</button></div>`;
- else if(r==="profile"){const p=P(S.route.params.uid);const own=p.uid===S.uid;h=(S.stack.length?backBtn:"")+`<h1>${esc(p.username)}${badge(p.uid)}</h1>`+(own?`<div class="acts"><button class="ib" data-go="settings" aria-label="Ayarlar">${I("gear")}</button></div>`:`<button class="ib" data-act="profmenu" data-uid="${esc(p.uid)}" aria-label="Diğer">${I("more")}</button>`)}
+ else if(r==="profile"){const p=P(S.route.params.uid);const own=p.uid===S.uid;h=(S.stack.length?backBtn:"")+`<h1>${esc(p.username)}${badge(p.uid)}</h1>`+(own?`<div class="acts">${S.mode==="cloud"?`<button class="ib" data-act="posta" aria-label="Kadraj Posta">${I("mail")}${postaUnread()?'<i class="dot"></i>':""}</button>`:""}<button class="ib" data-go="settings" aria-label="Ayarlar">${I("gear")}</button></div>`:`<button class="ib" data-act="profmenu" data-uid="${esc(p.uid)}" aria-label="Diğer">${I("more")}</button>`)}
  else if(r==="post")h=backBtn+`<h1>Paylaşım</h1>`;
  else if(r==="activity")h=backBtn+`<h1>Bildirimler</h1>`;
  else if(r==="chat")h=backBtn+chatHead(S.route.params.key)+`<button class="ib" data-act="wallpaper" aria-label="Duvar kağıdı">${I("image")}</button>`;
@@ -2923,7 +2936,7 @@ const FAQ=[[/aktif|çevrimiçi|online|son görülme/i,"Kimin aktif olduğunu fot
  [/reels|çekim|sahne|video/i,"Sahne (kısa video) için + > Sahne. İki yol var:\n- **Fotoğraflardan**: 1-3 kare seç, yazı ekle, hareket ve müzik seç.\n- **Video yükle**: en fazla 2 dakika (40 MB), büyük videolar otomatik küçültülür.\n\nSahneler ekranında sesi sağ üstteki hoparlörden açarsın."],
  [/hikaye|hikâye|story/i,"Akışın üstündeki **Hikâyen** balonundaki + ile hikâye eklersin. Üstüne yazı koyabilirsin; 24 saat görünür."],
  [/tema|karanlık|koyu|açık mod|dark|yazı boyu/i,"Akış'taki ay/güneş düğmesi temayı anında değiştirir. Ben > dişli > Görünüm'den Sistem temasını ve yazı boyutunu da seçebilirsin."],
- [/şifre|unuttum|giriş/i,"Girişte **kullanıcı adını** ya da e-postanı yazabilirsin.\n- Şifreni unuttuysan giriş ekranında **Şifremi unuttum**'a dokun, kullanıcı adını yaz. E-postana gelen bağlantıya dokununca Kadraj açılır, yeni şifreni orada belirlersin.\n- E-postanı da unuttuysan **E-postamı unuttum** hangi adresle kayıt olduğunu (gizlenmiş olarak) gösterir.\n- Şifreyi değiştirmek için: Ben > dişli > Şifreyi değiştir."],
+ [/şifre|unuttum|giriş|anahtar|posta/i,"Girişte **kullanıcı adını** ya da e-postanı yazabilirsin.\n- Şifreni unuttuysan **Şifremi unuttum** > **Kadraj Anahtarı ile yenile**: kullanıcı adını, Kadraj Anahtarını (XXXX-XXXX-XXXX) ve yeni şifreni yaz. Anahtarın **Ben > zarf simgesi (Kadraj Posta)**'da durur; şifreni unutmadan önce bir yere yaz.\n- Gerçek e-postayla kayıt olduysan e-postana bağlantı da isteyebilirsin.\n- E-postanı da unuttuysan **E-postamı unuttum** hangi adresle kayıt olduğunu (gizlenmiş olarak) gösterir.\n- Şifreyi değiştirmek için: Ben > dişli > Şifreyi değiştir."],
  [/ipucu|etkinlik|paylaşayım/i,"Birkaç fikir:\n1. Sabah ışığında bir fotoğraf çek ve Sıcak filtresiyle paylaş.\n2. Arkadaşlarına bir anket aç: “Bu hafta sonu ne yapalım?”\n3. Üç fotoğraftan Lo-fi müzikli bir sahne hazırla."],
  [/debounce/i,"Basit bir debounce:\n```js\nfunction debounce(fn, ms = 300) {\n  let t;\n  return (...args) => {\n    clearTimeout(t);\n    t = setTimeout(() => fn(...args), ms);\n  };\n}\n```\nArama kutusu gibi sık tetiklenen olaylarda gereksiz çağrıları önler."]];
 const BOT_CANNED={deniz:["Selam! Bu sabah yine iskeledeydim, ışık harikaydı.","Uzun pozlama için tripod şart, gerisi sabır.","Gün doğumunu yakalamak için 05.30'da çıkıyorum, gelmek ister misin?"],mira:["Chelsea şu an uyuyor, uyanınca ileteceğim.","Miyav. (Chelsea mama saatinin geçtiğini söylüyor.)","Kutu buldum, mutluyum. — Chelsea"],kahve:["Selam! Bugün Kolombiya demledim, çok yumuşak.","Espresso mu filtre mi? Ben bugün filtre modundayım.","Moda'ya yolun düşerse kahve benden."],roket:["Bu hafta iki fırlatma var, takvime ekle!","Hubble'ın derin alan görüntüsü hâlâ en sevdiğim kare.","Bu akşam gökyüzü açıksa Jüpiter'i çıplak gözle görebilirsin."],garaj:["Ellerim yağlı, kısa yazıyorum: selam!","Karbüratör ayarı bitti, şimdi elektrik tesisatı.","Motor işinden anlıyor musun? Bir yardım lazım olabilir."],arsiv:["Merhaba! Bu ay kataloğa yeni parçalar girdi.","Sikkelerin üstündeki her figürün bir hikâyesi var.","En sevdiğin tarih dönemi hangisi?"],dag:["Selam! Yeni bir manzara üstünde çalışıyorum.","Bu sefer sadece dört renk kullanacağım, bakalım.","Hangi renk paleti seni sakinleştiriyor?"]};
@@ -2990,7 +3003,7 @@ function fbRegister(){let avData=null;
  const nameIn=$("#rName");nameIn.oninput=()=>{if(!avData)$("#rAv").src=initialsAv(nameIn.value||"Yeni","x");const ui=$("#rUser");if(!ui.dataset.touched)ui.value=slug(nameIn.value)};$("#rUser").oninput=e=>e.target.dataset.touched=1;
  $("#rAvBtn").onclick=async()=>{const r=await pickImage({title:"Profil fotoğrafı"});if(r){avData=toCanvas(r.img,240,240).toDataURL("image/jpeg",.8);$("#rAv").src=avData}};
  $("#toLogin").onclick=()=>fbLogin();
- $("#regF").onsubmit=async e=>{e.preventDefault();const err=$("#rErr");const name=$("#rName").value.trim(),un=$("#rUser").value.trim().toLowerCase(),mail=$("#rMail").value.trim(),pw=$("#rPw").value;
+ $("#regF").onsubmit=async e=>{e.preventDefault();const err=$("#rErr");const name=$("#rName").value.trim(),un=$("#rUser").value.trim().toLowerCase(),mail=$("#rMail").value.trim(),pw=$("#rPw").value;KASA.pw=pw;
   if(!name)return err.textContent="Adını yaz.";if(!USER_RE.test(un))return err.textContent="Kullanıcı adı 3–24 karakter olmalı: küçük harf, rakam, nokta ve alt çizgi.";if(BOTS.some(b=>b.username===un))return err.textContent=`“${un}” kullanılıyor.`;if(!/^\S+@\S+\.\S+$/.test(mail))return err.textContent="Geçerli bir e-posta yaz.";if(pw.length<6)return err.textContent="Şifre en az 6 karakter olmalı.";
   const btn=$("#regF button[type=submit]");btn.disabled=true;btn.textContent="Oluşturuluyor…";S.registering=true;
   try{await setPersist($("#rRem").checked);const cred=await FB.A.createUserWithEmailAndPassword(FB.auth,mail,pw);S.uid=cred.user.uid;S.email=mail;
@@ -3019,7 +3032,7 @@ async function startSession(fresh){if(!sharedOn){subscribeShared();sharedOn=true
 function endSession(){if(CALL)endCall(true);teardownUser();closeAll();if(S.roomListen){S.roomListen();S.roomListen=null}unsubAll();sharedOn=false;S.authed=false;S.profiles={};S.posts={};S.meta={};S.stories={};S.meydan=null}
 function fbLogout(){dialog("Çıkış yapılsın mı?",`@${esc(me().username)} hesabından çıkacaksın.`,[{label:"Çıkış yap",cls:"danger",fn:async()=>{try{await S.caps.room?.leave()}catch{}endSession();await FB.A.signOut(FB.auth)}},{label:"Vazgeç"}])}
 function fbChangePw(){const l=sheet("pw","Şifreyi değiştir",`<form class="form" id="cpF2"><div class="field"><label for="cp0">Mevcut şifre</label><input class="in" id="cp0" type="password" autocomplete="current-password"></div><div class="field"><label for="cp1">Yeni şifre</label><input class="in" id="cp1" type="password" autocomplete="new-password"></div><div class="err" id="cpE"></div><button class="btn block">Güncelle</button></form>`);
- $("#cpF2",l).onsubmit=async e=>{e.preventDefault();const er=$("#cpE",l);const pw=$("#cp1",l).value;if(pw.length<6)return er.textContent="Yeni şifre en az 6 karakter olmalı.";try{const{A,auth}=FB;const u=auth.currentUser;await A.reauthenticateWithCredential(u,A.EmailAuthProvider.credential(u.email,$("#cp0",l).value));await A.updatePassword(u,pw);closeLayer("pw");toast("Şifren değişti")}catch(ex){er.textContent=authErr(ex)}}}
+ $("#cpF2",l).onsubmit=async e=>{e.preventDefault();const er=$("#cpE",l);const pw=$("#cp1",l).value;if(pw.length<6)return er.textContent="Yeni şifre en az 6 karakter olmalı.";try{const{A,auth}=FB;const u=auth.currentUser;await A.reauthenticateWithCredential(u,A.EmailAuthProvider.credential(u.email,$("#cp0",l).value));await A.updatePassword(u,pw);closeLayer("pw");toast("Şifren değişti");kasaSeal(S.uid,pw,{note:{t:"Şifren değişti",b:"Kadraj şifren az önce Ayarlar'dan değiştirildi. Bunu sen yapmadıysan hemen Kadraj Anahtarınla şifreni yenile.",ic:"key"}})}catch(ex){er.textContent=authErr(ex)}}}
 function fbDelete(){const l=sheet("del","Hesabı sil",`<form class="form" id="dlF"><p class="muted" style="margin:0">Profilin, paylaşımların ve hikâyelerin kalıcı olarak silinir. Onaylamak için şifreni yaz.</p><div class="field"><label for="dl0">Şifre</label><input class="in" id="dl0" type="password" autocomplete="current-password"></div><div class="err" id="dlE"></div><button class="btn block" style="background:var(--heart);color:#fff">Hesabı kalıcı olarak sil</button></form>`);
  $("#dlF",l).onsubmit=async e=>{e.preventDefault();const er=$("#dlE",l);try{const{A,auth}=FB;const u=auth.currentUser;await A.reauthenticateWithCredential(u,A.EmailAuthProvider.credential(u.email,$("#dl0",l).value));const uid=S.uid;
   for(const p of Object.values(S.posts).filter(p=>p.uid===uid)){await DB.del("posts/"+p.id).catch(()=>{});await DB.del("meta/"+p.id).catch(()=>{});delChunks(p.video)}for(const st of Object.values(S.stories).filter(x=>x.uid===uid))await DB.del("stories/"+st.id).catch(()=>{});
@@ -3201,6 +3214,7 @@ setTimeout(verTidyCache,9000);
 
 /* ---- A · Neler yeni ---- */
 const WN_ITEMS=[
+ {ic:"mail",g:"linear-gradient(135deg,#0c7a63,#14a06b)",t:"Kadraj Posta ve Kadraj Anahtarı",d:"Şifreni unutursan e-posta gerekmeden, anahtarınla Kadraj'da yenile",go:"profile"},
  {ic:"key",g:"linear-gradient(135deg,#0c7a63,#0ea5e9)",t:"Kullanıcı adıyla giriş",d:"E-posta yerine kullanıcı adınla gir; şifreni Kadraj'da yenile",go:"settings"},
  {ic:"bell",g:"linear-gradient(135deg,#7c3aed,#ec4899)",t:"Yeni bildirimler",d:"Fotoğraflı bildirim; dokununca doğrudan o sohbete ya da paylaşıma gider",go:"activity"},
  {ic:"music",g:"linear-gradient(135deg,#f97316,#e23e57)",t:"Sahnelerde ses düzeldi",d:"Duraklatınca müzik de durur, uygulamadan çıkınca susar",go:"reels"},
@@ -3467,7 +3481,7 @@ function vSettings(){const p=me();const pal=accentPal();const dark=isDark();cons
   tog({f:"themeSync",on:on("themeSync"),ic:"devices",c:"#30B0C7",t:"Tema tüm cihazlarımda aynı olsun",s:"Tema, vurgu rengi ve yazı boyutu hesabınla eşitlenir",k:"senkron eşitle telefon bilgisayar"})+
   tog({f:"reduceMotion",on:settings.reduceMotion===true,ic:"motion",c:"#8E8E93",t:"Animasyonları azalt",s:"Geçişler ve hareketli efektler sadeleşir",k:"hareket animasyon erişilebilirlik"}));
  const email=S.mode==="cloud"&&FB&&FB.auth&&FB.auth.currentUser&&FB.auth.currentUser.email;
- h+=sec("hesap","Hesap",(email?kv({ic:"mail",c:"#0A84FF",t:"Giriş e-postan",v:esc(email),k:"eposta mail"}):"")+btn({a:'data-act="changepw"',ic:"key",c:"#8E8E93",t:"Şifreyi değiştir",k:"parola güvenlik"}));
+ h+=sec("hesap","Hesap",(email?kv({ic:"mail",c:"#0A84FF",t:"Giriş e-postan",v:esc(email),k:"eposta mail"}):"")+btn({a:'data-act="posta"',ic:"mail",c:"#0C7A63",t:"Kadraj Posta",s:"Kadraj Anahtarın ve güvenlik mesajların",v:postaUnread()?`<b style="color:var(--heart)">${postaUnread()} yeni</b>`:"",k:"posta anahtar kurtarma kod şifre unuttum"})+btn({a:'data-act="changepw"',ic:"key",c:"#8E8E93",t:"Şifreyi değiştir",k:"parola güvenlik"}));
  h+=sec("gizlilik","Gizlilik",
   tog({id:"setPrivate",on:p.private,ic:"lock",c:"#636366",t:"Gizli hesap",s:"Paylaşımlarını yalnızca takipçilerin görür",k:"kapalı hesap"})+
   tog({f:"showActive",on:on("showActive"),ic:"radio",c:"#34C759",t:"Aktiflik durumu",s:"Kapalıysa sen de başkalarının aktifliğini göremezsin",k:"çevrimiçi son görülme aktif"})+
@@ -3608,7 +3622,8 @@ const loginErr=ex=>({"k/empty":"Kullanıcı adını ya da e-postanı yaz.","k/mi
 let unameFail=false;
 function syncUname(){if(unameFail||S.mode!=="cloud"||!FB||!FB.auth||!FB.auth.currentUser||!S.uid||S.guest)return;const p=S.profiles[S.uid];const un=p&&p.username;const email=FB.auth.currentUser.email;if(!un||!email)return;
  const k="kadraj_un_"+S.uid;const prev=LS.get(k);if(prev&&prev.un===un&&prev.email===email)return;
- DB.set("unames/"+un,{uid:S.uid,email,at:now()}).then(()=>{if(prev&&prev.un&&prev.un!==un)DB.del("unames/"+prev.un).catch(()=>{});LS.set(k,{un,email})}).catch(e=>{unameFail=true;console.warn("unames",e)})}
+ (async()=>{const cur=await DB.get("unames/"+un).catch(()=>null);const old=prev&&prev.un&&prev.un!==un?await DB.get("unames/"+prev.un).catch(()=>null):null;const rk=(cur&&cur.uid===S.uid&&cur.rk)||(old&&old.uid===S.uid&&old.rk)||null;
+  await DB.set("unames/"+un,{uid:S.uid,email,at:now(),...(rk?{rk}:{})})})().then(()=>{if(prev&&prev.un&&prev.un!==un)DB.del("unames/"+prev.un).catch(()=>{});LS.set(k,{un,email})}).catch(e=>{unameFail=true;console.warn("unames",e)})}
 HOOKS.enter.push(()=>setTimeout(syncUname,2500));HOOKS.profiles.push(()=>syncUname());
 function fbLogin(prefill){S.inReset=false;authShell(`<div>${brandLine}<h2>Giriş yap</h2><p class="lead">Kullanıcı adınla ya da e-postanla gir.</p></div>${modeChip()}
  <form id="logF" novalidate><div class="field"><label for="lId">Kullanıcı adı ya da e-posta</label><input class="in" id="lId" autocomplete="username" autocapitalize="off" spellcheck="false" placeholder="ornek.kullanici" value="${esc(prefill||LS.get("kadraj_last_login","")||"")}"></div>${pwField("lPw","Şifre","current-password")}
@@ -3616,12 +3631,12 @@ function fbLogin(prefill){S.inReset=false;authShell(`<div>${brandLine}<h2>Giriş
  <button class="btn ghost" id="forgot">Şifremi unuttum</button><div class="divider">ya da</div><button class="btn line block" id="toReg">Yeni hesap oluştur</button>`);
  $("#toReg").onclick=fbRegister;$("#forgot").onclick=()=>fbForgot($("#lId").value.trim());
  $("#logF").onsubmit=async e=>{e.preventDefault();const err=$("#lErr");err.style.color="";const btn=$("#logF button[type=submit]");btn.disabled=true;btn.textContent="Giriş yapılıyor…";
-  try{const id=$("#lId").value.trim();const mail=await resolveLogin(id);await setPersist($("#lRem").checked);await FB.A.signInWithEmailAndPassword(FB.auth,mail,$("#lPw").value);LS.set("kadraj_last_login",id)}
-  catch(ex){err.textContent=loginErr(ex);btn.disabled=false;btn.textContent="Giriş yap"}}}
-function fbForgot(prefill){S.inReset=false;authShell(`<div>${brandLine}<h2>Şifreni mi unuttun?</h2><p class="lead">Kullanıcı adını ya da e-postanı yaz. Kayıtlı e-postana şifre yenileme bağlantısı gönderelim.</p></div>
- <form id="fgF" novalidate><div class="field"><label for="fgId">Kullanıcı adı ya da e-posta</label><input class="in" id="fgId" autocomplete="username" autocapitalize="off" spellcheck="false" value="${esc(prefill||"")}"></div><div class="err" id="fgErr"></div><button class="btn block" type="submit">${I("send")}Bağlantı gönder</button></form>
+  try{const id=$("#lId").value.trim();const mail=await resolveLogin(id);await setPersist($("#lRem").checked);KASA.pw=$("#lPw").value;await FB.A.signInWithEmailAndPassword(FB.auth,mail,$("#lPw").value);LS.set("kadraj_last_login",id)}
+  catch(ex){KASA.pw=null;err.textContent=loginErr(ex);btn.disabled=false;btn.textContent="Giriş yap"}}}
+function fbForgot(prefill){S.inReset=false;authShell(`<div>${brandLine}<h2>Şifreni mi unuttun?</h2><p class="lead">Kullanıcı adını yaz. <b>Kadraj Anahtarın</b> varsa hemen burada yeni şifre belirlersin; gerçek bir e-postayla kayıt olduysan bağlantı da isteyebilirsin.</p></div>
+ <form id="fgF" novalidate><div class="field"><label for="fgId">Kullanıcı adı ya da e-posta</label><input class="in" id="fgId" autocomplete="username" autocapitalize="off" spellcheck="false" value="${esc(prefill||"")}"></div><div class="err" id="fgErr"></div><button class="btn block" type="button" id="fgKey">${I("key")}Kadraj Anahtarı ile yenile</button><button class="btn sec block" type="submit">${I("send")}E-postama bağlantı gönder</button></form>
  <button class="btn ghost" id="fgMail">E-postamı da unuttum</button><button class="btn ghost" id="fgBack">Girişe dön</button>`);
- $("#fgBack").onclick=()=>fbLogin();$("#fgMail").onclick=()=>fbFindMail($("#fgId").value.trim());
+ $("#fgBack").onclick=()=>fbLogin();$("#fgMail").onclick=()=>fbFindMail($("#fgId").value.trim());$("#fgKey").onclick=()=>fbKey($("#fgId").value.trim());
  $("#fgF").onsubmit=async e=>{e.preventDefault();const err=$("#fgErr");const btn=$("#fgF button[type=submit]");btn.disabled=true;
   try{const mail=await resolveLogin($("#fgId").value);await sendReset(mail);fbMailSent(mail)}catch(ex){err.textContent=loginErr(ex);btn.disabled=false}}}
 async function sendReset(mail){try{return await FB.A.sendPasswordResetEmail(FB.auth,mail,{url:APP_URL})}catch(ex){if(ex&&/continue-uri|unauthorized-domain/.test(ex.code||""))return FB.A.sendPasswordResetEmail(FB.auth,mail);throw ex}}
@@ -3645,8 +3660,85 @@ async function showResetPw(code){authShell(`<div>${brandLine}<h2>Yeni şifre bel
  $("#rpLead").innerHTML=`<b>${esc(maskMail(mail))}</b> hesabı için yeni şifreni yaz. En az 6 karakter.`;$("#rpF").hidden=false;$("#rp1").focus();
  $("#rpF").onsubmit=async e=>{e.preventDefault();const err=$("#rpErr");const a=$("#rp1").value,b=$("#rp2").value;if(a.length<6)return err.textContent="Şifre en az 6 karakter olmalı.";if(a!==b)return err.textContent="İki şifre aynı değil.";
   const btn=$("#rpF button[type=submit]");btn.disabled=true;btn.textContent="Kaydediliyor…";
-  try{await FB.A.confirmPasswordReset(FB.auth,code,a);await setPersist(true);await FB.A.signInWithEmailAndPassword(FB.auth,mail,a);LS.set("kadraj_reset_ok",1);location.replace(location.pathname)}
+  try{await FB.A.confirmPasswordReset(FB.auth,code,a);await setPersist(true);const cr=await FB.A.signInWithEmailAndPassword(FB.auth,mail,a);await kasaSeal(cr.user.uid,a,{create:false,note:{t:"Şifren yenilendi",b:"Şifren e-postadaki bağlantıyla yenilendi.",ic:"key"}}).catch(()=>{});LS.set("kadraj_reset_ok",1);location.replace(location.pathname)}
   catch(ex){err.textContent=authErr(ex);btn.disabled=false;btn.textContent="Şifreyi kaydet ve giriş yap"}}}
+/* ===== 4.3: Kadraj Posta + Kadraj Anahtarı (e-posta gerektirmeyen şifre kurtarma) =====
+   Her kullanıcının özel posta kutusu: data/users/{uid}/posta = {code, msgs:[{id,t,b,ic,at,r}]}. Yalnızca sahibi okur.
+   Kadraj Anahtarı (code) 12 rastgele karakter. Şifre, anahtardan türetilen anahtarla (PBKDF2 150 bin tur + AES-GCM) şifrelenip
+   unames/{kullanıcıadı}.rk içinde saklanır. Unutan kişi kullanıcı adı + anahtarla şifresini açar, giriş yapar ve yeni şifre belirler.
+   Anahtarı bilmeyen kimse (yönetici dahil) şifreyi çözemez. Şifre her girildiğinde (giriş, kayıt, değiştirme) rk yenilenir. */
+const KASA={pw:null};
+const KA_ABC="ABCDEFGHJKMNPQRSTUVWXYZ23456789";
+const kaNorm=c=>String(c||"").toUpperCase().replace(/[^A-Z0-9]/g,"");
+const kaFmt=c=>kaNorm(c).replace(/(.{4})(?=.)/g,"$1-");
+function kaNew(){const r=crypto.getRandomValues(new Uint8Array(12));return kaFmt([...r].map(x=>KA_ABC[x%KA_ABC.length]).join(""))}
+const kb64=u=>btoa(String.fromCharCode(...u)),kub64=x=>Uint8Array.from(atob(x),c=>c.charCodeAt(0));
+async function kaKey(code,salt){const base=await crypto.subtle.importKey("raw",new TextEncoder().encode(kaNorm(code)),"PBKDF2",false,["deriveKey"]);
+ return crypto.subtle.deriveKey({name:"PBKDF2",salt,iterations:150000,hash:"SHA-256"},base,{name:"AES-GCM",length:256},false,["encrypt","decrypt"])}
+async function kaLock(code,pw){const salt=crypto.getRandomValues(new Uint8Array(16)),iv=crypto.getRandomValues(new Uint8Array(12));
+ const ct=new Uint8Array(await crypto.subtle.encrypt({name:"AES-GCM",iv},await kaKey(code,salt),new TextEncoder().encode(pw)));return{v:1,s:kb64(salt),i:kb64(iv),c:kb64(ct)}}
+async function kaUnlock(code,rk){const pt=await crypto.subtle.decrypt({name:"AES-GCM",iv:kub64(rk.i)},await kaKey(code,kub64(rk.s)),kub64(rk.c));return new TextDecoder().decode(pt)}
+function postaAdd(po,t,b,ic){po.msgs=[{id:rid(),t,b,ic:ic||"mail",at:now(),r:0},...(po.msgs||[])].slice(0,50)}
+const postaUnread=()=>((S.posta&&S.posta.msgs)||[]).filter(m=>!m.r).length;
+/* şifre biliniyorken anahtarı oluştur ya da yenile (uid'nin kendi oturumunda çalışır) */
+async function kasaSeal(uid,pw,{create=true,note,rotate=false}={}){if(S.mode!=="cloud"||!uid||!pw||!(window.crypto&&crypto.subtle))return null;
+ const prof=(S.profiles&&S.profiles[uid])||await DB.get("profiles/"+uid).catch(()=>null);const un=prof&&prof.username;if(!un)return null;
+ const path=`data/users/${uid}/posta`;const po=(await DB.get(path).catch(()=>null))||{msgs:[]};po.msgs=po.msgs||[];let fresh=false;
+ if(!po.code){if(!create)return null;po.code=kaNew();fresh=true}
+ if(rotate){po.code=kaNew();postaAdd(po,"Yeni Kadraj Anahtarın",`Yeni anahtarın:\n${po.code}\n\nEski anahtarın artık çalışmaz. Yenisini bir yere yaz.`,"key")}
+ const rk=await kaLock(po.code,pw);const cur=await DB.get("unames/"+un).catch(()=>null);
+ const email=(FB&&FB.auth&&FB.auth.currentUser&&FB.auth.currentUser.email)||(cur&&cur.email)||"";
+ await DB.set("unames/"+un,{...(cur&&cur.uid===uid?cur:{}),uid,email,rk,at:now()});
+ if(fresh)postaAdd(po,"Kadraj Anahtarın hazır",`Kadraj Anahtarın:\n${po.code}\n\nŞifreni unutursan giriş ekranında Şifremi unuttum > Kadraj Anahtarı ile yenile'ye dokun; kullanıcı adını, bu anahtarı ve yeni şifreni yaz. E-posta gerekmez.\n\nAnahtarı bir yere yaz ya da ekran görüntüsünü al: şifreni unuttuğunda bu kutuyu açamazsın. Kimseyle paylaşma.`,"key");
+ if(note)postaAdd(po,note.t,note.b,note.ic);po.at=now();await DB.set(path,po);if(uid===S.uid)S.posta=po;return po}
+HOOKS.enter.push(()=>{if(S.mode!=="cloud")return;const pw=KASA.pw;KASA.pw=null;const uid=S.uid;
+ setTimeout(async()=>{try{if(pw)await kasaSeal(uid,pw);else S.posta=await DB.get(`data/users/${uid}/posta`).catch(()=>null);
+  if(S.uid===uid){scheduleRefresh();if(!S.posta||!S.posta.code){if(!LS.get("kadraj_kp_hint_"+uid)){LS.set("kadraj_kp_hint_"+uid,now());toast("Yeni: Kadraj Anahtarı. Şifreni unutursan e-posta gerekmeden kurtarırsın. Ben > zarf simgesine dokun.",null,"posta")}}
+   else if(postaUnread())scheduleRefresh()}}catch(e){console.warn("posta",e)}},3000)});
+ACT.posta=()=>openPosta();
+const _openTarget0=openTarget;
+openTarget=function(key){if(key==="posta"){if(!S.authed){S.pendingOpen=key;return}closeAll();return openPosta()}return _openTarget0(key)};
+async function openPosta(){if(S.mode!=="cloud")return toast("Kadraj Posta yalnızca bulut modunda çalışır.");const uid=S.uid;
+ const un=(S.profiles[uid]||{}).username||"";const l=openLayer("posta",`<div class="full" role="dialog" aria-label="Kadraj Posta"><div class="hd"><button class="ib plain" data-act="close" aria-label="Kapat">${I("back")}</button><h1>Kadraj Posta</h1></div><div class="body" id="kpB"><div class="vbusy"><span class="spin"></span></div></div></div>`,{noScrim:true,onClose:()=>scheduleRefresh()});
+ let po=await DB.get(`data/users/${uid}/posta`).catch(()=>null);S.posta=po;const B=$("#kpB",l);if(!B)return;
+ const draw=()=>{const ms=(po&&po.msgs)||[];
+  B.innerHTML=`<div class="kp-head">${avatar(uid,48,{click:false,ring:false,online:false})}<div><b>${esc(P(uid).name)}</b><div class="kp-addr">${esc(un)}@kadraj</div></div></div>`+
+  (po&&po.code?`<div class="kp-key"><b style="font:600 1rem var(--f-display);display:flex;gap:8px;align-items:center">${I("key")}Kadraj Anahtarın</b><div class="code" id="kpCode">••••-••••-••••</div>
+   <div class="row2"><button class="btn sec sm" id="kpShow">${I("eye")}Göster</button><button class="btn sec sm" id="kpCopy">${I("copy")}Kopyala</button></div>
+   <small class="muted">Şifreni unutursan: giriş ekranında <b>Şifremi unuttum › Kadraj Anahtarı ile yenile</b>. Anahtarı bir yere yaz; şifreni unuttuğunda bu kutuyu açamazsın. Kimseyle paylaşma.</small>
+   <button class="btn ghost sm" id="kpNew">Yeni anahtar oluştur</button></div>`
+  :`<div class="kp-key"><b style="font:600 1rem var(--f-display);display:flex;gap:8px;align-items:center">${I("key")}Kadraj Anahtarını etkinleştir</b><small class="muted">Şifreni unutursan e-posta gerekmeden kurtarabilmen için bir kez şifreni yaz. Anahtarın hemen buraya gelir.</small>
+   <form id="kpF" class="form" style="padding:0">${pwField("kpPw","Şifren","current-password")}<div class="err" id="kpErr"></div><button class="btn block">${I("key")}Anahtarımı oluştur</button></form></div>`)+
+  `<h3 class="sec-h"><span>Gelen kutusu</span><span class="muted" style="font:500 .8rem var(--f-body)">${ms.length} mesaj</span></h3>`+
+  (ms.length?`<div class="box">${ms.map(m=>`<button class="kp-msg ${m.r?"":"new"}" data-kpm="${esc(m.id)}"><span class="ic">${I(m.ic||"mail")}</span><span class="t"><b>${esc(m.t)}</b><small>Kadraj · ${ago(m.at)}${ago(m.at)==="şimdi"?"":" önce"}</small><p hidden>${esc(m.b)}</p></span></button>`).join("")}</div>`:`<div class="empty" style="padding:20px"><b>Henüz mesaj yok</b>Kadraj'dan gelen önemli mesajlar burada görünür.</div>`);
+  const sh=$("#kpShow",B);if(sh)sh.onclick=()=>{const c=$("#kpCode",B);const on=c.textContent.includes("•");c.textContent=on?po.code:"••••-••••-••••";sh.innerHTML=on?`${I("eye")}Gizle`:`${I("eye")}Göster`};
+  const cp=$("#kpCopy",B);if(cp)cp.onclick=()=>copyText(po.code,"Kadraj Anahtarın kopyalandı");
+  const nw=$("#kpNew",B);if(nw)nw.onclick=()=>kpConfirm("Yeni anahtar oluştur","Eski anahtar artık çalışmaz. Onaylamak için şifreni yaz.",async pw=>{const r=await kasaSeal(uid,pw,{rotate:true});if(r)po=r;draw();toast("Yeni Kadraj Anahtarın hazır")});
+  const f=$("#kpF",B);if(f)f.onsubmit=async e=>{e.preventDefault();const pw=$("#kpPw",B).value;const err=$("#kpErr",B);const btn=f.querySelector("button[type=submit],button:not([type])");btn.disabled=true;
+   try{await kpReauth(pw);po=await kasaSeal(uid,pw);draw();toast("Kadraj Anahtarın hazır")}catch(ex){err.textContent=authErr(ex);btn.disabled=false}};
+  $$("[data-kpm]",B).forEach(b=>b.onclick=async()=>{const p=b.querySelector("p");p.hidden=!p.hidden;const m=po.msgs.find(x=>x.id===b.dataset.kpm);if(m&&!m.r){m.r=1;b.classList.remove("new");await DB.set(`data/users/${uid}/posta`,po).catch(()=>{});S.posta=po;scheduleRefresh()}})};
+ draw()}
+async function kpReauth(pw){const{A,auth}=FB;const u=auth.currentUser;await A.reauthenticateWithCredential(u,A.EmailAuthProvider.credential(u.email,pw))}
+function kpConfirm(title,text,fn){const l=sheet("kpc",title,`<form class="form" id="kcF"><p class="muted" style="margin:0">${esc(text)}</p>${pwField("kcPw","Şifren","current-password")}<div class="err" id="kcErr"></div><button class="btn block">Onayla</button></form>`);
+ $("#kcF",l).onsubmit=async e=>{e.preventDefault();const pw=$("#kcPw",l).value;try{await kpReauth(pw);closeLayer("kpc");await fn(pw)}catch(ex){$("#kcErr",l).textContent=authErr(ex)}}}
+/* Şifremi unuttum > Kadraj Anahtarı ile yenile */
+function fbKey(prefill){S.inReset=false;authShell(`<div>${brandLine}<h2>Kadraj Anahtarı ile yenile</h2><p class="lead">Kullanıcı adını, Kadraj Anahtarını ve yeni şifreni yaz. E-posta gerekmez.</p></div>
+ <form id="fkF" novalidate><div class="field"><label for="fkUn">Kullanıcı adı</label><input class="in" id="fkUn" autocapitalize="off" spellcheck="false" placeholder="ornek.kullanici" value="${esc(prefill&&!prefill.includes("@")?prefill.replace(/^@/,""):"")}"></div>
+ <div class="field"><label for="fkCode">Kadraj Anahtarı</label><input class="in kcode" id="fkCode" autocapitalize="characters" autocomplete="off" spellcheck="false" placeholder="XXXX-XXXX-XXXX" maxlength="14"></div>
+ ${pwField("fk1","Yeni şifre","new-password")}${pwField("fk2","Yeni şifre (tekrar)","new-password")}<div class="err" id="fkErr"></div><button class="btn block" type="submit">${I("key")}Şifremi yenile ve giriş yap</button></form>
+ <p class="muted" style="margin:0;font-size:.85rem">Anahtarın, Kadraj'da <b>Ben › zarf simgesi (Kadraj Posta)</b> içinde durur. Anahtarın yoksa ve gerçek bir e-postayla kayıt olduysan e-postana bağlantı isteyebilirsin.</p>
+ <button class="btn ghost" id="fkMail">E-postama bağlantı gönder</button><button class="btn ghost" id="fkBack">Girişe dön</button>`);
+ const ci=$("#fkCode");ci.oninput=()=>{const p=ci.selectionStart;const v=kaFmt(ci.value).slice(0,14);ci.value=v;try{ci.setSelectionRange(v.length,v.length)}catch{}};
+ $("#fkBack").onclick=()=>fbLogin();$("#fkMail").onclick=()=>fbForgot($("#fkUn").value.trim());
+ $("#fkF").onsubmit=async e=>{e.preventDefault();const err=$("#fkErr");err.textContent="";const un=$("#fkUn").value.trim().replace(/^@/,"").toLowerCase();const code=kaNorm($("#fkCode").value);const a=$("#fk1").value,b=$("#fk2").value;
+  if(!un)return err.textContent="Kullanıcı adını yaz.";if(code.length!==12)return err.textContent="Kadraj Anahtarı 12 karakter olmalı (XXXX-XXXX-XXXX).";if(a.length<6)return err.textContent="Yeni şifre en az 6 karakter olmalı.";if(a!==b)return err.textContent="İki şifre aynı değil.";
+  const btn=$("#fkF button[type=submit]");btn.disabled=true;btn.textContent="Denetleniyor…";const fail=t=>{S.inReset=false;err.textContent=t;btn.disabled=false;btn.innerHTML=`${I("key")}Şifremi yenile ve giriş yap`};
+  let d=null;try{d=await DB.get("unames/"+un)}catch{return fail("Bu özellik henüz açık değil. Uygulamanın sahibi Firebase kurallarını güncellemeli.")}
+  if(!d||!d.email)return fail("Bu kullanıcı adı bulunamadı.");if(!d.rk)return fail("Bu hesapta Kadraj Anahtarı henüz etkin değil. Hesap sahibi bir kez giriş yapmış olmalı.");
+  let old=null;try{old=await kaUnlock(code,d.rk)}catch{return fail("Kadraj Anahtarı yanlış. Harfleri kontrol et.")}
+  S.inReset=true;let cr=null;try{await setPersist(true);cr=await FB.A.signInWithEmailAndPassword(FB.auth,d.email,old)}catch(ex){return fail("Anahtar doğru ama eski kalmış: şifren anahtar oluşturulduktan sonra başka bir yoldan değişmiş. Son şifrenle giriş yapmayı dene.")}
+  try{await FB.A.updatePassword(cr.user,a);await kasaSeal(cr.user.uid,a,{create:false,note:{t:"Şifren Kadraj Anahtarı ile yenilendi",b:"Şifren az önce Kadraj Anahtarınla yenilendi. Bunu sen yapmadıysan anahtarını yenile: Kadraj Posta › Yeni anahtar oluştur.",ic:"key"}}).catch(()=>{});
+   LS.set("kadraj_reset_ok",1);location.replace(location.pathname)}catch(ex){fail(authErr(ex))}}}
 /*}@js:E*/
 boot();
 
