@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
 <meta charset="utf-8">
-<meta name="kadraj-version" content="40402">
+<meta name="kadraj-version" content="40403">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,interactive-widget=resizes-content">
 <meta name="theme-color" content="#0C7A63">
 <link rel="manifest" href="manifest.webmanifest">
@@ -1106,7 +1106,7 @@ const vib=ms=>{try{if(settings.haptics===false)return;navigator.vibrate&&navigat
 /* Sürüm: ana.ara.yama (4.1.0). Hata düzeltme ve küçük şeyler → yama artar (4.1.1); büyük güncelleme → ara artar (4.2.0).
    APP_V = ana*10000 + ara*100 + yama (4.1.0 → 40100). Başlıktaki <meta name="kadraj-version"> ile aynı tutulmalı.
    Eski biçim (4.0 → 40) verNorm ile çevrilir. "İki sürüm geride" ara sürüm sayısıyla ölçülür (yamalar engellemez). */
-const APP_V=40402,APP_VER="4.4.2";
+const APP_V=40403,APP_VER="4.4.3";
 const verNorm=x=>{x=Math.max(0,Math.floor(+x||0));return x<1000?Math.floor(x/10)*10000+(x%10)*100:x};
 const verLvl=x=>Math.floor(verNorm(x)/100);
 const verGap=x=>verLvl(x)-verLvl(APP_V);
@@ -1937,8 +1937,8 @@ function drawComposer(){const c=S.cmp;const titles={photo:"Yeni fotoğraf",reel:
    const useFile=async f=>{if(!(f.type||"").startsWith("video/")&&!/\.(mp4|mov|m4v|webm|3gp|mkv)$/i.test(f.name||""))return toast("Bir video dosyası seç.");const lim2=S.mode==="local"?1.5*1048576:cldOn()?CLD.maxMB*1048576:VMAX;
    const tgt=S.mode==="local"?lim2:cldOn()?lim2:3*1048576;const longV=cldOn()&&(await vidDur(f))>CLD.maxS+3;
    if(f.size>tgt||longV){const big=f.size>lim2;const go=$("#cmpGo",l);go.disabled=true;$("#rBody",l).innerHTML=`<div class="vbusy"><span class="spin"></span><b>Flick hazırlanıyor</b><span class="pct" id="vbP">%0</span><small>Video telefonunda küçültülüyor, en fazla ${cldOn()?"2 dakikası":"30 saniyesi"} alınır. Bu ekrandan çıkma.</small></div>`;
-    try{const g=await compressVideo(f,{maxS:cldOn()?CLD.maxS:30,limit:cldOn()?25*1048576:tgt,onProg:p=>{const e=$("#vbP",l);if(e)e.textContent="%"+Math.round(p*100)}});if(g.size<f.size)f=g}catch(e){if(big){go.disabled=false;toast(e.message||"Video hazırlanamadı.");return drawComposer()}}go.disabled=false;
-    if(f.size>lim2){toast("Video hâlâ çok büyük. Daha kısa bir video seç.");return drawComposer()}toast("Video küçültüldü, hazır")}if(c.videoUrl&&c.video&&c.video._rec)try{URL.revokeObjectURL(c.videoUrl)}catch{}c.video=f;c.videoUrl=URL.createObjectURL(f);drawComposer()};
+    let shrunk=false;const alive=()=>S.cmp===c&&!!$('#overlay [data-layer="composer"]');try{const g=await compressVideo(f,{maxS:cldOn()?CLD.maxS:30,limit:cldOn()?25*1048576:tgt,onProg:p=>{const e=$("#vbP",l);if(e)e.textContent="%"+Math.round(p*100)}});if(g.size<f.size){f=g;shrunk=true}}catch(e){if(!alive())return;if(big){go.disabled=false;toast(e.message||"Video hazırlanamadı.");return drawComposer()}if(longV){go.disabled=false;toast("Video 2 dakikadan uzun ve kısaltılamadı. Daha kısa bir video seç.");return drawComposer()}}if(!alive())return;go.disabled=false;
+    if(f.size>lim2){toast("Video hâlâ çok büyük. Daha kısa bir video seç.");return drawComposer()}toast(shrunk?"Video küçültüldü, hazır":"Video hazır")}if(c.videoUrl&&c.video&&c.video._rec)try{URL.revokeObjectURL(c.videoUrl)}catch{}c.video=f;c.videoUrl=URL.createObjectURL(f);drawComposer()};
    $("#vPick",l).onclick=async()=>{S.onPickSlow=()=>{const h=$("#vHint",l);if(h)h.hidden=false};const f=await nativePick("video/*,.mp4,.mov,.m4v,.webm,.3gp,.mkv");if(f===undefined){$("#vHint",l).hidden=false;return}if(!f)return;useFile(f)};
    const vs=$("#vSl",l);if(vs)vs.onclick=()=>{c.mode="slides";drawComposer()};
    $("#vRec",l).onclick=async()=>{Music.stop();const f=await openRecorder(lim);if(f)useFile(f)};
@@ -1964,17 +1964,17 @@ async function publishComposer(){const c=S.cmp;const l=$('#overlay [data-layer="
   if(c.kind==="photo"){if(c.src&&c.ar==="1/1")doc={...base,kind:"photo",src:c.src,css:FILTERS[c.filter][1]||"",ar:c.ar,exif:`Filtre: ${FILTERS[c.filter][0]}`};
    else{const cv=$("#cCv",l);doc={...base,kind:"photo",img:encode(cv,170000),ar:c.ar,exif:`Filtre: ${FILTERS[c.filter][0]} · ${cv.width} × ${cv.height}`}}}
   else if(c.kind==="story"){path="stories/"+id;doc={uid:S.uid,at,img:encode($("#cCv",l),170000)}}
-  else if(c.kind==="note"){if(!(c.text||"").trim())return toast("Notuna bir şey yaz.");doc={...base,kind:"note",text:c.text.trim(),bg:c.bg}}
-  else if(c.kind==="poll"){const opts=c.options.map(o=>o.trim()).filter(Boolean);if(!(c.question||"").trim())return toast("Bir soru yaz.");if(opts.length<2)return toast("En az iki seçenek yaz.");doc={...base,kind:"poll",question:c.question.trim(),options:opts}}
+  else if(c.kind==="note"){if(!(c.text||"").trim())return toast("Notuna bir şey yaz.");doc={...base,kind:"note",text:kidClean(c.text.trim()),bg:c.bg}}
+  else if(c.kind==="poll"){const opts=c.options.map(o=>o.trim()).filter(Boolean);if(!(c.question||"").trim())return toast("Bir soru yaz.");if(opts.length<2)return toast("En az iki seçenek yaz.");doc={...base,kind:"poll",question:kidClean(c.question.trim()),options:opts.map(kidClean)}}
   else if(c.kind==="reel"){if(c.mode==="video"){if(!c.video)return toast("Önce bir video seç.");go.disabled=true;go.textContent="Hazırlanıyor…";const poster=await videoPoster(c.videoUrl);const ref=await storeVideo(c.video,(i,n)=>go.textContent=`Yükleniyor %${Math.round(i/Math.max(1,n)*100)}`);vcache[ref]=c.videoUrl;doc={...base,kind:"reel",video:ref,poster,exif:"Video · "+(c.video.size/1048576).toFixed(1).replace(".",",")+" MB",...(c.vmusic&&c.vmusic!=="none"?{music:c.vmusic}:{})}}
-   else{if(!c.slides.length)return toast("En az bir kare ekle.");doc={...base,kind:"reel",slides:c.slides.slice(),fx:c.fx,music:c.music,text:(c.text||"").trim()}}}
+   else{if(!c.slides.length)return toast("En az bir kare ekle.");doc={...base,kind:"reel",slides:c.slides.slice(),fx:c.fx,music:c.music,text:kidClean((c.text||"").trim())}}}
   go.disabled=true;go.textContent="Paylaşılıyor…";
   const ok=await write(()=>DB.set(path,doc));
   if(!ok){if(doc&&doc.video)delChunks(doc.video);go.disabled=false;go.textContent="Paylaş";return}
   if(c.kind==="story"){S.stories={...S.stories,[id]:{id,...doc}};closeLayer("composer");toast("Hikâyen paylaşıldı");return tab("feed")}
   S.posts={...S.posts,[id]:{id,...doc}};closeLayer("composer");toast({photo:"Fotoğraf paylaşıldı",note:"Not paylaşıldı",poll:"Anket yayında",reel:"Flick paylaşıldı"}[c.kind]);
   if(c.kind==="reel"){S.stack=[{name:"feed",params:{}}];S.route={name:"reels",params:{start:id}};render(true)}else tab("feed")}
- catch(e){console.warn(e);toast("Paylaşılamadı: "+(e&&e.message?e.message:"bilinmeyen hata"));go.disabled=false;go.textContent="Paylaş"}}
+ catch(e){console.warn(e);toast(e&&e.code==="quota_exceeded"?"Cihaz depolaması doldu. Daha kısa bir video seç ya da eski paylaşımları sil.":"Paylaşılamadı: "+(e&&e.message?e.message:"bilinmeyen hata"));go.disabled=false;go.textContent="Paylaş"}}
 /* uygulama içi video kaydı (çekim) */
 function openRecorder(maxS=20){return new Promise(resolve=>{let stream=null,mr=null,chunks=[],facing="environment",t0=0,raf=0,done=false,recording=false;
  const finish=v=>{if(done)return;done=true;cancelAnimationFrame(raf);try{if(mr&&mr.state!=="inactive")mr.stop()}catch{}if(stream)stream.getTracks().forEach(t=>t.stop());closeLayer("rec");resolve(v)};
@@ -1995,13 +1995,14 @@ function openRecorder(maxS=20){return new Promise(resolve=>{let stream=null,mr=n
  $("#vrX",l).onclick=()=>finish(null);
  $("#vrF",l).onclick=()=>{if(recording)return;facing=facing==="user"?"environment":"user";open()};
  open()})}
-function videoPoster(url){return new Promise(res=>{const v=document.createElement("video");v.muted=true;v.src=url;v.playsInline=true;v.onloadeddata=()=>{v.currentTime=Math.min(1,(v.duration||2)/2)};v.onseeked=()=>{try{res(toCanvas(v,360,640).toDataURL("image/jpeg",.7))}catch{res("")}};v.onerror=()=>res("");setTimeout(()=>res(""),6000)})}
+function videoPoster(url){return new Promise(res=>{const v=document.createElement("video");v.muted=true;v.preload="auto";v.src=url;v.playsInline=true;try{const pp=v.play();if(pp&&pp.then)pp.then(()=>v.pause()).catch(()=>{})}catch{}v.onloadeddata=()=>{v.currentTime=Math.min(1,(v.duration||2)/2)};v.onseeked=()=>{try{res(toCanvas(v,360,640).toDataURL("image/jpeg",.7))}catch{res("")}};v.onerror=()=>res("");setTimeout(()=>res(""),6000)})}
 /* video parçaları */
 const vcache={};
 const RB={};function RV(x){if(!x)return x;const d=ASSETS[x];if(!d)return x;if(RB[x])return RB[x];try{const i=d.indexOf(",");const mime=d.slice(5,d.indexOf(";"))||"video/mp4";const bin=atob(d.slice(i+1));const u=new Uint8Array(bin.length);for(let k=0;k<bin.length;k++)u[k]=bin.charCodeAt(k);return RB[x]=URL.createObjectURL(new Blob([u],{type:mime}))}catch{return d}}
 /* Cloudinary videoları akıcı oynasın: 720p, H.264 MP4, otomatik kalite (Cloudinary ilk izlemede dönüştürür ve önbellekler) */
 const cldPlay=u=>typeof u==="string"&&/^https:\/\/res\.cloudinary\.com\/[^/]+\/video\/upload\/v\d+\//.test(u)?u.replace("/video/upload/","/video/upload/f_mp4,vc_h264,q_auto,w_720,c_limit/").replace(/\.(webm|mov|mkv|3gp|m4v|avi)$/i,".mp4"):u;
-const vsrc=p=>!p.video?"":p.video.startsWith("chunk:")?(vcache[p.video]||""):cldPlay(RV(p.video));
+const vsrcOld=p=>!p.video?"":p.video.startsWith("chunk:")?(vcache[p.video]||""):cldPlay(RV(p.video));
+const vsrc=p=>!p.video?"":vcache[p.video]||(p.video.startsWith("chunk:")?"":cldPlay(RV(p.video)));
 const vref=p=>p.video&&p.video.startsWith("chunk:")?` data-vref="${esc(p.video)}"`:"";
 async function resolveVideo(ref){if(vcache[ref])return vcache[ref];const[,vid,n]=ref.split(":");const parts=await Promise.all([...Array(+n)].map((_,i)=>DB.get(`vchunks/${vid}-${i}`).catch(()=>null)));if(parts.some(x=>!x))return null;
  if(parts[0].b&&parts[0].b.toUint8Array)return vcache[ref]=URL.createObjectURL(new Blob(parts.map(x=>x.b.toUint8Array()),{type:parts[0].m||"video/mp4"}));
@@ -2149,7 +2150,7 @@ function subscribeShared(){admSubscribe();
  DB.watchCol("posts",docs=>{const m={};for(const d of docs)m[d.id]=d;notifyNewPosts(m);S.posts=m;scheduleRefresh()},{orderBy:["at","desc"],limit:300});
  DB.watchCol("meta",docs=>{const m={};for(const d of docs)m[d.id]=d;notifyMeta(m);S.meta=m;scheduleRefresh()},{limit:600});
  DB.watchCol("stories",docs=>{const m={};const lim=now()-24*H;for(const d of docs)if(d.at>lim)m[d.id]=d;S.stories=m;scheduleRefresh()},{orderBy:["at","desc"],limit:120});
- DB.watchDoc("chats/meydan",d=>{const o=S.meydan;S.meydan=d;if(d&&d.last&&notifReady&&settings.notify&&S.authed&&d.last.from!==S.uid&&(!o||!o.last||o.last.at<d.last.at)&&!(S.route.name==="chat"&&S.route.params.key==="meydan"))toast(`Meydan · ${P(d.last.from).username}: ${d.last.text.slice(0,60)}`,d.last.from);scheduleRefresh()})}
+ DB.watchDoc("chats/meydan",d=>{const o=S.meydan;S.meydan=d;if(d&&d.last&&notifReady&&settings.notify&&settings.nMsg!==false&&S.authed&&!isChild(S.uid)&&d.last.from!==S.uid&&(!o||!o.last||o.last.at<d.last.at)&&!(S.route.name==="chat"&&S.route.params.key==="meydan"))toast(`Meydan · ${P(d.last.from).username}: ${d.last.text.slice(0,60)}`,d.last.from);scheduleRefresh()})}
 let userUnsub=[];
 function subscribeUser(){teardownUser();const u=S.uid;if(S.mode==="cloud"&&FB)userUnsub.push(listenCalls());
  userUnsub.push(DB.watchCol("chats",docs=>{const m={};for(const d of docs)m[d.id]=d;notifyChats(m);S.chats=m;if(S.route.name==="chat"&&chatKey&&m[chatKey])markRead(chatKey);scheduleRefresh()},{where:["members","array-contains",u],limit:200}));
@@ -2177,7 +2178,7 @@ function wireComposer(){const f=$("#composer"),inp=$("#msgIn");if(!f)return;cons
  const grow=()=>{inp.style.height="auto";inp.style.height=Math.min(128,inp.scrollHeight)+"px"};
  const icon=()=>{if(btn&&voice){const has=!!inp.value.trim();btn.innerHTML=I(has?"send":"mic");btn.setAttribute("aria-label",has?"Gönder":"Sesli mesaj kaydet")}};
  inp.addEventListener("input",()=>{grow();icon();typingPing(key)});
- inp.addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey&&settings.enterSend!==false){e.preventDefault();f.requestSubmit()}});
+ inp.addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey&&settings.enterSend!==false){e.preventDefault();if(inp.value.trim())f.requestSubmit()}});
  f.onsubmit=async e=>{e.preventDefault();const v=inp.value.trim();if(!v){if(voice)startRec();return}inp.value="";grow();icon();typingStop();S.forceBottom=true;const extra=S.replyTo?{reply:S.replyTo}:{};S.replyTo=null;drawReply();try{inp.focus({preventScroll:true})}catch{inp.focus()}await sendMessage(key,{text:v,...extra});try{inp.focus({preventScroll:true})}catch{}};
  drawReply()}
 function drawReply(){const b=$("#replyBar");if(!b)return;const r=S.replyTo;b.innerHTML=r?`<div class="replybar">${I("reply")}<span class="t"><b>${esc(P(r.from).username)}</b> · ${esc(r.text)}</span><button class="ib plain" data-act="noreply" aria-label="Yanıtı iptal et" style="width:2.2rem;height:2.2rem">${I("close")}</button></div>`:""}
@@ -2235,7 +2236,7 @@ async function startCall(uid,video){if(!guard())return;if(S.mode!=="cloud")retur
 function listenCalls(){const{F,db}=FB;const seen=new Set();
  return F.onSnapshot(F.query(F.collection(db,"calls"),F.where("to","==",S.uid)),s=>{for(const ch of s.docChanges()){const id=ch.doc.id;const d=ch.doc.data()||{};
   if(ch.type==="removed"){if(CALL&&CALL.id===id)endCall(false);continue}
-  if(d.status==="ringing"&&!seen.has(id)&&Date.now()-d.at<45000){seen.add(id);if(CALL){F.updateDoc(F.doc(db,"calls/"+id),{status:"declined"}).catch(()=>{});continue}incomingCall(id,d)}
+  if(d.status==="ringing"&&!seen.has(id)&&Date.now()-d.at<45000){seen.add(id);if(CALL||(isChild(S.uid)&&!childCanDM(d.from))){F.updateDoc(F.doc(db,"calls/"+id),{status:"declined"}).catch(()=>{});continue}incomingCall(id,d)}
   else if(CALL&&CALL.id===id&&(d.status==="ended"||d.status==="missed"))endCall(false,d.status==="missed"?"Cevapsız arama.":"Arama bitti.")}},e=>console.warn("calls",e))}
 function incomingCall(id,d){const{F,db}=FB;CALL={id,ref:F.doc(db,"calls/"+id),peer:d.from,video:!!d.video,role:"callee",status:"incoming",offer:d.offer,unsubs:[],start:0,mic:true,cam:!!d.video,facing:"user",pend:[]};
  const c=CALL;c.unsubs.push(F.onSnapshot(c.ref,s=>{if(CALL!==c)return;const x=s.exists()?s.data():null;if(!x||x.status==="ended"||x.status==="missed")endCall(false,x&&x.status==="ended"&&c.status!=="incoming"?"Arama bitti.":"Cevapsız arama.")}));
@@ -2308,7 +2309,7 @@ function msgMenu(mid){const key=S.route.params.key;const k=keyInfo(key);const m=
  const l=sheet("menu","",`${k.type!=="bot"?`<div class="rxpick" role="group" aria-label="Tepki seç">${REACTS.map(([t,lb])=>`<button type="button" data-rxp="${t}" class="${msgReacts(m)[S.uid]===t?"on":""}" aria-label="${lb}">${rxSvg(t)}</button>`).join("")}</div>`:""}<button class="opt" id="mmR">${I("reply")}Yanıtla</button>${m.text?`<button class="opt" id="mmC">${I("copy")}Metni kopyala</button>`:""}${canEdit?`<button class="opt" id="mmE">${I("edit")}Düzenle</button>`:""}<button class="opt" id="mmM">${I("eye")}Benden sil</button>${canAll?`<button class="opt red" id="mmD">${I("trash")}Herkesten sil</button>`:""}<button class="opt" data-act="close">${I("close")}Vazgeç</button>`);
  $("#mmR",l).onclick=()=>{closeLayer("menu");S.replyTo={mid,from:m.from,text:msgPreview(m).slice(0,80)};drawReply();const i=$("#msgIn");if(i)i.focus()};$$("[data-rxp]",l).forEach(b=>b.onclick=()=>{closeLayer("menu");setReact(mid,b.dataset.rxp)});const c=$("#mmC",l);if(c)c.onclick=()=>{closeLayer("menu");copyText(m.text,"Mesaj kopyalandı")};
  const ed=$("#mmE",l);if(ed)ed.onclick=()=>{closeLayer("menu");const l2=sheet("medit","Mesajı düzenle",`<form class="form" id="meF"><textarea class="in" id="meT" maxlength="2000">${esc(m.text)}</textarea><button class="btn block">Kaydet</button></form>`);const ta=$("#meT",l2);ta.focus();ta.setSelectionRange(ta.value.length,ta.value.length);
-  $("#meF",l2).onsubmit=async ev=>{ev.preventDefault();const v=ta.value.trim();if(!v||v===m.text){closeLayer("medit");return}const t=now();S.msgs=S.msgs.map(x=>x.id===mid?{...x,text:v,edited:t}:x);renderMsgs();closeLayer("medit");
+  $("#meF",l2).onsubmit=async ev=>{ev.preventDefault();const v=kidClean(ta.value.trim());if(!v||v===m.text){closeLayer("medit");return}const t=now();S.msgs=S.msgs.map(x=>x.id===mid?{...x,text:v,edited:t}:x);renderMsgs();closeLayer("medit");
    if(await write(()=>DB.update(`chats/${k.cid}/msgs/${mid}`,{text:v,edited:t}))){const last=S.msgs[S.msgs.length-1];if(last&&last.id===mid)await updateLast(k,last)}}};
  $("#mmM",l).onclick=()=>{closeLayer("menu");S.hidden=S.hidden||{msgs:{},chats:{}};S.hidden.msgs={...(S.hidden.msgs||{}),[mid]:now()};renderMsgs();saveHidden();toast("Mesaj senden silindi")};
  const dl=$("#mmD",l);if(dl)dl.onclick=()=>{closeLayer("menu");dialog("Herkesten silinsin mi?","Mesaj sohbetteki herkes için kalıcı olarak silinir.",[{label:"Herkesten sil",cls:"danger",fn:async()=>{const wasLast=S.msgs[S.msgs.length-1]?.id===mid;S.msgs=S.msgs.filter(x=>x.id!==mid);renderMsgs();
@@ -2374,7 +2375,7 @@ function groupMenu(){const k=keyInfo(S.route.params.key);const c=S.chats[k.cid];
  $("#gmAdd",l).onclick=()=>{closeLayer("menu");const cand=humans().filter(u=>!(c.members||[]).includes(u));if(!cand.length)return toast("Eklenecek başka kullanıcı yok.");
   const l2=sheet("menu","Üye ekle",`<div class="box">${cand.map(u=>`<div class="row">${avatar(u,40,{click:false,ring:false})}<div class="t"><div><b>${esc(P(u).name)}</b></div></div><button class="btn sm" data-addm="${esc(u)}">Ekle</button></div>`).join("")}</div>`);
   $$("[data-addm]",l2).forEach(b=>b.onclick=async()=>{const members=[...new Set([...(S.chats[k.cid].members||[]),b.dataset.addm])];if(await upd({members})){b.disabled=true;b.textContent="Eklendi"}})}}
-function leaveGroup(cid){dialog("Gruptan ayrılınsın mı?","Bu gruptaki mesajları artık göremezsin.",[{label:"Ayrıl",cls:"danger",fn:async()=>{const c=S.chats[cid];if(!c)return;const members=(c.members||[]).filter(u=>u!==S.uid);if(await write(()=>DB.update("chats/"+cid,{members}))){const ch={...S.chats};delete ch[cid];S.chats=ch;if(S.route.name==="chat")tab("chats");else render(false);toast("Gruptan ayrıldın")}}},{label:"Vazgeç"}])}
+function leaveGroup(cid){dialog("Gruptan ayrılınsın mı?","Bu gruptaki mesajları artık göremezsin.",[{label:"Ayrıl",cls:"danger",fn:async()=>{const c=S.chats[cid];if(!c)return;const members=(c.members||[]).filter(u=>u!==S.uid);if(await write(()=>DB.update("chats/"+cid,c.createdBy===S.uid&&members.length?{members,createdBy:members[0]}:{members}))){const ch={...S.chats};delete ch[cid];S.chats=ch;if(S.route.name==="chat")tab("chats");else render(false);toast("Gruptan ayrıldın")}}},{label:"Vazgeç"}])}
 /* büyük videoları telefonda küçült (sahne yükleme) */
 function compressVideo(file,{maxS=30,limit=VMAX,onProg}={}){return new Promise((resolve,reject)=>{const url=URL.createObjectURL(file);const v=document.createElement("video");v.playsInline=true;v.preload="auto";v.setAttribute("playsinline","");
  let raf=0,mr=null,chunks=[],done=false,ac=null,dur=maxS,cw=0,ch=0,ctx=null;
@@ -2769,6 +2770,7 @@ function gameMsgHtml(m){const d=(S.games||{})[m.game];const st=!d?"Oyun kartı":
    Modda: küfür süzgeci (giden metin maskelenir), Meydan kapalı, sadece karşılıklı takipleşilen
    arkadaşlarla mesajlaşma. */
 const isChildOld=uid=>!!(P(uid)||{}).child;
+const kidClean=t=>isChild(S.uid)?cleanText(t):t;
 /* 4.3.2: yönetici kapattıysa (admin/childinv.list[uid].off, açılıştan sonraysa) çocuk modu kapalı sayılır */
 const isChild=uid=>{const c=(P(uid)||{}).child;if(!c)return false;const o=(((S.adm&&S.adm.childinv&&S.adm.childinv.list)||{})[uid]||{}).off;return!(o&&o>=+c)};
 const childInvites=()=>(S.adm&&S.adm.childinv&&S.adm.childinv.list)||{};
@@ -2862,7 +2864,7 @@ function vAdmin(){if(!S.admin)return`<div class="empty"><span class="ic">${I("lo
  if(bakimOn())h+=`<div class="banner" style="background:#fff1d6;color:#3d2c00">${I("gear")}<span><b>Bakım modu açık.</b> Kullanıcılar şu an uygulamayı göremiyor.</span></div>`;
  if(S.mode==="cloud"&&S.admRulesOk===false)h+=`<div class="banner" style="border:1.5px solid var(--heart)">${I("info")}<span><b>Bir kez kurulum gerekiyor.</b> Paneldeki işlemlerin çalışması için en alttaki <b>Kurulum</b> bölümündeki kuralları Firebase'e yapıştırıp Yayınla'ya bas.</span></div>`;
  h+=`<div class="adm-stats">${stat(users.length,"kullanıcı")}${stat(S.online.size+1,"şu an açık")}${stat(posts.filter(p=>p.kind!=="reel").length,"paylaşım")}${stat(posts.filter(p=>p.kind==="reel").length,"Flick")}${stat(Object.values(S.stories).filter(s=>s.at>lim).length,"hikâye")}${stat(BOTS.length,"bot")}</div>`;
- h+=cldUseBox();
+ h+=cldUseBox();h+=archBox();
  const an=S.adm&&S.adm.duyuru;
  h+=`<h3 class="sec-h"><span>Duyuru</span></h3><div class="box adm-box">${an&&an.text?`<div class="adm-cur">${I("bell")}<span>${esc(an.text)}<small>${ago(an.at)}</small></span></div>`:""}<textarea class="in" id="admAnn" maxlength="300" placeholder="Herkesin Akış'ında üstte görünecek duyuru…"></textarea><div class="adm-row"><button class="btn sm" data-adm="ann">${I("send")}Yayınla</button>${an&&an.text?`<button class="btn sm sec" data-adm="annx">Kaldır</button>`:""}</div></div>`;
  const reps=S.reports||[];
@@ -2918,6 +2920,43 @@ function admKeySheet(uid){if(!S.admin)return;const p=P(uid);
   $("#akC",l).onclick=()=>copyText(code,"Anahtar kopyalandı")}}
 /* 4.3.2: yönetici çocuk modunu kapattıysa kişinin kendi cihazı profilindeki bayrağı da temizler */
 HOOKS.enter.push(()=>setTimeout(()=>{const me=S.uid,c=me&&(P(me)||{}).child;if(c&&!isChild(me))write(()=>DB.update("profiles/"+me,{child:0}),{quiet:true}).then(ok=>{if(ok&&S.uid===me){S.profiles={...S.profiles,[me]:{...S.profiles[me],child:0}};scheduleRefresh()}})},2500));
+/* 4.4.3 otomatik güncelleme: yeni sürüm bulununca (meta/_surum ya da yayındaki index.html) uygun anda kendiliğinden yenilenir.
+   Açık bir pencere (yazı, oluştur, arama vb.) ya da odaklı yazı kutusu varsa bekler; aynı sürüm için oturumda bir kez dener (döngü olmaz). */
+const verBarBase=verBar;
+verBar=function(v,force){verBarBase(v,force);if(v!=null&&v>APP_V&&!VER.blocked)verAuto(v)};
+function verSafe(){const ov=$("#overlay");if(ov&&ov.children.length)return false;if(CALL)return false;if(S.route&&S.route.name==="chessgame")return false;
+ if(document.visibilityState==="hidden")return true;const a=document.activeElement;if(a&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)&&a.value)return false;return true}
+function verAuto(v){if(VER.reloading||SS.get("kadraj_auto_"+v))return;clearTimeout(VER.autoT);if(!verSafe()){VER.autoT=setTimeout(()=>verAuto(v),15000);return}
+ SS.set("kadraj_auto_"+v,"1");const hid=document.visibilityState==="hidden";if(!hid)toast(`Kadraj ${verStr(v)} yükleniyor…`);setTimeout(()=>hardReload(),hid?0:1200)}
+function verRemoteCheck(){if(VER.blocked||VER.reloading)return;VER.lastRemote=now();fetchRemoteVersion().then(r=>{if(r&&r>APP_V)verBar(r,true)}).catch(()=>{})}
+HOOKS.enter.push(()=>setTimeout(verRemoteCheck,5000));
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"&&S.authed&&now()-(VER.lastRemote||0)>2*60e3)verRemoteCheck()});
+/* 4.4.3 Sürüm arşivi (yönetici paneli): eski sürümler GitHub kayıtlarından indirilir ve internete ve hesaplara erişemeyen
+   bir kum havuzunda (sandbox iframe, bellekte depolama, yalnızca deneme modu) açılır; gerçek verilere dokunamaz.
+   Listede olmayan yeni sürümler GitHub'daki "x.y.z:" ile başlayan kayıt mesajlarından kendiliğinden eklenir. */
+const ARCH_REPO="kadrajsosyalmedya/Kadraj";
+const VER_ARCHIVE=[["3.0","0b739169e925bb4618c4ebf7bf22f36c995c7690","2026-10-11"],["3.1","79b027a247dc784017083b0017e8af7c57306d75","2026-10-11"],["3.2","0bcc5178bdc1161b98fa062bab21d2672c97b603","2026-10-11"],["3.3","17bfd175e36b09f6545869ccb7d443c643cb24d3","2026-10-11"],["3.4","df237ca51acd8e718e17aaaf2d376555934f7eaa","2026-10-11"],["3.5","745685b8b7291ad8391fd851913db95ee6bc6c71","2026-10-11"],["3.6","cf653f11b7255d2fef7c543676c6650038b41fa8","2026-10-11"],["3.8","04dcabcf2342cea397a95a2a9b24d34be9c2a45e","2026-10-11"],["3.9","37ff3ac130de3c8ecec713ea101a8a4088286971","2026-10-11"],["4.0","1746de9972415916771c3e6c4f1b7e21af8f97f0","2026-10-12"],["4.1.0","27deaf75ab88adcda67999e839d62938abdc7d7c","2026-10-12"],["4.1.1","54a0ea8b18b7bcc4051f1c4e3dcf24d08e72006e","2026-10-12"],["4.2.0","72b4ef649511501cd938b6d77b837a1090db5456","2026-10-12"],["4.2.1","d142424bff0c16eb8478e2efb7f56fc7c6925ebe","2026-10-12"],["4.3.0","c238354da6219a1f4dd5532be5469c53938f66de","2026-10-12"],["4.3.1","39ebd261f9a4005e49ae73b75772017e8a0d6232","2026-10-12"],["4.3.2","03c1fcb7bc17548f37961170b1db589ec1d64c74","2026-10-12"],["4.4.0","8d5f77c1b497cd930ddad800d280484d8d3249ec","2026-10-12"],["4.4.1","e51f5837308beaea1de6bbdb1e900ab94fe202c2","2026-10-12"],["4.4.2","9a47366fd835c5fcccd6cbf3d9592ca5ac2ac986","2026-10-12"]];
+const ARCH_CACHE={};
+async function archFetch(sha){if(ARCH_CACHE[sha])return ARCH_CACHE[sha];let last=null;
+ for(const u of[`https://raw.githubusercontent.com/${ARCH_REPO}/${sha}/index.html`,`https://cdn.jsdelivr.net/gh/${ARCH_REPO}@${sha}/index.html`]){
+  try{const r=await fetch(u);if(r.ok){const t=await r.text();if(/<html/i.test(t)){ARCH_CACHE[sha]=t;return t}}last=new Error("HTTP "+r.status)}catch(e){last=e}}
+ throw last||new Error("indirilemedi")}
+function archPrep(html){
+ const shim=`<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' 'unsafe-eval' blob: data:; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com data:; img-src data: blob:; media-src data: blob:; connect-src data: blob:; worker-src blob: data:"><script>(function(){function M(){var d=Object.create(null);return{getItem:function(k){return k in d?d[k]:null},setItem:function(k,v){d[k]=String(v)},removeItem:function(k){delete d[k]},clear:function(){for(var k in d)delete d[k]},key:function(i){var a=Object.keys(d);return i<a.length?a[i]:null},get length(){return Object.keys(d).length}}}
+try{Object.defineProperty(window,"localStorage",{value:M(),configurable:true})}catch(e){}try{Object.defineProperty(window,"sessionStorage",{value:M(),configurable:true})}catch(e){}try{delete Navigator.prototype.serviceWorker}catch(e){}})();<\/script>`;
+ let h=html.replace(/<head[^>]*>/i,m=>m+shim);const i=h.lastIndexOf("boot();");if(i>0&&h.slice(i-5,i)!=="Local")h=h.slice(0,i)+"bootLocal();"+h.slice(i+7);return h}
+async function openArchive(v,sha){const l=openLayer("arch",`<div class="full" role="dialog" aria-label="Kadraj ${esc(v)} arşiv"><div class="hd"><button class="ib plain" data-act="close" aria-label="Kapat">${I("back")}</button><h1>Kadraj ${esc(v)}</h1><span class="muted" style="font-size:.78rem;margin-left:auto">arşiv · deneme modu</span></div><div class="body" id="archB" style="padding:0;flex:1;display:flex;min-height:0"><div class="vbusy" style="margin:auto"><span class="spin"></span><b>Sürüm indiriliyor</b></div></div></div>`,{noScrim:true,onClose:()=>{if(l&&l._u)URL.revokeObjectURL(l._u)}});
+ let html;try{html=archPrep(await archFetch(sha))}catch(e){const b=$("#archB",l);if(b)b.innerHTML=`<div class="empty" style="margin:auto"><b>İndirilemedi</b>${esc((e&&e.message)||"")}. İnternetini kontrol et.</div>`;return}
+ const b=$("#archB",l);if(!b)return;const u=URL.createObjectURL(new Blob([html],{type:"text/html"}));l._u=u;
+ b.innerHTML=`<iframe src="${u}" title="Kadraj ${esc(v)}" sandbox="allow-scripts allow-forms allow-modals allow-popups" style="flex:1;width:100%;border:0;background:#fff"></iframe>`}
+function archList(){const known=new Set(VER_ARCHIVE.map(a=>a[0]));return[...VER_ARCHIVE,...(S.archExtra||[]).filter(a=>!known.has(a[0]))].sort((a,b)=>verNorm(+a[0].split(".").map((x,i)=>i?x.padStart(2,"0"):x).join("").padEnd(5,"0"))-verNorm(+b[0].split(".").map((x,i)=>i?x.padStart(2,"0"):x).join("").padEnd(5,"0"))).reverse()}
+function archBox(){const L=archList();return`<div id="archBox"><h3 class="sec-h"><span>Sürüm arşivi</span><span class="muted" style="font:500 .8rem var(--f-body)">${L.length} sürüm</span></h3><div class="box adm-box"><p class="muted" style="margin:0 0 8px;font-size:.84rem">Eski sürümler deneme modunda, gerçek hesaplara dokunmadan açılır. 0.x–2.x ve 3.7 GitHub'a hiç yüklenmediği için arşivde yok.</p>
+ ${L.map(([v,sha,d])=>`<button class="opt" data-arch="${esc(sha)}" data-v="${esc(v)}">${I("rotate")}Kadraj ${esc(v)}${v===APP_VER?" · şu anki":""}<small class="muted" style="margin-left:auto">${esc(d||"")}</small></button>`).join("")}</div></div>`}
+function archWire(){$$("[data-arch]").forEach(b=>b.onclick=()=>openArchive(b.dataset.v,b.dataset.arch))}
+HOOKS.after.push(r=>{if(r!=="admin")return;archWire();if(S.archTried)return;S.archTried=true;
+ fetch(`https://api.github.com/repos/${ARCH_REPO}/commits?path=index.html&per_page=100`).then(x=>x.ok?x.json():[]).then(list=>{const seen=new Set(VER_ARCHIVE.map(a=>a[0])),ex=[];
+  for(const c of list||[]){const m=String(c&&c.commit&&c.commit.message||"").match(/^(\d+\.\d+\.\d+):/);if(!m||seen.has(m[1]))continue;seen.add(m[1]);ex.push([m[1],c.sha,String(c.commit.author&&c.commit.author.date||"").slice(0,10)])}
+  if(!ex.length)return;S.archExtra=ex;const el=$("#archBox");if(el){el.outerHTML=archBox();archWire()}}).catch(()=>{})});
 async function admSet(id,doc){return write(()=>DB.set("admin/"+id,{...doc,by:S.uid,at:doc.at||now()}))}
 async function admWipe(uid,{posts=true,stories=true}={}){let k=0;
  if(posts)for(const p of Object.values(S.posts).filter(p=>p.uid===uid)){await DB.del("posts/"+p.id).catch(()=>{});DB.del("meta/"+p.id).catch(()=>{});if(p.video&&String(p.video).startsWith("chunk:")){const[,vid,c]=p.video.split(":");for(let i=0;i<+c;i++)DB.del(`vchunks/${vid}-${i}`).catch(()=>{})}const ps={...S.posts};delete ps[p.id];S.posts=ps;k++}
@@ -2985,6 +3024,7 @@ const APP_GUIDE=`Kadraj bir sosyal uygulamadır (Firebase üzerinde çalışır,
 - Ortak sohbet temaları: sohbetin üstündeki resim simgesinden tema seçilir; birebir ve grup sohbetlerinde "Herkes için" seçilen tema sohbetteki herkeste aynı anda değişir ve kendi balonlarının rengini de değiştirir. "Yalnızca bende" sadece senin cihazını etkiler. Fotoğraftan tema da yapılabilir.
 - Mesajlar: mesaja uzun basınca 6 resimli tepki (kalp, gülme, şaşırma, üzülme, ateş, alkış), yanıtla, kopyala, düzenle, sil; çift dokunuş kalp bırakır. Profilde en fazla 3 paylaşım sabitlenebilir.
 - 4.4: Sahne'nin yeni adı Flick (kısa video). Paylaşırken "Çocuk modundakiler göremez" açılırsa o paylaşım Çocuk Modu'ndaki kişilere hiç görünmez; sonradan paylaşımın ... menüsünden değiştirilebilir.
+- Güncelleme: 4.4.3'ten beri yeni sürüm çıkınca Kadraj uygun anda kendiliğinden güncellenir (açık bir pencere ya da yazı yazılırken bekler). Yöneticinin panelinde Sürüm arşivi var; eski sürümler deneme modunda açılır.
 - Sürüm: yeni sürüm çıkınca "Yeni sürüm hazır" yazar; iki sürüm geride kalan eski sürüm kapanır ve güncellemen istenir.
 - Mesajlar uygulamanın Firebase veritabanında durur, uygulamaya giren herkes teknik olarak erişebilir; şifre ya da kişisel bilgi paylaşılmamalı.`;
 const ROTA_SYS=`Sen "Rota"sın: Kadraj uygulamasının yapay zekâ rehberisin. Türkçe, samimi ve net konuş. Yanıtların kısa olsun (genelde 2-6 cümle ya da kısa madde listesi). Uygulama sorularında aşağıdaki rehbere dayan, olmayan özellik uydurma. Fotoğrafçılık, sosyal medya ve yazılım/kod konularında da bilgilisin; kod istenirse kısa, çalışır örnekleri üç ters tırnaklı kod bloğunda ver. Emoji kullanma.\n\nUYGULAMA REHBERİ:\n${APP_GUIDE}`;
@@ -3466,6 +3506,14 @@ function applyWp(box,key){const w=chatThemeOf(key);if(box.dataset.wp===w.key)ret
   for(const el of[box,cp]){if(!el)continue;if(w.bub){el.dataset.bub=w.id;el.style.setProperty("--bub",w.bub);el.style.setProperty("--bub-c",w.c||"#333");el.style.setProperty("--bub-ink",w.ink||"#fff")}
    else{delete el.dataset.bub;for(const p of["--bub","--bub-c","--bub-ink"])el.style.removeProperty(p)}}};
  if(first)set();else themeSwitch(set,{fade:true})}
+/* 4.4.3: çocuk modu yalnızca çocuğun kendi gönderdiğini denetliyordu. Artık tanımadığı biri Çocuk Modu'ndaki kişiye yazamaz,
+   çocuk Meydan'a (paylaş yoluyla da) gönderemez; gruptan çıkarılan biri gruba yazamaz. */
+const sendMessageBase=sendMessage;
+sendMessage=async function(key,payload){let k=null;try{k=keyInfo(key)}catch{}
+ if(k&&!S.admin){if(k.type==="meydan"&&isChild(S.uid)){toast("Çocuk modunda Meydan kapalı.");return}
+  if(k.type==="dm"&&!BOT[k.uid]&&isChild(k.uid)&&!isChild(S.uid)&&!(isFollowing(S.uid,k.uid)&&isFollowing(k.uid,S.uid))){toast("Bu kişi Çocuk Modu'nda; ona yalnızca karşılıklı arkadaşları yazabilir.");return}
+  if(k.type==="group"){const gc=S.chats[k.cid];if(gc&&Array.isArray(gc.members)&&!gc.members.includes(S.uid)){toast("Bu grubun üyesi değilsin.");return}}}
+ return sendMessageBase(key,payload)};
 /* 4.4.1 klavye: klavye açılınca yalnızca görünür alan küçülür (iOS ve yeni Android); sayfa yukarı kaymasın, üst çubuk (grup adı) yerinde kalsın */
 (function(){const vv=window.visualViewport;if(!vv)return;let q=0;const fit=()=>{q=0;document.documentElement.style.setProperty("--vvh",Math.round(vv.height)+"px");if(vv.offsetTop>0||window.scrollY>0)window.scrollTo(0,0);const b=document.getElementById("msgs");if(b&&b._pin)b.scrollTop=b.scrollHeight};
  const k=()=>{if(!q)q=requestAnimationFrame(fit)};vv.addEventListener("resize",k);vv.addEventListener("scroll",k);fit()})();
