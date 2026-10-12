@@ -4,7 +4,7 @@ Bu dosya, `index.html` okunarak çıkarılmış ayrıntılı bir haritadır. Yen
 
 ## Çalışma kuralları (sahibinden)
 - Yeni özellik eklerken mevcut fonksiyonları **silme**; küçük ve hedefli değişiklik yap. Eski bir fonksiyonun davranışı değişecekse eskisini `xxxOld` adıyla bırak (örnek: `reactMsgOld`).
-- Her sürümde Ayarlar > Hakkında'daki metni güncelle: `Kadraj 3.9 · Firebase` → yeni sürüm.
+- Sürüm numarası ana.ara.yama: hata düzeltme ya da küçük ekleme → yama artar (4.1.0 → 4.1.1); büyük güncelleme → ara artar (4.1.x → 4.2.0). Her değişiklikte `APP_V` (ana*10000+ara*100+yama), `APP_VER` ve `<meta name="kadraj-version">` birlikte güncellenir. "İki sürüm geride" engeli yalnızca ara sürüm farkıyla çalışır; Neler yeni yalnızca ara/ana sürümde otomatik açılır (`WN_ITEMS` başına yenilerini ekle).
 - Sahibine yalnızca güncel `index.html` gönderilir. Dosya adı `index.html` kalmalı.
 - `const ASSETS={...}` satırına **dokunma** (yaklaşık 1,95 MB base64, tek satır). Kodu okurken bu satırı atla, örneğin `awk 'length($0)<100000'`.
 - Yayın: GitHub Pages, `main` dalı. https://kadrajsosyalmedya.github.io/Kadraj/
@@ -129,7 +129,7 @@ Bu dosya, `index.html` okunarak çıkarılmış ayrıntılı bir haritadır. Yen
 - Tepki bildirimi yok (`notifyChats` yalnızca son mesajı izler).
 
 ## 4.0'da eklenenler (kısa)
-- Sürüm: `APP_V=40`, `APP_VER="4.0"` ve `<head>`'deki `<meta name="kadraj-version" content="40">` birlikte artırılmalı (sürüm denetimi bu etiketi okur; `meta/_surum` belgesi en yüksek sürümü tutar; iki sürüm geride kalan istemci kapanır).
+- Sürüm (şu an 4.1.0): `APP_V=40100`, `APP_VER="4.1.0"` ve `<head>`'deki `<meta name="kadraj-version" content="40100">` birlikte artırılmalı; eski biçim (40) `verNorm` ile çevrilir (sürüm denetimi bu etiketi okur; `meta/_surum` belgesi en yüksek sürümü tutar; iki sürüm geride kalan istemci kapanır).
 - Kancalar: `ACT` (data-act eylemleri), `HOOKS.after/enter/profiles/boot` + `runHooks`. Aktiflik: `isActive`, `activeLabel`, `activeUsers`, `lastSeenAt`.
 - Blok A (`/*@js:A{*/`): `#intro` açılış animasyonu, karşılama ekranı (`welScreen`), sürüm denetimi (`verWatch`, `fetchRemoteVersion`, `hardReload`, `showVersionBlock`), `showWhatsNew` (`WN_ITEMS`).
 - Blok B: vurgu renkleri (`applyAccent`, `effAccent`), `themeSwitch`, tema eşitleme (`profiles.prefs`), yönetici ortak teması (`admin/tema`), ortak sohbet temaları (`chats/{cid}.theme`, `KB_THEMES`, yeni `applyWp`/`wallpaperMenu`), yeni `vSettings` (`data-set` anahtarları).
