@@ -718,6 +718,164 @@ main.enter .nb{animation:nbin .45s cubic-bezier(.2,1.4,.4,1) both}
 .reel .rhint[hidden]{display:none}.reel .rhint svg.i{width:1.2rem;height:1.2rem}
 /* ===== 4.0 eklentileri: her ajan yalnızca kendi işaretleri arasına yazar ===== */
 /*@css:A{*/
+/* --- A · Açılış (intro) --- */
+#intro{position:fixed;inset:0;z-index:300;display:grid;place-items:center;background:var(--bg);overflow:hidden;-webkit-user-select:none;user-select:none;touch-action:manipulation}
+#intro .in-glow{position:absolute;left:50%;top:45%;width:140vmax;height:140vmax;margin:-70vmax 0 0 -70vmax;border-radius:50%;background:radial-gradient(closest-side,var(--accent-soft),transparent 62%);pointer-events:none;animation:inGlow 1.3s cubic-bezier(.2,.8,.2,1) both,inBreathe 3.2s ease-in-out 1.3s infinite alternate}
+@keyframes inGlow{from{opacity:0;transform:scale(.55)}}
+@keyframes inBreathe{to{scale:1.06}}
+#intro .in-c{position:relative;display:grid;justify-items:center;gap:16px;margin-top:-5vh}
+#intro .in-vf{width:5.6rem;height:5.6rem;overflow:visible;animation:inMark 1s cubic-bezier(.2,.8,.2,1) both}
+@keyframes inMark{from{transform:rotate(-14deg) scale(.82)}}
+#intro .in-vf path{fill:none;stroke:var(--accent);stroke-dasharray:1 1;stroke-dashoffset:0;animation:inDraw .48s cubic-bezier(.65,0,.35,1) both}
+#intro .in-vf path:nth-of-type(1){animation-delay:.04s}#intro .in-vf path:nth-of-type(2){animation-delay:.1s}#intro .in-vf path:nth-of-type(3){animation-delay:.16s}#intro .in-vf path:nth-of-type(4){animation-delay:.22s}
+@keyframes inDraw{from{stroke-dashoffset:1;opacity:0}15%{opacity:1}}
+#intro .in-dot{fill:var(--accent);transform-box:fill-box;transform-origin:center;animation:inDot .6s cubic-bezier(.3,1.7,.5,1) .4s both,inPulse 2.4s ease-in-out 1.4s infinite}
+@keyframes inDot{from{transform:scale(0)}}
+@keyframes inPulse{50%{scale:1.14}}
+#intro .in-ring{fill:none;stroke:var(--sun);stroke-width:.7;opacity:0;transform-box:fill-box;transform-origin:center;animation:inRing .8s cubic-bezier(.2,.7,.3,1) .5s both}
+@keyframes inRing{0%{opacity:0;transform:scale(1)}1%{opacity:.95}to{opacity:0;transform:scale(3.4)}}
+#intro .in-wm{display:flex;font:700 2.7rem/1 var(--f-display);letter-spacing:-.04em;color:var(--fg);overflow:hidden;padding:.06em .06em .2em;margin-bottom:-.14em}
+#intro .in-wm span{display:inline-block;animation:inLet .52s cubic-bezier(.2,.9,.25,1.12) both}
+#intro .in-wm span:nth-child(1){animation-delay:.46s}#intro .in-wm span:nth-child(2){animation-delay:.505s}#intro .in-wm span:nth-child(3){animation-delay:.55s}#intro .in-wm span:nth-child(4){animation-delay:.595s}#intro .in-wm span:nth-child(5){animation-delay:.64s}#intro .in-wm span:nth-child(6){animation-delay:.685s}
+@keyframes inLet{from{transform:translateY(110%);opacity:0}}
+#intro .in-tag{font-weight:600;font-size:.95rem;color:var(--muted);letter-spacing:.01em;animation:inUp .5s cubic-bezier(.2,.8,.2,1) .78s both}
+@keyframes inUp{from{opacity:0;transform:translateY(8px)}}
+#intro .in-foot{position:absolute;left:0;right:0;bottom:calc(40px + env(safe-area-inset-bottom,0px));display:grid;justify-items:center;gap:12px;padding:0 24px;text-align:center}
+#intro #splashMsg{font-size:.8rem;color:var(--muted);min-height:1.2em;opacity:0;transition:opacity .4s}
+#intro.slow #splashMsg{opacity:1}
+#intro.out #splashMsg{visibility:hidden}
+#intro .in-bar{width:8.5rem;height:3px;border-radius:3px;background:var(--line);overflow:hidden;animation:inFade .4s ease .85s both}
+#intro .in-bar i{display:block;width:42%;height:100%;border-radius:3px;background:var(--accent);animation:inSlide 1.2s cubic-bezier(.6,0,.4,1) infinite}
+@keyframes inSlide{from{transform:translateX(-105%)}to{transform:translateX(245%)}}
+@keyframes inFade{from{opacity:0}}
+#introRetry{font-weight:700;font-size:.88rem;color:var(--accent);padding:9px 16px;border-radius:14px;background:var(--surface);border:1px solid var(--line)}
+#introRetry svg.i{width:1.05rem;height:1.05rem;vertical-align:-3px;margin-right:6px}
+@media (prefers-reduced-motion:reduce){#intro .in-bar,#intro .in-ring{display:none}#intro *,.auth,.auth *,.wn,.wn *,#verBar,#verBlock,#verBlock *{animation:none!important}}
+html.reduce-motion #intro *{animation:none!important}
+html.reduce-motion #intro .in-bar,html.reduce-motion #intro .in-ring{display:none}
+
+/* --- A · Giriş ekranları --- */
+.auth:not(.wel)>*{animation:auIn .45s cubic-bezier(.2,.8,.2,1) both}
+.auth:not(.wel)>*:nth-child(2){animation-delay:.04s}.auth:not(.wel)>*:nth-child(3){animation-delay:.08s}.auth:not(.wel)>*:nth-child(4){animation-delay:.12s}.auth:not(.wel)>*:nth-child(n+5){animation-delay:.16s}
+@keyframes auIn{from{opacity:0;transform:translateY(14px)}}
+.auth .brand .vfmark{animation:auMark .6s cubic-bezier(.3,1.5,.5,1) .1s both}
+@keyframes auMark{from{transform:rotate(-30deg) scale(.5);opacity:0}}
+html:not(.k-live) .auth,html:not(.k-live) .auth *{animation-play-state:paused!important}
+html.reduce-motion .auth,html.reduce-motion .auth *{animation:none!important;transition:none!important}
+.auth .banner span{min-width:0;overflow-wrap:anywhere}
+
+.auth.wel{gap:16px;padding-top:14px;overflow:hidden}
+.wel-art{position:relative;flex:none;height:clamp(15.5rem,45vh,25rem);margin:0 -8px 6px}
+.wel-glow{position:absolute;inset:-12% -18%;border-radius:50%;background:radial-gradient(closest-side,var(--accent-soft),transparent 75%);pointer-events:none;animation:inFade 1s ease both}
+.wt{position:absolute;left:var(--x);top:var(--y);width:var(--w);height:var(--h);z-index:var(--z,1);transform:translate3d(calc(var(--mx,0) * var(--d)),calc(var(--my,0) * var(--d)),0);transition:transform .7s cubic-bezier(.2,.8,.2,1)}
+.wt>i{display:block;width:100%;height:100%;border-radius:22px;overflow:hidden;rotate:var(--r);background:var(--surface-2);border:3px solid var(--surface);box-shadow:var(--shadow);animation:wtIn .85s cubic-bezier(.2,1.25,.3,1) var(--dl) both,wtFloat var(--fl,6s) ease-in-out calc(var(--dl) + .9s) infinite alternate}
+.wt img{width:100%;height:100%;object-fit:cover;display:block;max-width:none;transform-origin:var(--ox,50%) var(--oy,50%);animation:wtKb var(--kb,18s) ease-in-out calc(var(--dl) * -9) infinite alternate;will-change:transform}
+@keyframes wtIn{from{opacity:0;transform:translateY(54px) scale(.62) rotate(calc(var(--r) * -1.6))}}
+@keyframes wtFloat{to{translate:0 -7px}}
+@keyframes wtKb{from{transform:scale(1.06)}to{transform:scale(1.24) translate(-3%,2%)}}
+.wel-chip{position:absolute;z-index:9;display:inline-flex;align-items:center;gap:7px;padding:6px 12px 6px 6px;border-radius:999px;background:var(--surface);color:var(--fg);font-weight:700;font-size:.78rem;line-height:1;white-space:nowrap;box-shadow:var(--shadow);border:1px solid var(--line);animation:wcIn .6s cubic-bezier(.2,1.5,.4,1) var(--dl) both,wtFloat 4.6s ease-in-out calc(var(--dl) + .6s) infinite alternate}
+@keyframes wcIn{from{opacity:0;transform:translateY(12px) scale(.6)}}
+.wel-chip .wh{width:1.55rem;height:1.55rem;border-radius:50%;display:grid;place-items:center;background:var(--heart);color:#fff;flex:none}
+.wel-chip .wh svg.i{width:.9rem;height:.9rem;fill:#fff;stroke:#fff}
+.wel-chip .wa{position:relative;width:1.55rem;height:1.55rem;flex:none}
+.wel-chip .wa img{width:100%;height:100%;border-radius:32%;display:block}
+.wel-chip .wa::after{content:"";position:absolute;right:-3px;bottom:-3px;width:10px;height:10px;border-radius:50%;background:var(--ok);border:2px solid var(--surface);animation:wcPulse 2.2s ease-out 1.6s infinite}
+@keyframes wcPulse{0%{box-shadow:0 0 0 0 rgba(20,160,107,.55)}70%,100%{box-shadow:0 0 0 6px rgba(20,160,107,0)}}
+.wel-chip small{display:block;font-weight:500;font-size:.68rem;color:var(--muted);margin-top:3px}
+.wel-chip.wc1{left:4%;top:44%}
+.wel-chip.wc2{right:2%;bottom:3%}
+.wel-txt>*{animation:auIn .55s cubic-bezier(.2,.8,.2,1) both}
+.wel-txt>*:nth-child(1){animation-delay:.32s}.wel-txt>*:nth-child(2){animation-delay:.4s}.wel-txt>*:nth-child(3){animation-delay:.48s}.wel-txt>*:nth-child(4){animation-delay:.54s}
+.auth.wel h2{font-size:1.65rem}
+.wel-feat{position:relative;height:2.75rem;margin-top:14px}
+.wf{position:absolute;inset:0;display:flex;align-items:center;gap:12px;opacity:0;transform:translateY(12px);transition:opacity .45s ease,transform .5s cubic-bezier(.2,.8,.2,1);pointer-events:none}
+.wf.on{opacity:1;transform:none}
+.wf.off{opacity:0;transform:translateY(-12px)}
+.wf .ic{width:2.6rem;height:2.6rem;border-radius:15px;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent);flex:none}
+.wf .ic svg.i{width:1.3rem;height:1.3rem}
+.wf span:last-child{font-weight:600;font-size:.98rem;line-height:1.25}
+.wel-dots{display:flex;gap:5px;margin-top:10px}
+.wel-dots i{width:6px;height:6px;border-radius:3px;background:var(--line);transition:width .35s cubic-bezier(.2,.8,.2,1),background-color .35s}
+.wel-dots i.on{width:18px;background:var(--accent)}
+.wel-cta{margin-top:auto;display:grid;gap:12px}
+.wel-cta>.modechip{justify-self:center;margin-bottom:2px}
+.wel-cta{animation:auIn .55s cubic-bezier(.2,.8,.2,1) .58s both}
+@media (max-height:700px){.wel-art{height:clamp(13rem,36vh,16rem)}.auth.wel h2{font-size:1.45rem}.auth.wel{gap:12px}}
+
+/* --- A · Sürüm çubuğu ve engel ekranı --- */
+#verBar{position:fixed;left:50%;top:calc(68px + env(safe-area-inset-top,0px));translate:-50% 0;z-index:45;display:flex;align-items:center;gap:8px;width:max-content;max-width:calc(100% - 24px);padding:5px 5px 5px 12px;border-radius:999px;background:var(--accent);color:var(--accent-ink);box-shadow:var(--shadow);font-size:.84rem;font-weight:600;animation:vbIn .5s cubic-bezier(.2,1.35,.4,1) both;transition:opacity .25s,transform .25s}
+#verBar.bye{opacity:0;transform:translateY(-10px)}
+@keyframes vbIn{from{opacity:0;transform:translateY(-16px) scale(.92)}}
+#verBar .vb-t{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#verBar .vb-ic svg.i{width:1.1rem;height:1.1rem;display:block}
+#verBar .vb-go{flex:none;display:inline-flex;align-items:center;gap:5px;height:2rem;padding:0 .85rem;border-radius:999px;background:var(--accent-ink);color:var(--accent);font-weight:700;font-size:.82rem}
+#verBar .vb-go svg.i{width:.95rem;height:.95rem;stroke-width:2.4}
+#verBar .vb-go:disabled{opacity:.7}
+#verBar .vb-x{flex:none;width:2rem;height:2rem;border-radius:50%;display:grid;place-items:center;color:inherit;opacity:.85}
+#verBar .vb-x svg.i{width:1rem;height:1rem}
+@media (max-width:420px){#verBar{gap:6px;font-size:.8rem;padding-left:14px}#verBar .vb-ic{display:none}#verBar .vb-go{padding:0 .75rem}#verBar .vb-x{width:1.85rem;height:1.85rem}}
+#verBlock{position:fixed;inset:0;z-index:1000;display:grid;place-items:center;overflow-y:auto;padding:calc(24px + env(safe-area-inset-top,0px)) 22px calc(24px + env(safe-area-inset-bottom,0px));background:var(--bg);animation:fade .35s ease}
+#verBlock::before{content:"";position:fixed;inset:0;background:radial-gradient(80% 50% at 50% 28%,var(--accent-soft),transparent 72%);pointer-events:none}
+.vb-card{position:relative;width:min(23rem,100%);display:grid;justify-items:center;gap:12px;text-align:center}
+.vb-card>*{animation:auIn .5s cubic-bezier(.2,.8,.2,1) both}
+.vb-card>*:nth-child(2){animation-delay:.06s}.vb-card>*:nth-child(3){animation-delay:.12s}.vb-card>*:nth-child(n+4){animation-delay:.18s}
+.vb-art>svg{width:11rem;height:auto;display:block;overflow:visible}
+.vb-art .a1{fill:var(--accent-soft)}
+.vb-art .a2{fill:var(--surface);stroke:var(--fg);stroke-width:3}
+.vb-art .a3{fill:var(--line)}
+.vb-art .a4{fill:none;stroke:var(--accent);stroke-width:2.6;stroke-linecap:round}
+.vb-art .a5{fill:var(--accent)}
+.vb-art .a6{fill:var(--sun);stroke:var(--bg);stroke-width:4}
+.vb-art .a7{fill:none;stroke:#1d1a10;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.vb-art .a8{fill:var(--sun)}
+.vb-art .a9{fill:var(--heart)}
+.vb-art .bob{animation:vbBob 1.6s ease-in-out infinite}
+@keyframes vbBob{50%{transform:translateY(-2.5px)}}
+.vb-art .tw{transform-box:fill-box;transform-origin:center;animation:vbTw 2.2s ease-in-out infinite alternate}
+@keyframes vbTw{from{scale:.6;opacity:.5}}
+.vb-card h2{margin:4px 0 0;font:600 1.5rem/1.15 var(--f-display);letter-spacing:-.02em;text-wrap:balance}
+.vb-card p{margin:0;color:var(--muted);font-size:.95rem;line-height:1.5;text-wrap:pretty}
+.vb-vers{display:flex;align-items:center;gap:8px;margin:4px 0 10px;font:600 .8rem/1 var(--f-mono)}
+.vb-vers span{padding:7px 11px;border-radius:999px;border:1px solid var(--line);background:var(--surface)}
+.vb-vers .old{color:var(--muted);text-decoration:line-through}
+.vb-vers .new{background:var(--accent);color:var(--accent-ink);border-color:transparent}
+.vb-vers svg.i{width:1rem;height:1rem;color:var(--muted)}
+.vb-card .btn.block{max-width:20rem}
+html.reduce-motion #verBar,html.reduce-motion #verBlock,html.reduce-motion #verBlock *{animation:none!important}
+
+/* --- A · Neler yeni --- */
+.full.wn{overflow:hidden}
+.wn .body{position:relative;padding-bottom:8px}
+.wn-x{position:absolute;top:calc(10px + env(safe-area-inset-top,0px));right:10px;z-index:3}
+.wn-hero{position:relative;padding:34px 22px 18px;text-align:center;overflow:hidden}
+.wn-blob{position:absolute;border-radius:50%;filter:blur(28px);opacity:.55;pointer-events:none;animation:wnBlob 9s ease-in-out infinite alternate}
+.wn-blob.b1{width:13rem;height:13rem;left:-3rem;top:-3rem;background:var(--accent-soft)}
+.wn-blob.b2{width:9rem;height:9rem;right:-2rem;top:1rem;background:#0ea5e9;opacity:.16;animation-duration:11s}
+.wn-blob.b3{width:8rem;height:8rem;left:42%;top:7rem;background:var(--heart);opacity:.12;animation-duration:13s}
+@keyframes wnBlob{to{transform:translate(18px,14px) scale(1.12)}}
+.wn-hero>*:not(.wn-blob){position:relative}
+.wn-mark{width:3.4rem;height:3.4rem;overflow:visible;animation:inMark .9s cubic-bezier(.2,.8,.2,1) both}
+.wn-mark path{fill:none;stroke:var(--accent);stroke-dasharray:1 1;animation:inDraw .5s cubic-bezier(.65,0,.35,1) both}
+.wn-mark path:nth-of-type(2){animation-delay:.06s}.wn-mark path:nth-of-type(3){animation-delay:.12s}.wn-mark path:nth-of-type(4){animation-delay:.18s}
+.wn-mark circle{fill:var(--sun);transform-box:fill-box;transform-origin:center;animation:inDot .6s cubic-bezier(.3,1.7,.5,1) .3s both,inPulse 2.4s ease-in-out 1.2s infinite}
+.wn-badge{display:flex;width:max-content;margin:14px auto 0;align-items:center;gap:6px;font:600 .66rem/1 var(--f-mono);letter-spacing:.14em;text-transform:uppercase;padding:6px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);animation:inUp .5s ease .15s both}
+.wn-title{margin:12px 0 8px;font:700 clamp(2.5rem,12vw,3.3rem)/1.02 var(--f-display);letter-spacing:-.045em;background:linear-gradient(100deg,var(--accent) 0%,var(--accent) 22%,#0ea5e9 41%,#8b5cf6 51%,#0ea5e9 61%,var(--accent) 80%,var(--accent) 100%);background-size:250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;padding-bottom:.08em;animation:inUp .55s cubic-bezier(.2,.8,.2,1) .2s both,wnGrad 5.5s ease-in-out .8s infinite alternate}
+@keyframes wnGrad{from{background-position:100% 0}to{background-position:0 0}}
+.wn-sub{margin:0 auto;max-width:19rem;color:var(--muted);font-size:.95rem;line-height:1.45;animation:inUp .5s ease .3s both}
+.wn-list{display:grid;gap:10px;padding:6px 14px 10px}
+.wn-item{display:flex;align-items:center;gap:14px;width:100%;padding:13px 14px;border-radius:20px;background:var(--surface);border:1px solid var(--line);text-align:left;animation:wnIn .5s cubic-bezier(.2,.9,.3,1.1) calc(.32s + var(--i) * .055s) both;transition:transform .15s,background-color .15s}
+.wn-item:active{transform:scale(.98);background:var(--surface-2)}
+@keyframes wnIn{from{opacity:0;transform:translateY(18px)}}
+.wn-ic{width:2.9rem;height:2.9rem;border-radius:32%;display:grid;place-items:center;color:#fff;flex:none;background:var(--g);box-shadow:0 6px 14px -6px rgba(0,0,0,.45)}
+.wn-ic svg.i{width:1.4rem;height:1.4rem;stroke-width:2}
+.wn-t{flex:1;min-width:0}
+.wn-t b{display:block;font-size:.98rem;line-height:1.25}
+.wn-t span{display:block;color:var(--muted);font-size:.84rem;line-height:1.35;margin-top:2px}
+.wn-item>svg.i{width:1.1rem;height:1.1rem;color:var(--muted);flex:none}
+.wn-foot{flex:none;padding:10px 18px 16px;background:var(--bg);border-top:1px solid var(--line)}
+.wn-foot .btn{animation:inUp .5s ease .7s both}
+.wn-foot .btn svg.i{transition:transform .2s}
+html.reduce-motion .wn *,html.reduce-motion .wn{animation:none!important}
 /*}@css:A*/
 
 /*@css:B{*/
@@ -738,9 +896,11 @@ main.enter .nb{animation:nbin .45s cubic-bezier(.2,1.4,.4,1) both}
 </head>
 <body>
 
+<div id="intro" aria-busy="true" role="status" aria-label="Kadraj açılıyor"><div class="in-glow"></div><div class="in-c"><svg class="in-vf" viewBox="0 0 24 24" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><circle class="in-ring" cx="12" cy="12" r="3.4"/><path pathLength="1" d="M2.5 8V5a2.5 2.5 0 0 1 2.5-2.5h3"/><path pathLength="1" d="M16 2.5h3A2.5 2.5 0 0 1 21.5 5v3"/><path pathLength="1" d="M21.5 16v3a2.5 2.5 0 0 1-2.5 2.5h-3"/><path pathLength="1" d="M8 21.5H5A2.5 2.5 0 0 1 2.5 19v-3"/><circle class="in-dot" cx="12" cy="12" r="3.4"/></svg><div class="in-wm" aria-hidden="true"><span>k</span><span>a</span><span>d</span><span>r</span><span>a</span><span>j</span></div><div class="in-tag">Anını kadraja al</div></div><div class="in-foot"><div id="splashMsg" aria-live="polite">Hazırlanıyor…</div><div class="in-bar"><i></i></div><button type="button" id="introRetry" hidden>Yeniden dene</button></div></div>
+<script id="kEarly">window.__k0=performance.now();try{var k=JSON.parse(localStorage.getItem("kadraj_settings")||"{}")||{},r=document.documentElement;if(k.theme==="dark"||k.theme==="light")r.setAttribute("data-app-theme",k.theme);if(k.reduceMotion===true)r.classList.add("reduce-motion")}catch(e){}</script>
 <div class="shell" id="shell">
   <header class="hd" id="top" hidden></header>
-  <main id="main"><div class="splash"><span class="wordmark" style="font-size:2.2rem">kadraj</span><div class="spin"></div><div class="muted" id="splashMsg">Bağlanıyor…</div></div></main>
+  <main id="main"></main>
   <div class="dock" id="dock" hidden></div>
 </div>
 <div id="overlay"></div>
@@ -1677,12 +1837,12 @@ const Music={ctx:null,timer:null,on:false,master:null,
 /* ============ Kayıt / giriş ============ */
 const USER_RE=/^[a-z0-9._]{3,24}$/;
 function takenUsername(n,exceptUid){return BOTS.some(b=>b.username===n)||Object.values(S.profiles).some(p=>p.username===n&&p.uid!==exceptUid)}
-function authShell(html){S.authed=false;$("#top").hidden=true;$("#dock").hidden=true;const m=main();m.className="";m.innerHTML=`<div class="auth">${html}</div>`;m.scrollTop=0}
+function authShell(html,cls){S.authed=false;$("#top").hidden=true;$("#dock").hidden=true;const m=main();m.className="";m.innerHTML=`<div class="auth${cls?" "+cls:""}">${html}</div>`;m.scrollTop=0;introDone()}
 const mosaic=`<div class="mosaic"><img src="${R("img/iskele.jpg")}" alt=""><img src="${R("img/kedi.jpg")}" alt=""><img src="${R("img/gunbatimi.jpg")}" alt=""></div>`;
 const modeChip=()=>`<span class="modechip ${S.mode==="cloud"?"cloud":""}"><i></i>${S.mode==="cloud"?"Firebase · arkadaşlarınla canlı":"Demo · yalnızca bu cihaz"}</span>`;
 const brandLine=`<div class="brand" style="margin-bottom:12px">${VF}<span class="wordmark">kadraj</span></div>`;
-function showWelcome(){authShell(`${mosaic}<div>${brandLine}<h2>Arkadaşlarınla anı paylaş, sohbet et.</h2><p class="lead">Fotoğraf, sahne, not, anket ve canlı sohbet tek yerde. Rota adındaki yapay zekâ rehberi de yanında.</p></div>${modeChip()}<div style="display:grid;gap:10px"><button class="btn block" id="wReg">Hesap oluştur</button>${S.mode==="local"?`<button class="btn line block" id="wLog">Giriş yap</button>`:""}</div>`);
- $("#wReg").onclick=showRegister;const wl=$("#wLog");if(wl)wl.onclick=()=>showLogin()}
+function showWelcome(){authShell(welScreen(S.mode==="local"),"wel");
+ $("#wReg").onclick=showRegister;const wl=$("#wLog");if(wl)wl.onclick=()=>showLogin();welWire()}
 function showRegister(){const sug=S.viewer?.name||"";let avData=null;
  authShell(`<div>${brandLine}<h2>Hesap oluştur</h2><p class="lead">Bir dakikadan kısa sürer.</p></div>${modeChip()}
  <form id="regF" novalidate><div class="avpick"><span class="av" style="--s:64px"><img id="rAv" src="${initialsAv(sug||"Yeni",S.uid||"x")}" alt=""></span><button type="button" class="btn sec sm" id="rAvBtn">${I("image")}Profil fotoğrafı</button></div>
@@ -2634,7 +2794,7 @@ function showSetup(msg){const cur=LS.get("kadraj_fb_cfg");authShell(`<div>${bran
 const authErr=e=>{const c=(e&&e.code)||"";const map={"auth/email-already-in-use":"Bu e-postayla zaten hesap var. Giriş yapmayı dene.","auth/invalid-email":"E-posta adresi geçerli görünmüyor.","auth/missing-email":"E-posta adresini yaz.","auth/weak-password":"Şifre en az 6 karakter olmalı.","auth/missing-password":"Şifreni yaz.","auth/invalid-credential":"E-posta ya da şifre yanlış.","auth/invalid-login-credentials":"E-posta ya da şifre yanlış.","auth/wrong-password":"Şifre yanlış.","auth/user-not-found":"Bu e-postayla hesap yok. Önce hesap oluştur.","auth/too-many-requests":"Çok fazla deneme yapıldı. Birkaç dakika sonra tekrar dene.","auth/network-request-failed":"İnternet bağlantısı yok gibi görünüyor.","auth/operation-not-allowed":"Firebase'de E-posta/Şifre girişi açık değil. Kurulumun 2. adımını yap.","auth/configuration-not-found":"Firebase'de Authentication açılmamış. Kurulumun 2. adımını yap.","auth/requires-recent-login":"Güvenlik için çıkış yapıp tekrar gir, sonra yeniden dene.","permission-denied":"Veritabanı kuralları izin vermiyor. Kurulumun 4. adımındaki kuralları yapıştırıp Yayınla'ya bas."};
  if(map[c])return map[c];if(/api-key/i.test(c))return"Firebase kodu hatalı görünüyor. Ayarlar > Firebase bağlantısını değiştir'den kodu yeniden yapıştır.";return"Bir sorun oldu: "+((e&&e.message)||c)};
 async function setPersist(on){const{A,auth}=FB;try{await A.setPersistence(auth,on?A.browserLocalPersistence:A.browserSessionPersistence)}catch{}LS.set("kadraj_fb_remember",!!on)}
-function fbWelcome(){authShell(`${mosaic}<div>${brandLine}<h2>Arkadaşlarınla anı paylaş, sohbet et.</h2><p class="lead">Fotoğraf, sahne, not, anket ve canlı sohbet tek yerde. Rota adındaki rehber de yanında.</p></div>${modeChip()}<div style="display:grid;gap:10px"><button class="btn block" id="wReg">Hesap oluştur</button><button class="btn line block" id="wLog">Giriş yap</button></div>`);$("#wReg").onclick=fbRegister;$("#wLog").onclick=()=>fbLogin()}
+function fbWelcome(){authShell(welScreen(true),"wel");$("#wReg").onclick=fbRegister;$("#wLog").onclick=()=>fbLogin();welWire()}
 function fbRegister(){let avData=null;
  authShell(`<div>${brandLine}<h2>Hesap oluştur</h2><p class="lead">E-postan sadece giriş ve şifre sıfırlama için kullanılır, başkaları göremez.</p></div>${modeChip()}
  <form id="regF" novalidate><div class="avpick"><span class="av" style="--s:64px"><img id="rAv" src="${initialsAv("Yeni","x")}" alt=""></span><button type="button" class="btn sec sm" id="rAvBtn">${I("image")}Profil fotoğrafı</button></div>
@@ -2689,11 +2849,11 @@ async function enterApp(fresh){S.authed=true;S.guest=false;S.bootAt=now();S.admi
  if(fresh)setTimeout(()=>toast(`Hoş geldin @${me().username}! Arkadaşlarını Sohbet > Davet et'ten çağırabilirsin.`,"bot:rota"),400);
  setTimeout(()=>{if(settings.notify&&notifPerm()==='default')askNotif(true)},2500);
  setTimeout(checkChildInvite,1500);runHooks("enter",fresh)}
-function enterGuest(){S.authed=true;S.guest=true;S.canWrite=false;S.uid=S.uid||"guest";S.route={name:"feed",params:{}};render(true)}
+function enterGuest(){S.authed=true;S.guest=true;S.canWrite=false;S.uid=S.uid||"guest";S.route={name:"feed",params:{}};render(true);introDone()}
 function withTimeout(p,ms){return Promise.race([p,new Promise(r=>setTimeout(()=>r(null),ms))])}
 function wireRoom(room){room.onPeers(({peers})=>{const on=new Set(),ty={};for(const p of peers){const pr=p.presence||{};if(!pr.uid||p.isMe)continue;on.add(pr.uid);if(pr.typing)ty[pr.uid]=pr.typing}S.online=on;S.typing=ty;scheduleRefresh()});
  room.on("nudge",msg=>{const d=msg.data||{};if(d.to===S.uid&&S.authed&&d.from){vib([80,60,80]);toast(`@${P(d.from).username} seni dürttü`,d.from);sysNote("Dürtme",`@${P(d.from).username} seni dürttü`,"nudge")}})}
-async function boot(){
+async function boot(){verCleanUrl();runHooks("boot");
  const hc=readHashCfg();if(hc){LS.set("kadraj_fb_cfg",hc);LS.del("kadraj_demo");try{history.replaceState(null,"",location.pathname+location.search)}catch{}}
  const cfg=LS.get("kadraj_fb_cfg")||EMBED_CFG;
  if(!cfg){if(LS.get("kadraj_demo"))return bootLocal();return showSetup()}
@@ -2711,8 +2871,175 @@ async function bootLocal(){DB=LocalDB;S.mode="local";subscribeShared();
  showWelcome()}
 /* ===== 4.0 eklentileri: her ajan yalnızca kendi işaretleri arasına yazar ===== */
 /*@js:A{*/
-function showWhatsNew(force){}
-function checkVersion(manual){}
+/* ---- A · ortak ---- */
+Object.assign(IP,{
+ k4pal:'<path d="M12 3a9 9 0 0 0 0 18c1.1 0 1.7-.8 1.7-1.7 0-.5-.2-.9-.5-1.2-.3-.3-.5-.7-.5-1.2 0-.9.7-1.6 1.6-1.6H16a5 5 0 0 0 5-5c0-4.1-4-7.3-9-7.3z"/><circle cx="7.6" cy="11.4" r="1.25" fill="currentColor" stroke="none"/><circle cx="10.2" cy="7.4" r="1.25" fill="currentColor" stroke="none"/><circle cx="14.8" cy="7.6" r="1.25" fill="currentColor" stroke="none"/>',
+ k4act:'<path d="M2.5 12.5h4l2.6-6.5 5 12.5 2.7-6h4.7"/>',
+ k4cal:'<rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/><path d="m12 12.2 1 2 2.2.3-1.6 1.5.4 2.2-2-1-2 1 .4-2.2-1.6-1.5 2.2-.3z" fill="currentColor" stroke="none"/>'});
+const k4rm=()=>{try{return document.documentElement.classList.contains("reduce-motion")||matchMedia("(prefers-reduced-motion: reduce)").matches}catch{return false}};
+
+/* ---- A · Açılış animasyonu ---- */
+const INTRO={t0:typeof window.__k0==="number"?window.__k0:0,ready:false,gone:false,timer:0,waiters:[]};
+function introEl(){return document.getElementById("intro")}
+/* İlk gerçek ekran çizildiğinde çağrılır (authShell, enterApp kancası, enterGuest). En az ~1,1 sn gösterir, sonra yumuşakça kaybolur. */
+function introDone(){const el=introEl();if(!el||INTRO.gone){introLive();return}if(INTRO.ready)return;INTRO.ready=true;
+ const wait=Math.max(0,1100-(performance.now()-INTRO.t0));clearTimeout(INTRO.timer);INTRO.timer=setTimeout(introExit,wait)}
+function introLive(){document.documentElement.classList.add("k-live");const ws=INTRO.waiters.splice(0);for(const f of ws)try{f()}catch{}}
+function introGone(){return new Promise(r=>{if(!introEl())return r();INTRO.waiters.push(r)})}
+function introExit(){const el=introEl();if(!el){introLive();return}if(INTRO.gone)return;INTRO.gone=true;clearTimeout(INTRO.timer);
+ const rm=k4rm();el.classList.add("out");el.style.pointerEvents="none";el.removeAttribute("aria-busy");
+ document.documentElement.classList.add("k-live");
+ /* oturum açıksa sayfa giriş animasyonunu perde kalkarken yeniden oynat */
+ try{const m=$("#main");if(S.authed&&m&&!rm&&!["reels","chat","chessgame"].includes(S.route.name)&&m.children.length&&!m.querySelector(".empty .spin")){m.classList.remove("enter");void m.offsetWidth;m.classList.add("enter");clearTimeout(m._et);m._et=setTimeout(()=>m.classList.remove("enter"),800)}}catch{}
+ let fin=false;const done=()=>{if(fin)return;fin=true;el.remove();introLive()};
+ try{if(el.animate){const a=el.animate([{opacity:1},{opacity:0}],{duration:rm?200:460,easing:rm?"linear":"cubic-bezier(.4,0,.2,1)",fill:"forwards"});a.onfinish=done;
+   const c=el.querySelector(".in-c");if(!rm&&c&&c.animate)c.animate([{transform:"scale(1)",filter:"blur(0)"},{transform:"scale(1.1)",filter:"blur(2px)"}],{duration:460,easing:"cubic-bezier(.4,0,.2,1)",fill:"forwards"})}}catch{}
+ setTimeout(done,rm?260:620)}
+(function introWire(){const el=introEl();if(!el)return;
+ el.addEventListener("click",e=>{if(e.target.closest("#introRetry"))return;if(INTRO.ready)introExit()});
+ const rb=document.getElementById("introRetry");if(rb){rb.innerHTML=I("rotate")+"Yeniden dene";rb.onclick=()=>location.reload()}
+ setTimeout(()=>{const x=introEl();if(x&&!INTRO.gone)x.classList.add("slow")},Math.max(0,1500-(performance.now()-INTRO.t0)));
+ /* takılı kalmasın: 12 sn sonra hâlâ açıksa ekran varsa kapat, yoksa yeniden deneme düğmesi göster */
+ setTimeout(()=>{if(INTRO.ready||!introEl())return;const m=$("#main");if(m&&m.children.length)return introDone();
+  const msg=document.getElementById("splashMsg");if(msg)msg.textContent="Bağlantı beklenenden uzun sürüyor.";if(rb)rb.hidden=false},12000)})();
+HOOKS.enter.push(()=>introDone());
+
+/* ---- A · Karşılama ekranı ---- */
+const WEL_TILES=[
+ {src:"img/gunbatimi.jpg",x:31,y:1,w:39,h:57,r:-3,z:4,d:14,dl:.08,kb:19},
+ {src:"img/kedi.jpg",x:1,y:9,w:33,h:44,r:-8,z:3,d:9,dl:.16,kb:16},
+ {src:"img/iskele.jpg",x:66,y:6,w:33,h:43,r:7,z:3,d:11,dl:.24,kb:21},
+ {src:"img/kahve.jpg",x:4,y:56,w:30,h:40,r:6,z:2,d:6,dl:.32,kb:17},
+ {src:"img/uzay.jpg",x:35,y:62,w:30,h:37,r:-4,z:5,d:13,dl:.4,kb:23},
+ {src:"img/sisli-dag.jpg",x:67,y:53,w:30,h:42,r:-7,z:2,d:7,dl:.48,kb:18}];
+const WEL_FEATS=[["image","Fotoğraf ve sahne paylaş"],["chat","Arkadaşlarınla sohbet et, kim aktif gör"],["knight","Rota'ya karşı satranç oyna"],["poll","Hikâye, not ve anket"]];
+function welArt(){
+ return`<div class="wel-art" aria-hidden="true"><div class="wel-glow"></div>${WEL_TILES.map(t=>`<div class="wt" style="--x:${t.x}%;--y:${t.y}%;--w:${t.w}%;--h:${t.h}%;--r:${t.r}deg;--z:${t.z};--d:${t.d}px;--dl:${t.dl}s;--kb:${t.kb}s;--fl:${(5+t.d/3).toFixed(1)}s"><i><img src="${R(t.src)}" alt="" decoding="async" draggable="false"></i></div>`).join("")}
+ <div class="wel-chip wc1" style="--dl:.95s"><span class="wh">${I("heart")}</span><span>2.418<small>beğeni</small></span></div>
+ <div class="wel-chip wc2" style="--dl:1.1s"><span class="wa"><img src="${initialsAv("Ayşe Yılmaz","ayse")}" alt=""></span><span>Ayşe<small>Şu an aktif</small></span></div></div>`}
+function welScreen(withLogin){
+ return`${welArt()}<div class="wel-txt">${brandLine}<h2>Arkadaşlarınla anı paylaş, sohbet et.</h2>
+ <div class="wel-feat" role="list" aria-label="Kadraj'da neler var">${WEL_FEATS.map((f,i)=>`<div class="wf${i?"":" on"}" role="listitem"><span class="ic">${I(f[0])}</span><span>${esc(f[1])}</span></div>`).join("")}</div>
+ <div class="wel-dots" aria-hidden="true">${WEL_FEATS.map((f,i)=>`<i${i?"":' class="on"'}></i>`).join("")}</div></div>
+ <div class="wel-cta">${modeChip()}<button class="btn block" id="wReg">Hesap oluştur</button>${withLogin?`<button class="btn line block" id="wLog">Giriş yap</button>`:""}</div>`}
+function welWire(){const root=$(".auth.wel");if(!root)return;const art=$(".wel-art",root);
+ const fs=$$(".wf",root),ds=$$(".wel-dots i",root);let k=0;
+ const iv=setInterval(()=>{if(!root.isConnected)return clearInterval(iv);if(document.hidden||!document.documentElement.classList.contains("k-live"))return;
+  const prev=fs[k];prev.classList.remove("on");prev.classList.add("off");setTimeout(()=>prev.classList.remove("off"),520);if(ds[k])ds[k].classList.remove("on");
+  k=(k+1)%fs.length;fs[k].classList.add("on");if(ds[k])ds[k].classList.add("on")},2600);
+ if(!art||k4rm())return;
+ let raf=0,mx=0,my=0;const apply=()=>{raf=0;art.style.setProperty("--mx",mx.toFixed(3));art.style.setProperty("--my",my.toFixed(3))};
+ const set=(x,y)=>{mx=Math.max(-1,Math.min(1,x));my=Math.max(-1,Math.min(1,y));if(!raf)raf=requestAnimationFrame(apply)};
+ root.addEventListener("pointermove",e=>{const r=art.getBoundingClientRect();if(!r.width)return;set((e.clientX-r.left)/r.width*2-1,(e.clientY-r.top)/r.height*2-1)});
+ root.addEventListener("pointerleave",()=>set(0,0));
+ const ori=e=>{if(!root.isConnected)return removeEventListener("deviceorientation",ori);if(e.gamma==null)return;set(e.gamma/22,((e.beta||0)-45)/22)};
+ addEventListener("deviceorientation",ori)}
+
+/* ---- A · Sürüm denetimi ---- */
+const VER={known:null,unsub:null,writes:0,chk:null,chkP:null,blocked:false,skip:false,lastEval:0};
+const verStr=v=>{v=Math.max(0,Math.floor(+v||0));return Math.floor(v/10)+"."+(v%10)};
+function verCleanUrl(){try{const q=new URLSearchParams(location.search);if(!q.has("v")&&!q.has("surum"))return;q.delete("v");q.delete("surum");const s=q.toString();history.replaceState(history.state,"",location.pathname+(s?"?"+s:"")+location.hash)}catch{}}
+/* Yayındaki index.html'in yalnızca başını okuyup <meta name="kadraj-version"> değerini döndürür; hata olursa null. */
+async function fetchRemoteVersion(){let rd=null,to=0;
+ try{const ctl=typeof AbortController==="function"?new AbortController():null;to=setTimeout(()=>{try{ctl&&ctl.abort()}catch{}},9000);
+  const res=await fetch(location.pathname+"?surum="+now(),{cache:"no-store",headers:{Range:"bytes=0-16383"},signal:ctl?ctl.signal:undefined});
+  if(!res||!(res.ok||res.status===206))return null;
+  const re=/name=["']kadraj-version["']\s+content=["'](\d+)["']/;let txt="";
+  if(res.body&&res.body.getReader&&typeof TextDecoder==="function"){rd=res.body.getReader();const dec=new TextDecoder();let n=0;
+   while(n<65536){const{done,value}=await rd.read();if(done)break;n+=value.length;txt+=dec.decode(value,{stream:true});const m=txt.match(re);if(m)return+m[1];if(/<\/head>/i.test(txt))break}}
+  else txt=(await res.text()).slice(0,65536);
+  const m=txt.match(re);return m?+m[1]:null}
+ catch(e){return null}
+ finally{clearTimeout(to);if(rd)try{rd.cancel().catch(()=>{})}catch{}setTimeout(verTidyCache,4000)}}
+/* Sürüm sorguları ve ?v= ile açılan sayfalar önbellekte ayrı kayıt bırakmasın */
+async function verTidyCache(){try{if(!window.caches||!caches.keys)return;for(const k of await caches.keys()){const c=await caches.open(k);for(const req of await c.keys()){const u=new URL(req.url);const q=u.searchParams;if(!q.has("v")&&!q.has("surum"))continue;
+  if(q.has("v")&&!q.has("surum")){const res=await c.match(req);q.delete("v");const s=q.toString();if(res&&res.ok)await c.put(new Request(u.origin+u.pathname+(s?"?"+s:"")),res).catch(()=>{})}await c.delete(req)}}}catch{}}
+async function hardReload(btn){if(VER.reloading)return;VER.reloading=true;
+ if(btn&&btn.tagName){btn.disabled=true;btn.innerHTML=`${I("rotate")}Güncelleniyor…`}
+ const work=(async()=>{try{if(window.caches&&caches.keys){const ks=await caches.keys();await Promise.all(ks.map(k=>caches.delete(k).catch(()=>{})))}}catch{}
+  try{const sw=navigator.serviceWorker;if(sw&&sw.getRegistrations){const rs=await sw.getRegistrations();await Promise.all(rs.map(r=>r.update().catch(()=>{})))}}catch{}})();
+ await Promise.race([work,new Promise(r=>setTimeout(r,4000))]);
+ VER.nav(location.pathname+"?v="+now())}
+VER.nav=u=>location.replace(u);
+function verWatch(){if(VER.unsub){try{VER.unsub()}catch{}VER.unsub=null}
+ if(S.mode!=="cloud"||!DB||!S.authed||S.guest||VER.blocked)return;
+ try{VER.unsub=DB.watchDoc("meta/_surum",verOnDoc)}catch(e){console.warn("sürüm",e)}}
+function verOnDoc(d){const raw=d&&d.v;const v=typeof raw==="number"&&isFinite(raw)?Math.floor(raw):null;
+ if(v!=null&&v>APP_V+20)return;
+ if(v==null||v<APP_V){VER.known=APP_V;verBar(null);
+  if(S.mode==="cloud"&&S.authed&&!S.guest&&S.uid&&VER.writes<3){VER.writes++;write(()=>DB.set("meta/_surum",{v:APP_V,ver:APP_VER,at:now(),by:S.uid}),{quiet:true})}return}
+ VER.known=v;verEvaluate()}
+async function verVerify(v){const c=VER.chk;if(c&&c.v===v&&now()-c.at<10*60e3)return c.r;if(VER.chkP)return VER.chkP;
+ VER.chkP=fetchRemoteVersion().then(r=>{VER.chk={v,at:now(),r};VER.chkP=null;return r});return VER.chkP}
+/* Son bilinen sürüm değerine göre çubuk ya da engel ekranı */
+async function verEvaluate(v=VER.known){VER.lastEval=now();if(VER.blocked)return;
+ if(v==null)return;if(v<=APP_V)return verBar(null);
+ if(v>=APP_V+2){const r=await verVerify(v);if(VER.known!==v&&VER.known!=null&&VER.known<v)return;
+  if(r!=null&&r>=APP_V+2)return showVersionBlock(r);if(r==null)return verBar(v);return verBar(r>APP_V?r:null)}
+ verBar(v)}
+function verBar(v,force){let el=$("#verBar");
+ if(v==null||v<=APP_V||VER.blocked){if(el)el.remove();return}
+ if(!force&&+(SS.get("kadraj_verbar_off")||0)>=v){if(el)el.remove();return}
+ if(el&&+el.dataset.v===v)return;
+ if(!el){el=document.createElement("div");el.id="verBar";el.setAttribute("role","status");document.body.appendChild(el)}
+ el.dataset.v=v;el.innerHTML=`<span class="vb-ic">${I("spark")}</span><span class="vb-t">Yeni sürüm hazır · <b>Kadraj ${verStr(v)}</b></span><button type="button" class="vb-go">${I("rotate")}Yenile</button><button type="button" class="vb-x" aria-label="Kapat">${I("close")}</button>`;
+ const go=el.querySelector(".vb-go");go.onclick=()=>hardReload(go);
+ el.querySelector(".vb-x").onclick=()=>{SS.set("kadraj_verbar_off",String(v));el.classList.add("bye");setTimeout(()=>el.remove(),260)}}
+const VB_ART=`<svg viewBox="0 0 176 150" aria-hidden="true"><circle class="a1" cx="88" cy="78" r="64"/>
+ <path class="a8 tw" d="M26 34l2.4 6 6 2.4-6 2.4-2.4 6-2.4-6-6-2.4 6-2.4z"/><path class="a5 tw" style="animation-delay:.7s" d="M150 46l1.8 4.4 4.4 1.8-4.4 1.8-1.8 4.4-1.8-4.4-4.4-1.8 4.4-1.8z"/><circle class="a9 tw" style="animation-delay:1.2s" cx="152" cy="130" r="3.5"/><circle class="a5 tw" style="animation-delay:.3s" cx="30" cy="110" r="3"/>
+ <rect class="a2" x="58" y="18" width="60" height="108" rx="15"/><rect class="a3" x="77" y="25" width="22" height="4.5" rx="2.25"/>
+ <svg x="68" y="50" width="40" height="40" viewBox="0 0 24 24"><path class="a4" d="M2.5 8V5a2.5 2.5 0 0 1 2.5-2.5h3M16 2.5h3A2.5 2.5 0 0 1 21.5 5v3M21.5 16v3a2.5 2.5 0 0 1-2.5 2.5h-3M8 21.5H5A2.5 2.5 0 0 1 2.5 19v-3"/><circle class="a5" cx="12" cy="12" r="3.4"/></svg>
+ <rect class="a3" x="72" y="101" width="32" height="5" rx="2.5"/><rect class="a3" x="78" y="111" width="20" height="5" rx="2.5"/>
+ <circle class="a6" cx="118" cy="110" r="22"/><svg x="104" y="96" width="28" height="28" viewBox="0 0 24 24"><g class="bob"><path class="a7" d="M12 18.5V6M6.5 11.5 12 6l5.5 5.5"/></g></svg></svg>`;
+function showVersionBlock(r){if(VER.skip)return;VER.blocked=true;verBar(null);if(VER.unsub){try{VER.unsub()}catch{}VER.unsub=null}
+ const n=Math.max(2,Math.floor(r)-APP_V);const behind=n===2?"iki":n===3?"üç":"birkaç";
+ let el=$("#verBlock");if(!el){el=document.createElement("div");el.id="verBlock";el.setAttribute("role","alertdialog");el.setAttribute("aria-modal","true");el.setAttribute("aria-labelledby","vbT");document.body.appendChild(el)}
+ el.innerHTML=`<div class="vb-card"><div class="vb-art">${VB_ART}</div><h2 id="vbT">Bu sürüm artık kullanılmıyor</h2><p>Kadraj ${verStr(r)} yayında. Kullandığın ${esc(APP_VER)} sürümü ${behind} sürüm geride kaldığı için kapatıldı. Devam etmek için güncelle.</p>
+ <div class="vb-vers" aria-hidden="true"><span class="old">${esc(APP_VER)}</span>${I("next")}<span class="new">${verStr(r)}</span></div>
+ <button type="button" class="btn block" id="vbGo">${I("rotate")}Şimdi güncelle</button>${S.admin?`<button type="button" class="btn ghost block" id="vbSkip">Yönetici olarak devam et</button>`:""}</div>`;
+ for(const s of["#shell","#overlay"]){const x=$(s);if(x)x.inert=true}
+ try{document.activeElement&&document.activeElement.blur&&document.activeElement.blur()}catch{}
+ const go=$("#vbGo",el);go.onclick=()=>hardReload(go);
+ const sk=$("#vbSkip",el);if(sk)sk.onclick=()=>{VER.skip=true;VER.blocked=false;for(const s of["#shell","#overlay"]){const x=$(s);if(x)x.inert=false}el.remove();toast(`Yönetici olarak ${APP_VER} sürümünde devam ediyorsun`);verBar(r,true)};
+ vib(30)}
+/* Elle (Ayarlar'dan) ya da arka planda sürüm denetimi */
+async function checkVersion(manual){
+ if(!manual)return verEvaluate();
+ const r=await fetchRemoteVersion();
+ if(r==null){toast("Sürüm denetlenemedi. İnternet bağlantını kontrol et.");return null}
+ if(r>=APP_V+2){VER.skip=false;showVersionBlock(r);return r}
+ if(r>APP_V){VER.known=Math.max(VER.known||0,r);SS.del("kadraj_verbar_off");verBar(r,true);toast(`Kadraj ${verStr(r)} hazır. Yenile'ye dokun.`);return r}
+ toast(`Kadraj güncel (${APP_VER})`);return r}
+HOOKS.enter.push(()=>verWatch());
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"&&S.authed&&now()-VER.lastEval>10*60e3)checkVersion(false)});
+setTimeout(verTidyCache,9000);
+
+/* ---- A · Neler yeni ---- */
+const WN_ITEMS=[
+ {ic:"spark",g:"linear-gradient(135deg,#0c7a63,#18b38e)",t:"Yeni açılış ve görünüm",d:"Animasyonlu giriş, vurgu rengi seçimi, yumuşak tema geçişi",go:"settings"},
+ {ic:"k4pal",g:"linear-gradient(135deg,#7c3aed,#ec4899)",t:"Ortak sohbet temaları",d:"Seçtiğin tema sohbetteki herkes için aynı anda değişir",go:"chats"},
+ {ic:"k4act",g:"linear-gradient(135deg,#14a06b,#0e7490)",t:"Kim aktif?",d:"“Şu an aktif”, “5 dk önce aktifti”; istersen Ayarlar'dan gizle",go:"chats"},
+ {ic:"reels",g:"linear-gradient(135deg,#f97316,#db2777)",t:"Sahneler 2 dakikaya kadar",d:"Daha büyük videolar, izlenme sayısı, ileri-geri sarma",go:"reels"},
+ {ic:"heart",g:"linear-gradient(135deg,#e23e57,#f59e0b)",t:"Instagram tadında",d:"Çoklu fotoğraf, hikâyeye tepki, öne çıkanlar, yorumlara yanıt",go:"profile"},
+ {ic:"chat",g:"linear-gradient(135deg,#4338ca,#0ea5e9)",t:"Sohbette yenilikler",d:"Mesaj arama, iletme, sesli mesaj hızı",go:"chats"},
+ {ic:"gear",g:"linear-gradient(135deg,#334155,#64748b)",t:"Yenilenen Ayarlar",d:"Gizlilik, bildirim türleri, veri tasarrufu",go:"settings"},
+ {ic:"k4cal",g:"linear-gradient(135deg,#b45309,#f5b921)",t:"Her gün yeni",d:"Günün teması ve satranç bulmacası",go:"chess"}];
+const WN_MARK=`<svg class="wn-mark" viewBox="0 0 24 24" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path pathLength="1" d="M2.5 8V5a2.5 2.5 0 0 1 2.5-2.5h3"/><path pathLength="1" d="M16 2.5h3A2.5 2.5 0 0 1 21.5 5v3"/><path pathLength="1" d="M21.5 16v3a2.5 2.5 0 0 1-2.5 2.5h-3"/><path pathLength="1" d="M8 21.5H5A2.5 2.5 0 0 1 2.5 19v-3"/><circle cx="12" cy="12" r="3.4"/></svg>`;
+function showWhatsNew(force){if($('#overlay [data-layer="whatsnew"]'))return;if(!force&&+(LS.get("kadraj_seen_ver",0)||0)>=APP_V)return;
+ const items=WN_ITEMS.map((x,i)=>`<button type="button" class="wn-item" data-act="wnGo" data-r="${x.go}" style="--i:${i};--g:${x.g}"><span class="wn-ic">${I(x.ic)}</span><span class="wn-t"><b>${esc(x.t)}</b><span>${esc(x.d)}</span></span>${I("next")}</button>`).join("");
+ openLayer("whatsnew",`<div class="full wn" role="dialog" aria-modal="true" aria-label="Kadraj ${esc(APP_VER)} ile gelenler"><button class="ib plain wn-x" data-act="close" aria-label="Kapat">${I("close")}</button>
+ <div class="body"><div class="wn-hero"><i class="wn-blob b1"></i><i class="wn-blob b2"></i><i class="wn-blob b3"></i>${WN_MARK}<div class="wn-badge">Yeni sürüm</div><h2 class="wn-title">Kadraj ${esc(APP_VER)}</h2><p class="wn-sub">Bugüne kadarki en büyük güncelleme. İşte seni bekleyenler:</p></div>
+ <div class="wn-list">${items}</div></div>
+ <div class="wn-foot"><button type="button" class="btn block" data-act="wnOk">Hadi başlayalım${I("next")}</button></div></div>`,{noScrim:true,onClose:()=>LS.set("kadraj_seen_ver",APP_V)})}
+ACT.wnOk=()=>{vib(12);closeLayer("whatsnew")};
+ACT.wnGo=(t,d)=>{closeLayer("whatsnew");const r=d.r;if(!S.authed)return;if(r==="profile"&&S.guest)return go("invite");if(["feed","explore","reels","chats","profile"].includes(r))return tab(r);go(r)};
+/* Otomatik test tarayıcılarında (navigator.webdriver) kendiliğinden açılmaz; testte window.KADRAJ_TEST_WN=true ile açılır. */
+function wnAuto(fresh){if(+(LS.get("kadraj_seen_ver",0)||0)>=APP_V)return;if(fresh){LS.set("kadraj_seen_ver",APP_V);return}if(navigator.webdriver&&!window.KADRAJ_TEST_WN)return;
+ const uid=S.uid,t0=now();
+ introGone().then(()=>{const tryShow=n=>{if(!S.authed||S.guest||S.uid!==uid||VER.blocked)return;if(+(LS.get("kadraj_seen_ver",0)||0)>=APP_V)return;
+  if($("#overlay .layer")){if(n<8)setTimeout(()=>tryShow(n+1),1500);return}showWhatsNew(false)};
+  setTimeout(()=>tryShow(0),Math.max(450,1200-(now()-t0)))})}
+HOOKS.enter.push(fresh=>wnAuto(fresh));
 /*}@js:A*/
 
 /*@js:B{*/
