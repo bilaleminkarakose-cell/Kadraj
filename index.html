@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
 <meta charset="utf-8">
-<meta name="kadraj-version" content="40101">
+<meta name="kadraj-version" content="40200">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0C7A63">
 <link rel="manifest" href="manifest.webmanifest">
@@ -1013,6 +1013,16 @@ html[data-accent]:not([data-accent="kadraj"]) .call{background:radial-gradient(1
 
 /*@css:E{*/
 .reel.buf::after{content:"";position:absolute;left:50%;top:45%;width:42px;height:42px;margin:-21px;border-radius:50%;border:3px solid rgba(255,255,255,.3);border-top-color:#fff;animation:sp .8s linear infinite;z-index:4;pointer-events:none}
+.toast{border-radius:18px;padding:10px 14px 10px 10px;background:color-mix(in srgb,var(--fg) 92%,transparent);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);box-shadow:0 14px 34px rgba(0,0,0,.28);border:1px solid color-mix(in srgb,var(--bg) 14%,transparent)}
+.toast span{min-width:0;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.toast.tap{pointer-events:auto;cursor:pointer}.toast.tap>svg.i{width:1rem;height:1rem;opacity:.7;margin-left:auto;flex:none}
+.toast.tap:active{transform:scale(.97)}
+.fg-card{display:grid;justify-items:center;text-align:center;gap:10px;padding:18px 16px;border-radius:22px;background:var(--surface);border:1px solid var(--line)}
+.fg-ic{width:64px;height:64px;border-radius:20px;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent)}
+.fg-ic svg.i{width:32px;height:32px}
+.fg-steps{text-align:left;margin:4px 0 0;padding-left:20px;display:grid;gap:6px;font-size:.92rem;color:var(--muted)}
+.fg-mail{font:600 1.05rem/1.3 var(--f-body);color:var(--fg);word-break:break-all}
+.pwrow{position:relative}.pwrow .in{padding-right:48px}.pwrow .eye{position:absolute;right:6px;top:50%;transform:translateY(-50%);width:38px;height:38px;display:grid;place-items:center;color:var(--muted)}
 /*}@css:E*/
 /* 4.0: tablet ve geniş ekran uyumu: içerik ekranı doldursun, yanlarda boş şerit kalmasın */
 @media (min-width:560px){
@@ -1072,7 +1082,7 @@ const vib=ms=>{try{if(settings.haptics===false)return;navigator.vibrate&&navigat
 /* Sürüm: ana.ara.yama (4.1.0). Hata düzeltme ve küçük şeyler → yama artar (4.1.1); büyük güncelleme → ara artar (4.2.0).
    APP_V = ana*10000 + ara*100 + yama (4.1.0 → 40100). Başlıktaki <meta name="kadraj-version"> ile aynı tutulmalı.
    Eski biçim (4.0 → 40) verNorm ile çevrilir. "İki sürüm geride" ara sürüm sayısıyla ölçülür (yamalar engellemez). */
-const APP_V=40101,APP_VER="4.1.1";
+const APP_V=40200,APP_VER="4.2.0";
 const verNorm=x=>{x=Math.max(0,Math.floor(+x||0));return x<1000?Math.floor(x/10)*10000+(x%10)*100:x};
 const verLvl=x=>Math.floor(verNorm(x)/100);
 const verGap=x=>verLvl(x)-verLvl(APP_V);
@@ -1410,7 +1420,7 @@ function activity(){const out=[];const mine=new Set(Object.values(S.posts).filte
  return out.sort((a,b)=>b.at-a.at)}
 const newActivity=()=>{const seen=LS.get("kadraj_act_"+S.uid,0);return activity().filter(a=>a.at>seen).length};
 
-function toast(text,uid){if(!text)return;const t=document.createElement("div");t.className="toast";t.innerHTML=(uid?avatar(uid,28,{ring:false,click:false,online:false}):"")+`<span>${esc(text)}</span>`;$("#toasts").appendChild(t);setTimeout(()=>{t.style.transition="opacity .3s";t.style.opacity="0";setTimeout(()=>t.remove(),320)},3600)}
+function toast(text,uid,key){if(!text)return;const t=document.createElement("div");t.className="toast"+(key?" tap":"");t.innerHTML=(uid?avatar(uid,28,{ring:false,click:false,online:false}):"")+`<span>${esc(text)}</span>`+(key?I("next"):"");if(key)t.onclick=()=>{t.remove();openTarget(key)};$("#toasts").appendChild(t);setTimeout(()=>{t.style.transition="opacity .3s";t.style.opacity="0";setTimeout(()=>t.remove(),320)},3600)}
 
 /* ============ Yönlendirme ============ */
 function go(name,params={}){if(name==="edit")S.editDraft=null;S.stack.push(S.route);S.route={name,params};navPush();render(true)}
@@ -1626,9 +1636,9 @@ function afterRender(){const r=S.route.name;runHooks("after",r);if(r==="chessgam
  if(r==="reels"){io=new IntersectionObserver(es=>{for(const e of es){if(e.isIntersecting&&e.intersectionRatio>.6)activateReel(e.target);else if(e.target===activeReel)deactivateReel(e.target)}},{threshold:[0,.6]});$$(".reel").forEach(el=>io.observe(el));hydrateVideos();
   const start=S.route.params.start;if(start){const el=$(`.reel[data-pid="${CSS.escape(start)}"]`);if(el)main().scrollTop=el.offsetTop}}}
 function activateReel(el){if(activeReel===el)return;if(activeReel)deactivateReel(activeReel);activeReel=el;const p=postById(el.dataset.pid);const v=el.querySelector("video");
- if(v){v.muted=S.muted||v.dataset.mus==="1";v.preload="auto";if(settings.autoplay)v.play().catch(()=>{if(!v.muted){v.muted=true;v.play().catch(()=>{});S.needUnmute=true;const h=el.querySelector(".rhint");if(h)h.hidden=false}});const nx=el.nextElementSibling&&el.nextElementSibling.querySelector("video");if(nx&&nx.preload!=="auto"&&!settings.dataSaver)nx.preload="auto";const bar=el.querySelector(".rprog i");v.ontimeupdate=()=>{if(bar&&v.duration)bar.style.width=(v.currentTime/v.duration*100)+"%"};v.onplay=()=>el.classList.remove("paused");v.onwaiting=()=>el.classList.add("buf");v.onplaying=()=>el.classList.remove("buf");v.oncanplay=()=>el.classList.remove("buf");v.onpause=()=>{if(activeReel===el)el.classList.add("paused")}}
+ if(v){v.muted=S.muted||v.dataset.mus==="1";v.preload="auto";if(settings.autoplay)v.play().catch(()=>{if(!v.muted){v.muted=true;v.play().catch(()=>{});S.needUnmute=true;const h=el.querySelector(".rhint");if(h)h.hidden=false}});const nx=el.nextElementSibling&&el.nextElementSibling.querySelector("video");if(nx&&nx.preload!=="auto"&&!settings.dataSaver)nx.preload="auto";const bar=el.querySelector(".rprog i");let lt=0;v.ontimeupdate=()=>{if(bar&&v.duration)bar.style.width=(v.currentTime/v.duration*100)+"%";if(v.currentTime+.3<lt&&!v.paused)reelMusic(el,true,true);lt=v.currentTime};v.onplay=()=>{el.classList.remove("paused");reelMusic(el,true)};v.onwaiting=()=>el.classList.add("buf");v.onplaying=()=>el.classList.remove("buf");v.oncanplay=()=>el.classList.remove("buf");v.onpause=()=>{if(activeReel===el){el.classList.add("paused");reelMusic(el,false)}}}
  const sl=$$(".slide",el);if(sl.length){let i=0;sl.forEach((s,j)=>s.classList.toggle("on",j===0));if(sl.length>1)el._t=setInterval(()=>{sl[i].classList.remove("on");i=(i+1)%sl.length;sl[i].classList.add("on")},3200)}
- if(p&&p.music&&p.music!=="none"&&!S.muted)Music.start(p.music);else Music.stop()}
+ if(p&&p.music&&p.music!=="none"&&!S.muted&&(!v||!v.paused))Music.start(p.music);else Music.stop()}
 function deactivateReel(el){const v=el.querySelector("video");if(v)v.pause();if(el._t){clearInterval(el._t);el._t=null}if(activeReel===el){activeReel=null;Music.stop()}}
 
 /* ============ Tıklamalar ============ */
@@ -2085,7 +2095,12 @@ function notifPerm(){try{return typeof Notification!=="undefined"?Notification.p
 async function askNotif(silent){if(typeof Notification==="undefined")return"unsupported";if(Notification.permission==="granted")return"granted";if(Notification.permission==="denied")return"denied";
  try{const r=await Notification.requestPermission();if(!silent)toast(r==="granted"?"Bildirimler açık":"Bildirime izin verilmedi");scheduleRefresh();return r}catch{return"default"}}
 let _lastNote=0;
-function sysNote(title,body,tag){try{if(typeof Notification==="undefined"||Notification.permission!=="granted")return;if(!settings.notify)return;if(document.visibilityState==="visible")return;
+function sysNote(title,body,tag,o={}){try{if(typeof Notification==="undefined"||Notification.permission!=="granted")return;if(!settings.notify)return;if(document.visibilityState==="visible")return;
+ const ic=typeof o.icon==="string"&&/^data:image\/(jpe?g|png|webp)/.test(o.icon)?o.icon:"icon-192.png";const key=o.key||"";
+ const opts={body:body||"",tag:tag||"kadraj",icon:ic,badge:"icon-192.png",renotify:true,vibrate:[70,40,70],timestamp:now(),data:{key}};
+ const plain=()=>{try{const n=new Notification(title,opts);n.onclick=()=>{try{window.focus()}catch{}n.close();openTarget(key)}}catch{}};
+ if(navigator.serviceWorker&&navigator.serviceWorker.ready){navigator.serviceWorker.ready.then(reg=>reg.showNotification(title,opts)).catch(plain);return}
+ return plain();
  if(navigator.serviceWorker&&navigator.serviceWorker.ready){navigator.serviceWorker.ready.then(reg=>{reg.showNotification(title,{body:body||"",tag:tag||"kadraj",icon:"icon-192.png",badge:"icon-192.png",renotify:true}).catch(()=>{new Notification(title,{body,tag,icon:"icon-192.png"})})}).catch(()=>{try{new Notification(title,{body,tag,icon:"icon-192.png"})}catch{}})}
  else new Notification(title,{body,tag,icon:"icon-192.png"})}catch{}}
 function subscribeShared(){admSubscribe();
@@ -2112,9 +2127,9 @@ function stopChat(){if(REC)stopRec(false);if(AUD&&PLAYING){AUD.pause();PLAYING=n
 async function markRead(cid){const c=S.chats[cid];if(!c)return;if(document.visibilityState==="hidden")return;const lm=chatKey===cid&&S.msgs.length?S.msgs[S.msgs.length-1].at:0;const la=Math.max((c.last&&c.last.at)||0,lm);if(!la)return;if(((c.reads||{})[S.uid]||0)>=la)return;if(!S.canWrite||S.guest)return;const t=Math.max(now(),la+1);S.chats={...S.chats,[cid]:{...c,reads:{...(c.reads||{}),[S.uid]:t}}};const ns=settings.readReceipts===false;try{await DB.update("chats/"+cid,{reads:{[S.uid]:t},noSeen:{[S.uid]:ns}})}catch{}}
 document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"&&S.route.name==="chat"&&chatKey&&chatKey!=="meydan")markRead(chatKey)});
 async function markBotRead(uid){const k=BOT[uid].key;const c=S.botchats[k];if(!c||!c.msgs?.length)return;const l=c.msgs[c.msgs.length-1];if((c.readAt||0)>=l.at||l.from===S.uid)return;S.botchats={...S.botchats,[k]:{...c,readAt:now()}};try{await DB.set(`data/users/${S.uid}/bot-${k}`,{msgs:c.msgs,readAt:now()})}catch{}}
-function notifyMeta(m){if(!notifReady||!settings.notify||!S.authed)return;for(const[id,d]of Object.entries(m)){const p=S.posts[id];if(!p||p.uid!==S.uid)continue;const old=S.meta[id]||{};for(const[u,at]of Object.entries(d.likes||{}))if(settings.nLike!==false&&at&&u!==S.uid&&!(old.likes||{})[u]&&at>S.bootAt){toast(`@${P(u).username} paylaşımını beğendi`,u);sysNote("Kadraj",`@${P(u).username} paylaşımını beğendi`,"like-"+id)}for(const[cid,c]of Object.entries(d.comments||{}))if(settings.nComment!==false&&c&&c.uid!==S.uid&&!(old.comments||{})[cid]&&c.at>S.bootAt){toast(`@${P(c.uid).username}: ${c.text.slice(0,60)}`,c.uid);sysNote("Yeni yorum",`@${P(c.uid).username}: ${c.text.slice(0,60)}`,"cm-"+cid)}}}
-function notifyChats(m){if(!notifReady||!settings.notify||settings.nMsg===false)return;for(const[id,c]of Object.entries(m)){const o=S.chats[id];if(c.last&&c.last.from!==S.uid&&c.last.at>S.bootAt&&(!o||!o.last||o.last.at<c.last.at)){if(S.route.name==="chat"&&keyInfo(S.route.params.key).cid===id)continue;toast(`${c.group?c.name+" · ":""}${P(c.last.from).name}: ${c.last.text}`,c.last.from);vib(30);sysNote((c.group?c.name:P(c.last.from).name),c.last.text,"m-"+id)}}}
-function notifyNewPosts(m){if(!notifReady||!settings.notify||settings.nPost===false||!S.authed)return;for(const[id,p]of Object.entries(m))if(!S.posts[id]&&p.uid!==S.uid&&p.at>S.bootAt&&isFollowing(S.uid,p.uid)){toast(`@${P(p.uid).username} yeni bir paylaşım yaptı`,p.uid);sysNote("Kadraj",`@${P(p.uid).username} yeni bir paylaşım yaptı`,"post-"+id)}}
+function notifyMeta(m){if(!notifReady||!settings.notify||!S.authed)return;for(const[id,d]of Object.entries(m)){const p=S.posts[id];if(!p||p.uid!==S.uid)continue;const old=S.meta[id]||{};for(const[u,at]of Object.entries(d.likes||{}))if(settings.nLike!==false&&at&&u!==S.uid&&!(old.likes||{})[u]&&at>S.bootAt){toast(`@${P(u).username} paylaşımını beğendi`,u,"post:"+id);sysNote("Yeni beğeni",`@${P(u).username} paylaşımını beğendi`,"like-"+id,{key:"post:"+id,icon:P(u).avatar})}for(const[cid,c]of Object.entries(d.comments||{}))if(settings.nComment!==false&&c&&c.uid!==S.uid&&!(old.comments||{})[cid]&&c.at>S.bootAt){toast(`@${P(c.uid).username}: ${c.text.slice(0,60)}`,c.uid,"post:"+id);sysNote("Yeni yorum",`@${P(c.uid).username}: ${c.text.slice(0,60)}`,"cm-"+cid,{key:"post:"+id,icon:P(c.uid).avatar})}}}
+function notifyChats(m){if(!notifReady||!settings.notify||settings.nMsg===false)return;for(const[id,c]of Object.entries(m)){const o=S.chats[id];if(c.last&&c.last.from!==S.uid&&c.last.at>S.bootAt&&(!o||!o.last||o.last.at<c.last.at)){if(S.route.name==="chat"&&keyInfo(S.route.params.key).cid===id)continue;const nk=c.group?"g:"+id:"u:"+c.last.from;toast(`${c.group?c.name+" · ":""}${P(c.last.from).name}: ${c.last.text}`,c.last.from,nk);vib(30);sysNote((c.group?c.name:P(c.last.from).name),(c.group?P(c.last.from).name+": ":"")+c.last.text,"m-"+id,{key:nk,icon:P(c.last.from).avatar})}}}
+function notifyNewPosts(m){if(!notifReady||!settings.notify||settings.nPost===false||!S.authed)return;for(const[id,p]of Object.entries(m))if(!S.posts[id]&&p.uid!==S.uid&&p.at>S.bootAt&&isFollowing(S.uid,p.uid)){toast(`@${P(p.uid).username} yeni bir paylaşım yaptı`,p.uid,"post:"+id);sysNote("Yeni paylaşım",`@${P(p.uid).username} yeni bir paylaşım yaptı`,"post-"+id,{key:"post:"+id,icon:P(p.uid).avatar})}}
 
 /* ============ Mesaj gönderme ============ */
 function wireComposer(){const f=$("#composer"),inp=$("#msgIn");if(!f)return;const key=S.route.params.key;const k=keyInfo(key);const btn=$("#sendBtn");const voice=k.type!=="bot";
@@ -2771,6 +2786,7 @@ service cloud.firestore {
     match /vchunks/{id} { allow read, write: if girdi(); }
     match /pokes/{id} { allow read, write: if girdi(); }
     match /games/{id} { allow read, write: if girdi(); }
+    match /unames/{name} { allow get: if true; allow list: if false; allow create: if girdi() && request.resource.data.uid == request.auth.uid; allow update: if girdi() && resource.data.uid == request.auth.uid && request.resource.data.uid == request.auth.uid; allow delete: if girdi() && resource.data.uid == request.auth.uid; }
     match /admin/{id} { allow read: if girdi(); allow write: if yonetici(); }
     match /bots/{id} { allow read: if girdi(); allow write: if yonetici(); }
     match /reports/{id} { allow create: if girdi(); allow read, delete: if yonetici(); }
@@ -2907,7 +2923,7 @@ const FAQ=[[/aktif|çevrimiçi|online|son görülme/i,"Kimin aktif olduğunu fot
  [/reels|çekim|sahne|video/i,"Sahne (kısa video) için + > Sahne. İki yol var:\n- **Fotoğraflardan**: 1-3 kare seç, yazı ekle, hareket ve müzik seç.\n- **Video yükle**: en fazla 2 dakika (40 MB), büyük videolar otomatik küçültülür.\n\nSahneler ekranında sesi sağ üstteki hoparlörden açarsın."],
  [/hikaye|hikâye|story/i,"Akışın üstündeki **Hikâyen** balonundaki + ile hikâye eklersin. Üstüne yazı koyabilirsin; 24 saat görünür."],
  [/tema|karanlık|koyu|açık mod|dark|yazı boyu/i,"Akış'taki ay/güneş düğmesi temayı anında değiştirir. Ben > dişli > Görünüm'den Sistem temasını ve yazı boyutunu da seçebilirsin."],
- [/şifre|unuttum|giriş/i,"Şifreni Ben > dişli > Şifreyi değiştir'den güncelleyebilirsin. Unuttuysan giriş ekranında e-postanı yazıp **Şifremi unuttum**'a dokun; sıfırlama bağlantısı e-postana gelir."],
+ [/şifre|unuttum|giriş/i,"Girişte **kullanıcı adını** ya da e-postanı yazabilirsin.\n- Şifreni unuttuysan giriş ekranında **Şifremi unuttum**'a dokun, kullanıcı adını yaz. E-postana gelen bağlantıya dokununca Kadraj açılır, yeni şifreni orada belirlersin.\n- E-postanı da unuttuysan **E-postamı unuttum** hangi adresle kayıt olduğunu (gizlenmiş olarak) gösterir.\n- Şifreyi değiştirmek için: Ben > dişli > Şifreyi değiştir."],
  [/ipucu|etkinlik|paylaşayım/i,"Birkaç fikir:\n1. Sabah ışığında bir fotoğraf çek ve Sıcak filtresiyle paylaş.\n2. Arkadaşlarına bir anket aç: “Bu hafta sonu ne yapalım?”\n3. Üç fotoğraftan Lo-fi müzikli bir sahne hazırla."],
  [/debounce/i,"Basit bir debounce:\n```js\nfunction debounce(fn, ms = 300) {\n  let t;\n  return (...args) => {\n    clearTimeout(t);\n    t = setTimeout(() => fn(...args), ms);\n  };\n}\n```\nArama kutusu gibi sık tetiklenen olaylarda gereksiz çağrıları önler."]];
 const BOT_CANNED={deniz:["Selam! Bu sabah yine iskeledeydim, ışık harikaydı.","Uzun pozlama için tripod şart, gerisi sabır.","Gün doğumunu yakalamak için 05.30'da çıkıyorum, gelmek ister misin?"],mira:["Chelsea şu an uyuyor, uyanınca ileteceğim.","Miyav. (Chelsea mama saatinin geçtiğini söylüyor.)","Kutu buldum, mutluyum. — Chelsea"],kahve:["Selam! Bugün Kolombiya demledim, çok yumuşak.","Espresso mu filtre mi? Ben bugün filtre modundayım.","Moda'ya yolun düşerse kahve benden."],roket:["Bu hafta iki fırlatma var, takvime ekle!","Hubble'ın derin alan görüntüsü hâlâ en sevdiğim kare.","Bu akşam gökyüzü açıksa Jüpiter'i çıplak gözle görebilirsin."],garaj:["Ellerim yağlı, kısa yazıyorum: selam!","Karbüratör ayarı bitti, şimdi elektrik tesisatı.","Motor işinden anlıyor musun? Bir yardım lazım olabilir."],arsiv:["Merhaba! Bu ay kataloğa yeni parçalar girdi.","Sikkelerin üstündeki her figürün bir hikâyesi var.","En sevdiğin tarih dönemi hangisi?"],dag:["Selam! Yeni bir manzara üstünde çalışıyorum.","Bu sefer sadece dört renk kullanacağım, bakalım.","Hangi renk paleti seni sakinleştiriyor?"]};
@@ -2990,7 +3006,7 @@ function completeProfile(o={}){let avData=o.avData||null;authShell(`<div>${brand
  $("#cpOut").onclick=()=>FB.A.signOut(FB.auth);
  $("#cpF").onsubmit=async e=>{e.preventDefault();const err=$("#rErr");const name=$("#rName").value.trim(),un=$("#rUser").value.trim().toLowerCase();if(!name)return err.textContent="Adını yaz.";if(!USER_RE.test(un))return err.textContent="Kullanıcı adı 3–24 karakter: küçük harf, rakam, nokta, alt çizgi.";if(BOTS.some(b=>b.username===un)||await usernameTaken(un))return err.textContent=`“${un}” kullanılıyor.`;
   try{await saveNewProfile(name,un,avData)}catch(ex){err.textContent=authErr(ex)}}}
-function fbLogin(prefill){authShell(`<div>${brandLine}<h2>Giriş yap</h2></div>${modeChip()}
+function fbLoginOld(prefill){authShell(`<div>${brandLine}<h2>Giriş yap</h2></div>${modeChip()}
  <form id="logF" novalidate><div class="field"><label for="lMail">E-posta</label><input class="in" id="lMail" type="email" autocomplete="email" autocapitalize="off" value="${esc(prefill||"")}"></div><div class="field"><label for="lPw">Şifre</label><input class="in" id="lPw" type="password" autocomplete="current-password"></div>
  <label class="check"><input type="checkbox" id="lRem" ${LS.get("kadraj_fb_remember",true)?"checked":""}>Beni hatırla</label><div class="err" id="lErr"></div><button class="btn block" type="submit">Giriş yap</button></form>
  <button class="btn ghost" id="forgot">Şifremi unuttum</button><div class="divider">ya da</div><button class="btn line block" id="toReg">Yeni hesap oluştur</button>`);
@@ -3007,7 +3023,7 @@ function fbChangePw(){const l=sheet("pw","Şifreyi değiştir",`<form class="for
 function fbDelete(){const l=sheet("del","Hesabı sil",`<form class="form" id="dlF"><p class="muted" style="margin:0">Profilin, paylaşımların ve hikâyelerin kalıcı olarak silinir. Onaylamak için şifreni yaz.</p><div class="field"><label for="dl0">Şifre</label><input class="in" id="dl0" type="password" autocomplete="current-password"></div><div class="err" id="dlE"></div><button class="btn block" style="background:var(--heart);color:#fff">Hesabı kalıcı olarak sil</button></form>`);
  $("#dlF",l).onsubmit=async e=>{e.preventDefault();const er=$("#dlE",l);try{const{A,auth}=FB;const u=auth.currentUser;await A.reauthenticateWithCredential(u,A.EmailAuthProvider.credential(u.email,$("#dl0",l).value));const uid=S.uid;
   for(const p of Object.values(S.posts).filter(p=>p.uid===uid)){await DB.del("posts/"+p.id).catch(()=>{});await DB.del("meta/"+p.id).catch(()=>{});delChunks(p.video)}for(const st of Object.values(S.stories).filter(x=>x.uid===uid))await DB.del("stories/"+st.id).catch(()=>{});
-  await DB.del("presence/"+uid).catch(()=>{});await DB.del(`data/users/${uid}/saved`).catch(()=>{});await DB.del("profiles/"+uid).catch(()=>{});
+  const un0=(S.profiles[uid]||{}).username;if(un0)await DB.del("unames/"+un0).catch(()=>{});await DB.del("presence/"+uid).catch(()=>{});await DB.del(`data/users/${uid}/saved`).catch(()=>{});await DB.del("profiles/"+uid).catch(()=>{});
   endSession();await A.deleteUser(u);toast("Hesabın silindi")}catch(ex){er.textContent=authErr(ex)}}}
 
 /* ============ Açılış ============ */
@@ -3020,7 +3036,7 @@ async function enterApp(fresh){S.authed=true;S.guest=false;S.bootAt=now();S.admi
 function enterGuest(){S.authed=true;S.guest=true;S.canWrite=false;S.uid=S.uid||"guest";S.route={name:"feed",params:{}};render(true);introDone()}
 function withTimeout(p,ms){return Promise.race([p,new Promise(r=>setTimeout(()=>r(null),ms))])}
 function wireRoom(room){room.onPeers(({peers})=>{const on=new Set(),ty={};for(const p of peers){const pr=p.presence||{};if(!pr.uid||p.isMe)continue;on.add(pr.uid);if(pr.typing)ty[pr.uid]=pr.typing}S.online=on;S.typing=ty;scheduleRefresh()});
- room.on("nudge",msg=>{const d=msg.data||{};if(d.to===S.uid&&S.authed&&d.from){vib([80,60,80]);toast(`@${P(d.from).username} seni dürttü`,d.from);sysNote("Dürtme",`@${P(d.from).username} seni dürttü`,"nudge")}})}
+ room.on("nudge",msg=>{const d=msg.data||{};if(d.to===S.uid&&S.authed&&d.from){vib([80,60,80]);toast(`@${P(d.from).username} seni dürttü`,d.from,"u:"+d.from);sysNote("Dürtme",`@${P(d.from).username} seni dürttü`,"nudge",{key:"u:"+d.from,icon:P(d.from).avatar})}})}
 async function boot(){verCleanUrl();runHooks("boot");
  const hc=readHashCfg();if(hc){LS.set("kadraj_fb_cfg",hc);LS.del("kadraj_demo");try{history.replaceState(null,"",location.pathname+location.search)}catch{}}
  const cfg=LS.get("kadraj_fb_cfg")||EMBED_CFG;
@@ -3028,7 +3044,8 @@ async function boot(){verCleanUrl();runHooks("boot");
  const m=$("#splashMsg");if(m)m.textContent="Sunucuya bağlanılıyor…";
  try{await withTimeout(loadFirebase(cfg),20000);if(!FB)throw new Error("zaman aşımı")}catch(e){console.warn(e);return showSetup("Firebase'e bağlanılamadı. İnternetini kontrol et ya da kodu yeniden yapıştır. ("+((e&&e.message)||e)+")")}
  S.mode="cloud";DB=FirebaseDB();const room=FsRoom();S.caps.room=room;wireRoom(room);
- FB.A.onAuthStateChanged(FB.auth,async u=>{if(S.registering)return;
+ if(AUTH_ACT)handleAuthAction(AUTH_ACT);
+ FB.A.onAuthStateChanged(FB.auth,async u=>{if(S.registering||S.inReset)return;
   if(!u){if(S.authed)endSession();S.uid=null;return fbWelcome()}
   if(S.authed&&S.uid===u.uid)return;
   S.uid=u.uid;S.email=u.email;let prof=null;
@@ -3184,6 +3201,9 @@ setTimeout(verTidyCache,9000);
 
 /* ---- A · Neler yeni ---- */
 const WN_ITEMS=[
+ {ic:"key",g:"linear-gradient(135deg,#0c7a63,#0ea5e9)",t:"Kullanıcı adıyla giriş",d:"E-posta yerine kullanıcı adınla gir; şifreni Kadraj'da yenile",go:"settings"},
+ {ic:"bell",g:"linear-gradient(135deg,#7c3aed,#ec4899)",t:"Yeni bildirimler",d:"Fotoğraflı bildirim; dokununca doğrudan o sohbete ya da paylaşıma gider",go:"activity"},
+ {ic:"music",g:"linear-gradient(135deg,#f97316,#e23e57)",t:"Sahnelerde ses düzeldi",d:"Duraklatınca müzik de durur, uygulamadan çıkınca susar",go:"reels"},
  {ic:"reels",g:"linear-gradient(135deg,#f97316,#db2777)",t:"Sahneler 2 dakikaya kadar",d:"Galeriden 2 dakikalık video, kamerayla 60 saniye çekim",go:"reels"},
  {ic:"grid",g:"linear-gradient(135deg,#0ea5e9,#6366f1)",t:"Tablette tam ekran",d:"Tablet ve bilgisayarda yanlarda boşluk kalmıyor",go:"feed"},
  {ic:"spark",g:"linear-gradient(135deg,#0c7a63,#18b38e)",t:"Yeni açılış ve görünüm",d:"Animasyonlu giriş, 7 vurgu rengi, yumuşak tema geçişi",go:"settings"},
@@ -3554,6 +3574,79 @@ function cldUseBox(){const d=S.cldUse;const b=(d&&d.bytes)||0,n=(d&&d.count)||0;
  <p class="muted" style="margin:0;font-size:.8rem">Ücretsiz plan: ayda 25 kredi (1 kredi = 1 GB depolama ya da 1 GB izlenme). Bu sayaç uygulamadan yüklenen videoları sayar; izlenme trafiği ve panelden silinenler için gerçek rakam Cloudinary panelindedir.</p>
  <a class="btn sec sm" href="https://console.cloudinary.com/" target="_blank" rel="noopener" style="text-decoration:none">${I("link")}Cloudinary panelini aç</a></div></div>`}
 HOOKS.after.push(r=>{if(r!=="admin")return;DB.get("meta/_cld").then(d=>{const old=JSON.stringify(S.cldUse||null);S.cldUse=d||{bytes:0,count:0};if(JSON.stringify(S.cldUse)!==old&&S.route.name==="admin"){const el=$("#cldUse");if(el)el.outerHTML=cldUseBox()}}).catch(()=>{})});
+/* ===== 4.2: kullanıcı adıyla giriş, şifre sıfırlama Kadraj içinde, bildirime dokununca ilgili yere gitme, sahne sesi ===== */
+/* sahne müziği videoyu izlesin: oynarken çalar, duraklatınca durur, video başa dönünce baştan başlar */
+function reelMusic(el,on,restart){const p=el&&postById(el.dataset.pid);if(!p||!p.music||p.music==="none")return;if(!on||S.muted||activeReel!==el)return Music.stop();if(restart||!Music.on)Music.start(p.music)}
+/* uygulamadan çıkınca (arka plana geçince) sahne ve müzik sussun, dönünce devam etsin */
+function reelBg(){const el=activeReel;if(!el)return;const v=el.querySelector("video");
+ if(document.visibilityState==="hidden"){if(v&&!v.paused){el._bg=true;v.pause()}else if(!v&&Music.on)el._bg=true;Music.stop();return}
+ if(el._bg&&S.route.name==="reels"&&!$$("#overlay .layer").length){el._bg=false;if(v)v.play().catch(()=>{});else reelMusic(el,true)}}
+document.addEventListener("visibilitychange",reelBg);addEventListener("pagehide",()=>{Music.stop();if(activeReel){const v=activeReel.querySelector("video");if(v)v.pause()}});
+/* bildirim ve uyarıdan ilgili yere git: u:<uid> / g:<gid> / meydan → sohbet, post:<id> → paylaşım, prof:<uid> → profil */
+function openTarget(key){if(!key)return;if(!S.authed){S.pendingOpen=key;return}closeAll();
+ if(key.startsWith("post:")){const p=postById(key.slice(5));if(p&&p.kind==="reel")return go("reels",{start:p.id});return go("post",{id:key.slice(5)})}
+ if(key.startsWith("prof:"))return go("profile",{uid:key.slice(5)});if(key==="activity")return go("activity");
+ if(key==="meydan"||key.startsWith("u:")||key.startsWith("g:"))return openChat(key)}
+try{navigator.serviceWorker&&navigator.serviceWorker.addEventListener("message",e=>{const d=e.data||{};if(d.type==="kadraj-open"&&d.key)openTarget(d.key)})}catch{}
+HOOKS.enter.push(()=>{const m=location.hash.match(/open=([^&]+)/);const k=S.pendingOpen||(m&&decodeURIComponent(m[1]));S.pendingOpen=null;
+ if(m)try{history.replaceState(history.state,"",location.pathname+location.search)}catch{}if(k)setTimeout(()=>openTarget(k),700);
+ if(LS.get("kadraj_reset_ok")){LS.del("kadraj_reset_ok");setTimeout(()=>toast("Şifren yenilendi, giriş yaptın."),900)}});
+/* e-posta gizleme: bilal123@gmail.com → b•••••3@gmail.com */
+const maskMail=m=>{const[a,b]=String(m||"").split("@");if(!b||!a)return m||"";return(a.length<=2?a[0]+"•":a[0]+"•".repeat(Math.min(6,a.length-2))+a.slice(-1))+"@"+b};
+/* e-postadaki şifre bağlantısı Kadraj'ı ?mode=resetPassword&oobCode=… ile açar; adresi hemen temizle */
+const AUTH_ACT=(()=>{try{const q=new URLSearchParams(location.search);const mode=q.get("mode"),code=q.get("oobCode");if(!mode||!code)return null;
+ for(const k of["mode","oobCode","apiKey","lang","continueUrl","tenantId"])q.delete(k);const s=q.toString();history.replaceState(history.state,"",location.pathname+(s?"?"+s:"")+location.hash);return{mode,code}}catch{return null}})();
+function handleAuthAction(a){if(a.mode==="resetPassword"){S.inReset=true;return showResetPw(a.code)}
+ if(a.mode==="verifyEmail")FB.A.applyActionCode(FB.auth,a.code).then(()=>toast("E-posta adresin doğrulandı")).catch(()=>toast("Doğrulama bağlantısının süresi dolmuş."))}
+const pwField=(id,label,ac)=>`<div class="field"><label for="${id}">${label}</label><div class="pwrow"><input class="in" id="${id}" type="password" autocomplete="${ac}" minlength="6"><button type="button" class="eye" data-pw="${id}" aria-label="Şifreyi göster">${I("eye")}</button></div></div>`;
+document.addEventListener("click",e=>{const b=e.target.closest("[data-pw]");if(!b)return;e.stopImmediatePropagation();const i=document.getElementById(b.dataset.pw);if(i)i.type=i.type==="password"?"text":"password"},true);
+/* kullanıcı adı → e-posta (unames koleksiyonu; giriş yapmadan da okunabilir, listelenemez) */
+async function resolveLogin(id){id=String(id||"").trim();if(!id)throw{code:"k/empty"};if(id.includes("@"))return id;
+ const un=id.replace(/^@/,"").toLowerCase();let d=null;try{d=await DB.get("unames/"+un)}catch(e){throw{code:"k/rules"}}
+ if(!d||!d.email)throw{code:"k/missing"};return d.email}
+const loginErr=ex=>({"k/empty":"Kullanıcı adını ya da e-postanı yaz.","k/missing":"Bu kullanıcı adı bulunamadı. E-postanla giriş yapmayı dene (bir kez e-postayla girince kullanıcı adıyla da girebilirsin).","k/rules":"Kullanıcı adıyla giriş henüz açık değil. Şimdilik e-postanla giriş yap."})[ex&&ex.code]||authErr(ex);
+let unameFail=false;
+function syncUname(){if(unameFail||S.mode!=="cloud"||!FB||!FB.auth||!FB.auth.currentUser||!S.uid||S.guest)return;const p=S.profiles[S.uid];const un=p&&p.username;const email=FB.auth.currentUser.email;if(!un||!email)return;
+ const k="kadraj_un_"+S.uid;const prev=LS.get(k);if(prev&&prev.un===un&&prev.email===email)return;
+ DB.set("unames/"+un,{uid:S.uid,email,at:now()}).then(()=>{if(prev&&prev.un&&prev.un!==un)DB.del("unames/"+prev.un).catch(()=>{});LS.set(k,{un,email})}).catch(e=>{unameFail=true;console.warn("unames",e)})}
+HOOKS.enter.push(()=>setTimeout(syncUname,2500));HOOKS.profiles.push(()=>syncUname());
+function fbLogin(prefill){S.inReset=false;authShell(`<div>${brandLine}<h2>Giriş yap</h2><p class="lead">Kullanıcı adınla ya da e-postanla gir.</p></div>${modeChip()}
+ <form id="logF" novalidate><div class="field"><label for="lId">Kullanıcı adı ya da e-posta</label><input class="in" id="lId" autocomplete="username" autocapitalize="off" spellcheck="false" placeholder="ornek.kullanici" value="${esc(prefill||LS.get("kadraj_last_login","")||"")}"></div>${pwField("lPw","Şifre","current-password")}
+ <label class="check"><input type="checkbox" id="lRem" ${LS.get("kadraj_fb_remember",true)?"checked":""}>Beni hatırla</label><div class="err" id="lErr"></div><button class="btn block" type="submit">Giriş yap</button></form>
+ <button class="btn ghost" id="forgot">Şifremi unuttum</button><div class="divider">ya da</div><button class="btn line block" id="toReg">Yeni hesap oluştur</button>`);
+ $("#toReg").onclick=fbRegister;$("#forgot").onclick=()=>fbForgot($("#lId").value.trim());
+ $("#logF").onsubmit=async e=>{e.preventDefault();const err=$("#lErr");err.style.color="";const btn=$("#logF button[type=submit]");btn.disabled=true;btn.textContent="Giriş yapılıyor…";
+  try{const id=$("#lId").value.trim();const mail=await resolveLogin(id);await setPersist($("#lRem").checked);await FB.A.signInWithEmailAndPassword(FB.auth,mail,$("#lPw").value);LS.set("kadraj_last_login",id)}
+  catch(ex){err.textContent=loginErr(ex);btn.disabled=false;btn.textContent="Giriş yap"}}}
+function fbForgot(prefill){S.inReset=false;authShell(`<div>${brandLine}<h2>Şifreni mi unuttun?</h2><p class="lead">Kullanıcı adını ya da e-postanı yaz. Kayıtlı e-postana şifre yenileme bağlantısı gönderelim.</p></div>
+ <form id="fgF" novalidate><div class="field"><label for="fgId">Kullanıcı adı ya da e-posta</label><input class="in" id="fgId" autocomplete="username" autocapitalize="off" spellcheck="false" value="${esc(prefill||"")}"></div><div class="err" id="fgErr"></div><button class="btn block" type="submit">${I("send")}Bağlantı gönder</button></form>
+ <button class="btn ghost" id="fgMail">E-postamı da unuttum</button><button class="btn ghost" id="fgBack">Girişe dön</button>`);
+ $("#fgBack").onclick=()=>fbLogin();$("#fgMail").onclick=()=>fbFindMail($("#fgId").value.trim());
+ $("#fgF").onsubmit=async e=>{e.preventDefault();const err=$("#fgErr");const btn=$("#fgF button[type=submit]");btn.disabled=true;
+  try{const mail=await resolveLogin($("#fgId").value);await sendReset(mail);fbMailSent(mail)}catch(ex){err.textContent=loginErr(ex);btn.disabled=false}}}
+function sendReset(mail){return FB.A.sendPasswordResetEmail(FB.auth,mail,{url:APP_URL})}
+function fbMailSent(mail){authShell(`<div>${brandLine}</div><div class="fg-card"><span class="fg-ic">${I("send")}</span><h2 style="margin:0">E-postana bak</h2><span class="muted">Şifre yenileme bağlantısını şu adrese gönderdik:</span><span class="fg-mail">${esc(maskMail(mail))}</span>
+ <ol class="fg-steps"><li>E-postanı aç. Göremezsen <b>Spam / Gereksiz</b> klasörüne de bak.</li><li><b>Kadraj</b>'dan gelen e-postadaki bağlantıya dokun.</li><li>Kadraj açılınca yeni şifreni belirle; otomatik giriş yaparsın.</li></ol></div>
+ <button class="btn sec block" id="msAgain" disabled>Tekrar gönder (60)</button><button class="btn ghost" id="msBack">Girişe dön</button>`);
+ $("#msBack").onclick=()=>fbLogin();const b=$("#msAgain");let n=60;const t=setInterval(()=>{if(!b.isConnected)return clearInterval(t);n--;if(n<=0){clearInterval(t);b.disabled=false;b.textContent="Tekrar gönder"}else b.textContent=`Tekrar gönder (${n})`},1000);
+ b.onclick=async()=>{b.disabled=true;try{await sendReset(mail);toast("Bağlantı yeniden gönderildi")}catch(ex){toast(authErr(ex))}setTimeout(()=>{if(b.isConnected)b.disabled=false},60000)}}
+function fbFindMail(prefill){authShell(`<div>${brandLine}<h2>E-postanı bulalım</h2><p class="lead">Kullanıcı adını yaz; hangi e-postayla kayıt olduğunu gösterelim.</p></div>
+ <form id="fmF" novalidate><div class="field"><label for="fmId">Kullanıcı adı</label><input class="in" id="fmId" autocapitalize="off" spellcheck="false" placeholder="ornek.kullanici" value="${esc(prefill&&!prefill.includes("@")?prefill:"")}"></div><div class="err" id="fmErr"></div><button class="btn block" type="submit">Göster</button></form>
+ <div id="fmOut"></div><button class="btn ghost" id="fmBack">Girişe dön</button>`);
+ $("#fmBack").onclick=()=>fbLogin();
+ $("#fmF").onsubmit=async e=>{e.preventDefault();const err=$("#fmErr");err.textContent="";const id=$("#fmId").value.trim();if(id.includes("@"))return err.textContent="Buraya e-posta değil, kullanıcı adını yaz.";
+  try{const mail=await resolveLogin(id);$("#fmOut").innerHTML=`<div class="fg-card"><span class="fg-ic">${I("info")}</span><span class="muted">@${esc(id.replace(/^@/,"").toLowerCase())} şu e-postayla kayıtlı:</span><span class="fg-mail">${esc(maskMail(mail))}</span><button class="btn block" id="fmSend">${I("send")}Bu adrese şifre bağlantısı gönder</button></div>`;
+   $("#fmSend").onclick=async()=>{try{await sendReset(mail);fbMailSent(mail)}catch(ex){toast(authErr(ex))}}}catch(ex){err.textContent=loginErr(ex)}}}
+async function showResetPw(code){authShell(`<div>${brandLine}<h2>Yeni şifre belirle</h2><p class="lead" id="rpLead">Bağlantı denetleniyor…</p></div>
+ <form id="rpF" novalidate hidden>${pwField("rp1","Yeni şifre","new-password")}${pwField("rp2","Yeni şifre (tekrar)","new-password")}<div class="err" id="rpErr"></div><button class="btn block" type="submit">Şifreyi kaydet ve giriş yap</button></form>
+ <button class="btn ghost" id="rpBack">Girişe dön</button>`);
+ $("#rpBack").onclick=()=>FB.auth&&FB.auth.currentUser?location.replace(location.pathname):fbLogin();let mail=null;
+ try{mail=await FB.A.verifyPasswordResetCode(FB.auth,code)}catch(ex){$("#rpLead").textContent="Bu bağlantının süresi dolmuş ya da daha önce kullanılmış. Yeni bir bağlantı iste.";const b=$("#rpBack");b.className="btn block";b.textContent="Yeni bağlantı iste";b.onclick=()=>fbForgot();return}
+ $("#rpLead").innerHTML=`<b>${esc(maskMail(mail))}</b> hesabı için yeni şifreni yaz. En az 6 karakter.`;$("#rpF").hidden=false;$("#rp1").focus();
+ $("#rpF").onsubmit=async e=>{e.preventDefault();const err=$("#rpErr");const a=$("#rp1").value,b=$("#rp2").value;if(a.length<6)return err.textContent="Şifre en az 6 karakter olmalı.";if(a!==b)return err.textContent="İki şifre aynı değil.";
+  const btn=$("#rpF button[type=submit]");btn.disabled=true;btn.textContent="Kaydediliyor…";
+  try{await FB.A.confirmPasswordReset(FB.auth,code,a);await setPersist(true);await FB.A.signInWithEmailAndPassword(FB.auth,mail,a);LS.set("kadraj_reset_ok",1);location.replace(location.pathname)}
+  catch(ex){err.textContent=authErr(ex);btn.disabled=false;btn.textContent="Şifreyi kaydet ve giriş yap"}}}
 /*}@js:E*/
 boot();
 
