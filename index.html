@@ -1886,8 +1886,9 @@ function drawComposer(){const c=S.cmp;const titles={photo:"Yeni fotoğraf",reel:
     <div class="form" style="padding-bottom:0"><span class="lbl">Ses</span><div class="seg">${[["none","Orijinal"],["lofi","Lo-fi"],["enerjik","Enerjik"],["sakin","Sakin"]].map(([v,lb])=>`<button data-vmu="${v}" aria-pressed="${(c.vmusic||"none")===v}" type="button">${lb}</button>`).join("")}</div><p class="muted" style="margin:0;font-size:.82rem">Müzik seçersen videonun kendi sesi kapanır, müzik cihazda çalınır.</p></div>`
     :`<div class="srcs" style="padding-top:8px"><button class="src" id="vRec" type="button"><span class="ic">${I("camera")}</span><span><b>Kamerayla çek</b><small>Uygulamanın içinde kaydet, en fazla ${lim} saniye</small></span></button><button class="src" id="vPick" type="button"><span class="ic">${I("film")}</span><span><b>Galeriden video seç</b><small>Büyük videolar otomatik küçültülür (en fazla 30 sn)</small></span></button><button class="src" id="vSl" type="button"><span class="ic">${I("image")}</span><span><b>Fotoğraflardan sahne yap</b><small>1-3 fotoğraf, yazı ve müzikle</small></span></button></div>`)+`<div class="hint" id="vHint" hidden>Dosya seçici açılmadı. Tarayıcın izin vermiyor olabilir. <b>Kamerayla çek</b> ya da <b>Fotoğraflardan</b> sekmesini deneyebilir, uygulamayı Chrome veya Safari\'de açabilirsin.</div>`;
    const useFile=async f=>{if(!(f.type||"").startsWith("video/")&&!/\.(mp4|mov|m4v|webm|3gp|mkv)$/i.test(f.name||""))return toast("Bir video dosyası seç.");const lim2=S.mode==="local"?1.5*1048576:VMAX;
-   if(f.size>lim2){const go=$("#cmpGo",l);go.disabled=true;$("#rBody",l).innerHTML=`<div class="vbusy"><span class="spin"></span><b>Sahne hazırlanıyor</b><span class="pct" id="vbP">%0</span><small>Video telefonunda küçültülüyor, en fazla 30 saniyesi alınır. Bu ekrandan çıkma.</small></div>`;
-    try{f=await compressVideo(f,{maxS:30,limit:lim2,onProg:p=>{const e=$("#vbP",l);if(e)e.textContent="%"+Math.round(p*100)}})}catch(e){go.disabled=false;toast(e.message||"Video hazırlanamadı.");return drawComposer()}go.disabled=false;
+   const tgt=S.mode==="local"?lim2:3*1048576;
+   if(f.size>tgt){const big=f.size>lim2;const go=$("#cmpGo",l);go.disabled=true;$("#rBody",l).innerHTML=`<div class="vbusy"><span class="spin"></span><b>Sahne hazırlanıyor</b><span class="pct" id="vbP">%0</span><small>Video telefonunda küçültülüyor, en fazla 30 saniyesi alınır. Bu ekrandan çıkma.</small></div>`;
+    try{const g=await compressVideo(f,{maxS:30,limit:tgt,onProg:p=>{const e=$("#vbP",l);if(e)e.textContent="%"+Math.round(p*100)}});if(g.size<f.size)f=g}catch(e){if(big){go.disabled=false;toast(e.message||"Video hazırlanamadı.");return drawComposer()}}go.disabled=false;
     if(f.size>lim2){toast("Video hâlâ çok büyük. Daha kısa bir video seç.");return drawComposer()}toast("Video küçültüldü, hazır")}if(c.videoUrl&&c.video&&c.video._rec)try{URL.revokeObjectURL(c.videoUrl)}catch{}c.video=f;c.videoUrl=URL.createObjectURL(f);drawComposer()};
    $("#vPick",l).onclick=async()=>{S.onPickSlow=()=>{const h=$("#vHint",l);if(h)h.hidden=false};const f=await nativePick("video/*,.mp4,.mov,.m4v,.webm,.3gp,.mkv");if(f===undefined){$("#vHint",l).hidden=false;return}if(!f)return;useFile(f)};
    const vs=$("#vSl",l);if(vs)vs.onclick=()=>{c.mode="slides";drawComposer()};
@@ -1919,7 +1920,7 @@ async function publishComposer(){const c=S.cmp;const l=$('#overlay [data-layer="
    else{if(!c.slides.length)return toast("En az bir kare ekle.");doc={...base,kind:"reel",slides:c.slides.slice(),fx:c.fx,music:c.music,text:(c.text||"").trim()}}}
   go.disabled=true;go.textContent="Paylaşılıyor…";
   const ok=await write(()=>DB.set(path,doc));
-  if(!ok){go.disabled=false;go.textContent="Paylaş";return}
+  if(!ok){if(doc&&doc.video)delChunks(doc.video);go.disabled=false;go.textContent="Paylaş";return}
   if(c.kind==="story"){S.stories={...S.stories,[id]:{id,...doc}};closeLayer("composer");toast("Hikâyen paylaşıldı");return tab("feed")}
   S.posts={...S.posts,[id]:{id,...doc}};closeLayer("composer");toast({photo:"Fotoğraf paylaşıldı",note:"Not paylaşıldı",poll:"Anket yayında",reel:"Sahne paylaşıldı"}[c.kind]);
   if(c.kind==="reel"){S.stack=[{name:"feed",params:{}}];S.route={name:"reels",params:{start:id}};render(true)}else tab("feed")}
@@ -1935,7 +1936,7 @@ function openRecorder(maxS=20){return new Promise(resolve=>{let stream=null,mr=n
   V.srcObject=stream;V.style.transform=facing==="user"?"scaleX(-1)":"";V.play().catch(()=>{});H_.textContent=`Kaydetmek için dokun · en fazla ${maxS} saniye`};
  const stop=()=>{if(mr&&mr.state!=="inactive")mr.stop()};
  B.onclick=()=>{if(!stream)return;if(recording)return stop();const types=["video/mp4;codecs=avc1","video/mp4","video/webm;codecs=vp9,opus","video/webm;codecs=vp8,opus","video/webm"];const mt=types.find(t=>MediaRecorder.isTypeSupported&&MediaRecorder.isTypeSupported(t))||"";
-  const br=S.mode==="local"?900000:1200000;try{mr=new MediaRecorder(stream,mt?{mimeType:mt,videoBitsPerSecond:br,audioBitsPerSecond:64000}:{videoBitsPerSecond:br})}catch{mr=new MediaRecorder(stream)}
+  const br=S.mode==="local"?900000:1000000;try{mr=new MediaRecorder(stream,mt?{mimeType:mt,videoBitsPerSecond:br,audioBitsPerSecond:64000}:{videoBitsPerSecond:br})}catch{mr=new MediaRecorder(stream)}
   chunks=[];mr.ondataavailable=e=>{if(e.data&&e.data.size)chunks.push(e.data)};
   mr.onstop=()=>{recording=false;l.classList.remove("on");const type=(mr.mimeType||mt||"video/webm").split(";")[0];const blob=new Blob(chunks,{type});if(Date.now()-t0<800||!blob.size){H_.textContent="Çok kısa oldu, tekrar dene.";return}
    const f=new File([blob],"cekim."+(type.includes("mp4")?"mp4":"webm"),{type});f._rec=true;finish(f)};
@@ -1951,11 +1952,20 @@ const RB={};function RV(x){if(!x)return x;const d=ASSETS[x];if(!d)return x;if(RB
 const vsrc=p=>!p.video?"":p.video.startsWith("chunk:")?(vcache[p.video]||""):RV(p.video);
 const vref=p=>p.video&&p.video.startsWith("chunk:")?` data-vref="${esc(p.video)}"`:"";
 async function resolveVideo(ref){if(vcache[ref])return vcache[ref];const[,vid,n]=ref.split(":");const parts=await Promise.all([...Array(+n)].map((_,i)=>DB.get(`vchunks/${vid}-${i}`).catch(()=>null)));if(parts.some(x=>!x))return null;
+ if(parts[0].b&&parts[0].b.toUint8Array)return vcache[ref]=URL.createObjectURL(new Blob(parts.map(x=>x.b.toUint8Array()),{type:parts[0].m||"video/mp4"}));
  const durl=parts.map(x=>x.d).join("");const comma=durl.indexOf(",");const mime=(durl.slice(5,comma).split(";")[0])||"video/mp4";const bin=atob(durl.slice(comma+1));const u8=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u8[i]=bin.charCodeAt(i);
  return vcache[ref]=URL.createObjectURL(new Blob([u8],{type:mime}))}
 function hydrateVideos(){for(const v of $$("video[data-vref]")){if(v.getAttribute("src"))continue;v.removeAttribute("src");resolveVideo(v.dataset.vref).then(u=>{if(u&&v.isConnected){v.src=u;if(activeReel&&activeReel.contains(v)&&settings.autoplay)v.play().catch(()=>{})}})}}
 const VMAX=4*1024*1024;
-async function storeVideo(file,onProg){const durl=await readFile(file);const vid=rid();const CH=S.mode==="cloud"?700000:180000;const n=Math.ceil(durl.length/CH);
+/* 4.0: video parçaları bulutta ham bayt olarak saklanır (base64'e göre ~%25 daha az yer); yükleme yarıda kalırsa yazılan parçalar silinir */
+function delChunks(ref){if(!ref||!String(ref).startsWith("chunk:"))return;const[,vid,n]=String(ref).split(":");for(let i=0;i<+n;i++)DB.del(`vchunks/${vid}-${i}`).catch(()=>{})}
+async function storeVideo(file,onProg){const vid=rid();let done=0;
+ try{if(S.mode==="cloud"&&FB&&FB.F&&FB.F.Bytes){const u8=new Uint8Array(await file.arrayBuffer());const CH=900000;const n=Math.ceil(u8.length/CH);const m=(file.type||"video/mp4").split(";")[0];
+   for(let i=0;i<n;i++){onProg&&onProg(i,n);await DB.set(`vchunks/${vid}-${i}`,i===0?{b:FB.F.Bytes.fromUint8Array(u8.slice(i*CH,(i+1)*CH)),m}:{b:FB.F.Bytes.fromUint8Array(u8.slice(i*CH,(i+1)*CH))});done++}return`chunk:${vid}:${n}`}
+  const durl=await readFile(file);const CH=180000;const n=Math.ceil(durl.length/CH);
+  for(let i=0;i<n;i++){onProg&&onProg(i,n);await DB.set(`vchunks/${vid}-${i}`,{d:durl.slice(i*CH,(i+1)*CH)});done++}return`chunk:${vid}:${n}`}
+ catch(e){for(let i=0;i<done;i++)DB.del(`vchunks/${vid}-${i}`).catch(()=>{});throw e}}
+async function storeVideoOld(file,onProg){const durl=await readFile(file);const vid=rid();const CH=S.mode==="cloud"?700000:180000;const n=Math.ceil(durl.length/CH);
  for(let i=0;i<n;i++){onProg&&onProg(i,n);await DB.set(`vchunks/${vid}-${i}`,{d:durl.slice(i*CH,(i+1)*CH)})}return`chunk:${vid}:${n}`}
 
 /* ============ Müzik (cihazda üretilir) ============ */
@@ -2043,7 +2053,7 @@ async function onSetting(id,v){if(id==="setRemember"&&S.mode==="cloud"){await se
 function changePw(){if(S.mode==="cloud")return fbChangePw();const l=sheet("pw","Şifreyi değiştir",`<form class="form" id="cpF"><div class="field"><label for="cp0">Mevcut şifre</label><input class="in" id="cp0" type="password" autocomplete="current-password"></div><div class="field"><label for="cp1">Yeni şifre</label><input class="in" id="cp1" type="password" autocomplete="new-password" minlength="6"></div><div class="err" id="cpE"></div><button class="btn block">Güncelle</button></form>`);
  $("#cpF",l).onsubmit=async e=>{e.preventDefault();const er=$("#cpE",l);const sec=await DB.get(`data/users/${S.uid}/secret`);if(sec&&await sha(sec.salt+$("#cp0",l).value)!==sec.hash)return er.textContent="Mevcut şifre yanlış.";const pw=$("#cp1",l).value;if(pw.length<6)return er.textContent="Yeni şifre en az 6 karakter olmalı.";const salt=rid();const hash=await sha(salt+pw);if(await write(()=>DB.set(`data/users/${S.uid}/secret`,{salt,hash}))){closeLayer("pw");toast("Şifren değişti")}}}
 function logout(){if(S.mode==="cloud")return fbLogout();dialog("Çıkış yapılsın mı?",`@${esc(me().username)} hesabından çıkacaksın.`,[{label:"Çıkış yap",cls:"danger",fn:()=>{LS.del("kadraj_session");SS.del("kadraj_sess");teardownUser();closeAll();S.authed=false;if(S.mode==="cloud")showLogin();else{S.uid=null;showWelcome()}}},{label:"Vazgeç"}])}
-function confirmDelete(){if(S.mode==="cloud")return fbDelete();dialog("Hesap silinsin mi?","Profilin, paylaşımların ve hikâyelerin kalıcı olarak silinir. Bu işlem geri alınamaz.",[{label:"Hesabı kalıcı olarak sil",cls:"danger",fn:async()=>{const uid=S.uid;for(const p of Object.values(S.posts).filter(p=>p.uid===uid)){await DB.del("posts/"+p.id).catch(()=>{});await DB.del("meta/"+p.id).catch(()=>{})}for(const s of Object.values(S.stories).filter(s=>s.uid===uid))await DB.del("stories/"+s.id).catch(()=>{});
+function confirmDelete(){if(S.mode==="cloud")return fbDelete();dialog("Hesap silinsin mi?","Profilin, paylaşımların ve hikâyelerin kalıcı olarak silinir. Bu işlem geri alınamaz.",[{label:"Hesabı kalıcı olarak sil",cls:"danger",fn:async()=>{const uid=S.uid;for(const p of Object.values(S.posts).filter(p=>p.uid===uid)){await DB.del("posts/"+p.id).catch(()=>{});await DB.del("meta/"+p.id).catch(()=>{});delChunks(p.video)}for(const s of Object.values(S.stories).filter(s=>s.uid===uid))await DB.del("stories/"+s.id).catch(()=>{});
   await DB.del("profiles/"+uid).catch(()=>{});await DB.del(`data/users/${uid}/secret`).catch(()=>{});await DB.del(`data/users/${uid}/saved`).catch(()=>{});
   if(S.mode==="local"){const acc=LS.get("kadraj_accounts",{})||{};for(const k in acc)if(acc[k]===uid)delete acc[k];LS.set("kadraj_accounts",acc)}
   LS.del("kadraj_session");teardownUser();S.authed=false;const pr={...S.profiles};delete pr[uid];S.profiles=pr;toast("Hesabın silindi");if(S.mode==="cloud")showRegister();else{S.uid=null;showWelcome()}}},{label:"Vazgeç"}])}
@@ -2975,7 +2985,7 @@ function fbChangePw(){const l=sheet("pw","Şifreyi değiştir",`<form class="for
  $("#cpF2",l).onsubmit=async e=>{e.preventDefault();const er=$("#cpE",l);const pw=$("#cp1",l).value;if(pw.length<6)return er.textContent="Yeni şifre en az 6 karakter olmalı.";try{const{A,auth}=FB;const u=auth.currentUser;await A.reauthenticateWithCredential(u,A.EmailAuthProvider.credential(u.email,$("#cp0",l).value));await A.updatePassword(u,pw);closeLayer("pw");toast("Şifren değişti")}catch(ex){er.textContent=authErr(ex)}}}
 function fbDelete(){const l=sheet("del","Hesabı sil",`<form class="form" id="dlF"><p class="muted" style="margin:0">Profilin, paylaşımların ve hikâyelerin kalıcı olarak silinir. Onaylamak için şifreni yaz.</p><div class="field"><label for="dl0">Şifre</label><input class="in" id="dl0" type="password" autocomplete="current-password"></div><div class="err" id="dlE"></div><button class="btn block" style="background:var(--heart);color:#fff">Hesabı kalıcı olarak sil</button></form>`);
  $("#dlF",l).onsubmit=async e=>{e.preventDefault();const er=$("#dlE",l);try{const{A,auth}=FB;const u=auth.currentUser;await A.reauthenticateWithCredential(u,A.EmailAuthProvider.credential(u.email,$("#dl0",l).value));const uid=S.uid;
-  for(const p of Object.values(S.posts).filter(p=>p.uid===uid)){await DB.del("posts/"+p.id).catch(()=>{});await DB.del("meta/"+p.id).catch(()=>{})}for(const st of Object.values(S.stories).filter(x=>x.uid===uid))await DB.del("stories/"+st.id).catch(()=>{});
+  for(const p of Object.values(S.posts).filter(p=>p.uid===uid)){await DB.del("posts/"+p.id).catch(()=>{});await DB.del("meta/"+p.id).catch(()=>{});delChunks(p.video)}for(const st of Object.values(S.stories).filter(x=>x.uid===uid))await DB.del("stories/"+st.id).catch(()=>{});
   await DB.del("presence/"+uid).catch(()=>{});await DB.del(`data/users/${uid}/saved`).catch(()=>{});await DB.del("profiles/"+uid).catch(()=>{});
   endSession();await A.deleteUser(u);toast("Hesabın silindi")}catch(ex){er.textContent=authErr(ex)}}}
 
@@ -3508,6 +3518,10 @@ try{FAQ.unshift(
 /*}@js:D2*/
 
 /*@js:E{*/
+/* 4.0: 24 saati geçen kendi hikâyelerini veritabanından sil (yer açar); yönetici herkesinkini siler */
+function cleanOldStories(){if(!S.uid||S.guest||!S.canWrite)return;const lim=now()-24*H;let un=null,done=false;const opts=S.admin?{limit:200}:{where:["uid","==",S.uid],limit:100};
+ un=DB.watchCol("stories",docs=>{if(done)return;done=true;setTimeout(()=>{try{un&&un()}catch{}},0);for(const d of docs)if(!(d.at>lim)&&(S.admin||d.uid===S.uid))DB.del("stories/"+d.id).catch(()=>{})},{...opts,onError:()=>{done=true}})}
+HOOKS.enter.push(()=>setTimeout(cleanOldStories,8000));
 /*}@js:E*/
 boot();
 
