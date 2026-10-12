@@ -1965,7 +1965,7 @@ const cldOn=()=>S.mode==="cloud"&&!!CLD.cloud&&!!CLD.preset;
 function cldUpload(file,onProg){return new Promise((res,rej)=>{const fd=new FormData();fd.append("file",file);fd.append("upload_preset",CLD.preset);
  const x=new XMLHttpRequest();x.open("POST",`https://api.cloudinary.com/v1_1/${CLD.cloud}/video/upload`);
  x.upload.onprogress=e=>{if(e.lengthComputable&&onProg)onProg(e.loaded,e.total)};
- x.onload=()=>{let j=null;try{j=JSON.parse(x.responseText)}catch{}if(x.status>=200&&x.status<300&&j&&j.secure_url)res(j.secure_url);else rej(new Error((j&&j.error&&j.error.message)||"Cloudinary yüklemesi başarısız"))};
+ x.onload=()=>{let j=null;try{j=JSON.parse(x.responseText)}catch{}if(x.status>=200&&x.status<300&&j&&j.secure_url){cldTrack(j.bytes||file.size);res(j.secure_url)}else rej(new Error((j&&j.error&&j.error.message)||"Cloudinary yüklemesi başarısız"))};
  x.onerror=()=>rej(new Error("Bağlantı hatası"));x.ontimeout=()=>rej(new Error("Zaman aşımı"));x.timeout=10*60e3;x.send(fd)})}
 function vidDur(file){return new Promise(r=>{const v=document.createElement("video");const u=URL.createObjectURL(file);v.preload="metadata";v.muted=true;v.onloadedmetadata=()=>{const d=v.duration;URL.revokeObjectURL(u);r(isFinite(d)?d:0)};v.onerror=()=>{URL.revokeObjectURL(u);r(0)};setTimeout(()=>r(0),8000);v.src=u})}
 async function storeVideo(file,onProg){
@@ -2783,6 +2783,7 @@ function vAdmin(){if(!S.admin)return`<div class="empty"><span class="ic">${I("lo
  if(bakimOn())h+=`<div class="banner" style="background:#fff1d6;color:#3d2c00">${I("gear")}<span><b>Bakım modu açık.</b> Kullanıcılar şu an uygulamayı göremiyor.</span></div>`;
  if(S.mode==="cloud"&&S.admRulesOk===false)h+=`<div class="banner" style="border:1.5px solid var(--heart)">${I("info")}<span><b>Bir kez kurulum gerekiyor.</b> Paneldeki işlemlerin çalışması için en alttaki <b>Kurulum</b> bölümündeki kuralları Firebase'e yapıştırıp Yayınla'ya bas.</span></div>`;
  h+=`<div class="adm-stats">${stat(users.length,"kullanıcı")}${stat(S.online.size+1,"şu an açık")}${stat(posts.filter(p=>p.kind!=="reel").length,"paylaşım")}${stat(posts.filter(p=>p.kind==="reel").length,"sahne")}${stat(Object.values(S.stories).filter(s=>s.at>lim).length,"hikâye")}${stat(BOTS.length,"bot")}</div>`;
+ h+=cldUseBox();
  const an=S.adm&&S.adm.duyuru;
  h+=`<h3 class="sec-h"><span>Duyuru</span></h3><div class="box adm-box">${an&&an.text?`<div class="adm-cur">${I("bell")}<span>${esc(an.text)}<small>${ago(an.at)}</small></span></div>`:""}<textarea class="in" id="admAnn" maxlength="300" placeholder="Herkesin Akış'ında üstte görünecek duyuru…"></textarea><div class="adm-row"><button class="btn sm" data-adm="ann">${I("send")}Yayınla</button>${an&&an.text?`<button class="btn sm sec" data-adm="annx">Kaldır</button>`:""}</div></div>`;
  const reps=S.reports||[];
@@ -3534,6 +3535,15 @@ try{FAQ.unshift(
 function cleanOldStories(){if(!S.uid||S.guest||!S.canWrite)return;const lim=now()-24*H;let un=null,done=false;const opts=S.admin?{limit:200}:{where:["uid","==",S.uid],limit:100};
  un=DB.watchCol("stories",docs=>{if(done)return;done=true;setTimeout(()=>{try{un&&un()}catch{}},0);for(const d of docs)if(!(d.at>lim)&&(S.admin||d.uid===S.uid))DB.del("stories/"+d.id).catch(()=>{})},{...opts,onError:()=>{done=true}})}
 HOOKS.enter.push(()=>setTimeout(cleanOldStories,8000));
+/* Cloudinary kullanımı: her yüklemede meta/_cld sayacı büyür (uygulamadan silinemediği için toplam = kullanılan depolama) */
+function cldTrack(bytes){if(!bytes||!S.authed||S.guest)return;DB.get("meta/_cld").then(d=>DB.set("meta/_cld",{bytes:((d&&d.bytes)||0)+bytes,count:((d&&d.count)||0)+1,at:now()})).catch(()=>{})}
+const fmtMB=b=>b>=1073741824?(b/1073741824).toFixed(2).replace(".",",")+" GB":(b/1048576).toFixed(1).replace(".",",")+" MB";
+function cldUseBox(){const d=S.cldUse;const b=(d&&d.bytes)||0,n=(d&&d.count)||0;const pct=Math.min(100,b/(25*1073741824)*100);
+ return`<div id="cldUse"><h3 class="sec-h"><span>Cloudinary (sahne videoları)</span></h3><div class="box adm-box"><div class="kv" style="padding:0"><span>Kullanılan depolama</span><span><b>${d?fmtMB(b):"…"}</b> · ${fmt(n)} video</span></div>
+ <div style="height:8px;border-radius:4px;background:var(--surface-2);overflow:hidden"><i style="display:block;height:100%;width:${Math.max(pct,b?1:0)}%;background:var(--accent)"></i></div>
+ <p class="muted" style="margin:0;font-size:.8rem">Ücretsiz plan: ayda 25 kredi (1 kredi = 1 GB depolama ya da 1 GB izlenme). Bu sayaç uygulamadan yüklenen videoları sayar; izlenme trafiği ve panelden silinenler için gerçek rakam Cloudinary panelindedir.</p>
+ <a class="btn sec sm" href="https://console.cloudinary.com/" target="_blank" rel="noopener" style="text-decoration:none">${I("link")}Cloudinary panelini aç</a></div></div>`}
+HOOKS.after.push(r=>{if(r!=="admin")return;DB.get("meta/_cld").then(d=>{const old=JSON.stringify(S.cldUse||null);S.cldUse=d||{bytes:0,count:0};if(JSON.stringify(S.cldUse)!==old&&S.route.name==="admin"){const el=$("#cldUse");if(el)el.outerHTML=cldUseBox()}}).catch(()=>{})});
 /*}@js:E*/
 boot();
 
