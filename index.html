@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
 <meta charset="utf-8">
-<meta name="kadraj-version" content="40500">
+<meta name="kadraj-version" content="40501">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,interactive-widget=resizes-content">
 <meta name="theme-color" content="#0C7A63">
 <link rel="manifest" href="manifest.webmanifest">
@@ -317,7 +317,10 @@ textarea.in{min-height:5.5rem;padding:12px 14px;resize:vertical}
 .reel{position:relative;height:100%;width:100%;scroll-snap-align:start;contain:strict;scroll-snap-stop:always;overflow:hidden;background:#000;color:#fff}
 .reel video,.reel .slide{position:absolute;top:0;left:0;right:0;bottom:0;width:100%;height:100%;object-fit:cover;background:#000;transform:translateZ(0)}
 .reel video{object-fit:contain;background:transparent}
-.reel .rblur{position:absolute;inset:-40px;background:#000 center/cover no-repeat;filter:blur(26px) brightness(.5);transform:translateZ(0)}
+.reel .rblur{position:absolute;inset:0;background:#000 center/cover no-repeat}.reel .rblur::after{content:"";position:absolute;inset:0;background:rgba(0,0,0,.45)}
+#main .reel .rprog i{width:100%;transform:scaleX(0);transform-origin:left center;will-change:transform}
+#main .reel .rprog{pointer-events:auto;touch-action:none;transition:height .15s}#main .reel .rprog::before{content:"";position:absolute;left:0;right:0;bottom:-4px;height:30px}
+#main .reel.scrub .rprog{height:7px}.reel .rtime{position:absolute;left:50%;bottom:calc(64px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:4;padding:6px 12px;border-radius:999px;background:rgba(0,0,0,.6);color:#fff;font:700 .95rem/1 var(--f-mono);pointer-events:none}
 .reel .fx-zoom,.reel .fx-pan,.reel .fx-pulse{top:0;left:0;right:0;bottom:0}
 .reel .slide{opacity:0;transition:opacity .9s ease}
 .reel .slide.on{opacity:1}
@@ -1115,7 +1118,7 @@ const vib=ms=>{try{if(settings.haptics===false)return;navigator.vibrate&&navigat
 /* Sürüm: ana.ara.yama (4.1.0). Hata düzeltme ve küçük şeyler → yama artar (4.1.1); büyük güncelleme → ara artar (4.2.0).
    APP_V = ana*10000 + ara*100 + yama (4.1.0 → 40100). Başlıktaki <meta name="kadraj-version"> ile aynı tutulmalı.
    Eski biçim (4.0 → 40) verNorm ile çevrilir. "İki sürüm geride" ara sürüm sayısıyla ölçülür (yamalar engellemez). */
-const APP_V=40500,APP_VER="4.5.0";
+const APP_V=40501,APP_VER="4.5.1";
 const verNorm=x=>{x=Math.max(0,Math.floor(+x||0));return x<1000?Math.floor(x/10)*10000+(x%10)*100:x};
 const verLvl=x=>Math.floor(verNorm(x)/100);
 const verGap=x=>verLvl(x)-verLvl(APP_V);
@@ -1583,7 +1586,7 @@ function slidesHtml(p){return(p.slides||[]).map((s,i)=>`<img class="slide ${i===
 function vReels(){const list=reelList();const top=`<div class="reel-top"><div><button class="ib" data-act="back" aria-label="Geri">${I("back")}</button><b>Flick'ler</b><button class="ib" data-act="mute" aria-label="Sesi aç/kapat">${I(S.muted?"mute":"vol")}</button><button class="rnew" data-act="newreel" aria-label="Video ekle">${I("film")}<span>Video ekle</span></button></div></div>`;
  if(!list.length)return top+`<div class="empty" style="color:#fff;height:100%;align-content:center"><b style="color:#fff">Henüz Flick yok</b>İlk Flick'i sen oluştur.</div>`;
  return top+list.map((p,i)=>{const u=P(p.uid);const liked=iLike(p.id);const fol=p.uid===S.uid||isFollowing(S.uid,p.uid);
- const mus=p.music&&p.music!=="none";const media=p.video?`<div class="rblur"${p.poster?` style="background-image:url(&quot;${esc(R(p.poster))}&quot;)"`:""}></div><video src="${esc(vsrc(p))}"${vref(p)}${p.dur?` data-dur="${+p.dur||0}"`:""} poster="${esc(R(p.poster||""))}" loop playsinline ${S.muted||mus?"muted":""} preload="${settings.dataSaver?(i<1?"metadata":"none"):i<1?"auto":i<3?"metadata":"none"}" disablepictureinpicture data-rv ${mus?'data-mus="1"':""}></video><div class="rprog"><i></i></div><span class="rpause">${I("play")}</span><button class="rhint" hidden>${I("vol")}Sesi açmak için dokun</button>`:`<div class="fx-${esc(p.fx||"zoom")}" style="position:absolute;inset:0">${slidesHtml(p)}</div>`;
+ const mus=p.music&&p.music!=="none";const media=p.video?`<div class="rblur"${p.poster?` data-p="${esc(R(p.poster))}"`:""}></div><video src="${esc(vsrc(p))}"${vref(p)}${p.dur?` data-dur="${+p.dur||0}"`:""} poster="${esc(R(p.poster||""))}" loop playsinline ${S.muted||mus?"muted":""} preload="${settings.dataSaver?(i<1?"metadata":"none"):i<1?"auto":i<3?"metadata":"none"}" disablepictureinpicture data-rv ${mus?'data-mus="1"':""}></video><div class="rprog"><i></i></div><span class="rpause">${I("play")}</span><button class="rhint" hidden>${I("vol")}Sesi açmak için dokun</button>`:`<div class="fx-${esc(p.fx||"zoom")}" style="position:absolute;inset:0">${slidesHtml(p)}</div>`;
  return`<section class="reel" data-pid="${esc(p.id)}">${media}<div class="shade"></div>
  <div class="side"><button class="${liked?"liked":""}" data-like="${esc(p.id)}" aria-label="Beğen"><span>${I("heart")}</span><span data-likecount-r="${esc(p.id)}">${settings.hideLikes&&p.uid!==S.uid?"Beğen":short(likeCount(p))}</span></button><button data-comments="${esc(p.id)}" aria-label="Yorumlar"><span>${I("comment")}</span><span>${commentsOf(p).length}</span></button><button data-share="${esc(p.id)}" aria-label="Gönder"><span>${I("send")}</span><span>Gönder</span></button><button data-save="${esc(p.id)}" class="${isSaved(p.id)?"saved":""}" aria-label="Kaydet"><span>${I("bookmark")}</span><span>Kaydet</span></button></div>
  <div class="info"><div class="u"><button data-prof="${esc(p.uid)}" style="display:flex;align-items:center;gap:10px">${avatar(p.uid,34,{click:false,ring:false,online:false})}<span>${esc(u.username)}</span></button>${fol?"":`<button class="fbtn" data-follow="${esc(p.uid)}">Takip et</button>`}</div><div class="c">${richText(p.caption||"")}</div><div class="aud">${I("music")}<span>${mus?esc(MUSIC_NAMES[p.music]||"Müzik")+" · Kadraj Ses":esc(u.username)+" · Orijinal ses"}</span></div></div></section>`}).join("")}
@@ -1679,7 +1682,7 @@ function afterRender(){const r=S.route.name;runHooks("after",r);if(r==="chessgam
  if(r==="reels"){io=new IntersectionObserver(es=>{for(const e of es){if(e.isIntersecting&&e.intersectionRatio>.6)activateReel(e.target);else if(e.target===activeReel)deactivateReel(e.target)}},{threshold:[0,.6]});$$(".reel").forEach(el=>io.observe(el));hydrateVideos();
   const start=S.route.params.start;if(start){const el=$(`.reel[data-pid="${CSS.escape(start)}"]`);if(el)main().scrollTop=el.offsetTop}}}
 function activateReel(el){if(activeReel===el)return;if(activeReel)deactivateReel(activeReel);activeReel=el;const p=postById(el.dataset.pid);const v=el.querySelector("video");
- if(v){v.muted=S.muted||v.dataset.mus==="1";v.preload="auto";if(settings.autoplay)v.play().catch(()=>{if(!v.muted){v.muted=true;v.play().catch(()=>{});S.needUnmute=true;const h=el.querySelector(".rhint");if(h)h.hidden=false}});const nx=el.nextElementSibling&&el.nextElementSibling.querySelector("video");if(nx&&nx.preload!=="auto"&&!settings.dataSaver)nx.preload="auto";const bar=el.querySelector(".rprog i");let lt=0;v.ontimeupdate=()=>{if(bar){const d=reelDur(v);bar.style.width=d?Math.min(100,v.currentTime/d*100)+"%":"0"}if(v.currentTime+.3<lt&&!v.paused)reelMusic(el,true,true);lt=v.currentTime};v.onplay=()=>{el.classList.remove("paused");reelMusic(el,true)};v.onwaiting=()=>el.classList.add("buf");v.onplaying=()=>el.classList.remove("buf");v.oncanplay=()=>el.classList.remove("buf");v.onpause=()=>{if(activeReel===el){el.classList.add("paused");reelMusic(el,false)}}}
+ if(v){v.muted=S.muted||v.dataset.mus==="1";v.preload="auto";if(settings.autoplay)v.play().catch(()=>{if(!v.muted){v.muted=true;v.play().catch(()=>{});S.needUnmute=true;const h=el.querySelector(".rhint");if(h)h.hidden=false}});const nx=el.nextElementSibling&&el.nextElementSibling.querySelector("video");if(nx&&nx.preload!=="auto"&&!settings.dataSaver)nx.preload="auto";const bar=el.querySelector(".rprog i");let lt=0;v.ontimeupdate=()=>{if(v.currentTime+.3<lt&&!v.paused)reelMusic(el,true,true);lt=v.currentTime};v.onplay=()=>{el.classList.remove("paused");reelMusic(el,true)};v.onwaiting=()=>el.classList.add("buf");v.onplaying=()=>el.classList.remove("buf");v.oncanplay=()=>el.classList.remove("buf");v.onpause=()=>{if(activeReel===el){el.classList.add("paused");reelMusic(el,false)}}}
  const sl=$$(".slide",el);if(sl.length){let i=0;sl.forEach((s,j)=>s.classList.toggle("on",j===0));if(sl.length>1)el._t=setInterval(()=>{sl[i].classList.remove("on");i=(i+1)%sl.length;sl[i].classList.add("on")},3200)}
  if(p&&p.music&&p.music!=="none"&&!S.muted&&(!v||!v.paused))Music.start(p.music);else Music.stop()}
 function deactivateReel(el){const v=el.querySelector("video");if(v)v.pause();if(el._t){clearInterval(el._t);el._t=null}if(activeReel===el){activeReel=null;Music.stop()}}
@@ -1761,8 +1764,8 @@ let lastTap={id:null,t:0};
 document.addEventListener("pointerup",e=>{const m=e.target.closest("[data-dbl]");if(m){const id=m.dataset.dbl;const t=now();if(lastTap.id===id&&t-lastTap.t<320){lastTap={id:null,t:0};burst(m);if(!iLike(id))toggleLike(id,true)}else lastTap={id,t};return}
  const msg=!e.target.closest("[data-rxl]")&&e.target.closest(".msg[data-mid]");if(msg){const id="m:"+msg.dataset.mid;const t=now();if(lastTap.id===id&&t-lastTap.t<320){lastTap={id:null,t:0};reactMsg(msg.dataset.mid)}else lastTap={id,t}}});
 document.addEventListener("click",e=>{const im=e.target.closest("img[data-view]");if(!im)return;openLayer("imgv",`<div class="imgview" data-act="close"><img src="${esc(im.src)}" alt=""><button class="ib" data-act="close" aria-label="Kapat">${I("close")}</button></div>`,{noScrim:true});$('[data-layer="imgv"] .imgview').onclick=ev=>{if(ev.target.tagName!=="IMG")closeLayer("imgv")}});
-document.addEventListener("dblclick",e=>{const r=e.target.closest(".reel");if(!r||e.target.closest("button"))return;burst(r);const id=r.dataset.pid;if(!iLike(id))toggleLike(id,true)});
-document.addEventListener("click",e=>{const r=e.target.closest(".reel");if(!r||(e.target.closest("button")&&!e.target.closest(".rhint")))return;const v=r.querySelector("video");if(S.needUnmute&&v&&!S.muted){S.needUnmute=false;$$(".rhint").forEach(h=>h.hidden=true);v.muted=v.dataset.mus==="1";const p=postById(r.dataset.pid);if(p&&p.music&&p.music!=="none")Music.start(p.music);return}if(v){if(v.paused)v.play().catch(()=>{});else v.pause()}});
+document.addEventListener("dblclick",e=>{const r=e.target.closest(".reel");if(!r||e.target.closest("button")||e.target.closest(".rprog"))return;burst(r);const id=r.dataset.pid;if(!iLike(id))toggleLike(id,true)});
+document.addEventListener("click",e=>{const r=e.target.closest(".reel");if(!r||(e.target.closest("button")&&!e.target.closest(".rhint"))||e.target.closest(".rprog"))return;const v=r.querySelector("video");if(S.needUnmute&&v&&!S.muted){S.needUnmute=false;$$(".rhint").forEach(h=>h.hidden=true);v.muted=v.dataset.mus==="1";const p=postById(r.dataset.pid);if(p&&p.music&&p.music!=="none")Music.start(p.music);return}if(v){if(v.paused)v.play().catch(()=>{});else v.pause()}});
 function burst(el){const b=document.createElement("div");b.className="burst";b.innerHTML=`<svg viewBox="0 0 24 24">${IP.heart}</svg>`;el.appendChild(b);setTimeout(()=>b.remove(),800)}
 /* uzun basma: mesaj menüsü */
 let lpT=null,lpXY=null;
@@ -2016,7 +2019,8 @@ const RB={};function RV(x){if(!x)return x;const d=ASSETS[x];if(!d)return x;if(RB
 /* Cloudinary videoları akıcı oynasın: 720p, H.264 MP4, otomatik kalite (Cloudinary ilk izlemede dönüştürür ve önbellekler) */
 const cldPlayOld=u=>typeof u==="string"&&/^https:\/\/res\.cloudinary\.com\/[^/]+\/video\/upload\/v\d+\//.test(u)?u.replace("/video/upload/","/video/upload/f_mp4,vc_h264,q_auto,w_720,c_limit/").replace(/\.(webm|mov|mkv|3gp|m4v|avi)$/i,".mp4"):u;
 /* 4.5: daha net görüntü (1080p, q_auto:good) */
-const cldPlay=u=>typeof u==="string"&&/^https:\/\/res\.cloudinary\.com\/[^/]+\/video\/upload\/v\d+\//.test(u)?u.replace("/video/upload/","/video/upload/f_mp4,vc_h264,q_auto:good,w_1080,c_limit/").replace(/\.(webm|mov|mkv|3gp|m4v|avi)$/i,".mp4"):u;
+const cldTx=()=>settings.dataSaver?"f_mp4,vc_h264,q_auto,w_720,c_limit":"f_mp4,vc_h264,q_auto:good,w_1080,c_limit";
+const cldPlay=u=>typeof u==="string"&&/^https:\/\/res\.cloudinary\.com\/[^/]+\/video\/upload\/v\d+\//.test(u)?u.replace("/video/upload/","/video/upload/"+cldTx()+"/").replace(/\.(webm|mov|mkv|3gp|m4v|avi)$/i,".mp4"):u;
 const vsrcOld=p=>!p.video?"":p.video.startsWith("chunk:")?(vcache[p.video]||""):cldPlay(RV(p.video));
 const vsrc=p=>!p.video?"":vcache[p.video]||(p.video.startsWith("chunk:")?"":cldPlay(RV(p.video)));
 const vref=p=>p.video&&p.video.startsWith("chunk:")?` data-vref="${esc(p.video)}"`:"";
@@ -2034,7 +2038,7 @@ const cldOn=()=>S.mode==="cloud"&&!!CLD.cloud&&!!CLD.preset;
 function cldUpload(file,onProg){return new Promise((res,rej)=>{const fd=new FormData();fd.append("file",file);fd.append("upload_preset",CLD.preset);
  const x=new XMLHttpRequest();x.open("POST",`https://api.cloudinary.com/v1_1/${CLD.cloud}/video/upload`);
  x.upload.onprogress=e=>{if(e.lengthComputable&&onProg)onProg(e.loaded,e.total)};
- x.onload=()=>{let j=null;try{j=JSON.parse(x.responseText)}catch{}if(x.status>=200&&x.status<300&&j&&j.secure_url){cldTrack(j.bytes||file.size);res(j.secure_url)}else rej(new Error((j&&j.error&&j.error.message)||"Cloudinary yüklemesi başarısız"))};
+ x.onload=()=>{let j=null;try{j=JSON.parse(x.responseText)}catch{}if(x.status>=200&&x.status<300&&j&&j.secure_url){cldTrack(j.bytes||file.size);cldWarm(j.secure_url);res(j.secure_url)}else rej(new Error((j&&j.error&&j.error.message)||"Cloudinary yüklemesi başarısız"))};
  x.onerror=()=>rej(new Error("Bağlantı hatası"));x.ontimeout=()=>rej(new Error("Zaman aşımı"));x.timeout=10*60e3;x.send(fd)})}
 function vidDur(file){return new Promise(r=>{const v=document.createElement("video");const u=URL.createObjectURL(file);v.preload="metadata";v.muted=true;v.onloadedmetadata=()=>{const d=v.duration;URL.revokeObjectURL(u);r(isFinite(d)?d:0)};v.onerror=()=>{URL.revokeObjectURL(u);r(0)};setTimeout(()=>r(0),8000);v.src=u})}
 async function storeVideoV41(file,onProg){
@@ -2981,7 +2985,9 @@ HOOKS.enter.push(()=>setTimeout(()=>{try{if(!isStandalone()||LS.get("kadraj_icon
  dialog("Kadraj'ın yeni logosu",`Uygulamanın içindeki logo yenilendi. Ana ekrandaki simgeyi ise telefonun kendisi saklar ve kendiliğinden değiştirmez.<br><br>Yeni simge için:<br>1. Ana ekranda Kadraj simgesine basılı tut, <b>Kaldır</b>'a dokun.<br>2. Chrome'da <b>kadrajsosyalmedya.github.io/Kadraj</b> adresini aç.<br>3. Sağ üstteki ⋮ menüsünden <b>Ana ekrana ekle</b> ya da <b>Uygulamayı yükle</b>'ye dokun.<br><br>Hesabın ve mesajların silinmez.`,[{label:"Tamam"}])}catch(e){}},4000));
 /* ===== 4.5: sohbette arama, mesaj iletme, sohbet sabitleme, hikâyeye tepki, sesli mesaj hızı, Flick süresi ===== */
 /* Flick ilerleme çubuğu: bulut videoyu ilk açılışta parça parça hazırlarken süre yanlış (kısa) görünür; kayıtlı süre ya da sabitlenmiş süre kullanılır */
-function reelDur(v){const k=+v.dataset.dur||0;if(k>0)return k;const d=v.duration;if(!isFinite(d)||!d)return 0;if(d!==v._ld){v._ld=d;v._st=0;return 0}v._st=(v._st||0)+1;return v._st>=4?d:0}
+function reelDurOld(v){const k=+v.dataset.dur||0;if(k>0)return k;const d=v.duration;if(!isFinite(d)||!d)return 0;if(d!==v._ld){v._ld=d;v._st=0;return 0}v._st=(v._st||0)+1;return v._st>=4?d:0}
+/* 4.5.1: kayıtlı süre yoksa süre 1,5 sn değişmeden kalınca kullanılır (her karede çağrılır) */
+function reelDur(v){const k=+v.dataset.dur||0;if(k>0)return k;const d=v.duration;if(!isFinite(d)||!d)return 0;const t=performance.now();if(d!==v._ld){v._ld=d;v._lt=t;return 0}return t-v._lt>1500?d:0}
 function chatList(){const pins=settings.pinChats||[];return chatListOld().map(c=>({...c,pinned:pins.includes(c.key)})).sort((a,b)=>(b.pinned-a.pinned)||(a.pinned&&b.pinned?pins.indexOf(a.key)-pins.indexOf(b.key):b.at-a.at))}
 /* sohbette arama: açık sohbetin yüklü mesajlarında */
 function chatSearch(){const msgs=(S.msgs||[]).filter(m=>m&&!m.del&&m.text&&!m.sys);
@@ -3005,6 +3011,26 @@ const rateTxt=r=>String(r).replace(".",",")+"x";
 function audHtml(m){const h=audHtmlOld(m);const i=h.lastIndexOf("</span>");return h.slice(0,i)+`<button type="button" class="arate" data-arate="1" aria-label="Oynatma hızı">${rateTxt(audRate())}</button>`+h.slice(i)}
 function playAudio(mid){playAudioOld(mid);if(AUD){AUD.defaultPlaybackRate=AUD.playbackRate=audRate()}}
 document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-arate]");if(!b)return;e.preventDefault();e.stopPropagation();const r=audRate();const n=r===1?1.5:r===1.5?2:1;settings.audRate=n;saveSettings();if(AUD){AUD.defaultPlaybackRate=AUD.playbackRate=n}$$("[data-arate]").forEach(x=>x.textContent=rateTxt(n));vib(8)},true);
+/* ===== 4.5.1: Flick çubuğu, sarma, hafif arka plan, bulut ön hazırlığı ===== */
+/* bulut 1080p kopyayı ilk izleyen için o an üretir (kasma ve düşük kalite); yükleyen kişi yükleme biter bitmez üretimi başlatır */
+function cldWarm(u){try{const w=cldPlay(u);if(w===u)return;fetch(w,{mode:"no-cors",headers:{Range:"bytes=0-65535"}}).catch(()=>{});setTimeout(()=>fetch(w,{mode:"no-cors",headers:{Range:"bytes=0-65535"}}).catch(()=>{}),20000)}catch{}}
+/* ilerleme çubuğu: her karede, kayarak */
+let RBAR=0;
+function reelBarTick(){RBAR=0;if(S.route.name!=="reels"||!activeReel)return;const v=activeReel.querySelector("video"),b=activeReel.querySelector(".rprog i");
+ if(v&&b&&!activeReel._scrub){const d=reelDur(v);b.style.transform=`scaleX(${d?Math.min(1,v.currentTime/d):0})`}RBAR=requestAnimationFrame(reelBarTick)}
+const activateReelBase=activateReel;
+activateReel=function(el){activateReelBase(el);if(!RBAR)RBAR=requestAnimationFrame(reelBarTick)};
+/* çubuğu sürükleyerek ileri-geri sarma */
+document.addEventListener("pointerdown",e=>{const pr=e.target.closest&&e.target.closest(".reel .rprog");if(!pr)return;const el=pr.closest(".reel"),v=el.querySelector("video"),b=pr.querySelector("i");if(!v)return;
+ const dur=()=>reelDur(v)||(isFinite(v.duration)?v.duration:0);if(!dur())return;e.preventDefault();e.stopPropagation();el._scrub=true;el.classList.add("scrub");
+ let tl=el.querySelector(".rtime");if(!tl){tl=document.createElement("span");tl.className="rtime";el.appendChild(tl)}tl.hidden=false;let f=0;
+ const at=x=>{const r=pr.getBoundingClientRect();f=Math.min(1,Math.max(0,(x-r.left)/r.width));b.style.transform=`scaleX(${f})`;tl.textContent=`${mmss(f*dur())} / ${mmss(dur())}`};at(e.clientX);
+ try{pr.setPointerCapture(e.pointerId)}catch{}const mv=ev=>at(ev.clientX);
+ const up=()=>{pr.removeEventListener("pointermove",mv);pr.removeEventListener("pointerup",up);pr.removeEventListener("pointercancel",up);try{v.currentTime=f*dur()}catch{}el._scrub=false;el.classList.remove("scrub");tl.hidden=true;vib(8)};
+ pr.addEventListener("pointermove",mv);pr.addEventListener("pointerup",up);pr.addEventListener("pointercancel",up)},true);
+/* bulanık arka plan: kapak 12x20'ye küçültülüp büyütülür (canlı filtre yok) */
+function rblurFill(){for(const d of $$(".rblur[data-p]")){const src=d.dataset.p;d.removeAttribute("data-p");const im=new Image();im.onload=()=>{try{const c=document.createElement("canvas");c.width=12;c.height=20;c.getContext("2d").drawImage(im,0,0,12,20);d.style.backgroundImage=`url(${c.toDataURL("image/jpeg",.7)})`}catch{}};im.src=src}}
+HOOKS.after.push(r=>{if(r==="reels")setTimeout(rblurFill,60)});
 async function admSet(id,doc){return write(()=>DB.set("admin/"+id,{...doc,by:S.uid,at:doc.at||now()}))}
 async function admWipe(uid,{posts=true,stories=true}={}){let k=0;
  if(posts)for(const p of Object.values(S.posts).filter(p=>p.uid===uid)){await DB.del("posts/"+p.id).catch(()=>{});DB.del("meta/"+p.id).catch(()=>{});if(p.video&&String(p.video).startsWith("chunk:")){const[,vid,c]=p.video.split(":");for(let i=0;i<+c;i++)DB.del(`vchunks/${vid}-${i}`).catch(()=>{})}const ps={...S.posts};delete ps[p.id];S.posts=ps;k++}
@@ -3072,7 +3098,7 @@ const APP_GUIDE=`Kadraj bir sosyal uygulamadır (Firebase üzerinde çalışır,
 - Ortak sohbet temaları: sohbetin üstündeki resim simgesinden tema seçilir; birebir ve grup sohbetlerinde "Herkes için" seçilen tema sohbetteki herkeste aynı anda değişir ve kendi balonlarının rengini de değiştirir. "Yalnızca bende" sadece senin cihazını etkiler. Fotoğraftan tema da yapılabilir.
 - Mesajlar: mesaja uzun basınca 6 resimli tepki (kalp, gülme, şaşırma, üzülme, ateş, alkış), yanıtla, kopyala, düzenle, sil; çift dokunuş kalp bırakır. Profilde en fazla 3 paylaşım sabitlenebilir.
 - 4.4: Sahne'nin yeni adı Flick (kısa video). Paylaşırken "Çocuk modundakiler göremez" açılırsa o paylaşım Çocuk Modu'ndaki kişilere hiç görünmez; sonradan paylaşımın ... menüsünden değiştirilebilir.
-- 4.5 yenilikleri: Sohbette ara (sohbette + menüsü › Sohbette ara), mesaj ilet (mesaja basılı tut › İlet), sohbet sabitle (Sohbet listesinde sohbete basılı tut, en fazla 3), hikâyeye hızlı tepki (hikâye izlerken kalp/ateş/gülme/şaşırma), sesli mesajı 1x/1,5x/2x dinleme, Flick videoları kırpılmadan sığar ve 1080p oynar.
+- 4.5 yenilikleri: Sohbette ara (sohbette + menüsü › Sohbette ara), mesaj ilet (mesaja basılı tut › İlet), sohbet sabitle (Sohbet listesinde sohbete basılı tut, en fazla 3), hikâyeye hızlı tepki (hikâye izlerken kalp/ateş/gülme/şaşırma), sesli mesajı 1x/1,5x/2x dinleme, Flick videoları kırpılmadan sığar ve 1080p oynar (veri tasarrufu açıksa 720p); alttaki süre çubuğu sürüklenerek ileri-geri sarılır.
 - Güncelleme: 4.4.3'ten beri yeni sürüm çıkınca Kadraj uygun anda kendiliğinden güncellenir (açık bir pencere ya da yazı yazılırken bekler). Yöneticinin panelinde Sürüm arşivi var; eski sürümler deneme modunda açılır.
 - Sürüm: yeni sürüm çıkınca "Yeni sürüm hazır" yazar; iki sürüm geride kalan eski sürüm kapanır ve güncellemen istenir.
 - Mesajlar uygulamanın Firebase veritabanında durur, uygulamaya giren herkes teknik olarak erişebilir; şifre ya da kişisel bilgi paylaşılmamalı.`;
@@ -3369,7 +3395,7 @@ const WN_ITEMS=[
  {ic:"send",g:"linear-gradient(135deg,#2f6bff,#6a4cff)",t:"Mesaj ilet",d:"Mesaja basılı tut › İlet: başka sohbete ya da Meydan'a gönder",go:"chats"},
  {ic:"pin",g:"linear-gradient(135deg,#f97316,#ffb25b)",t:"Sohbet sabitle",d:"Sohbete basılı tut; en fazla 3 sohbet en üstte durur",go:"chats"},
  {ic:"heart",g:"linear-gradient(135deg,#ff4f7b,#c2185b)",t:"Hikâyeye tepki",d:"Hikâye izlerken kalp, ateş, gülme ya da şaşırma gönder",go:"feed"},
- {ic:"reels",g:"linear-gradient(135deg,#6a4cff,#ff4f7b)",t:"Daha net Flick",d:"Videolar kırpılmadan sığar, 1080p oynar; süre çubuğu doğru gider",go:"reels"},
+ {ic:"reels",g:"linear-gradient(135deg,#6a4cff,#ff4f7b)",t:"Daha net Flick",d:"Videolar kırpılmadan sığar, 1080p oynar; süre çubuğunu sürükleyerek ileri-geri sar",go:"reels"},
  {ic:"mic",g:"linear-gradient(135deg,#0ea5e9,#0c7a63)",t:"Sesli mesaj hızı",d:"Sesli mesajda 1x, 1,5x ya da 2x dinle",go:"chats"},
  {ic:"reels",g:"linear-gradient(135deg,#f97316,#db2777)",t:"Sahne'nin yeni adı: Flick",d:"Kısa videoların adı artık Flick; + > Flick ile paylaş",go:"reels"},
  {ic:"lock",g:"linear-gradient(135deg,#0ea5e9,#6366f1)",t:"Çocuk modundakiler göremez",d:"Paylaşırken aç; Çocuk Modu'ndaki kişiler o paylaşımı görmez",go:"profile"},
