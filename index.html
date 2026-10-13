@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
 <meta charset="utf-8">
-<meta name="kadraj-version" content="40600">
+<meta name="kadraj-version" content="40700">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,interactive-widget=resizes-content">
 <meta name="theme-color" content="#0C7A63">
 <link rel="manifest" href="manifest.webmanifest">
@@ -342,6 +342,7 @@ textarea.in{min-height:5.5rem;padding:12px 14px;resize:vertical}
 .reel .side .saved svg.i{fill:#fff}
 .reel .info .ht{color:#fff;font-weight:800;text-decoration:underline;text-underline-offset:2px}
 .reel video{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
+.row .s .drf{color:var(--heart);font-weight:600}
 .reel .rfast{position:absolute;left:50%;top:calc(76px + env(safe-area-inset-top,0px));transform:translateX(-50%);z-index:5;display:inline-flex;align-items:center;gap:2px;padding:7px 14px;border-radius:999px;background:rgba(0,0,0,.6);color:#fff;font:700 .9rem/1 var(--f-body);pointer-events:none}.reel .rfast svg.i{width:.8rem;height:.8rem;fill:#fff;stroke:none}.reel .rfast[hidden]{display:none}
 @media (max-width:380px){.reel-top .rnew span{display:none}.reel-top .rnew{padding-inline:10px}}
 .reel .info{position:absolute;left:14px;right:4.8rem;bottom:calc(1.4rem + env(safe-area-inset-bottom,0px));display:grid;gap:8px;text-shadow:0 1px 4px rgba(0,0,0,.5)}
@@ -1122,7 +1123,7 @@ const vib=ms=>{try{if(settings.haptics===false)return;navigator.vibrate&&navigat
 /* Sürüm: ana.ara.yama (4.1.0). Hata düzeltme ve küçük şeyler → yama artar (4.1.1); büyük güncelleme → ara artar (4.2.0).
    APP_V = ana*10000 + ara*100 + yama (4.1.0 → 40100). Başlıktaki <meta name="kadraj-version"> ile aynı tutulmalı.
    Eski biçim (4.0 → 40) verNorm ile çevrilir. "İki sürüm geride" ara sürüm sayısıyla ölçülür (yamalar engellemez). */
-const APP_V=40600,APP_VER="4.6.0";
+const APP_V=40700,APP_VER="4.7.0";
 const verNorm=x=>{x=Math.max(0,Math.floor(+x||0));return x<1000?Math.floor(x/10)*10000+(x%10)*100:x};
 const verLvl=x=>Math.floor(verNorm(x)/100);
 const verGap=x=>verLvl(x)-verLvl(APP_V);
@@ -2174,7 +2175,7 @@ function subscribeShared(){admSubscribe();
  DB.watchCol("posts",docs=>{const m={};for(const d of docs)m[d.id]=d;notifyNewPosts(m);S.posts=m;scheduleRefresh()},{orderBy:["at","desc"],limit:300});
  DB.watchCol("meta",docs=>{const m={};for(const d of docs)m[d.id]=d;notifyMeta(m);S.meta=m;scheduleRefresh()},{limit:600});
  DB.watchCol("stories",docs=>{const m={};const lim=now()-24*H;for(const d of docs)if(d.at>lim)m[d.id]=d;S.stories=m;scheduleRefresh()},{orderBy:["at","desc"],limit:120});
- DB.watchDoc("chats/meydan",d=>{const o=S.meydan;S.meydan=d;if(d&&d.last&&notifReady&&settings.notify&&settings.nMsg!==false&&S.authed&&!isChild(S.uid)&&d.last.from!==S.uid&&(!o||!o.last||o.last.at<d.last.at)&&!(S.route.name==="chat"&&S.route.params.key==="meydan"))toast(`Meydan · ${P(d.last.from).username}: ${d.last.text.slice(0,60)}`,d.last.from);scheduleRefresh()})}
+ DB.watchDoc("chats/meydan",d=>{const o=S.meydan;S.meydan=d;if(d&&d.last&&notifReady&&settings.notify&&settings.nMsg!==false&&S.authed&&!isChild(S.uid)&&d.last.from!==S.uid&&d.last.at>(S.bootAt||Infinity)&&d.last.at>(LS.get("kadraj_meydan_"+S.uid,0)||0)&&(!o||!o.last||o.last.at<d.last.at)&&!(S.route.name==="chat"&&S.route.params.key==="meydan"))toast(`Meydan · ${P(d.last.from).username}: ${d.last.text.slice(0,60)}`,d.last.from);scheduleRefresh()})}
 let userUnsub=[];
 function subscribeUser(){teardownUser();const u=S.uid;if(S.mode==="cloud"&&FB)userUnsub.push(listenCalls());
  userUnsub.push(DB.watchCol("chats",docs=>{const m={};for(const d of docs)m[d.id]=d;notifyChats(m);S.chats=m;if(S.route.name==="chat"&&chatKey&&m[chatKey])markRead(chatKey);scheduleRefresh()},{where:["members","array-contains",u],limit:200}));
@@ -3037,11 +3038,41 @@ function rblurFill(){for(const d of $$(".rblur[data-p]")){const src=d.dataset.p;
 HOOKS.after.push(r=>{if(r==="reels")setTimeout(rblurFill,60)});
 /* ===== 4.6: Flick'te basılı tutunca 2x hız ===== */
 document.addEventListener("pointerdown",e=>{const r=e.target.closest&&e.target.closest(".reel");if(!r||e.target.closest("button,.rprog,a"))return;const v=r.querySelector("video");if(!v)return;
+ /* 4.7: yalnızca sağ ve sol kenarda */const rc=r.getBoundingClientRect(),rx=rc.width?(e.clientX-rc.left)/rc.width:.5;if(rx>.3&&rx<.7)return;
  const x0=e.clientX,y0=e.clientY;let t=setTimeout(()=>{t=0;if(v.paused)return;r._fast=true;v.playbackRate=2;let f=r.querySelector(".rfast");if(!f){f=document.createElement("span");f.className="rfast";f.innerHTML=`${I("play")}${I("play")}2x`;r.appendChild(f)}f.hidden=false;vib(10)},450);
  const mv=ev=>{if(t&&Math.hypot(ev.clientX-x0,ev.clientY-y0)>12){clearTimeout(t);t=0}};
  const end=()=>{if(t)clearTimeout(t);removeEventListener("pointermove",mv,true);removeEventListener("pointerup",end,true);removeEventListener("pointercancel",end,true);if(r._fast){v.playbackRate=1;const f=r.querySelector(".rfast");if(f)f.hidden=true;setTimeout(()=>{r._fast=false},80)}};
  addEventListener("pointermove",mv,true);addEventListener("pointerup",end,true);addEventListener("pointercancel",end,true)});
 document.addEventListener("contextmenu",e=>{if(e.target.closest&&e.target.closest(".reel video"))e.preventDefault()});
+/* ===== 4.7 ===== */
+/* Flick'ten çıkınca video başa sarılır; geri dönünce baştan başlar */
+const deactivateReelBase=deactivateReel;
+deactivateReel=function(el){deactivateReelBase(el);const v=el.querySelector("video");if(v){v.playbackRate=1;try{if(v.currentTime)v.currentTime=0}catch{}}const b=el.querySelector(".rprog i");if(b)b.style.transform="scaleX(0)";el._fast=false;const f=el.querySelector(".rfast");if(f)f.hidden=true};
+/* arka plandayken çıkan uygulama içi uyarılar dönüşte ekranda kalmasın (telefon zamanlayıcıları durdurur) */
+const toastBase=toast;
+toast=function(text,uid,key){toastBase(text,uid,key);const t=$("#toasts")&&$("#toasts").lastElementChild;if(t){t.dataset.at=now();if(document.visibilityState==="hidden")t.dataset.bg="1"}};
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState!=="visible")return;for(const t of $$("#toasts .toast"))if(t.dataset.bg||now()-(+t.dataset.at||0)>4200)t.remove()});
+/* sohbet açılınca o sohbetin telefon bildirimi kapanır */
+function clearChatNotes(cid){try{if(!cid||!navigator.serviceWorker||!navigator.serviceWorker.ready)return;navigator.serviceWorker.ready.then(reg=>reg.getNotifications?reg.getNotifications({tag:"m-"+cid}):[]).then(ns=>{for(const n of ns||[])n.close()}).catch(()=>{})}catch{}}
+HOOKS.after.push(r=>{if(r==="chat"&&S.route.params&&S.route.params.key)clearChatNotes(keyInfo(S.route.params.key).cid)});
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"&&S.route.name==="chat"&&S.route.params.key)clearChatNotes(keyInfo(S.route.params.key).cid)});
+/* arama başka cihazda açıldı ya da reddedildiyse bu cihaz çalmayı bırakır */
+const incomingCallBase=incomingCall;
+incomingCall=function(id,d){incomingCallBase(id,d);const c=CALL;if(!c||c.id!==id)return;
+ c.unsubs.push(FB.F.onSnapshot(c.ref,s=>{if(CALL!==c||c.status!=="incoming")return;const x=s.exists()?s.data():null;if(x&&(x.status==="accepted"||x.status==="declined"))endCall(false,x.status==="accepted"?"Arama başka bir cihazda yanıtlandı.":"")}))};
+/* Bildirimler: "Yeni" bölümü sayfa yenilenince kaybolmasın (açılıştaki görülme zamanı tutulur) */
+const vActivityOld=vActivity;
+vActivity=function(){const k="kadraj_act_"+S.uid;if(S._actR!==S.route){S._actR=S.route;S._actSeen=LS.get(k,0)}LS.set(k,S._actSeen||0);return vActivityOld()};
+/* küçük özellik: sohbet taslağı (yazıp çıkınca kaybolmaz, cihazda saklanır) */
+const draftKey=()=>"kadraj_drafts_"+S.uid;
+function draftOf(key){return(LS.get(draftKey(),{})||{})[key]||""}
+function draftSet(key,v){const d=LS.get(draftKey(),{})||{};v=(v||"").slice(0,2000);if(v.trim())d[key]=v;else delete d[key];LS.set(draftKey(),d)}
+const wireComposerBase=wireComposer;
+wireComposer=function(){wireComposerBase();const f=$("#composer"),inp=$("#msgIn");if(!f||!inp)return;const key=S.route.params.key;
+ const dv=draftOf(key);if(dv&&!inp.value){inp.value=dv;inp.style.height="auto";inp.style.height=Math.min(128,inp.scrollHeight)+"px";const btn=$("#sendBtn");if(btn&&keyInfo(key).type!=="bot"){btn.innerHTML=I("send");btn.setAttribute("aria-label","Gönder")}}
+ let t=0;inp.addEventListener("input",()=>{clearTimeout(t);t=setTimeout(()=>draftSet(key,inp.value),300)});
+ const os=f.onsubmit;f.onsubmit=e=>{clearTimeout(t);if(inp.value.trim())draftSet(key,"");return os&&os.call(f,e)}};
+HOOKS.after.push(r=>{if(r!=="chats")return;const d=LS.get(draftKey(),{})||{};for(const b of $$("#main [data-chat]")){const v=d[b.dataset.chat];const x=v&&b.querySelector(".s,small");if(x)x.innerHTML=`<span class="drf">Taslak:</span> ${esc(v.replace(/\s+/g," ").slice(0,60))}`}});
 async function admSet(id,doc){return write(()=>DB.set("admin/"+id,{...doc,by:S.uid,at:doc.at||now()}))}
 async function admWipe(uid,{posts=true,stories=true}={}){let k=0;
  if(posts)for(const p of Object.values(S.posts).filter(p=>p.uid===uid)){await DB.del("posts/"+p.id).catch(()=>{});DB.del("meta/"+p.id).catch(()=>{});if(p.video&&String(p.video).startsWith("chunk:")){const[,vid,c]=p.video.split(":");for(let i=0;i<+c;i++)DB.del(`vchunks/${vid}-${i}`).catch(()=>{})}const ps={...S.posts};delete ps[p.id];S.posts=ps;k++}
@@ -3109,7 +3140,8 @@ const APP_GUIDE=`Kadraj bir sosyal uygulamadır (Firebase üzerinde çalışır,
 - Ortak sohbet temaları: sohbetin üstündeki resim simgesinden tema seçilir; birebir ve grup sohbetlerinde "Herkes için" seçilen tema sohbetteki herkeste aynı anda değişir ve kendi balonlarının rengini de değiştirir. "Yalnızca bende" sadece senin cihazını etkiler. Fotoğraftan tema da yapılabilir.
 - Mesajlar: mesaja uzun basınca 6 resimli tepki (kalp, gülme, şaşırma, üzülme, ateş, alkış), yanıtla, kopyala, düzenle, sil; çift dokunuş kalp bırakır. Profilde en fazla 3 paylaşım sabitlenebilir.
 - 4.4: Sahne'nin yeni adı Flick (kısa video). Paylaşırken "Çocuk modundakiler göremez" açılırsa o paylaşım Çocuk Modu'ndaki kişilere hiç görünmez; sonradan paylaşımın ... menüsünden değiştirilebilir.
-- 4.6 yenilikleri: Flick'te videoya basılı tutunca 2x hızlı oynar; Flick'teki üç nokta menüsünden sil, sabitle, açıklamayı düzenle, şikayet et.
+- 4.7 yenilikleri: sohbette yazıp çıktığın mesaj taslak olarak saklanır (listede "Taslak:"); Flick'te 2x için ekranın sağ ya da sol kenarına basılı tut; başka Flick'e geçip dönünce video baştan başlar; açtığın sohbetin telefon bildirimi kapanır.
+- 4.6 yenilikleri: Flick'te videoya (4.7'den beri sağ ya da sol kenara) basılı tutunca 2x hızlı oynar; Flick'teki üç nokta menüsünden sil, sabitle, açıklamayı düzenle, şikayet et.
 - 4.5 yenilikleri: Sohbette ara (sohbette + menüsü › Sohbette ara), mesaj ilet (mesaja basılı tut › İlet), sohbet sabitle (Sohbet listesinde sohbete basılı tut, en fazla 3), hikâyeye hızlı tepki (hikâye izlerken kalp/ateş/gülme/şaşırma), sesli mesajı 1x/1,5x/2x dinleme, Flick videoları kırpılmadan sığar ve 1080p oynar (veri tasarrufu açıksa 720p); alttaki süre çubuğu sürüklenerek ileri-geri sarılır.
 - Güncelleme: 4.4.3'ten beri yeni sürüm çıkınca Kadraj uygun anda kendiliğinden güncellenir (açık bir pencere ya da yazı yazılırken bekler). Yöneticinin panelinde Sürüm arşivi var; eski sürümler deneme modunda açılır.
 - Sürüm: yeni sürüm çıkınca "Yeni sürüm hazır" yazar; iki sürüm geride kalan eski sürüm kapanır ve güncellemen istenir.
@@ -3403,7 +3435,8 @@ setTimeout(verTidyCache,9000);
 
 /* ---- A · Neler yeni ---- */
 const WN_ITEMS=[
- {ic:"play",g:"linear-gradient(135deg,#ff4f7b,#6a4cff)",t:"Basılı tut: 2x hız",d:"Flick'te videoya basılı tut, bırakınca normale döner",go:"reels"},
+ {ic:"edit",g:"linear-gradient(135deg,#ff8a3d,#ff4f7b)",t:"Sohbet taslağı",d:"Yazıp çıktığın mesaj kaybolmaz; listede \"Taslak\" olarak görünür",go:"chats"},
+ {ic:"play",g:"linear-gradient(135deg,#ff4f7b,#6a4cff)",t:"Kenarda 2x hız",d:"Flick'te ekranın sağ ya da sol kenarına basılı tut; dönünce video baştan başlar",go:"reels"},
  {ic:"more",g:"linear-gradient(135deg,#0c7a63,#0ea5e9)",t:"Flick seçenekleri",d:"Flick'teki üç nokta: sil, sabitle, düzenle, şikayet et",go:"reels"},
  {ic:"search",g:"linear-gradient(135deg,#0c7a63,#19c79a)",t:"Sohbette ara",d:"+ menüsünden bir sohbetteki eski mesajları bul",go:"chats"},
  {ic:"send",g:"linear-gradient(135deg,#2f6bff,#6a4cff)",t:"Mesaj ilet",d:"Mesaja basılı tut › İlet: başka sohbete ya da Meydan'a gönder",go:"chats"},
