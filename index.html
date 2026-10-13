@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
 <meta charset="utf-8">
-<meta name="kadraj-version" content="40405">
+<meta name="kadraj-version" content="40406">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,interactive-widget=resizes-content">
 <meta name="theme-color" content="#0C7A63">
 <link rel="manifest" href="manifest.webmanifest">
@@ -1108,7 +1108,7 @@ const vib=ms=>{try{if(settings.haptics===false)return;navigator.vibrate&&navigat
 /* Sürüm: ana.ara.yama (4.1.0). Hata düzeltme ve küçük şeyler → yama artar (4.1.1); büyük güncelleme → ara artar (4.2.0).
    APP_V = ana*10000 + ara*100 + yama (4.1.0 → 40100). Başlıktaki <meta name="kadraj-version"> ile aynı tutulmalı.
    Eski biçim (4.0 → 40) verNorm ile çevrilir. "İki sürüm geride" ara sürüm sayısıyla ölçülür (yamalar engellemez). */
-const APP_V=40405,APP_VER="4.4.5";
+const APP_V=40406,APP_VER="4.4.6";
 const verNorm=x=>{x=Math.max(0,Math.floor(+x||0));return x<1000?Math.floor(x/10)*10000+(x%10)*100:x};
 const verLvl=x=>Math.floor(verNorm(x)/100);
 const verGap=x=>verLvl(x)-verLvl(APP_V);
@@ -2965,6 +2965,9 @@ HOOKS.after.push(r=>{if(r!=="admin")return;archWire();if(S.archTried)return;S.ar
  fetch(`https://api.github.com/repos/${ARCH_REPO}/commits?path=index.html&per_page=100`).then(x=>x.ok?x.json():[]).then(list=>{const seen=new Set(VER_ARCHIVE.map(a=>a[0])),ex=[];
   for(const c of list||[]){const m=String(c&&c.commit&&c.commit.message||"").match(/^(\d+\.\d+\.\d+):/);if(!m||seen.has(m[1]))continue;seen.add(m[1]);ex.push([m[1],c.sha,String(c.commit.author&&c.commit.author.date||"").slice(0,10)])}
   if(!ex.length)return;S.archExtra=ex;const el=$("#archBox");if(el){el.outerHTML=archBox();archWire()}}).catch(()=>{})});
+/* 4.4.6: ana ekrandaki simgeyi telefon tutar ve kendisi yenilemez. Uygulamadan (ana ekrandan) girenlere yeni logo için bir kez yol gösterilir. */
+HOOKS.enter.push(()=>setTimeout(()=>{try{if(!isStandalone()||LS.get("kadraj_icon_tip_442"))return;if($("#overlay")&&$("#overlay").children.length)return;LS.set("kadraj_icon_tip_442",now());
+ dialog("Kadraj'ın yeni logosu",`Uygulamanın içindeki logo yenilendi. Ana ekrandaki simgeyi ise telefonun kendisi saklar ve kendiliğinden değiştirmez.<br><br>Yeni simge için:<br>1. Ana ekranda Kadraj simgesine basılı tut, <b>Kaldır</b>'a dokun.<br>2. Chrome'da <b>kadrajsosyalmedya.github.io/Kadraj</b> adresini aç.<br>3. Sağ üstteki ⋮ menüsünden <b>Ana ekrana ekle</b> ya da <b>Uygulamayı yükle</b>'ye dokun.<br><br>Hesabın ve mesajların silinmez.`,[{label:"Tamam"}])}catch(e){}},4000));
 async function admSet(id,doc){return write(()=>DB.set("admin/"+id,{...doc,by:S.uid,at:doc.at||now()}))}
 async function admWipe(uid,{posts=true,stories=true}={}){let k=0;
  if(posts)for(const p of Object.values(S.posts).filter(p=>p.uid===uid)){await DB.del("posts/"+p.id).catch(()=>{});DB.del("meta/"+p.id).catch(()=>{});if(p.video&&String(p.video).startsWith("chunk:")){const[,vid,c]=p.video.split(":");for(let i=0;i<+c;i++)DB.del(`vchunks/${vid}-${i}`).catch(()=>{})}const ps={...S.posts};delete ps[p.id];S.posts=ps;k++}
