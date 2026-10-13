@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
 <meta charset="utf-8">
-<meta name="kadraj-version" content="40700">
+<meta name="kadraj-version" content="40800">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,interactive-widget=resizes-content">
 <meta name="theme-color" content="#0C7A63">
 <link rel="manifest" href="manifest.webmanifest">
@@ -1123,7 +1123,7 @@ const vib=ms=>{try{if(settings.haptics===false)return;navigator.vibrate&&navigat
 /* Sürüm: ana.ara.yama (4.1.0). Hata düzeltme ve küçük şeyler → yama artar (4.1.1); büyük güncelleme → ara artar (4.2.0).
    APP_V = ana*10000 + ara*100 + yama (4.1.0 → 40100). Başlıktaki <meta name="kadraj-version"> ile aynı tutulmalı.
    Eski biçim (4.0 → 40) verNorm ile çevrilir. "İki sürüm geride" ara sürüm sayısıyla ölçülür (yamalar engellemez). */
-const APP_V=40700,APP_VER="4.7.0";
+const APP_V=40800,APP_VER="4.8.0";
 const verNorm=x=>{x=Math.max(0,Math.floor(+x||0));return x<1000?Math.floor(x/10)*10000+(x%10)*100:x};
 const verLvl=x=>Math.floor(verNorm(x)/100);
 const verGap=x=>verLvl(x)-verLvl(APP_V);
@@ -2033,7 +2033,10 @@ async function resolveVideo(ref){if(vcache[ref])return vcache[ref];const[,vid,n]
  if(parts[0].b&&parts[0].b.toUint8Array)return vcache[ref]=URL.createObjectURL(new Blob(parts.map(x=>x.b.toUint8Array()),{type:parts[0].m||"video/mp4"}));
  const durl=parts.map(x=>x.d).join("");const comma=durl.indexOf(",");const mime=(durl.slice(5,comma).split(";")[0])||"video/mp4";const bin=atob(durl.slice(comma+1));const u8=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u8[i]=bin.charCodeAt(i);
  return vcache[ref]=URL.createObjectURL(new Blob([u8],{type:mime}))}
-function hydrateVideos(){for(const v of $$("video[data-vref]")){if(v.getAttribute("src"))continue;v.removeAttribute("src");resolveVideo(v.dataset.vref).then(u=>{if(u&&v.isConnected){v.src=u;if(activeReel&&activeReel.contains(v)&&settings.autoplay)v.play().catch(()=>{})}})}}
+/* 4.8: Flick'te parçalı videolar yalnızca açık, önceki ve sonraki için indirilir (eskisi hepsini birden indiriyordu) */
+function hydrateVideos(){const near=new Set();if(activeReel){near.add(activeReel);if(activeReel.nextElementSibling)near.add(activeReel.nextElementSibling);if(activeReel.previousElementSibling)near.add(activeReel.previousElementSibling)}
+ for(const v of $$("video[data-vref]")){if(v.getAttribute("src")||v._hy)continue;const r=v.closest(".reel");if(r&&!near.has(r))continue;v._hy=true;resolveVideo(v.dataset.vref).then(u=>{v._hy=false;if(u&&v.isConnected){v.src=u;if(activeReel&&activeReel.contains(v)&&settings.autoplay)v.play().catch(()=>{})}}).catch(()=>{v._hy=false})}}
+function hydrateVideosOld(){for(const v of $$("video[data-vref]")){if(v.getAttribute("src"))continue;v.removeAttribute("src");resolveVideo(v.dataset.vref).then(u=>{if(u&&v.isConnected){v.src=u;if(activeReel&&activeReel.contains(v)&&settings.autoplay)v.play().catch(()=>{})}})}}
 const VMAX=4*1024*1024;
 /* 4.0: video parçaları bulutta ham bayt olarak saklanır (base64'e göre ~%25 daha az yer); yükleme yarıda kalırsa yazılan parçalar silinir */
 function delChunks(ref){if(!ref||!String(ref).startsWith("chunk:"))return;const[,vid,n]=String(ref).split(":");for(let i=0;i<+n;i++)DB.del(`vchunks/${vid}-${i}`).catch(()=>{})}
@@ -2758,9 +2761,9 @@ async function chShare(){if(!guard())return;const W=1080;const cv=document.creat
  try{const imgs={};for(let s=0;s<64;s++){const p=g.b[s];if(!p)continue;imgs[p]=imgs[p]||await loadImg(PIMG[p]);const[a,b]=sqXY(s);x.drawImage(imgs[p],a*z+4,b*z+4,z-8,z-8)}cv.toDataURL("image/jpeg",.5)}
  catch{for(let s=0;s<64;s++){const p=g.b[s];if(!p)continue;const[a,b]=sqXY(s);x.fillStyle=p&8?"#26332e":"#fbfaf5";x.beginPath();x.arc(a*z+z/2,b*z+z/2,z*.36,0,7);x.fill();x.fillStyle=p&8?"#fff":"#111";x.font=`700 ${z*.38}px sans-serif`;x.textAlign="center";x.textBaseline="middle";x.fillText(" PAFKVŞ"[p&7],a*z+z/2,b*z+z/2)}}
  const res=CH.over?CH.over.result:null;const myWin=res&&((res==="1-0"&&CH.my===0)||(res==="0-1"&&CH.my===8));const opp=CH.mode==="bot"?`Rota (${CLEVELS[CH.level].n})`:CH.mode==="online"?"@"+P(oppOf(CH.doc||{})).username:"";
- const line=!res?"Kadraj satranç":res==="1/2"?`${opp} ile berabere`:CH.mode==="local"?(res==="1-0"?"Beyaz kazandı":"Siyah kazandı"):myWin?`${opp} karşısında galibiyet`:`${opp} karşısında mağlubiyet`;
+ const line=!res?"Kadraj satranç":res==="1/2"?(opp?`${opp} ile berabere`:"Berabere"):CH.mode==="local"?(res==="1-0"?"Beyaz kazandı":"Siyah kazandı"):myWin?`${opp} karşısında galibiyet`:`${opp} karşısında mağlubiyet`;
  x.fillStyle="#fff";x.font="700 60px Unbounded, 'Avenir Next', sans-serif";x.textAlign="center";x.textBaseline="middle";x.fillText(line,W/2,W+105,W-100);x.fillStyle="#3fd3ab";x.font="600 38px 'Avenir Next', sans-serif";x.fillText(`${Math.ceil(CH.moves.length/2)} hamle · ${REASON[CH.over?.reason]||"oyun sürüyor"} · kadraj`,W/2,W+185,W-100);
- const cap=!res?"Kadraj'da satranç oynuyorum. #satranç":res==="1/2"?`${opp} ile berabere kaldık. #satranç`:myWin?`${opp} karşısında kazandım! ${Math.ceil(CH.moves.length/2)} hamle sürdü. #satranç`:`${opp} bu sefer kazandı, rövanş yakında. #satranç`;
+ const cap=!res?"Kadraj'da satranç oynuyorum. #satranç":CH.mode==="local"?(res==="1/2"?"Karşılıklı oynadık, berabere bitti. #satranç":`Karşılıklı oynadık, ${res==="1-0"?"Beyaz":"Siyah"} kazandı. #satranç`):res==="1/2"?`${opp} ile berabere kaldık. #satranç`:myWin?`${opp} karşısında kazandım! ${Math.ceil(CH.moves.length/2)} hamle sürdü. #satranç`:`${opp} bu sefer kazandı, rövanş yakında. #satranç`;
  S.cmp={kind:"photo",filter:0,ar:"4/5",slides:[],fx:"zoom",music:"lofi",text:"",bg:0,options:["",""],mode:"slides",img:cv,caption:cap,loc:""};drawComposer()}
 /* arkadaşla çevrim içi */
 function chInvitePick(){if(!guard())return;if(S.mode!=="cloud"&&S.mode!=="local")return toast("Arkadaşla oynamak için Firebase bağlantısı gerekiyor.");const ppl=humans().filter(u=>S.admin||childCanDM(u));
@@ -3044,6 +3047,13 @@ document.addEventListener("pointerdown",e=>{const r=e.target.closest&&e.target.c
  const end=()=>{if(t)clearTimeout(t);removeEventListener("pointermove",mv,true);removeEventListener("pointerup",end,true);removeEventListener("pointercancel",end,true);if(r._fast){v.playbackRate=1;const f=r.querySelector(".rfast");if(f)f.hidden=true;setTimeout(()=>{r._fast=false},80)}};
  addEventListener("pointermove",mv,true);addEventListener("pointerup",end,true);addEventListener("pointercancel",end,true)});
 document.addEventListener("contextmenu",e=>{if(e.target.closest&&e.target.closest(".reel video"))e.preventDefault()});
+/* ===== 4.8 ===== */
+/* açık Flick değişince yakındaki parçalı videolar indirilir; "bitince sonrakine geç" */
+const activateReel47=activateReel;
+activateReel=function(el){activateReel47(el);hydrateVideos();const v=el.querySelector("video");if(!v||v._nx)return;v._nx=1;let lt=0;
+ v.addEventListener("timeupdate",()=>{const t=v.currentTime,d=reelDur(v)||(isFinite(v.duration)?v.duration:0);const wrap=d>1.5&&lt>d-.8&&t<.8&&!v.paused;lt=t;
+  if(!wrap||settings.reelNext!==true||activeReel!==el||el._scrub||now()-(el._sk||0)<1500||S.route.name!=="reels")return;const nx=el.nextElementSibling;if(nx&&nx.classList.contains("reel")){v.pause();nx.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches||settings.reduceMotion?"auto":"smooth"})}})};
+document.addEventListener("pointerdown",e=>{const pr=e.target.closest&&e.target.closest(".reel .rprog");if(pr)pr.closest(".reel")._sk=now()},true);
 /* ===== 4.7 ===== */
 /* Flick'ten çıkınca video başa sarılır; geri dönünce baştan başlar */
 const deactivateReelBase=deactivateReel;
@@ -3140,6 +3150,7 @@ const APP_GUIDE=`Kadraj bir sosyal uygulamadır (Firebase üzerinde çalışır,
 - Ortak sohbet temaları: sohbetin üstündeki resim simgesinden tema seçilir; birebir ve grup sohbetlerinde "Herkes için" seçilen tema sohbetteki herkeste aynı anda değişir ve kendi balonlarının rengini de değiştirir. "Yalnızca bende" sadece senin cihazını etkiler. Fotoğraftan tema da yapılabilir.
 - Mesajlar: mesaja uzun basınca 6 resimli tepki (kalp, gülme, şaşırma, üzülme, ateş, alkış), yanıtla, kopyala, düzenle, sil; çift dokunuş kalp bırakır. Profilde en fazla 3 paylaşım sabitlenebilir.
 - 4.4: Sahne'nin yeni adı Flick (kısa video). Paylaşırken "Çocuk modundakiler göremez" açılırsa o paylaşım Çocuk Modu'ndaki kişilere hiç görünmez; sonradan paylaşımın ... menüsünden değiştirilebilir.
+- 4.8 yenilikleri: Ayarlar > Medya ve dokunuş > "Flick bitince sonrakine geç" açılırsa video bitince sonraki Flick'e kendiliğinden kayar; Flick'te videolar yalnızca izlenen ve yanındakiler için indirilir (daha az internet).
 - 4.7 yenilikleri: sohbette yazıp çıktığın mesaj taslak olarak saklanır (listede "Taslak:"); Flick'te 2x için ekranın sağ ya da sol kenarına basılı tut; başka Flick'e geçip dönünce video baştan başlar; açtığın sohbetin telefon bildirimi kapanır.
 - 4.6 yenilikleri: Flick'te videoya (4.7'den beri sağ ya da sol kenara) basılı tutunca 2x hızlı oynar; Flick'teki üç nokta menüsünden sil, sabitle, açıklamayı düzenle, şikayet et.
 - 4.5 yenilikleri: Sohbette ara (sohbette + menüsü › Sohbette ara), mesaj ilet (mesaja basılı tut › İlet), sohbet sabitle (Sohbet listesinde sohbete basılı tut, en fazla 3), hikâyeye hızlı tepki (hikâye izlerken kalp/ateş/gülme/şaşırma), sesli mesajı 1x/1,5x/2x dinleme, Flick videoları kırpılmadan sığar ve 1080p oynar (veri tasarrufu açıksa 720p); alttaki süre çubuğu sürüklenerek ileri-geri sarılır.
@@ -3435,6 +3446,7 @@ setTimeout(verTidyCache,9000);
 
 /* ---- A · Neler yeni ---- */
 const WN_ITEMS=[
+ {ic:"next",g:"linear-gradient(135deg,#5856d6,#0ea5e9)",t:"Flick bitince sonrakine geç",d:"Ayarlar › Medya: video bitince kendiliğinden sonraki Flick'e kayar",go:"settings"},
  {ic:"edit",g:"linear-gradient(135deg,#ff8a3d,#ff4f7b)",t:"Sohbet taslağı",d:"Yazıp çıktığın mesaj kaybolmaz; listede \"Taslak\" olarak görünür",go:"chats"},
  {ic:"play",g:"linear-gradient(135deg,#ff4f7b,#6a4cff)",t:"Kenarda 2x hız",d:"Flick'te ekranın sağ ya da sol kenarına basılı tut; dönünce video baştan başlar",go:"reels"},
  {ic:"more",g:"linear-gradient(135deg,#0c7a63,#0ea5e9)",t:"Flick seçenekleri",d:"Flick'teki üç nokta: sil, sabitle, düzenle, şikayet et",go:"reels"},
@@ -3759,6 +3771,7 @@ function vSettings(){const p=me();const pal=accentPal();const dark=isDark();cons
  h+=sec("medya","Medya ve dokunuş",
   tog({id:"setAutoplay",on:!!settings.autoplay,ic:"play",c:"#FF2D55",t:"Flick'leri otomatik oynat",s:"Kapatırsan dokununca başlar",k:"video reels oynatma"})+
   tog({f:"dataSaver",on:settings.dataSaver===true,ic:"leaf",c:"#34C759",t:"Veri tasarrufu",s:"Flick'ler önceden yüklenmez, daha az internet harcar",k:"mobil veri internet kota"})+
+  tog({f:"reelNext",on:settings.reelNext===true,ic:"next",c:"#5856D6",t:"Flick bitince sonrakine geç",s:"Video bitince kendiliğinden bir sonraki Flick'e kayar",k:"otomatik kaydır sonraki video reels"})+
   tog({f:"haptics",on:on("haptics"),ic:"vibrate",c:"#FF9F0A",t:"Titreşim",s:"Beğeni, dürtme ve bildirimlerde hafif titreşim",k:"haptik titreşim"}));
  h+=sec("satranc","Satranç",
   tog({f:"chessSound",on:on("chessSound"),ic:"vol",c:"#A2845E",t:"Satranç sesleri",s:"Hamle, taş alma ve şah sesleri",k:"satranç ses"})+
