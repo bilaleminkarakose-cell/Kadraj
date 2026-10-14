@@ -3685,7 +3685,7 @@ async function admTry(v){v=(v||"").trim();if(v.length<16||v.length>64)return fal
 function admSubscribe(){
  DB.watchCol("admin",docs=>{const m={};for(const d of docs)m[d.id]=d;const old=S.adm||{};S.adm=m;S.admRulesOk=true;temaSnap(old.tema,m.tema);
   const a=m.duyuru,o=old.duyuru;if(a&&a.text&&a.at>(o&&o.at||0)&&notifReady&&settings.notify&&S.authed&&a.by!==S.uid)toast("Duyuru: "+a.text.slice(0,90));
-  if(S.authed&&S.uid&&!S.admin&&isBanned(S.uid))kickBanned();if(S.authed&&S.uid)setTimeout(checkChildInvite,400);if(!!(old.bakim&&old.bakim.on)!==bakimOn()&&S.authed)render(false);scheduleRefresh()},{limit:20,onError:e=>{S.admRulesOk=false;scheduleRefresh()}});
+  if(S.authed&&S.uid&&!S.admin&&isBanned(S.uid))kickBanned();if(S.authed&&S.uid)setTimeout(checkChildInvite,400);if(!!(old.bakim&&old.bakim.on)!==bakimOn()&&S.authed)render(false);scheduleRefresh()},{limit:50,onError:e=>{S.admRulesOk=false;scheduleRefresh()}});
  DB.watchCol("bots",docs=>{setCustomBots(docs);scheduleRefresh()},{limit:50,onError:()=>{}})}
 function setCustomBots(docs){const custom=docs.filter(d=>d&&d.uid&&String(d.uid).startsWith("bot:")&&!BOTS_BASE.some(b=>b.uid===d.uid)).map(d=>({uid:d.uid,key:d.key,username:d.username,name:d.name,avatar:d.avatar||initialsAv(d.name,d.uid),bio:d.bio||"",persona:d.bio||"",replies:(d.replies||[]).filter(Boolean).length?d.replies.filter(Boolean):["Merhaba! Ben bir Kadraj botuyum."],baseFollowers:0,following:[],custom:true,at:d.at||0}));
  BOTS=[...BOTS_BASE,...custom];BOT=Object.fromEntries(BOTS.map(b=>[b.uid,{...b,bot:true}]));if(S.authed)watchBotChats()}
@@ -5944,7 +5944,7 @@ document.addEventListener("click",async e=>{const b=e.target.closest&&e.target.c
  else if(k==="off"){if(await write(()=>DB.set("admin/ai",{url:"",at:now(),by:S.uid}))){S.adm={...(S.adm||{}),ai:{url:"",at:now(),by:S.uid}};kaiSync();say("Yapay zekâ kapatıldı.")}}
  else if(k==="test"){b.disabled=true;say("Sınanıyor…");const h=await kAI.health();if(!h.ok){say(h.message);b.disabled=false;return}
   try{const r=await kAI.ask({messages:[{role:"user",content:"Kadraj'dan bir deneme: tek cümleyle, Türkçe ve neşeli bir selam ver."}],timeout:45000});say("Çalışıyor: "+(r.text||"(boş yanıt)").slice(0,160))}catch(x){say(x.message||"Hata.")}b.disabled=false}});
-try{if(typeof ADM_EXTRA!=="undefined"&&Array.isArray(ADM_EXTRA))ADM_EXTRA.push({id:"ai",title:"Yapay zekâ",desc:"Claude bağlantısı (Cloudflare köprüsü)",icon:"spark",order:65,html:aiSetupHtml})}catch{}
+try{if(typeof ADM_EXTRA!=="undefined"&&Array.isArray(ADM_EXTRA))ADM_EXTRA.push({id:"ai",title:"Yapay zekâ",desc:"Claude bağlantısı (Cloudflare köprüsü)",icon:"spark",order:65,count:()=>kAI.url()?{t:"Bağlı",c:"on"}:{t:"Kapalı",c:"dim"},html:aiSetupHtml})}catch{}
 /*}@js:50AI*/
 
 /*@js:50PIKO{*/
