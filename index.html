@@ -5910,9 +5910,9 @@ const kAI={
   if(!r.ok){this.last={ok:false,at:now(),code:(d&&d.error)||String(r.status)};throw this.err((d&&d.error)||"http_"+r.status,(d&&d.message)||"Yapay zekâ yanıt vermedi.")}
   this.last={ok:true,at:now()};
   if(d&&d.refusal)return{text:"",sources:[],refusal:true};
-  return{text:String((d&&d.text)||""),sources:Array.isArray(d&&d.sources)?d.sources:[],refusal:false}},
+  return{text:String((d&&d.text)||""),sources:Array.isArray(d&&d.sources)?d.sources:[],refusal:false,provider:(d&&d.provider)||"claude",model:(d&&d.model)||""}},
  async health(){const u=this.url();if(!u)return{ok:false,message:"Adres girilmemiş."};
-  try{const r=await fetch(u+"/health");const d=await r.json();return{ok:!!(d&&d.ok&&d.key),key:!!(d&&d.key),model:d&&d.model,message:d&&d.ok?(d.key?"Köprü çalışıyor.":"Köprü çalışıyor ama ANTHROPIC_API_KEY gizli değişkeni eklenmemiş."):"Köprü yanıt vermedi."}}
+  try{const r=await fetch(u+"/health");const d=await r.json();this.provider=(d&&d.provider)||"";return{ok:!!(d&&d.ok&&d.key),key:!!(d&&d.key),model:d&&d.model,provider:d&&d.provider,message:d&&d.ok?(d.key?(d.provider==="free"?"Köprü çalışıyor (ücretsiz model).":"Köprü çalışıyor (Claude)."):"Köprü çalışıyor ama ne API anahtarı ne de ücretsiz model bağlı."):"Köprü yanıt vermedi."}}
   catch{return{ok:false,message:"Köprüye ulaşılamadı. Adresi ve Worker'ın yayında olduğunu kontrol et."}}}
 };
 /* uygulamanın eski yapay zekâ arayüzü (S.caps.sample): Rota, fotoğraf açıklaması ve Meydan'da @rota bunu kullanır */
@@ -5933,7 +5933,7 @@ HOOKS.after.push(()=>{if(S.authed)kaiSync()});
 setInterval(()=>{if(S.authed)kaiSync()},15000);
 /* yönetici: köprü adresini gir, sına */
 function aiSetupHtml(){const u=(S.adm&&S.adm.ai&&S.adm.ai.url)||"";const st=kAI.last;
- return`<div class="kai-box"><p class="muted" style="margin:0 0 10px">Rota ve Clawd gerçek yapay zekâyla (Claude) konuşsun diye Cloudflare'deki köprünün adresini buraya yapıştır. API anahtarı burada durmaz; yalnızca Cloudflare'de gizli tutulur.</p>
+ return`<div class="kai-box"><p class="muted" style="margin:0 0 10px">Rota ve Clawd gerçek yapay zekâyla konuşsun diye Cloudflare'deki köprünün adresini buraya yapıştır. Köprü ücretsiz modelle de (Cloudflare Workers AI) çalışır; Claude için API anahtarı yalnızca Cloudflare'de gizli tutulur.</p>
  <div class="field"><label for="kaiUrl">Köprü adresi</label><input class="in" id="kaiUrl" inputmode="url" autocapitalize="off" spellcheck="false" placeholder="https://kadraj-ai.adın.workers.dev" value="${esc(u)}"></div>
  <div class="kai-row"><button class="btn sm" type="button" data-kai="save">${I("check")}Kaydet</button><button class="btn sec sm" type="button" data-kai="test">Sına</button>${u?`<button class="btn ghost sm" type="button" data-kai="off">Kapat</button>`:""}</div>
  <div class="kai-st" id="kaiSt">${u?(kAI.ready()?"Bağlantı açık.":"Adres kayıtlı."):"Henüz bağlı değil."}${st&&!st.ok?` Son hata: ${esc(st.code)}`:""}</div>
@@ -5943,7 +5943,7 @@ document.addEventListener("click",async e=>{const b=e.target.closest&&e.target.c
   if(await write(()=>DB.set("admin/ai",{url:u,at:now(),by:S.uid}))){S.adm={...(S.adm||{}),ai:{url:u,at:now(),by:S.uid}};admLog(u?"Yapay zekâ köprüsü ayarlandı":"Yapay zekâ köprüsü kaldırıldı");kaiSync();say(u?"Kaydedildi. Sına'ya dokunup dene.":"Kaldırıldı.")}}
  else if(k==="off"){if(await write(()=>DB.set("admin/ai",{url:"",at:now(),by:S.uid}))){S.adm={...(S.adm||{}),ai:{url:"",at:now(),by:S.uid}};kaiSync();say("Yapay zekâ kapatıldı.")}}
  else if(k==="test"){b.disabled=true;say("Sınanıyor…");const h=await kAI.health();if(!h.ok){say(h.message);b.disabled=false;return}
-  try{const r=await kAI.ask({messages:[{role:"user",content:"Kadraj'dan bir deneme: tek cümleyle, Türkçe ve neşeli bir selam ver."}],timeout:45000});say("Çalışıyor: "+(r.text||"(boş yanıt)").slice(0,160))}catch(x){say(x.message||"Hata.")}b.disabled=false}});
+  try{const r=await kAI.ask({messages:[{role:"user",content:"Kadraj'dan bir deneme: tek cümleyle, Türkçe ve neşeli bir selam ver."}],timeout:45000});say((r.provider==="free"?"Çalışıyor (ücretsiz model): ":"Çalışıyor (Claude): ")+(r.text||"(boş yanıt)").slice(0,160))}catch(x){say(x.message||"Hata.")}b.disabled=false}});
 try{if(typeof ADM_EXTRA!=="undefined"&&Array.isArray(ADM_EXTRA))ADM_EXTRA.push({id:"ai",title:"Yapay zekâ",desc:"Claude bağlantısı (Cloudflare köprüsü)",icon:"spark",order:65,count:()=>kAI.url()?{t:"Bağlı",c:"on"}:{t:"Kapalı",c:"dim"},html:aiSetupHtml})}catch{}
 /*}@js:50AI*/
 

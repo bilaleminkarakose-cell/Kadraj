@@ -128,6 +128,22 @@ function supportsDefaultFallback(model) {
   return /^claude-(opus-5|fable-5|sonnet-5-5)/.test(model);
 }
 
+// Ücretsiz yol: Anthropic anahtarı yoksa Cloudflare Workers AI (açık kaynaklı model, günlük ücretsiz kota, anahtar gerekmez).
+function flatText(c) {
+  if (typeof c === "string") return c;
+  return (c || []).filter((b) => b.type === "text").map((b) => b.text).join("\n");
+}
+async function askFree(env, body) {
+  const messages = cleanMessages(body.messages);
+  if (!messages) return { status: 400, data: { error: "bad_request", message: "İstek biçimi hatalı." } };
+  const model = String(env.FREE_MODEL || "@cf/meta/llama-3.3-70b-instruct-fp8-fast");
+  const sys = (typeof body.system === "string" ? body.system.slice(0, 20000) + "\n\n" : "") + "Her zaman Türkçe yanıt ver.";
+  const msgs = [{ role: "system", content: sys }, ...messages.map((m) => ({ role: m.role, content: flatText(m.content) }))];
+  const r = await env.AI.run(model, { messages: msgs, max_tokens: 900 });
+  const text = String((r && (r.response ?? r.result?.response)) || "").trim();
+  return { status: 200, data: { text, sources: [], model, provider: "free" } };
+}
+
 async function ask(env, body) {
   const model = String(env.MODEL || "claude-opus-5-5");
   const effort = ["low", "medium", "high", "xhigh", "max"].includes(env.EFFORT) ? env.EFFORT : "low";
@@ -164,7 +180,7 @@ async function ask(env, body) {
       for (const r of b.content) if (r && r.url && sources.length < 6 && !sources.some((s) => s.url === r.url)) sources.push({ title: r.title || r.url, url: r.url });
     }
   }
-  return { status: 200, data: { text: text.trim(), sources, model: resp.model, stop: resp.stop_reason } };
+  return { status: 200, data: { text: text.trim(), sources, model: resp.model, stop: resp.stop_reason, provider: "claude" } };
 }
 
 export default {
@@ -173,11 +189,12 @@ export default {
     const url = new URL(req.url);
     if (req.method === "OPTIONS") return new Response(null, { status: origin ? 204 : 403, headers: cors(origin) });
     if (req.method === "GET" && (url.pathname === "/" || url.pathname === "/health")) {
-      return json({ ok: true, name: "kadraj-ai", model: String(env.MODEL || "claude-opus-5-5"), key: !!env.ANTHROPIC_API_KEY }, 200, origin);
+      const free = !env.ANTHROPIC_API_KEY && !!env.AI;
+      return json({ ok: true, name: "kadraj-ai", provider: env.ANTHROPIC_API_KEY ? "claude" : free ? "free" : "none", model: env.ANTHROPIC_API_KEY ? String(env.MODEL || "claude-opus-5-5") : free ? String(env.FREE_MODEL || "@cf/meta/llama-3.3-70b-instruct-fp8-fast") : "", key: !!(env.ANTHROPIC_API_KEY || env.AI) }, 200, origin);
     }
     if (req.method !== "POST" || url.pathname !== "/ask") return json({ error: "not_found" }, 404, origin);
     if (!origin) return json({ error: "origin", message: "Bu adres yalnızca Kadraj'dan kullanılabilir." }, 403, origin);
-    if (!env.ANTHROPIC_API_KEY) return json({ error: "no_key", message: "Cloudflare'de ANTHROPIC_API_KEY gizli değişkeni eklenmemiş." }, 500, origin);
+    if (!env.ANTHROPIC_API_KEY && !env.AI) return json({ error: "no_key", message: "Köprüde ne ANTHROPIC_API_KEY ne de Workers AI bağlantısı var." }, 500, origin);
 
     let uid;
     try {
@@ -194,7 +211,7 @@ export default {
       return json({ error: "bad_request", message: "İstek okunamadı." }, 400, origin);
     }
     try {
-      const r = await ask(env, body || {});
+      const r = env.ANTHROPIC_API_KEY ? await ask(env, body || {}) : await askFree(env, body || {});
       return json(r.data, r.status, origin);
     } catch (e) {
       if (e instanceof Anthropic.AuthenticationError) return json({ error: "api_key", message: "API anahtarı geçersiz. Cloudflare'deki ANTHROPIC_API_KEY değerini kontrol et." }, 502, origin);
@@ -204,6 +221,7 @@ export default {
       if (e instanceof Anthropic.APIConnectionError) return json({ error: "api_connection", message: "Yapay zekâ hizmetine bağlanılamadı, birazdan tekrar dene." }, 502, origin);
       if (e instanceof Anthropic.APIError && e.status === 402) return json({ error: "api_billing", message: "Anthropic hesabında kredi kalmamış. Console > Billing'den kredi ekle." }, 502, origin);
       if (e instanceof Anthropic.APIError) return json({ error: "api", status: e.status || 0, message: "Yapay zekâ hizmeti yanıt vermedi (" + (e.status || "bağlantı") + ")." }, 502, origin);
+      if (!env.ANTHROPIC_API_KEY) return json({ error: "free_ai", message: "Ücretsiz yapay zekâ yanıt vermedi; günlük ücretsiz kota dolmuş olabilir, yarın tekrar dene." }, 502, origin);
       return json({ error: "server", message: "Köprüde beklenmeyen bir hata oldu." }, 500, origin);
     }
   },

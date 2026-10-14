@@ -5,6 +5,10 @@ main = "src/index.js"
 compatibility_date = "2026-09-01"
 compatibility_flags = ["nodejs_compat"]
 
+# Ücretsiz yapay zekâ (Workers AI): Anthropic anahtarı eklenmezse bu kullanılır.
+[ai]
+binding = "AI"
+
 [vars]
 # İstersen Cloudflare panelinden değiştirebilirsin (Settings > Variables).
 MODEL = "claude-opus-5-5"
@@ -12,3 +16,4 @@ EFFORT = "low"
 DAILY_LIMIT = "60"
 ALLOWED_ORIGINS = "https://kadrajsosyalmedya.github.io"
 FIREBASE_PROJECT = "kadraj-6f1e0"
+FREE_MODEL = "@cf/meta/llama-3.3-70b-instruct-fp8-fast"
