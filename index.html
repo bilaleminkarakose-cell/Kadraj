@@ -1601,6 +1601,197 @@ html.reduce-motion .ar5,html.reduce-motion .ar5 *,html.reduce-motion .ar5-mini,h
 /*}@css:50SRCH*/
 
 /*@css:50ADM{*/
+/* ===== 5.0 · yönetici paneli: açılır-kapanır bölümler (Klasik ve Vizör ortak; Vizör inceltmeleri en altta) ===== */
+:root{--adm-hot:#B45309;--adm-hot-bg:#FEF3C7;--adm-kid:#6D28D9;--adm-kid-bg:#EDE9FE}
+:root[data-mode="dark"]{--adm-hot:#FBBF24;--adm-hot-bg:rgba(251,191,36,.14);--adm-kid:#C4B5FD;--adm-kid-bg:rgba(167,139,250,.16)}
+.adm5-hero{position:relative}
+.adm5-hero .t{flex:1;min-width:0}
+.adm5-hero .t small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.adm5-all{flex:none;display:inline-flex;align-items:center;gap:4px;min-height:2.2rem;padding:0 .8rem 0 .6rem;border-radius:999px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.26);color:#fff;font:600 .74rem/1 var(--f-body);white-space:nowrap}
+.adm5-all svg.i{width:1rem;height:1rem;transform:rotate(180deg)}
+.adm5-all[hidden]{display:none}
+.adm5-all:active{transform:scale(.95)}
+.adm5-warn{margin:0 12px 12px;align-items:center;background:var(--adm-hot-bg);color:var(--fg)}
+.adm5-warn>svg.i{color:var(--adm-hot);margin-top:0}
+.adm5-warn>span{flex:1;min-width:0}
+.adm5-warn .btn{flex:none}
+.adm5{display:grid;gap:10px;margin:0 12px 6px}
+.adm5-s{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;scroll-margin-top:calc(var(--vz-th,0px) + 10px);scroll-margin-bottom:calc(var(--vz-dh,0px) + 12px);transition:border-color .25s}
+.adm5-hh{margin:0;font:inherit}
+.adm5-h{display:flex;align-items:center;gap:12px;width:100%;min-height:4.1rem;padding:12px 10px 12px 14px;text-align:left;color:var(--fg);transition:background-color .15s}
+.adm5-h:active{background:var(--surface-2)}
+.adm5-h:focus-visible{outline:2px solid var(--accent);outline-offset:-3px;border-radius:inherit}
+@media (hover:hover){.adm5-h:hover{background:color-mix(in srgb,var(--surface-2) 55%,transparent)}}
+.adm5-ic{position:relative;width:2.5rem;height:2.5rem;flex:none;display:grid;place-items:center;border-radius:14px;background:var(--accent-soft);color:var(--accent)}
+.adm5-ic svg.i{width:1.25rem;height:1.25rem}
+.adm5-t{flex:1;min-width:0;display:grid;gap:3px}
+.adm5-t b{font:600 1rem/1.2 var(--f-display);letter-spacing:-.005em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.adm5-t small{font-size:.78rem;line-height:1.3;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.adm5-n{flex:none;max-width:8.5rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:5px 8px;border-radius:999px;background:var(--surface-2);color:var(--fg);font:600 .68rem/1 var(--f-mono);letter-spacing:.02em}
+.adm5-n.dim{color:var(--muted)}
+.adm5-n.on{background:var(--accent-soft);color:var(--accent)}
+.adm5-n.warn{background:var(--heart);color:#fff}
+.adm5-n.hot{background:var(--adm-hot-bg);color:var(--adm-hot)}
+.adm5-n.live::before{content:"";display:inline-block;width:6px;height:6px;margin-right:5px;border-radius:50%;background:var(--ok);vertical-align:1px}
+.adm5-cv{flex:none;display:grid;place-items:center;width:1.6rem;color:var(--muted);transition:transform .32s cubic-bezier(.2,.8,.2,1)}
+.adm5-cv svg.i{width:1.15rem;height:1.15rem}
+.adm5-s.open .adm5-cv{transform:rotate(180deg)}
+.adm5-s.opening .adm5-cv{transform:none}
+.adm5-b{display:grid;grid-template-rows:1fr;opacity:1;transition:grid-template-rows .34s cubic-bezier(.2,.8,.2,1),opacity .26s}
+.adm5-s:not(.open) .adm5-b{grid-template-rows:0fr;opacity:0;visibility:hidden;transition:grid-template-rows .26s cubic-bezier(.4,0,.2,1),opacity .18s,visibility 0s .26s}
+.adm5-s.opening .adm5-b{grid-template-rows:0fr;opacity:0;transition:none}
+.adm5-in{min-height:0;overflow:hidden}
+.adm5-pad{display:grid;grid-template-columns:minmax(0,1fr);gap:12px;padding:14px;border-top:1px solid var(--line);min-width:0}
+.adm5-pad>*{min-width:0}
+.adm5-sub{font:600 .62rem/1.2 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:2px 0 -4px}
+.adm5-note{margin:0;font-size:.84rem;line-height:1.45;color:var(--muted)}
+.adm5-note b{color:var(--fg)}
+.adm5-note svg.i{width:1em;height:1em;vertical-align:-.13em;color:var(--accent)}
+.adm5-row{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.adm5-cnt{font:500 .7rem/1 var(--f-mono);color:var(--muted)}
+.adm5 .field label{font-size:.8rem}
+.adm5 textarea.in{min-height:5.6rem;padding:12px 14px;resize:vertical;line-height:1.4}
+.adm5 .adm-cur{align-items:center}
+.adm5 .adm-cur>svg.i{flex:none;color:var(--accent)}
+.adm5 .adm-cur>span{flex:1;min-width:0;overflow-wrap:anywhere}
+.adm5 .adm-cur .btn{flex:none}
+.adm5-list{display:grid;grid-template-columns:minmax(0,1fr);margin:0 -14px}
+.adm5-list>*{min-width:0}
+.adm5-list>*{padding:10px 14px}
+.adm5-list>*+*{border-top:1px solid var(--line)}
+.adm5-empty{display:flex;align-items:center;gap:12px;color:var(--muted)}
+.adm5-empty>svg.i{flex:none;width:2.3rem;height:2.3rem;padding:9px;border-radius:50%;background:var(--accent-soft);color:var(--accent)}
+.adm5-empty>span{flex:1;min-width:0;display:grid;gap:2px}
+.adm5-empty b{color:var(--fg);font-size:.92rem}
+.adm5-empty small{font-size:.8rem;line-height:1.35}
+.adm5-empty .btn{flex:none}
+.adm5-err{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:14px;background:color-mix(in srgb,var(--heart) 10%,transparent);color:var(--fg);font-size:.86rem}
+.adm5-err>svg.i{flex:none;color:var(--heart)}
+.adm5-err>span{display:grid;gap:2px;min-width:0}
+.adm5-err small{color:var(--muted);overflow-wrap:anywhere}
+/* özet */
+.adm5-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.adm5-st{display:grid;justify-items:center;align-content:center;gap:4px;padding:12px 4px 10px;border-radius:16px;background:var(--surface-2);color:var(--fg);text-align:center;min-width:0}
+.adm5-st b{font:600 1.2rem/1.1 var(--f-display)}
+.adm5-st span{font-size:.72rem;line-height:1.2;color:var(--muted)}
+button.adm5-st{transition:transform .15s,background-color .2s}
+button.adm5-st:active{transform:scale(.95)}
+.adm5-st.warn{background:color-mix(in srgb,var(--heart) 13%,var(--surface-2))}
+.adm5-st.warn b{color:var(--heart)}
+.adm5-cld{display:grid;gap:8px;padding:12px;border-radius:16px;background:var(--surface-2)}
+.adm5-kv{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:.86rem;min-width:0}
+.adm5-kv>span{display:inline-flex;align-items:center;gap:6px;color:var(--muted);min-width:0}
+.adm5-kv svg.i{width:1rem;height:1rem;color:var(--accent);flex:none}
+.adm5-kv>b{text-align:right;overflow-wrap:anywhere;min-width:0}
+.adm5-kv .mono{font:500 .74rem/1.3 var(--f-mono)}
+.adm5-bar{height:8px;border-radius:4px;background:color-mix(in srgb,var(--fg) 10%,transparent);overflow:hidden}
+.adm5-bar i{display:block;height:100%;border-radius:inherit;background:var(--accent)}
+.adm5-cld small{font-size:.76rem;line-height:1.4;color:var(--muted)}
+.adm5-cld .btn{justify-self:start;text-decoration:none}
+.adm5-cld .btn.sec{background:var(--surface);border:1px solid var(--line)}
+.adm5-pad{container-type:inline-size}
+@container (min-width:540px){.adm5-stats{grid-template-columns:repeat(6,minmax(0,1fr))}}
+/* şikayetler */
+.adm5-rep{display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px 12px;align-items:start}
+.adm5-rep .t{display:grid;gap:2px;min-width:0;line-height:1.3}
+.adm5-rep .t b{font-size:.92rem}
+.adm5-rep .s{font-size:.79rem;color:var(--muted);overflow-wrap:anywhere}
+.adm5-acts{grid-column:2;display:flex;gap:8px;flex-wrap:wrap}
+.adm5-del{background:var(--heart);color:#fff}
+.adm5 .adm-th:disabled{opacity:.6}
+/* kullanıcılar */
+.adm5-uq{display:flex;gap:8px;align-items:center}
+.adm5-uq.search{padding:0}
+.adm5-uq .in{flex:1;min-width:0;min-height:2.65rem;padding-left:40px;background-position:12px 50%;background-size:18px}
+.adm5-sort{flex:none;grid-auto-columns:auto;padding:3px;gap:2px}
+.adm5-sort button{min-height:2.15rem;padding:0 .7rem;font-size:.78rem}
+.adm5-fl{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin:0 -14px;padding:0 14px 2px}
+.adm5-fl::-webkit-scrollbar{display:none}
+.adm5-fl .chip{min-height:2.1rem;padding:0 .75rem;font-size:.8rem;gap:6px;border-radius:999px}
+.adm5-fl .chip span{font:600 .66rem/1 var(--f-mono);opacity:.7}
+.adm5-u{display:flex;align-items:center;gap:12px;width:100%;text-align:left;color:var(--fg);transition:background-color .15s}
+.adm5-u:active{background:var(--surface-2)}
+@media (hover:hover){.adm5-u:hover{background:color-mix(in srgb,var(--surface-2) 55%,transparent)}}
+.adm5-u .t{flex:1;min-width:0;display:grid;gap:2px;line-height:1.3}
+.adm5-u .n{display:flex;align-items:center;min-width:0}
+.adm5-u .n b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.adm5-u .n>*{flex:none}.adm5-u .n>b{flex:0 1 auto}
+.adm5-u .s,.adm5-u .s2{font-size:.79rem;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.adm5-u .s2{font-size:.74rem}
+.adm5-go{flex:none;width:1.1rem;height:1.1rem;color:var(--muted)}
+.adm5-open{flex:none;font:600 .78rem/1 var(--f-body);color:var(--accent);padding:7px 11px;border-radius:999px;background:var(--accent-soft)}
+.adm5-u.ban .av{filter:grayscale(1);opacity:.7}
+.adm5-bd{display:flex;flex-wrap:wrap;gap:4px;margin-top:2px}
+.adm5-bd i{font-style:normal;font:600 .58rem/1 var(--f-mono);letter-spacing:.05em;text-transform:uppercase;padding:4px 6px;border-radius:6px;background:var(--surface-2);color:var(--muted);white-space:nowrap}
+.adm5-bd i.ok{background:var(--accent-soft);color:var(--accent)}
+.adm5-bd i.mu{background:var(--adm-hot-bg);color:var(--adm-hot)}
+.adm5-bd i.ch{background:var(--adm-kid-bg);color:var(--adm-kid)}
+.adm5-bd i.ban{background:color-mix(in srgb,var(--heart) 14%,transparent);color:var(--heart)}
+.sheet .row .t .adm5-bd{white-space:normal}
+.adm5-list>.adm5-morew{padding:10px 14px 2px}
+/* içerik ve botlar */
+.adm5-pr{display:flex;align-items:center;gap:10px}
+.adm5-pr .t{flex:1;min-width:0;line-height:1.3}
+.adm5-pr .t>div{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.adm5-pr .s{font-size:.79rem;color:var(--muted)}
+.adm5-pr .ib{width:2.3rem;height:2.3rem;border-radius:12px}
+.adm5-pr .ib.on{background:var(--accent-soft);color:var(--accent);border-color:transparent}
+.adm5-set{display:grid;grid-template-columns:minmax(0,1fr);margin:0 -14px}
+.adm5-set .srow{padding:12px 14px;min-height:3.3rem}
+.adm5-set .srow+.srow{border-top:1px solid var(--line)}
+.adm5-set .srow small{overflow-wrap:anywhere}
+.adm5-det summary{cursor:pointer;font-weight:700;font-size:.86rem;color:var(--accent);padding:2px 0}
+.adm5-det .adm-rules{margin-top:8px}
+/* arşiv */
+.adm5-arst{display:flex;align-items:center;gap:8px;font-size:.82rem;color:var(--muted);min-height:1.4rem}
+.adm5-arst:empty{display:none}
+.adm5-arst .spin{width:16px;height:16px;border-width:2px;flex:none}
+.adm5-arst>svg.i{width:1.05rem;height:1.05rem;color:var(--accent);flex:none}
+.adm5-arst>span:not(.spin){flex:1;min-width:0}
+.adm5-arst .btn{flex:none}
+.adm5-ar{display:grid;grid-template-columns:repeat(auto-fill,minmax(5.4rem,1fr));gap:8px}
+.adm5-v{position:relative;display:grid;gap:5px;justify-items:start;padding:11px 10px 10px;border-radius:14px;background:var(--surface-2);border:1px solid transparent;text-align:left;color:var(--fg);transition:transform .15s,border-color .2s}
+.adm5-v b{font:600 .95rem/1 var(--f-mono)}
+.adm5-v small{font:500 .6rem/1 var(--f-mono);color:var(--muted)}
+.adm5-v i{font-style:normal;font:700 .52rem/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.adm5-v.cur{border-color:var(--accent);background:var(--accent-soft)}
+.adm5-v:active{transform:scale(.95)}
+@media (hover:hover){.adm5-v:hover{border-color:var(--line)}.adm5-v.cur:hover{border-color:var(--accent)}}
+/* kayıt */
+.adm5-lg{display:flex;gap:10px;align-items:flex-start}
+.adm5-lg>i{flex:none;width:7px;height:7px;margin-top:7px;border-radius:50%;background:var(--accent)}
+.adm5-lg .t{flex:1;min-width:0;font-size:.88rem;line-height:1.35;overflow-wrap:anywhere}
+.adm5-lg .s{font-size:.76rem;color:var(--muted)}
+.adm5-exit{padding:6px 12px 20px}
+/* Vizör */
+:root[data-ui="vizor"] .adm5-hero{border-radius:24px}
+:root[data-ui="vizor"] .adm5-hero::after{content:"";position:absolute;inset:9px;color:rgba(255,255,255,.42);background:var(--vz-brk-s);background-repeat:no-repeat;pointer-events:none}
+:root[data-ui="vizor"] .adm5-warn{border-color:color-mix(in srgb,var(--adm-hot) 30%,transparent)}
+:root[data-ui="vizor"] .adm5-s{border-color:var(--vz-hair);border-radius:22px;box-shadow:var(--vz-sh)}
+:root[data-ui="vizor"] .adm5-s.open{border-color:color-mix(in srgb,var(--accent) 30%,var(--vz-hair))}
+:root[data-ui="vizor"] .adm5-ic{border-radius:50%;background:transparent}
+:root[data-ui="vizor"] .adm5-ic::before{content:"";position:absolute;inset:-3px;color:var(--accent);background:var(--vz-brk-s);background-repeat:no-repeat;opacity:.45;transition:inset .34s var(--vz-spring),opacity .3s}
+:root[data-ui="vizor"] .adm5-ic::after{content:"";position:absolute;inset:5px;border-radius:50%;background:color-mix(in srgb,var(--accent) 12%,transparent)}
+:root[data-ui="vizor"] .adm5-ic svg.i{position:relative;z-index:1}
+:root[data-ui="vizor"] .adm5-s.open:not(.opening) .adm5-ic::before{inset:1px;opacity:1}
+:root[data-ui="vizor"] .adm5-n{background:transparent;border:1px solid var(--vz-hair);font-size:.6rem;letter-spacing:.08em;text-transform:uppercase}
+:root[data-ui="vizor"] .adm5-n.on{border-color:color-mix(in srgb,var(--accent) 40%,transparent);background:color-mix(in srgb,var(--accent) 8%,transparent)}
+:root[data-ui="vizor"] .adm5-n.warn,:root[data-ui="vizor"] .adm5-n.hot{border-color:transparent}
+:root[data-ui="vizor"] .adm5-pad,:root[data-ui="vizor"] .adm5-list>*+*,:root[data-ui="vizor"] .adm5-set .srow+.srow{border-top-color:var(--vz-hair)}
+:root[data-ui="vizor"] .adm5-st{border-radius:18px;background:var(--vz-glass);border:1px solid var(--vz-hair)}
+:root[data-ui="vizor"] .adm5-st span{font:600 .55rem/1.25 var(--f-mono);letter-spacing:.1em;text-transform:uppercase}
+:root[data-ui="vizor"] .adm5-st.warn{background:color-mix(in srgb,var(--heart) 10%,var(--vz-glass));border-color:color-mix(in srgb,var(--heart) 30%,transparent)}
+:root[data-ui="vizor"] .adm5-cld{border-radius:18px;background:var(--vz-glass);border:1px solid var(--vz-hair)}
+:root[data-ui="vizor"] .adm5-cld .btn.sec{border-color:var(--vz-hair);background:color-mix(in srgb,var(--surface-2) 88%,transparent)}
+:root[data-ui="vizor"] .adm5-v{border-radius:16px;background:var(--vz-glass);border-color:var(--vz-hair)}
+:root[data-ui="vizor"] .adm5-v.cur{background:color-mix(in srgb,var(--accent) 10%,var(--vz-glass));border-color:color-mix(in srgb,var(--accent) 50%,transparent)}
+:root[data-ui="vizor"] .adm5-v.cur::before{content:"";position:absolute;inset:4px;color:var(--accent);background:var(--vz-brk-s);background-repeat:no-repeat;pointer-events:none}
+:root[data-ui="vizor"] .adm5-pr .ib{border-radius:50%}
+:root[data-ui="vizor"] .adm5-del{box-shadow:0 8px 18px -12px color-mix(in srgb,var(--heart) 80%,transparent)}
+:root[data-ui="vizor"] main.enter>.adm5{animation:none}
+:root[data-ui="vizor"] main.enter .adm5>.adm5-s{animation:vzRise .44s var(--vz-ease) both;animation-delay:calc(.06s + var(--i,0) * .035s)}
+html.reduce-motion .adm5-b,html.reduce-motion .adm5-cv,html.reduce-motion .adm5-ic::before{transition:none!important}
+@media (prefers-reduced-motion:reduce){.adm5-b,.adm5-cv,.adm5-ic::before{transition:none!important}.adm5 .adm5-s{animation:none!important}}
 /*}@css:50ADM*/
 
 /*@css:50CHS{*/
@@ -5073,6 +5264,274 @@ document.addEventListener("keydown",e=>{const c=CALL;if(!c||!$("#callBox")||e.ct
 /*}@js:50SRCH*/
 
 /*@js:50ADM{*/
+/* ===== 5.0 · Yönetici paneli: açılır-kapanır bölümler ve düzeltmeler =====
+   vAdmin yeniden yazıldı (eskisi vAdminOld). Panel bölümlerden oluşur; başlığa dokununca açılır ya da kapanır,
+   durum cihazda saklanır (LS kadraj_adm_acc). Kapalı bölümün içi hiç çizilmez; açılınca render(false) ile çizilir ve
+   yüksekliği yumuşakça açılır (grid-template-rows 0fr → 1fr; kbReduce() ise animasyonsuz).
+   Bölüm biçimi: {id, title, desc, icon, order, html:()=>string, wire:(el)=>void, count?, open?}
+     - title, desc ve count değer ya da fonksiyon olabilir. count: sayı/yazı ya da {t, c:"warn"|"on"|"hot"|"dim"|"live"}.
+     - open: hiç dokunulmamışken açık mı başlasın (varsayılan kapalı).
+     - wire(el): bölüm açıkken her çizimden sonra bölümün iç kutusuyla (.adm5-pad) çağrılır.
+   ADM_EXTRA: başka kod kendi bölümünü buraya ekler, ör.
+     ADM_EXTRA.push({id:"ai",title:"Yapay zekâ",desc:"…",icon:"spark",order:65,html:()=>"…",wire:el=>{…}})
+     Yerleşik sıra: ozet 10, duyuru 20, sikayet 30, kullanici 40, icerik 50, botlar 60, sistem 70, arsiv 80, kayit 90 (order yoksa 75).
+     Aynı id iki kez eklenirse sonuncusu geçerlidir; yerleşik id'ler ezilemez. Bir bölümün html/count/wire hatası yalnızca o bölümde görünür.
+   Sürüm arşivi kapalı başlar; GitHub listesi yalnızca bölüm ilk açıldığında çekilir (S.archTried eski hemen-çekme kancasını susturur).
+   Cloudinary sayacı (meta/_cld) her çizimde değil en çok dakikada bir okunur (eski kanca HOOKS.after'dan çıkarıldı).
+   Düzeltmeler (admAct sarıldı → admActOld; admUserSheet → admUserSheetOld; admWipe → admWipeOld):
+     bakım modu prompt() yerine pencereyle açılır, Vazgeç gerçekten vazgeçer; hikâyeleri silmek onay ister; silme hataları sayılıp
+     gösterilir; yoksayma yalnızca başarıda listeden düşer; silinemeyen paylaşımın şikayetleri kapanmaz; öne çıkan paylaşım silinince
+     öne çıkarma da kalkar; duyuru taslağı yeniden çizimde kaybolmaz; kural kopyalama panoya erişemezse metni seçer;
+     öne çıkarma, bot silme, duyuru kaldırma, temizlikler işlem kaydına düşer; Meydan 500'den fazla mesajda da tamamen temizlenir. */
+Object.assign(IP,{
+ admchev:'<path d="m6 9 6 6 6-6"/>',
+ admmega:'<path d="M3.5 10v4a1 1 0 0 0 1 1H7l9 4.5v-15L7 9H4.5a1 1 0 0 0-1 1z"/><path d="m7 15 1.5 5h2.6l-1.2-4.6M19.5 9.5a3.5 3.5 0 0 1 0 5"/>',
+ admbox:'<rect x="3" y="4" width="18" height="4.5" rx="1.3"/><path d="M5 8.5V19a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8.5M10 12.5h4"/>',
+ admclock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.2 2"/>',
+ admbot:'<rect x="4" y="8" width="16" height="12" rx="3.5"/><path d="M12 4.6V8M9.5 13v1M14.5 13v1M9.5 17h5"/><circle cx="12" cy="3.4" r="1.2"/>',
+ admtool:'<path d="M14.5 5.5a4.5 4.5 0 0 0-5.9 5.7l-5.1 5.1a2 2 0 0 0 2.8 2.8l5.1-5.1a4.5 4.5 0 0 0 5.7-5.9l-2.7 2.7-2.4-.4-.4-2.4z"/>'});
+const ADM_EXTRA=[];
+const ADM_ACC="kadraj_adm_acc";
+S.archTried=true;
+{const i=HOOKS.after.findIndex(f=>/meta\/_cld/.test(String(f)));if(i>=0)HOOKS.after.splice(i,1)}
+function admAccAll(){const v=LS.get(ADM_ACC,{});return v&&typeof v==="object"&&!Array.isArray(v)?v:{}}
+function admIsOpen(s){const st=admAccAll();return Object.prototype.hasOwnProperty.call(st,s.id)?!!st[s.id]:!!s.open}
+function admAccSet(id,on){const st=admAccAll();st[id]=!!on;LS.set(ADM_ACC,st)}
+function admCall(s,k,...a){const f=s[k];if(typeof f!=="function")return f;return f.apply(s.src||s,a)}
+function admVal(s,k,d){try{const v=admCall(s,k);return v==null?d:v}catch(e){console.warn("adm",s.id,k,e);return d}}
+const admAgo=t=>{const a=ago(t||now());return a==="şimdi"?"az önce":a+" önce"};
+const admErrBox=e=>`<div class="adm5-err">${I("info")}<span><b>Bu bölüm yüklenemedi.</b><small>${esc(String((e&&e.message)||e||"Bilinmeyen hata").slice(0,200))}</small></span></div>`;
+const admUsers=()=>Object.values(S.profiles).filter(p=>p&&p.uid&&!String(p.uid).startsWith("bot:"));
+const admLogItems=()=>(S.adm&&S.adm.log&&Array.isArray(S.adm.log.items)&&S.adm.log.items)||[];
+const ADM_SECS=[
+ {id:"ozet",title:"Özet",desc:"Üyeler, paylaşımlar, depolama",icon:"poll",order:10,open:true,count:()=>({t:`${S.online.size+1} çevrimiçi`,c:"live"}),html:admOzetHtml,wire:admOzetWire},
+ {id:"duyuru",title:"Duyuru",desc:"Akış'ın en üstünde görünür",icon:"admmega",order:20,count:()=>{const a=S.adm&&S.adm.duyuru;return a&&a.text?{t:"Yayında",c:"on"}:{t:"Yok",c:"dim"}},html:admDuyuruHtml,wire:admDuyuruWire},
+ {id:"sikayet",title:"Şikayetler",desc:"Bildirilen paylaşımlar",icon:"flag",order:30,open:true,count:()=>{const n=(S.reports||[]).length;return n?{t:n,c:"warn"}:{t:"0",c:"dim"}},html:admSikayetHtml},
+ {id:"kullanici",title:"Kullanıcılar",desc:"Ara, sırala, rozet ver, sustur",icon:"users",order:40,count:()=>admUsers().length,html:admKullaniciHtml,wire:admKullaniciWire},
+ {id:"icerik",title:"İçerik",desc:"Öne çıkan, paylaşımlar, temizlik",icon:"grid",order:50,count:()=>{const p=pinnedId();return p&&postById(p)?{t:"Öne çıkan var",c:"on"}:Object.keys(S.posts).length+" paylaşım"},html:admIcerikHtml},
+ {id:"botlar",title:"Botlar",desc:"Rota ve hazır yanıtlı botlar",icon:"admbot",order:60,count:()=>BOTS.length,html:admBotlarHtml},
+ {id:"sistem",title:"Bakım ve sistem",desc:"Bakım, ortak tema, kurallar",icon:"admtool",order:70,count:()=>bakimOn()?{t:"Bakım açık",c:"hot"}:{t:"Normal",c:"dim"},html:admSistemHtml,wire:admSistemWire},
+ {id:"arsiv",title:"Sürüm arşivi",desc:"Eski sürümleri deneme modunda aç",icon:"admbox",order:80,count:()=>archList().length+" sürüm",html:admArsivHtml,wire:admArsivWire},
+ {id:"kayit",title:"İşlem kaydı",desc:"Son 40 yönetici işlemi",icon:"admclock",order:90,count:()=>admLogItems().length,html:admKayitHtml}];
+/* yerleşik + ADM_EXTRA, order'a göre; ADM_EXTRA'daki bozuk kayıtlar atlanır */
+function admSecs(){const ids=new Set(ADM_SECS.map(s=>s.id));const ex=new Map();let n=0;
+ for(const r of ADM_EXTRA){n++;try{if(!r||typeof r!=="object")continue;
+  let id=String(r.id==null?"":r.id).trim().replace(/[^A-Za-z0-9_-]/g,"").slice(0,40);
+  if(!id){const t=typeof r.title==="string"?r.title:"";id="ek-"+(kbFold(t).replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"").slice(0,30)||n)}
+  if(ids.has(id))continue;ex.set(id,{id,title:r.title,desc:r.desc,icon:r.icon,order:r.order,count:r.count,open:r.open,html:r.html,wire:r.wire,src:r,extra:true})}catch(e){console.warn("ADM_EXTRA",e)}}
+ return[...ADM_SECS,...ex.values()].map((s,i)=>{const o=Number(s.order);return{...s,_i:i,_o:Number.isFinite(o)?o:75}}).sort((a,b)=>a._o-b._o||a._i-b._i)}
+function admSecHtml(s,i){const id=esc(s.id);let open=false;try{open=admIsOpen(s)}catch{}
+ const opening=open&&S._admOpening===s.id&&!kbReduce();
+ const title=String(admVal(s,"title","")||"Bölüm"),desc=String(admVal(s,"desc","")||"");
+ let cnt="";const c=admVal(s,"count",null);if(c!=null&&c!==""){const o=typeof c==="object"?c:{t:c};const cls=["warn","on","hot","dim","live"].includes(o.c)?o.c:"";if(o.t!=null&&o.t!=="")cnt=`<span class="adm5-n ${cls}">${esc(String(o.t))}</span>`}
+ const ic=typeof s.icon==="string"&&IP[s.icon]?s.icon:"spark";
+ let body="";if(open){try{const h=admCall(s,"html");body=h==null?"":String(h)}catch(e){console.warn("adm bölüm",s.id,e);body=admErrBox(e)}}
+ return`<section class="adm5-s${open?" open":""}${opening?" opening":""}" id="admS-${id}" data-sec="${id}" style="--i:${i}"><h3 class="adm5-hh"><button type="button" class="adm5-h" id="admH-${id}" data-adm="acc" data-v="${id}" aria-expanded="${open}" aria-controls="admB-${id}"><span class="adm5-ic">${I(ic)}</span><span class="adm5-t"><b>${esc(title)}</b>${desc?`<small>${esc(desc)}</small>`:""}</span>${cnt}<span class="adm5-cv">${I("admchev")}</span></button></h3><div class="adm5-b" id="admB-${id}" role="region" aria-labelledby="admH-${id}"${open?"":" inert"}><div class="adm5-in">${open?`<div class="adm5-pad">${body}</div>`:""}</div></div></section>`}
+const vAdminOld=vAdmin;
+vAdmin=function(){if(!S.admin)return vAdminOld();
+ const secs=admSecs();let any=false;for(const s of secs)try{if(admIsOpen(s)){any=true;break}}catch{}
+ let h=`<div class="adm-hero adm5-hero"><span class="ic">${I("key")}</span><div class="t"><b>Yönetici paneli</b><small>@${esc(me().username||"")} · ${S.mode==="cloud"?"Firebase":"Demo modu"}</small></div><button type="button" class="adm5-all" data-adm="acccl"${any?"":" hidden"}>${I("admchev")}Hepsini kapat</button></div>`;
+ if(bakimOn())h+=`<div class="banner adm5-warn">${I("admtool")}<span><b>Bakım modu açık.</b> Kullanıcılar şu an uygulamayı göremiyor.</span><button type="button" class="btn sm sec" data-adm="accgo" data-v="sistem">Bakım</button></div>`;
+ if(S.mode==="cloud"&&S.admRulesOk===false)h+=`<div class="banner adm5-warn">${I("info")}<span><b>Bir kez kurulum gerekiyor.</b> Panel işlemlerinin çalışması için <b>Bakım ve sistem</b> bölümündeki kuralları Firebase'e yapıştırıp Yayınla'ya bas.</span><button type="button" class="btn sm sec" data-adm="accgo" data-v="sistem">Aç</button></div>`;
+ h+=`<div class="adm5">${secs.map(admSecHtml).join("")}</div>`;
+ h+=`<div class="adm5-exit"><button class="btn ghost block" data-adm="exit">${I("logout")}Yönetici modundan çık</button></div>`;
+ return h};
+/* açma/kapama: kapanış yalnızca sınıfla (animasyonlu), açılış render(false) + "opening" sınıfı */
+function admAccToggle(id){if(!id)return;const sec=document.getElementById("admS-"+id);const open=!(sec&&sec.classList.contains("open"));admAccSet(id,open);vib(6);
+ if(open||!sec){if(open)S._admOpening=id;return render(false)}
+ sec.classList.remove("open","opening");const b=sec.querySelector(".adm5-h");if(b)b.setAttribute("aria-expanded","false");const bd=sec.querySelector(".adm5-b");if(bd)bd.inert=true;admAllBtn()}
+function admAllBtn(){const b=$(".adm5-all");if(b)b.hidden=!$$(".adm5-s.open").length}
+function admAccCloseAll(){const st=admAccAll();for(const s of admSecs())st[s.id]=false;LS.set(ADM_ACC,st);
+ for(const sec of $$(".adm5-s.open")){sec.classList.remove("open","opening");const b=sec.querySelector(".adm5-h");if(b)b.setAttribute("aria-expanded","false");const bd=sec.querySelector(".adm5-b");if(bd)bd.inert=true}admAllBtn()}
+function admAccGo(id){if(!id)return;const sec=document.getElementById("admS-"+id);admAccSet(id,true);if(!(sec&&sec.classList.contains("open")))S._admOpening=id;S._admJump=id;render(false)}
+function admEdges(){const m=main();const mr=m.getBoundingClientRect();let top=mr.top,bot=mr.bottom;const t=$("#top"),d=$("#dock");
+ if(t&&!t.hidden&&!t.classList.contains("vz-hide"))top=Math.max(top,t.getBoundingClientRect().bottom);
+ const nav=d&&!d.hidden&&(d.querySelector("nav")||d);if(nav){const r=nav.getBoundingClientRect();if(r.height)bot=Math.min(bot,r.top)}return{m,top,bot}}
+/* açılan bölüm ekranın altına taşıyorsa başlığı görünür tutarak yukarı kaydır */
+function admReveal(sec){if(!sec||!sec.isConnected)return;const{m,top,bot}=admEdges();const r=sec.getBoundingClientRect();const over=r.bottom-bot+10;if(over<=0)return;
+ const dy=Math.min(over,Math.max(0,r.top-top-10));if(dy>0)m.scrollBy({top:dy,behavior:kbReduce()?"auto":"smooth"})}
+function admJumpTo(sec){if(!sec||!sec.isConnected)return;const{m,top}=admEdges();const dy=sec.getBoundingClientRect().top-top-10;if(Math.abs(dy)>4)m.scrollBy({top:dy,behavior:kbReduce()?"auto":"smooth"})}
+HOOKS.after.push(r=>{if(r!=="admin"||!S.admin)return;
+ for(const s of admSecs()){if(typeof s.wire!=="function")continue;const sec=document.getElementById("admS-"+s.id);if(!sec||!sec.classList.contains("open"))continue;const el=sec.querySelector(".adm5-pad");if(!el)continue;
+  try{admCall(s,"wire",el)}catch(e){console.warn("adm wire",s.id,e);el.insertAdjacentHTML("afterbegin",admErrBox(e))}}
+ const op=S._admOpening;S._admOpening=null;const jp=S._admJump;S._admJump=null;
+ if(op){const sec=document.getElementById("admS-"+op);if(sec){const hb=sec.querySelector(".adm5-h");const a=document.activeElement;if(hb&&(!a||a===document.body))try{hb.focus({preventScroll:true})}catch{}
+  if(sec.classList.contains("opening")){void sec.offsetHeight;requestAnimationFrame(()=>{sec.classList.remove("opening");if(op!==jp)setTimeout(()=>admReveal(sec),340)})}else if(op!==jp)admReveal(sec)}}
+ if(jp){const sec=document.getElementById("admS-"+jp);if(sec)requestAnimationFrame(()=>admJumpTo(sec))}});
+
+/* --- Özet --- */
+function admOzetHtml(){const users=admUsers();const posts=Object.values(S.posts);const lim=now()-24*H;const reels=posts.filter(p=>p.kind==="reel").length;const reps=(S.reports||[]).length;
+ const st=(n,l)=>`<div class="adm5-st"><b>${fmt(n)}</b><span>${l}</span></div>`;
+ const nu=users.filter(p=>(p.createdAt||0)>lim).length,np=posts.filter(p=>(p.at||0)>lim).length;
+ return`<div class="adm5-stats">${st(users.length,"üye")}${st(S.online.size+1,"şu an açık")}${st(posts.length-reels,"paylaşım")}${st(reels,"Flick")}${st(Object.values(S.stories).filter(s=>s.at>lim).length,"hikâye · 24 sa")}<button type="button" class="adm5-st${reps?" warn":""}" data-adm="accgo" data-v="sikayet"><b>${fmt(reps)}</b><span>açık şikayet</span></button></div>
+ <p class="adm5-note">Son 24 saatte <b>${fmt(nu)}</b> yeni üye ve <b>${fmt(np)}</b> yeni paylaşım.</p>${admCldHtml()}`}
+function admCldHtml(){const d=S.cldUse;const b=(d&&d.bytes)||0,n=(d&&d.count)||0;const pct=Math.min(100,b/(25*1073741824)*100);
+ const val=d?`${fmtMB(b)} · ${fmt(n)} video`:S._cldErr?"Okunamadı":"…";
+ return`<div class="adm5-cld" id="adm5Cld"><div class="adm5-kv"><span>${I("film")}Cloudinary</span><b>${esc(val)}</b></div><div class="adm5-bar" role="img" aria-label="Aylık kotanın yüzde ${pct.toFixed(1).replace(".",",")} kadarı"><i style="width:${Math.max(pct,b?1:0).toFixed(2)}%"></i></div><small>Flick videoları burada durur. Ücretsiz plan: ayda 25 kredi (1 kredi = 1 GB depolama ya da 1 GB izlenme). Sayaç uygulamadan yüklenen videoları sayar; izlenme ve panelden silinenler için gerçek rakam Cloudinary panelindedir.</small><a class="btn sec sm" href="https://console.cloudinary.com/" target="_blank" rel="noopener">${I("link")}Cloudinary panelini aç</a></div>`}
+function admOzetWire(){if(now()-(S._cldAt||0)<60e3)return;S._cldAt=now();const put=()=>{const x=$("#adm5Cld");if(x)x.outerHTML=admCldHtml()};
+ DB.get("meta/_cld").then(d=>{S._cldErr=false;const old=JSON.stringify(S.cldUse||null);S.cldUse=d||{bytes:0,count:0};if(JSON.stringify(S.cldUse)!==old)put()}).catch(e=>{console.warn("cld",e);S._cldErr=true;S._cldAt=0;put()})}
+
+/* --- Duyuru (taslak S.admAnnDraft'ta durur, yeniden çizimde kaybolmaz) --- */
+function admDuyuruHtml(){const an=S.adm&&S.adm.duyuru;const d=S.admAnnDraft||"";
+ return`${an&&an.text?`<div class="adm-cur">${I("bell")}<span>${esc(an.text)}<small>${admAgo(an.at)} yayınlandı${an.by&&an.by!==S.uid?" · @"+esc(P(an.by).username):""}</small></span><button type="button" class="btn sm sec" data-adm="annx">Kaldır</button></div>`:`<p class="adm5-note">Şu an yayında duyuru yok.</p>`}
+ <div class="field"><label for="admAnn">${an&&an.text?"Yeni duyuru":"Duyuru metni"}</label><textarea class="in" id="admAnn" maxlength="300" rows="3" placeholder="Herkesin Akış'ında üstte görünecek duyuru…">${esc(d)}</textarea></div>
+ <div class="adm5-row"><small class="adm5-cnt" id="admAnnN">${d.length}/300</small><button type="button" class="btn sm" data-adm="ann">${I("send")}Yayınla</button></div>`}
+function admDuyuruWire(el){const ta=$("#admAnn",el);if(!ta)return;const n=$("#admAnnN",el);ta.oninput=()=>{S.admAnnDraft=ta.value;if(n)n.textContent=ta.value.length+"/300"}}
+
+/* --- Şikayetler (aynı paylaşıma gelenler tek satırda) --- */
+function admRepGroups(){const m=new Map();for(const r of S.reports||[]){if(!r||!r.id)continue;const k=r.pid||"?";if(!m.has(k))m.set(k,[]);m.get(k).push(r)}
+ return[...m.entries()].map(([pid,rs])=>({pid,rs,at:Math.max(0,...rs.map(r=>r.at||0))})).sort((a,b)=>b.at-a.at)}
+function admSikayetHtml(){const g=admRepGroups();if(!g.length)return`<div class="adm5-empty">${I("check")}<span><b>Açık şikayet yok.</b><small>Bir paylaşım şikayet edilince burada görünür.</small></span></div>`;
+ return`<div class="adm5-list">${g.slice(0,30).map(({pid,rs,at})=>{const p=postById(pid);const th=p&&postThumb(p);const why=[...new Set(rs.map(r=>r.reason||"Şikayet"))];const by=[...new Set(rs.map(r=>r.by).filter(Boolean))];
+  return`<div class="adm5-rep"><button type="button" class="adm-th" ${p?`data-open="${esc(pid)}" aria-label="Paylaşımı aç"`:'disabled aria-label="Paylaşım silinmiş"'}>${th?`<img src="${esc(th)}" alt="">`:I(p?(p.kind==="poll"?"poll":"type"):"flag")}</button><div class="t"><b>${esc(why.join(", "))}</b><span class="s">${p?"@"+esc(P(p.uid).username)+" paylaşımı":"Paylaşım zaten silinmiş"} · ${rs.length>1?rs.length+" şikayet · ":""}${admAgo(at)}</span>${by.length?`<span class="s">Bildiren: ${by.slice(0,3).map(u=>"@"+esc(P(u).username)).join(", ")}${by.length>3?` ve ${by.length-3} kişi daha`:""}</span>`:""}</div><div class="adm5-acts">${p?`<button type="button" class="btn sm adm5-del" data-adm="repdel" data-p="${esc(pid)}">${I("trash")}Kaldır</button>`:""}<button type="button" class="btn sm sec" data-adm="repign" data-p="${esc(pid)}">${p?"Yoksay":"Temizle"}</button></div></div>`}).join("")}</div>${g.length>30?`<p class="adm5-note">Son 30 paylaşım gösteriliyor (${g.length} paylaşım şikayetli).</p>`:""}`}
+async function admRepClear(pid){const rs=(S.reports||[]).filter(r=>(r.pid||"?")===pid);let k=0;
+ for(const r of rs)if(await write(()=>DB.del("reports/"+r.id),{quiet:true})){k++;S.reports=(S.reports||[]).filter(x=>x.id!==r.id)}
+ if(k<rs.length)toast("Bazı şikayetler silinemedi. Bağlantını ve Firebase kurallarını kontrol et.");return k}
+
+/* --- Kullanıcılar --- */
+function admChildSt(uid){if(isChild(uid))return"on";const c=childInvites()[uid];return c&&c.at?"inv":""}
+function admMuteLeft(m){const d=m.until-now();if(d>3650*24*H)return"süresiz";if(d<H)return Math.max(1,Math.ceil(d/60e3))+" dk";if(d<24*H)return Math.ceil(d/H)+" sa";return Math.ceil(d/(24*H))+" gün"}
+function admUserBadges(uid){const b=[];if(isVerified(uid))b.push(`<i class="ok">Onaylı</i>`);const m=muteOf(uid);if(m)b.push(`<i class="mu">Susturuldu · ${admMuteLeft(m)}</i>`);
+ const c=admChildSt(uid);if(c==="on")b.push(`<i class="ch">Çocuk modu</i>`);else if(c==="inv")b.push(`<i class="ch">Çocuk modu önerildi</i>`);return b.join("")}
+const ADM_UF=[["all","Tümü"],["ver","Onaylı"],["mute","Susturulmuş"],["child","Çocuk modu"],["ban","Kapatılmış"]];
+function admUFilter(f,p){if(f==="ver")return isVerified(p.uid);if(f==="mute")return!!muteOf(p.uid);if(f==="child")return!!admChildSt(p.uid);return true}
+const admBanned=()=>Object.entries(admBan()).filter(([,b])=>b&&b.at).map(([uid,b])=>({...b,uid})).sort((a,b)=>b.at-a.at);
+function admKullaniciHtml(){const f=S.admF||"all",so=S.admSort||"new";const users=admUsers(),ban=admBanned();
+ const cnt=k=>k==="all"?users.length+ban.length:k==="ban"?ban.length:users.filter(p=>admUFilter(k,p)).length;
+ return`<div class="search adm5-uq"><input class="in" id="adm5Q" type="search" placeholder="Kişi ara" value="${esc(S.admQ||"")}" autocomplete="off" aria-label="Kullanıcı ara"><div class="seg adm5-sort" role="group" aria-label="Sıralama">${[["new","Yeni"],["posts","Paylaşım"]].map(([k,l])=>`<button type="button" data-adm="usort" data-v="${k}" aria-pressed="${so===k}">${l}</button>`).join("")}</div></div>
+ <div class="adm5-fl" role="group" aria-label="Süz">${ADM_UF.map(([k,l])=>`<button type="button" class="chip" data-adm="ufilt" data-v="${k}" aria-pressed="${f===k}">${l}<span>${cnt(k)}</span></button>`).join("")}</div>
+ <div class="adm5-list" id="adm5UL">${admUserRows()}</div>`}
+function admUserRows(){const f=S.admF||"all",so=S.admSort||"new",lim=S.admUN||60;const q=kbFold((S.admQ||"").trim());const hit=(...s)=>!q||kbFold(s.join(" ")).includes(q);
+ let out="",shown=0,total=0;
+ if(f!=="ban"){const pc={};for(const p of Object.values(S.posts))pc[p.uid]=(pc[p.uid]||0)+1;
+  const list=admUsers().filter(p=>admUFilter(f,p)&&hit(p.name||"",p.username||""));
+  list.sort(so==="posts"?(a,b)=>(pc[b.uid]||0)-(pc[a.uid]||0)||(b.createdAt||0)-(a.createdAt||0):(a,b)=>(b.createdAt||0)-(a.createdAt||0));
+  total+=list.length;
+  out+=list.slice(0,lim).map(p=>{shown++;const n=pc[p.uid]||0;const sn=seenText(p.uid);const bd=admUserBadges(p.uid);
+   return`<button type="button" class="adm5-u" data-admu="${esc(p.uid)}">${avatar(p.uid,42,{click:false,ring:false})}<span class="t"><span class="n"><b>${esc(p.name||p.username||"Hesap")}</b>${badge(p.uid)}${p.uid===S.uid?'<span class="tag">sen</span>':""}</span><span class="s">@${esc(p.username||"")} · ${fmt(n)} paylaşım</span>${p.createdAt||sn?`<span class="s2">${p.createdAt?admAgo(p.createdAt)+" katıldı":""}${p.createdAt&&sn?" · ":""}${esc(sn)}</span>`:""}${bd?`<span class="adm5-bd">${bd}</span>`:""}</span>${I("next","adm5-go")}</button>`}).join("")}
+ if(f==="all"||f==="ban"){const bl=admBanned().filter(b=>hit(b.name||"",b.username||""));total+=bl.length;const room=Math.max(0,lim-shown);
+  out+=bl.slice(0,room).map(b=>{shown++;return`<button type="button" class="adm5-u ban" data-adm="unban5" data-u="${esc(b.uid)}"><span class="av" style="--s:42px"><img src="${esc(initialsAv(b.name||"?",b.uid))}" alt=""></span><span class="t"><span class="n"><b>${esc(b.name||"Hesap")}</b></span><span class="s">@${esc(b.username||"")} · ${admAgo(b.at)} kapatıldı</span><span class="adm5-bd"><i class="ban">Kapatıldı</i></span></span><span class="adm5-open">Aç</span></button>`}).join("")}
+ if(!total)return`<div class="adm5-empty">${I("search")}<span><b>Kimse bulunamadı.</b><small>${q?"Aramayı ya da süzgeci değiştir.":"Bu süzgece uyan hesap yok."}</small></span></div>`;
+ if(total>shown)out+=`<div class="adm5-morew"><button type="button" class="btn sec sm block" data-adm="umore">${fmt(total-shown)} kişi daha göster</button></div>`;
+ return out}
+function admUsersRedraw(){const ul=$("#adm5UL");if(ul)ul.innerHTML=admUserRows();
+ $$('[data-adm="ufilt"]').forEach(b=>b.setAttribute("aria-pressed",b.dataset.v===(S.admF||"all")));$$('[data-adm="usort"]').forEach(b=>b.setAttribute("aria-pressed",b.dataset.v===(S.admSort||"new")))}
+function admKullaniciWire(el){const q=$("#adm5Q",el);if(!q)return;q.oninput=()=>{S.admQ=q.value;S.admUN=60;clearTimeout(q._t);q._t=setTimeout(admUsersRedraw,120)}}
+
+/* --- İçerik --- */
+function admIcerikHtml(){const pin=pinnedId();const pp=pin&&postById(pin);const posts=Object.values(S.posts).filter(p=>S.profiles[p.uid]).sort((a,b)=>(b.at||0)-(a.at||0));
+ const row=p=>{const th=postThumb(p);const on=pin===p.id;const cap=String(p.caption||p.text||p.question||"").replace(/\s+/g," ").slice(0,70)||({reel:"Flick",photo:"Fotoğraf",note:"Not",poll:"Anket"}[p.kind]||"Paylaşım");
+  return`<div class="adm5-pr"><button type="button" class="adm-th" data-open="${esc(p.id)}" aria-label="Paylaşımı aç">${th?`<img src="${esc(th)}" alt="">`:I(p.kind==="poll"?"poll":"type")}</button><div class="t"><div><b>@${esc(P(p.uid).username)}</b>${on?'<span class="tag">öne çıkan</span>':""}</div><div class="s">${esc(cap)} · ${admAgo(p.at)}</div></div><button type="button" class="ib${on?" on":""}" data-adm="pin" data-u="${esc(p.id)}" aria-pressed="${on}" aria-label="${on?"Öne çıkarmayı kaldır":"Akış'ta öne çıkar"}">${I("spark")}</button><button type="button" class="ib" data-adm="postdel" data-u="${esc(p.id)}" aria-label="Paylaşımı kaldır">${I("trash")}</button></div>`};
+ let h=`<div class="adm5-sub">Öne çıkan</div>`;
+ if(pp)h+=`<div class="adm5-list">${row(pp)}</div>`;
+ else if(pin)h+=`<div class="adm5-empty">${I("info")}<span><b>Öne çıkan paylaşım silinmiş.</b><small>Akış'ta görünmüyor; kaydı temizleyebilirsin.</small></span><button type="button" class="btn sm sec" data-adm="unpin">Temizle</button></div>`;
+ else h+=`<p class="adm5-note">Öne çıkan paylaşım yok. Aşağıdaki listede ${I("spark")} düğmesiyle bir paylaşımı Akış'ın en üstüne taşıyabilirsin.</p>`;
+ h+=`<div class="adm5-sub">Son paylaşımlar</div>`+(posts.length?`<div class="adm5-list">${posts.slice(0,15).map(row).join("")}</div>`:`<p class="adm5-note">Henüz paylaşım yok.</p>`);
+ h+=`<div class="adm5-sub">Temizlik</div><div class="adm5-set"><button type="button" class="srow" data-adm="meydanclr">${I("globe")}<span class="t">Meydan'ı temizle<small>Ortak sohbetteki tüm mesajlar herkes için silinir</small></span></button><button type="button" class="srow" data-adm="storyclr">${I("eye")}<span class="t">Eski hikâyeleri temizle<small>24 saati geçmiş hikâyeleri veritabanından siler</small></span></button></div>`;
+ return h}
+
+/* --- Botlar --- */
+function admBotlarHtml(){const cb=BOTS.filter(b=>b.custom);
+ const row=(b,acts)=>`<div class="adm5-pr">${avatar(b.uid,42,{click:false,ring:false})}<div class="t"><div><b>${esc(b.name)}</b>${badge(b.uid)}</div><div class="s">${acts?`@${esc(b.username)} · ${(b.replies||[]).length} hazır yanıt`:"Yerleşik rehber ve satranç rakibi"}</div></div>${acts?`<button type="button" class="ib" data-adm="botsay" data-u="${esc(b.uid)}" aria-label="Bot olarak Meydan'a yaz">${I("globe")}</button><button type="button" class="ib" data-adm="botedit" data-u="${esc(b.uid)}" aria-label="Botu düzenle">${I("edit")}</button><button type="button" class="ib" data-adm="botdel" data-u="${esc(b.uid)}" aria-label="Botu sil">${I("trash")}</button>`:""}</div>`;
+ return`<div class="adm5-row"><p class="adm5-note" style="flex:1;min-width:11rem">Botlar “bot” etiketiyle görünür ve yazana hazır yanıtlarından biriyle cevap verir.</p><button type="button" class="btn sm" data-adm="botnew">${I("add")}Bot ekle</button></div>
+ <div class="adm5-list">${BOT["bot:rota"]?row(BOT["bot:rota"],false):""}${cb.map(b=>row(b,true)).join("")}</div>${cb.length?"":`<p class="adm5-note">Henüz eklenmiş bot yok.</p>`}`}
+
+/* --- Bakım ve sistem --- */
+function admSistemHtml(){const bk=(S.adm&&S.adm.bakim)||{};const on=bakimOn();
+ return`<div class="adm5-set"><label class="srow">${I("admtool")}<span class="t">Bakım modu<small>${on?`Açık${bk.at?" · "+admAgo(bk.at):""}. Yönetici dışında kimse uygulamayı kullanamıyor.`:"Açınca yönetici dışında kimse uygulamayı kullanamaz"}</small></span><span class="sw"><input type="checkbox" id="adm5Bk"${on?" checked":""} aria-label="Bakım modu"><span></span></span></label>
+ ${on?`<button type="button" class="srow" data-adm="bkmsg">${I("edit")}<span class="t">Bakım mesajı<small>${esc(bk.msg||"Kadraj birazdan geri dönecek. Anlayışın için teşekkürler.")}</small></span></button>`:""}${admTemaRow()}<button type="button" class="srow" data-adm="childmode">${I("lock")}<span class="t">Çocuk modu nasıl çalışır?<small>Kullanıcılar bölümünden bir hesaba önerilir</small></span></button></div>
+ <div class="adm5-sub">Firebase kurulumu</div>
+ <p class="adm5-note">${S.mode==="cloud"?"Panel işlemlerinin (hesap kapatma, duyuru, bot, rozet) çalışması için bu kuralları bir kez Firebase'de <b>Firestore Database › Kurallar</b>'a yapıştırıp <b>Yayınla</b>'ya bas. İçinde senin hesap kimliğin var; yalnızca sen yönetici olursun.":"Demo modunda veriler yalnızca bu cihazda durur, kural gerekmez. Firebase'e geçince bu kuralları yapıştırırsın."}</p>
+ <div class="adm5-kv"><span>Hesap kimliğin</span><b class="mono">${esc(S.uid||"")}</b></div>
+ <div class="adm5-row"><button type="button" class="btn sec sm" data-adm="copyrules">${I("copy")}Kuralları kopyala</button></div>
+ <details class="adm5-det"><summary>Kuralları göster</summary><pre class="adm-rules">${esc(rulesText([S.uid]))}</pre></details>`}
+function admSistemWire(el){const bk=$("#adm5Bk",el);if(!bk)return;
+ bk.onchange=async()=>{if(bk.checked){bk.checked=false;return admBakimSheet()}const cur=(S.adm&&S.adm.bakim)||{};bk.disabled=true;
+  if(await admSet("bakim",{on:false,msg:cur.msg||""})){admLog("Bakım modu kapatıldı");toast("Bakım modu kapandı");render(false)}else if(bk.isConnected){bk.checked=true;bk.disabled=false}}}
+/* bakım: eski prompt() Vazgeç'te de açıyordu; artık pencere ve gerçek onay */
+function admBakimSheet(){const cur=(S.adm&&S.adm.bakim)||{};const on=bakimOn();
+ const l=sheet("admbk",on?"Bakım mesajı":"Bakım modu açılsın mı?",`<form class="form" id="abkF"><p class="muted" style="margin:0;font-size:.88rem;line-height:1.45">${on?"Kullanıcıların bakım ekranında gördüğü mesajı değiştir.":"Açıkken yönetici dışında kimse uygulamayı kullanamaz; herkes aşağıdaki mesajı görür. Sen paneli kullanmaya devam edersin."}</p>
+ <div class="field"><label for="abkM">Kullanıcılara gösterilecek mesaj</label><textarea class="in" id="abkM" maxlength="200" rows="3" placeholder="Kadraj birazdan geri dönecek. Anlayışın için teşekkürler.">${esc(cur.msg||"")}</textarea></div>
+ <button class="btn block${on?"":" adm5-del"}">${I("admtool")}${on?"Mesajı kaydet":"Bakımı başlat"}</button><button type="button" class="btn sec block" data-act="close">Vazgeç</button></form>`);
+ const f=$("#abkF",l);if(!f)return;f.onsubmit=async e=>{e.preventDefault();const b=f.querySelector("button");const msg=($("#abkM",l).value||"").trim().slice(0,200);b.disabled=true;
+  if(await admSet("bakim",{on:true,msg})){closeLayer("admbk");admLog(on?"Bakım mesajı değiştirildi":"Bakım modu açıldı");toast(on?"Bakım mesajı güncellendi":"Bakım modu açık");render(false)}else b.disabled=false}}
+
+/* --- Sürüm arşivi (GitHub listesi yalnızca ilk açılışta) --- */
+const admDate=d=>{const m=String(d||"").match(/^(\d{4})-(\d\d)-(\d\d)/);return m?`${m[3]}.${m[2]}.${m[1]}`:String(d||"")};
+function admArStHtml(){const st=S._archSt,ex=(S.archExtra||[]).length;
+ if(st==="busy")return`<span class="spin"></span><span>GitHub'dan yeni sürümler aranıyor…</span>`;
+ if(st==="err")return`${I("info")}<span>GitHub'a ulaşılamadı; yalnızca kayıtlı sürümler görünüyor.</span><button type="button" class="btn sm sec" data-adm="arretry">Tekrar dene</button>`;
+ if(st==="ok")return`${I("check")}<span>GitHub ile eşitlendi${ex?` · ${ex} yeni sürüm eklendi`:""}</span>`;return""}
+function admArsivHtml(){const L=archList();const g=new Map();for(const a of L){const k=String(a[0]).split(".")[0];if(!g.has(k))g.set(k,[]);g.get(k).push(a)}
+ return`<p class="adm5-note">Eski sürümler deneme modunda, internete ve gerçek hesaplara dokunmadan açılır. 0.x–2.x ve 3.7 GitHub'a hiç yüklenmediği için arşivde yok.</p><div class="adm5-arst" id="adm5ArSt">${admArStHtml()}</div>
+ ${[...g].map(([k,list])=>`<div class="adm5-sub">Kadraj ${esc(k)}.x · ${list.length} sürüm</div><div class="adm5-ar">${list.map(([v,sha,d])=>`<button type="button" class="adm5-v${v===APP_VER?" cur":""}" data-arch="${esc(sha)}" data-v="${esc(v)}" aria-label="Kadraj ${esc(v)} sürümünü aç"><b>${esc(v)}</b><small>${esc(admDate(d))}</small>${v===APP_VER?"<i>şu anki</i>":""}</button>`).join("")}</div>`).join("")}`}
+function admArsivWire(){archWire();if(!S._archSt)admArchFetch()}
+function admArchFetch(){if(S._archSt==="busy")return;S._archSt="busy";admArRedraw(false);
+ fetch(`https://api.github.com/repos/${ARCH_REPO}/commits?path=index.html&per_page=100`).then(x=>{if(!x.ok)throw new Error("HTTP "+x.status);return x.json()}).then(list=>{const seen=new Set(VER_ARCHIVE.map(a=>a[0])),ex=[];
+  for(const c of Array.isArray(list)?list:[]){const m=String(c&&c.commit&&c.commit.message||"").match(/^(\d+\.\d+\.\d+):/);if(!m||seen.has(m[1])||/^(750f2d81|97475240)/.test(c.sha||""))continue;seen.add(m[1]);ex.push([m[1],c.sha,String(c.commit.author&&c.commit.author.date||"").slice(0,10)])}
+  S.archExtra=ex;S._archSt="ok";admArRedraw(true)}).catch(e=>{console.warn("arşiv",e);S._archSt="err";admArRedraw(true)})}
+function admArRedraw(full){const sec=document.getElementById("admS-arsiv");if(!sec||!sec.classList.contains("open"))return;
+ if(!full){const st=$("#adm5ArSt",sec);if(st)st.innerHTML=admArStHtml();return}
+ const pad=sec.querySelector(".adm5-pad");if(pad){pad.innerHTML=admArsivHtml();archWire()}const n=sec.querySelector(".adm5-h .adm5-n");if(n)n.textContent=archList().length+" sürüm"}
+
+/* --- İşlem kaydı --- */
+function admKayitHtml(){const lg=admLogItems();if(!lg.length)return`<p class="adm5-note">Henüz kayıtlı işlem yok.</p>`;
+ return`<div class="adm5-list">${lg.map(x=>`<div class="adm5-lg"><i></i><div class="t"><div>${esc(x.x||"")}</div><div class="s">${admAgo(x.t)}${x.by&&x.by!==S.uid?" · @"+esc(P(x.by).username):""}</div></div></div>`).join("")}</div>`}
+
+/* --- işlemler: yeni olanlar ve düzeltilen eskiler; geri kalanı admActOld --- */
+const ADM5_ACT={
+ acc:(t,u,v)=>admAccToggle(v),
+ acccl:()=>admAccCloseAll(),
+ accgo:(t,u,v)=>admAccGo(v),
+ ufilt:(t,u,v)=>{S.admF=v;S.admUN=60;admUsersRedraw()},
+ usort:(t,u,v)=>{S.admSort=v;admUsersRedraw()},
+ umore:()=>{S.admUN=(S.admUN||60)+60;admUsersRedraw()},
+ unban5:(t,u)=>{const b=admBan()[u]||{};dialog("Hesap yeniden açılsın mı?",`@${esc(b.username||"hesap")} tekrar giriş yapıp profilini oluşturabilir. Silinen paylaşımları geri gelmez.`,[{label:"Yeniden aç",fn:()=>admActOld("unban",t)},{label:"Vazgeç"}])},
+ bkmsg:()=>admBakimSheet(),
+ arretry:()=>{S._archSt="";admArchFetch()},
+ ann:async()=>{const ta=$("#admAnn");const v=((ta&&ta.value)||"").trim();if(!v){toast("Önce duyuruyu yaz.");if(ta)ta.focus();return}
+  const pub=async()=>{if(await admSet("duyuru",{text:v,at:now()})){S.admAnnDraft="";admLog("Duyuru yayınlandı: "+v.slice(0,50));toast("Duyuru yayında");render(false)}};
+  const cur=S.adm&&S.adm.duyuru;if(cur&&cur.text)return dialog("Duyuru değişsin mi?","Yayındaki duyurunun yerine bu yazı geçer ve herkesin Akış'ında yeniden görünür.",[{label:"Yayınla",fn:pub},{label:"Vazgeç"}]);return pub()},
+ annx:()=>dialog("Duyuru kaldırılsın mı?","Duyuru herkesin Akış'ından kalkar.",[{label:"Kaldır",cls:"danger",fn:async()=>{if(await admSet("duyuru",{text:"",at:now()})){admLog("Duyuru kaldırıldı");toast("Duyuru kaldırıldı");render(false)}}},{label:"Vazgeç"}]),
+ repok:async(t,u)=>{if(await write(()=>DB.del("reports/"+u))){S.reports=(S.reports||[]).filter(r=>r.id!==u);render(false)}},
+ repign:async t=>{const pid=t.dataset.p;const p=postById(pid);const k=await admRepClear(pid);if(k){admLog(p?`@${P(p.uid).username} paylaşımına gelen ${k} şikayet yoksayıldı`:`${k} eski şikayet temizlendi`);toast(p?"Şikayet yoksayıldı":"Şikayet temizlendi")}render(false)},
+ repdel:t=>{const pid=t.dataset.p;const p=postById(pid);const un=p?P(p.uid).username:"";
+  return dialog("Paylaşım kaldırılsın mı?",`${un?"@"+esc(un)+" kullanıcısının ":""}şikayet edilen paylaşımı herkes için silinir ve şikayetleri kapanır.`,[{label:"Kaldır",cls:"danger",fn:async()=>{await deletePost(pid);if(S.posts[pid])return;await admRepClear(pid);if(pinnedId()===pid)await admSet("pin",{pid:null});admLog(`Şikayet edilen paylaşım kaldırıldı${un?" (@"+un+")":""}`);render(false)}},{label:"Vazgeç"}])},
+ postdel:(t,u)=>{const p=postById(u);const un=p?P(p.uid).username:"";
+  return dialog("Paylaşım kaldırılsın mı?","Paylaşım ve yorumları herkes için kalıcı olarak silinir.",[{label:"Kaldır",cls:"danger",fn:async()=>{await deletePost(u);if(S.posts[u])return;admLog(`${un?"@"+un+" ":""}paylaşımı kaldırıldı`);if((S.reports||[]).some(r=>r.pid===u))await admRepClear(u);if(pinnedId()===u&&await admSet("pin",{pid:null}))toast("Öne çıkan paylaşım da kaldırıldı");render(false)}},{label:"Vazgeç"}])},
+ pin:async(t,u)=>{const p=postById(u);const un=p?"@"+P(p.uid).username+" ":"";
+  if(pinnedId()===u){if(await admSet("pin",{pid:null})){toast("Öne çıkarma kaldırıldı");admLog(un+"paylaşımı öne çıkanlardan kaldırıldı")}}else if(await admSet("pin",{pid:u})){toast("Paylaşım Akış'ın en üstünde");admLog(un+"paylaşımı öne çıkarıldı")}render(false)},
+ unpin:async()=>{if(await admSet("pin",{pid:null})){toast("Öne çıkarma kaldırıldı");admLog("Öne çıkarma kaldırıldı")}render(false)},
+ botdel:(t,u)=>{const b=BOT[u];if(!b)return;return dialog("Bot silinsin mi?",`@${esc(b.username)} kalıcı olarak silinir.`,[{label:"Sil",cls:"danger",fn:async()=>{if(await write(()=>DB.del("bots/"+b.key))){setCustomBots(Object.values(BOT).filter(x=>x.custom&&x.uid!==u));admLog(`@${b.username} botu silindi`);toast("Bot silindi");render(false)}}},{label:"Vazgeç"}])},
+ storyclr:async()=>{if(S._admBusy==="story")return;S._admBusy="story";toast("Eski hikâyeler aranıyor…");
+  try{const ds=await admOnce("stories");const lim=now()-24*H;let k=0,f=0;for(const d of ds)if(!(d.at>lim)){try{await DB.del("stories/"+d.id);k++}catch(e){f++}}
+   if(k)admLog(`${k} eski hikâye temizlendi`);toast(f?`${k} hikâye silindi, ${f} tanesi silinemedi.`:k?`${k} eski hikâye silindi`:"Silinecek eski hikâye yok")}finally{S._admBusy=null}},
+ meydanclr:()=>dialog("Meydan temizlensin mi?","Ortak sohbetteki bütün mesajlar herkes için silinir. Bu geri alınamaz.",[{label:"Temizle",cls:"danger",fn:async()=>{toast("Meydan temizleniyor…");let k=0,f=0;
+  for(let r=0;r<20;r++){const ds=await admOnce("chats/meydan/msgs");if(!ds.length)break;let del=0;for(const d of ds){try{await DB.del("chats/meydan/msgs/"+d.id);del++}catch(e){f++}}k+=del;if(!del||ds.length<500)break}
+  await write(()=>DB.set("chats/meydan",{last:null,updatedAt:now()}),{quiet:true});admLog(`Meydan temizlendi (${k} mesaj)`);toast(f?`${k} mesaj silindi, ${f} tanesi silinemedi.`:`${k} mesaj silindi`)}},{label:"Vazgeç"}]),
+ copyrules:async()=>{const txt=rulesText([S.uid]);try{await navigator.clipboard.writeText(txt);return toast("Kurallar kopyalandı")}catch(e){}
+  const det=$(".adm5-det");if(det)det.open=true;const pre=$(".adm5-det .adm-rules")||$(".adm-rules");let ok=false;
+  if(pre){const r=document.createRange();r.selectNodeContents(pre);const sel=getSelection();sel.removeAllRanges();sel.addRange(r);try{ok=document.execCommand("copy")}catch(e){}}
+  toast(ok?"Kurallar kopyalandı":"Otomatik kopyalanamadı. Kurallar seçildi; elle kopyala.")}};
+const admActOld=admAct;
+admAct=async function(a,t){const d=(t&&t.dataset)||{};const f=Object.prototype.hasOwnProperty.call(ADM5_ACT,a)?ADM5_ACT[a]:null;
+ try{if(f)return await f(t,d.u,d.v);return await admActOld(a,t)}catch(e){console.warn("adm",a,e);toast("İşlem tamamlanamadı. Tekrar dene.")}};
+/* silme hataları artık sayılır (eskisi her denemeyi başarılı sayıyordu) */
+const admWipeOld=admWipe;
+admWipe=async function(uid,{posts=true,stories=true}={}){let k=0,f=0;
+ if(posts)for(const p of Object.values(S.posts).filter(p=>p.uid===uid)){try{await DB.del("posts/"+p.id)}catch(e){f++;continue}DB.del("meta/"+p.id).catch(()=>{});
+  if(p.video&&String(p.video).startsWith("chunk:")){const[,vid,c]=p.video.split(":");for(let i=0;i<+c;i++)DB.del(`vchunks/${vid}-${i}`).catch(()=>{})}const ps={...S.posts};delete ps[p.id];S.posts=ps;k++}
+ if(stories)for(const s of Object.values(S.stories).filter(s=>s.uid===uid)){try{await DB.del("stories/"+s.id)}catch(e){f++;continue}const st={...S.stories};delete st[s.id];S.stories=st;k++}
+ if(f)toast(`${f} öge silinemedi. Bağlantını ve Firebase kurallarını kontrol et.`);return k};
+/* kullanıcı penceresi: durum rozetleri, mesaj gönder, hikâye silme onayı, işlem kaydı, rozet sonrası yenileme */
+const admUserSheetOld=admUserSheet;
+admUserSheet=function(uid){admUserSheetOld(uid);const l=$('#overlay [data-layer="admu"]');if(!l)return;const p=P(uid);
+ try{const t=l.querySelector(".sheet .row .t");if(t){const bd=admUserBadges(uid);const sn=seenText(uid);t.insertAdjacentHTML("beforeend",`<div class="s">${p.createdAt?admAgo(p.createdAt)+" katıldı":""}${p.createdAt&&sn?" · ":""}${esc(sn)}</div>${bd?`<div class="adm5-bd">${bd}</div>`:""}`)}
+  if(uid!==S.uid){const pv=l.querySelector(".sheet [data-prof]");if(pv)pv.insertAdjacentHTML("afterend",`<button class="opt" data-msg="${esc(uid)}">${I("chat")}Mesaj gönder</button>`)}
+  const ns=Object.values(S.stories).filter(x=>x.uid===uid).length,n=Object.values(S.posts).filter(x=>x.uid===uid).length;
+  const as=$("#auS",l);if(as)as.onclick=()=>{closeLayer("admu");dialog("Hikâyeler silinsin mi?",`@${esc(p.username)} kullanıcısının ${ns} hikâyesi herkes için silinir.`,[{label:"Sil",cls:"danger",fn:async()=>{const k=await admWipe(uid,{posts:false});if(k)admLog(`@${p.username} kullanıcısının ${k} hikâyesi silindi`);toast(`${k} hikâye silindi`);render(false)}},{label:"Vazgeç"}])};
+  const ap=$("#auP",l);if(ap)ap.onclick=()=>{closeLayer("admu");dialog("Paylaşımlar silinsin mi?",`@${esc(p.username)} kullanıcısının ${n} paylaşımı kalıcı olarak silinir.`,[{label:"Sil",cls:"danger",fn:async()=>{const k=await admWipe(uid,{stories:false});if(k)admLog(`@${p.username} kullanıcısının ${k} paylaşımı silindi`);toast(`${k} paylaşım silindi`);render(false)}},{label:"Vazgeç"}])};
+  const av=$("#auV",l);if(av&&av.onclick){const f=av.onclick;av.onclick=async e=>{await f.call(av,e);if(S.route.name==="admin")render(false)}}}catch(e){console.warn("admu",e)}};
 /*}@js:50ADM*/
 
 /*@js:50CHS{*/
