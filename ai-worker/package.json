@@ -1,0 +1,16 @@
+{
+  "name": "kadraj-ai",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Kadraj'ın yapay zekâ köprüsü: API anahtarını gizli tutar, yalnızca Kadraj'a giriş yapmış kişilere yanıt verir.",
+  "scripts": {
+    "deploy": "wrangler deploy"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.133.0"
+  },
+  "devDependencies": {
+    "wrangler": "^4.151.0"
+  }
+}

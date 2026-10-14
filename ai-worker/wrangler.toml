@@ -1,0 +1,14 @@
+# Kadraj yapay zekâ köprüsü (Cloudflare Worker)
+# API anahtarı burada DEĞİL: Cloudflare panelinde "Secret" olarak ANTHROPIC_API_KEY adıyla eklenir.
+name = "kadraj-ai"
+main = "src/index.js"
+compatibility_date = "2026-09-01"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+# İstersen Cloudflare panelinden değiştirebilirsin (Settings > Variables).
+MODEL = "claude-opus-5-5"
+EFFORT = "low"
+DAILY_LIMIT = "60"
+ALLOWED_ORIGINS = "https://kadrajsosyalmedya.github.io"
+FIREBASE_PROJECT = "kadraj-6f1e0"

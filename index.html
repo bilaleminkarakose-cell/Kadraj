@@ -1607,6 +1607,10 @@ html.reduce-motion .ar5,html.reduce-motion .ar5 *,html.reduce-motion .ar5-mini,h
 /*}@css:50CHS*/
 
 /*@css:50AI{*/
+.sheet .kai-box{padding:0 16px 16px}
+.kai-box .kai-row{display:flex;gap:8px;flex-wrap:wrap;margin:4px 0 8px}
+.kai-box .kai-st{font-size:.85rem;color:var(--muted);min-height:1.2em;overflow-wrap:anywhere}
+.kai-box .kai-help{display:inline-block;margin-top:8px;font-size:.85rem;color:var(--accent);text-decoration:underline;text-underline-offset:3px}
 /*}@css:50AI*/
 
 /*@css:50PIKO{*/
@@ -5079,6 +5083,61 @@ document.addEventListener("keydown",e=>{const c=CALL;if(!c||!$("#callBox")||e.ct
 /*}@js:50CHS*/
 
 /*@js:50AI{*/
+/* ===== 5.0: yapay zekâ köprüsü (Cloudflare Worker → Claude API) =====
+   Adres yönetici panelinden girilir ve admin/ai belgesinde durur ({url, at, by}). API anahtarı sitede yok; Worker'da gizli.
+   Kullanım: kAI.ready() → bool; await kAI.ask({system, messages:[{role,content}], search}) → {text, sources, refusal}
+   Hata: Error {code, message} — code: off | auth | rate_limited | timeout | network | api_key | api_billing | refusal | ... */
+const kAI={
+ url(){const u=((S.adm&&S.adm.ai&&S.adm.ai.url)||"").trim();return /^https:\/\/[^\s/]+(\/[^\s]*)?$/i.test(u)?u.replace(/\/+$/,""):""},
+ ready(){return !!(this.url()&&S.mode==="cloud"&&FB&&FB.auth&&FB.auth.currentUser&&S.authed&&!S.guest)},
+ last:null,
+ err(code,message){const e=new Error(message);e.code=code;return e},
+ async ask({system,messages,search=false,timeout=90000}={}){
+  if(!this.ready())throw this.err("off","Yapay zekâ bağlantısı kurulmamış.");
+  let tok="";try{tok=await FB.auth.currentUser.getIdToken()}catch{throw this.err("auth","Oturum doğrulanamadı, yeniden giriş yap.")}
+  const ac=new AbortController();const t=setTimeout(()=>ac.abort(),timeout);let r;
+  try{r=await fetch(this.url()+"/ask",{method:"POST",headers:{"Content-Type":"application/json",Authorization:"Bearer "+tok},body:JSON.stringify({system,messages,search:!!search}),signal:ac.signal})}
+  catch(e){throw this.err(e&&e.name==="AbortError"?"timeout":"network",e&&e.name==="AbortError"?"Yanıt çok uzun sürdü.":"Yapay zekâ köprüsüne ulaşılamadı.")}
+  finally{clearTimeout(t)}
+  let d=null;try{d=await r.json()}catch{}
+  if(!r.ok){this.last={ok:false,at:now(),code:(d&&d.error)||String(r.status)};throw this.err((d&&d.error)||"http_"+r.status,(d&&d.message)||"Yapay zekâ yanıt vermedi.")}
+  this.last={ok:true,at:now()};
+  if(d&&d.refusal)return{text:"",sources:[],refusal:true};
+  return{text:String((d&&d.text)||""),sources:Array.isArray(d&&d.sources)?d.sources:[],refusal:false}},
+ async health(){const u=this.url();if(!u)return{ok:false,message:"Adres girilmemiş."};
+  try{const r=await fetch(u+"/health");const d=await r.json();return{ok:!!(d&&d.ok&&d.key),key:!!(d&&d.key),model:d&&d.model,message:d&&d.ok?(d.key?"Köprü çalışıyor.":"Köprü çalışıyor ama ANTHROPIC_API_KEY gizli değişkeni eklenmemiş."):"Köprü yanıt vermedi."}}
+  catch{return{ok:false,message:"Köprüye ulaşılamadı. Adresi ve Worker'ın yayında olduğunu kontrol et."}}}
+};
+/* uygulamanın eski yapay zekâ arayüzü (S.caps.sample): Rota, fotoğraf açıklaması ve Meydan'da @rota bunu kullanır */
+async function kaiBlobB64(b){const buf=new Uint8Array(await b.arrayBuffer());let s="";for(let i=0;i<buf.length;i+=32768)s+=String.fromCharCode.apply(null,buf.subarray(i,i+32768));return btoa(s)}
+function kaiSample(){const f=async(prompt,opts={})=>{const content=[];
+  for(const b of(opts.images||[]).slice(0,2)){try{if(b&&b.size<=1100000)content.push({type:"image",source:{type:"base64",media_type:/^image\/(jpeg|png|webp|gif)$/.test(b.type)?b.type:"image/jpeg",data:await kaiBlobB64(b)}})}catch{}}
+  content.push({type:"text",text:String(prompt||"")});
+  const r=await kAI.ask({messages:[{role:"user",content}],search:!!opts.search});
+  const text=r.refusal?"Bu konuda yardımcı olamıyorum.":r.text;
+  if(typeof opts.onText==="function"){try{opts.onText({text})}catch{}}
+  return{text}};
+ f.limits=async()=>({images:true});f.kadraj=true;return f}
+function kaiSync(){const on=kAI.ready();const cur=S.caps&&S.caps.sample;
+ if(on&&!cur){S.caps={...(S.caps||{}),sample:kaiSample()};scheduleRefresh()}
+ else if(!on&&cur&&cur.kadraj){const c={...S.caps};delete c.sample;S.caps=c;scheduleRefresh()}}
+HOOKS.enter.push(()=>setTimeout(kaiSync,600));
+HOOKS.after.push(()=>{if(S.authed)kaiSync()});
+setInterval(()=>{if(S.authed)kaiSync()},15000);
+/* yönetici: köprü adresini gir, sına */
+function aiSetupHtml(){const u=(S.adm&&S.adm.ai&&S.adm.ai.url)||"";const st=kAI.last;
+ return`<div class="kai-box"><p class="muted" style="margin:0 0 10px">Rota ve Clawd gerçek yapay zekâyla (Claude) konuşsun diye Cloudflare'deki köprünün adresini buraya yapıştır. API anahtarı burada durmaz; yalnızca Cloudflare'de gizli tutulur.</p>
+ <div class="field"><label for="kaiUrl">Köprü adresi</label><input class="in" id="kaiUrl" inputmode="url" autocapitalize="off" spellcheck="false" placeholder="https://kadraj-ai.adın.workers.dev" value="${esc(u)}"></div>
+ <div class="kai-row"><button class="btn sm" type="button" data-kai="save">${I("check")}Kaydet</button><button class="btn sec sm" type="button" data-kai="test">Sına</button>${u?`<button class="btn ghost sm" type="button" data-kai="off">Kapat</button>`:""}</div>
+ <div class="kai-st" id="kaiSt">${u?(kAI.ready()?"Bağlantı açık.":"Adres kayıtlı."):"Henüz bağlı değil."}${st&&!st.ok?` Son hata: ${esc(st.code)}`:""}</div>
+ <a class="kai-help" href="https://github.com/kadrajsosyalmedya/Kadraj/blob/main/ai-worker/KURULUM.md" target="_blank" rel="noopener">Kurulum adımları (Cloudflare + Anthropic)</a></div>`}
+document.addEventListener("click",async e=>{const b=e.target.closest&&e.target.closest("[data-kai]");if(!b)return;e.preventDefault();if(!S.admin)return;const k=b.dataset.kai;const st=$("#kaiSt");const say=t=>{if(st)st.textContent=t};
+ if(k==="save"){const v=($("#kaiUrl")||{}).value||"";const u=v.trim().replace(/\/+$/,"");if(u&&!/^https:\/\/[^\s/]+(\/[^\s]*)?$/i.test(u))return say("Adres https:// ile başlamalı.");
+  if(await write(()=>DB.set("admin/ai",{url:u,at:now(),by:S.uid}))){S.adm={...(S.adm||{}),ai:{url:u,at:now(),by:S.uid}};admLog(u?"Yapay zekâ köprüsü ayarlandı":"Yapay zekâ köprüsü kaldırıldı");kaiSync();say(u?"Kaydedildi. Sına'ya dokunup dene.":"Kaldırıldı.")}}
+ else if(k==="off"){if(await write(()=>DB.set("admin/ai",{url:"",at:now(),by:S.uid}))){S.adm={...(S.adm||{}),ai:{url:"",at:now(),by:S.uid}};kaiSync();say("Yapay zekâ kapatıldı.")}}
+ else if(k==="test"){b.disabled=true;say("Sınanıyor…");const h=await kAI.health();if(!h.ok){say(h.message);b.disabled=false;return}
+  try{const r=await kAI.ask({messages:[{role:"user",content:"Kadraj'dan bir deneme: tek cümleyle, Türkçe ve neşeli bir selam ver."}],timeout:45000});say("Çalışıyor: "+(r.text||"(boş yanıt)").slice(0,160))}catch(x){say(x.message||"Hata.")}b.disabled=false}});
+try{if(typeof ADM_EXTRA!=="undefined"&&Array.isArray(ADM_EXTRA))ADM_EXTRA.push({id:"ai",title:"Yapay zekâ",desc:"Claude bağlantısı (Cloudflare köprüsü)",icon:"spark",order:65,html:aiSetupHtml})}catch{}
 /*}@js:50AI*/
 
 /*@js:50PIKO{*/
