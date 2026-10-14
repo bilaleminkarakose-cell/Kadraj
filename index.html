@@ -1598,6 +1598,108 @@ html.reduce-motion .ar5,html.reduce-motion .ar5 *,html.reduce-motion .ar5-mini,h
 /*}@css:50CALL*/
 
 /*@css:50SRCH{*/
+/* ===== 5.0 · Keşfet araması: çubuk, canlı öneriler, süzgeç, sonuçlar (Klasik temel; Vizör ayarları en altta) ===== */
+.sr-bar{position:relative;display:flex;align-items:center;gap:4px}
+.sr-in{position:relative;flex:1;min-width:0}
+.sr-in.hasx .in{padding-right:44px}
+#q::-webkit-search-cancel-button,#q::-webkit-search-decoration{-webkit-appearance:none;appearance:none}
+.sr-x{position:absolute;right:5px;top:50%;transform:translateY(-50%);width:2.3rem;height:2.3rem;border-radius:50%;display:grid;place-items:center;color:var(--muted)}
+.sr-x svg.i{width:1.05rem;height:1.05rem}
+.sr-cancel{flex:none;padding:0 .55rem;animation:fade .2s ease}
+.sr-sug{position:absolute;left:16px;right:16px;top:calc(100% - 4px);z-index:16;display:grid;gap:2px;padding:6px;max-height:min(25rem,calc(var(--vvh,100vh) * .55));overflow-y:auto;overscroll-behavior:contain;background:var(--surface);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);animation:fade .14s ease}
+.sr-si{display:flex;align-items:center;gap:10px;width:100%;min-height:3rem;padding:6px 10px;border-radius:12px;text-align:left}
+.sr-si.sel{background:var(--surface-2)}
+.sr-si:focus-visible{background:var(--surface-2);outline:none}
+.sr-si .t{flex:1;min-width:0;display:grid;line-height:1.25}
+.sr-si .t b,.sr-si .t small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sr-si .t b{font-weight:700;font-size:.95rem}
+.sr-si .t small{color:var(--muted);font-size:.8rem}
+.sr-si>svg.i{flex:none;width:1.1rem;height:1.1rem;color:var(--muted)}
+.sr-si.go:not(:first-child){margin-top:3px;box-shadow:0 -1px 0 var(--line)}
+.sr-si.go .t b{font-weight:600}
+@media (hover:hover){.sr-si:hover,.sr-x:hover{background:var(--surface-2)}.sr-x:hover{color:var(--fg)}}
+.sr-hb{flex:none;width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent)}
+.sr-hb svg.i{width:1.2rem;height:1.2rem;stroke-width:2.2}
+.sr-hb.q{background:var(--surface-2);color:var(--muted)}
+.sr-hb.sm{width:34px;height:34px;border-radius:11px}
+.sr-hb.sm svg.i{width:1.05rem;height:1.05rem}
+.sr-body mark,.sr-sug mark{background:color-mix(in srgb,var(--accent) 20%,transparent);color:inherit;border-radius:3px;box-shadow:0 1.5px 0 var(--accent)}
+.sr-body.upd>*{animation:fade .2s ease}
+.sr-tabs{-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 26px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 26px),transparent)}
+.sr-tabs.end{-webkit-mask-image:none;mask-image:none}
+.sr-tabs .sr-cn{font:600 .66rem/1 var(--f-mono);letter-spacing:0;opacity:.72;margin-left:1px}
+.sec-h .sr-n{font:500 .72rem/1 var(--f-mono);letter-spacing:.04em;color:var(--muted);margin-left:4px}
+.sr-tools{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 16px 12px}
+.sr-cnt{font:600 .66rem/1.2 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.sr-sort{flex:none;padding:3px}
+.sr-sort button{min-height:2.1rem;padding:0 .8rem;font-size:.8rem}
+.sr-tch{display:flex;flex-wrap:wrap;gap:8px;padding:0 16px 16px}
+.sr-tch .chip{min-height:2.25rem;padding:0 .85rem;font-size:.86rem;gap:5px;max-width:100%}
+.sr-tch.one{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;padding-right:30px;padding-bottom:18px;-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 26px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 26px),transparent)}
+.sr-tch.one::-webkit-scrollbar{display:none}
+.sr-tch.one .chip{flex:none}
+.sr-tch .chip small{font:600 .66rem/1 var(--f-mono);color:var(--muted)}
+.sr-tg .sr-ths{display:flex;flex:none;padding-left:10px}
+.sr-tg .sr-ths img{width:30px;height:30px;margin-left:-10px;border-radius:9px;object-fit:cover;border:2px solid var(--surface);background:var(--surface-2)}
+.sr-po{align-items:flex-start}
+.sr-th{position:relative;flex:none;width:58px;height:58px;border-radius:12px;overflow:hidden;background:var(--surface-2)}
+.sr-th img{width:100%;height:100%;object-fit:cover;display:block}
+.sr-th .sr-nt{position:absolute;inset:0;display:grid;place-items:center;color:#fff}
+.sr-th i{position:absolute;top:4px;right:4px;display:grid;color:#fff;filter:drop-shadow(0 1px 2px rgba(0,0,0,.6))}
+.sr-th i svg.i{width:.95rem;height:.95rem}
+.row.sr-po .t>.sr-pu{font-size:.84rem}
+.row.sr-po .t>.sr-pc{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;white-space:normal;margin-top:2px;font-size:.93rem;line-height:1.35;overflow-wrap:anywhere}
+.row.sr-po .t>.sr-pm{display:flex;gap:12px;margin-top:6px;color:var(--muted);font:600 .72rem/1 var(--f-mono)}
+.sr-pm span{display:inline-flex;align-items:center;gap:4px}
+.sr-pm svg.i{width:.9rem;height:.9rem}
+.sr-flg{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:0 12px;margin-bottom:14px}
+.sr-flr{display:grid;grid-auto-flow:column;grid-auto-columns:calc((100% - 12px) / 3);gap:6px;overflow-x:auto;padding:0 12px 4px;margin-bottom:14px;scrollbar-width:none}
+.sr-flr::-webkit-scrollbar{display:none}
+.sr-fl{position:relative;display:block;aspect-ratio:9/16;border-radius:14px;overflow:hidden;background:#111;color:#fff;text-align:left}
+.sr-fl img{width:100%;height:100%;object-fit:cover;display:block}
+.sr-fl .sr-fe{position:absolute;inset:0;display:grid;place-items:center;opacity:.8}
+.sr-fl::after{content:"";position:absolute;inset:42% 0 0;background:linear-gradient(transparent,rgba(0,0,0,.8));pointer-events:none}
+.sr-flb{position:absolute;left:8px;right:8px;bottom:8px;z-index:1;display:grid;gap:2px;font-size:.72rem;line-height:1.3;text-shadow:0 1px 3px rgba(0,0,0,.6)}
+.sr-flb b{font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sr-flb span{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.sr-fl .c{position:absolute;left:8px;top:8px;z-index:1;display:flex;align-items:center;gap:4px;font:700 .7rem/1 var(--f-body);text-shadow:0 1px 3px rgba(0,0,0,.7)}
+.sr-fl .c svg.i{width:.85rem;height:.85rem}
+.sr-body .sr-fl mark{background:rgba(255,255,255,.28);color:#fff;box-shadow:0 1.5px 0 #fff}
+.sr-hero{display:flex;align-items:center;gap:14px;margin:0 12px 14px;padding:16px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
+.sr-hero .sr-big{position:relative;flex:none;width:66px;height:66px;border-radius:20px;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent)}
+.sr-hero .sr-big i{position:relative;z-index:1;font:600 2.1rem/1 var(--f-display);font-style:normal}
+.sr-hero .t{min-width:0}
+.sr-hero b{display:block;font:600 1.3rem/1.2 var(--f-display);overflow-wrap:anywhere}
+.sr-hero small{display:block;margin-top:5px;color:var(--muted);font-size:.86rem}
+.box .row.sr-rr{padding:0 6px 0 0}
+.sr-rr .sr-rm{flex:1;min-width:0;display:flex;align-items:center;gap:12px;padding:11px 0 11px 14px;text-align:left}
+.sr-rr .sr-del{color:var(--muted)}
+.sr-empty span:last-child,.sr-hint span:last-child{max-width:24rem}
+@media (min-width:560px){.sr-flg{grid-template-columns:repeat(4,1fr)}.sr-flr{grid-auto-columns:calc((100% - 18px) / 4)}}
+html.reduce-motion .sr-body.upd>*,html.reduce-motion .sr-sug,html.reduce-motion .sr-cancel{animation:none}
+/* Vizör: vizör köşeleri, cam öneri penceresi, fosforlu kalem vurgusu */
+:root[data-ui="vizor"] .sr-sug{border-color:var(--vz-hair);border-radius:24px;background:color-mix(in srgb,var(--surface) 92%,transparent);-webkit-backdrop-filter:blur(18px) saturate(1.5);backdrop-filter:blur(18px) saturate(1.5);box-shadow:var(--vz-lift)}
+:root[data-ui="vizor"] .sr-si{border-radius:18px}
+:root[data-ui="vizor"] .sr-si .t small{font:500 .7rem/1.4 var(--f-mono);letter-spacing:.02em}
+:root[data-ui="vizor"] .sr-hb{border-radius:50%}
+:root[data-ui="vizor"] .sr-body mark,:root[data-ui="vizor"] .sr-sug mark{background:transparent;border-radius:0;box-shadow:inset 0 -.5em 0 color-mix(in srgb,var(--accent) 30%,transparent)}
+:root[data-ui="vizor"] .sr-body .sr-fl mark{box-shadow:inset 0 -.5em 0 rgba(255,255,255,.35)}
+:root[data-ui="vizor"] .sr-tabs .chip{padding:0 .7rem;letter-spacing:.08em}
+:root[data-ui="vizor"] .sr-tools{margin:2px 18px 12px}
+:root[data-ui="vizor"] .sr-tch .chip{background:var(--vz-glass);font:600 .74rem/1 var(--f-mono);letter-spacing:.02em}
+:root[data-ui="vizor"] .sr-th{border-radius:10px}
+:root[data-ui="vizor"] .sr-flg,:root[data-ui="vizor"] .sr-flr{gap:4px}
+:root[data-ui="vizor"] .sr-fl{border-radius:12px}
+:root[data-ui="vizor"] .sr-hero{border-color:var(--vz-hair);border-radius:24px;box-shadow:var(--vz-sh)}
+:root[data-ui="vizor"] .sr-hero .sr-big{background:transparent;border-radius:0}
+:root[data-ui="vizor"] .sr-hero .sr-big::before{content:"";position:absolute;inset:0;background:var(--vz-brk-s);background-repeat:no-repeat}
+:root[data-ui="vizor"] .sr-hero .sr-big::after{content:"";position:absolute;inset:10px;border-radius:50%;background:color-mix(in srgb,var(--accent) 13%,transparent)}
+:root[data-ui="vizor"] .sr-hero small{font:500 .7rem/1.3 var(--f-mono);letter-spacing:.1em;text-transform:uppercase}
+/* sayfa girişinde bölümler eskisi gibi sırayla gelsin (#srBody tek blok kalmasın) */
+:root[data-ui="vizor"] main.enter>.sr-body{animation:none}
+:root[data-ui="vizor"] main.enter>.sr-body>*{animation:vzRise .44s var(--vz-ease) both}
+:root[data-ui="vizor"] main.enter>.sr-body>*:nth-child(1){animation-delay:0.070s}:root[data-ui="vizor"] main.enter>.sr-body>*:nth-child(2){animation-delay:0.105s}:root[data-ui="vizor"] main.enter>.sr-body>*:nth-child(3){animation-delay:0.140s}:root[data-ui="vizor"] main.enter>.sr-body>*:nth-child(4){animation-delay:0.175s}:root[data-ui="vizor"] main.enter>.sr-body>*:nth-child(5){animation-delay:0.210s}:root[data-ui="vizor"] main.enter>.sr-body>*:nth-child(6){animation-delay:0.245s}
+@supports not ((backdrop-filter:blur(2px)) or (-webkit-backdrop-filter:blur(2px))){:root[data-ui="vizor"] .sr-sug{background:var(--surface)}}
 /*}@css:50SRCH*/
 
 /*@css:50ADM{*/
@@ -5074,6 +5176,252 @@ document.addEventListener("keydown",e=>{const c=CALL;if(!c||!$("#callBox")||e.ct
 /*}@js:50CALL*/
 
 /*@js:50SRCH{*/
+/* ===== 5.0 · Keşfet araması =====
+   - vExplore sarıldı (vExploreBase50S): üstte arama çubuğu (#q, temizle .sr-x, Vazgeç, canlı öneriler #srSug), altında #srBody.
+     Yazarken sayfa baştan çizilmez: srPaint() yalnızca #srBody'yi yeniler, odak ve imleç yerinde kalır.
+     Boş sorgu + Hepsi + arama kapalıyken srPaint render(false) çağırır (vExplore'u saran başka işler de uygulanır).
+   - Gizli yönetici girişi değişmedi: #q'ya 16+ karakter yazılınca 450 ms sonra admTry (afterRender'daki kodun aynısı srWire içinde).
+     Ayarlar aramasındaki (#setQ) yol bu bölgeye dokunmaz.
+   - Süzgeç (S.srTab): all, people, posts, reels, tags. Sıralama (S.srSort): new (en yeni) / top (en çok beğenilen).
+   - Eşleşme Türkçe ve harf işaretinden bağımsız (srFold: ı/i, ş/s, ğ/g, ü/u, ö/o, ç/c); eşleşen kısım <mark> (srHi: önce esc, sonra sarma).
+   - Etiket kuralı richText ile aynı karakter sınıfı (SR_TAG). richText sarıldı (richTextBase50S): #etiket artık düğme (data-htag),
+     dokununca Keşfet o etiketle açılır (srOpenTag). Eski richText kaçışlı metinde arıyordu, "Ali'nin" içindeki &#39; "#39" etiketi oluyordu; yenisi ham metinde arar.
+   - Son aramalar: LS kadraj_srch_<uid>, en fazla 10 ({k:"u"|"t"|"q", v, at}). Yazılan 16+ karakterli sorgu kaydedilmez (yönetici şifresi).
+   - Gizlilik: paylaşımlar allPosts() (Çocuk Modu kidHid) + canSee; kişilerde silinmiş ve kapatılmış hesap yok. */
+Object.assign(IP,{
+ hash:'<path d="M4 9h16M4 15h16M10 3 8 21M16 3l-2 18"/>',
+ clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>'});
+
+/* --- metin: Türkçe katlama, vurgulama, kesit --- */
+const SR_TAG=/#([\wçğıöşüÇĞİÖŞÜ]+)/g;
+const SR_TAGONLY=/^#[\wçğıöşüÇĞİÖŞÜ]+$/;
+const srLow=s=>String(s??"").toLocaleLowerCase("tr");
+const srFold=s=>srLow(s).normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/ı/g,"i");
+/* katlanmış metin + her katlanmış karakterin asıl metindeki yeri (vurgu için) */
+function srFoldMap(s){s=String(s??"");let f="";const map=[];
+ for(let i=0;i<s.length;){const n=s.codePointAt(i)>0xffff?2:1;const x=srFold(s.substr(i,n));for(let k=0;k<x.length;k++){f+=x[k];map.push(i)}i+=n}
+ map.push(s.length);return{f,map}}
+function srHi(text,terms){text=String(text??"");const ts=(terms||[]).filter(Boolean);if(!text||!ts.length)return esc(text);
+ const{f,map}=srFoldMap(text);const rs=[];
+ for(const t of ts){let i=f.indexOf(t);while(i>=0){rs.push([map[i],map[i+t.length]]);i=f.indexOf(t,i+t.length)}}
+ if(!rs.length)return esc(text);rs.sort((a,b)=>a[0]-b[0]);const m=[];
+ for(const r of rs){const l=m[m.length-1];if(l&&r[0]<=l[1])l[1]=Math.max(l[1],r[1]);else m.push(r.slice())}
+ let o="",p=0;for(const[a,b]of m){if(b<=a)continue;o+=esc(text.slice(p,a))+"<mark>"+esc(text.slice(a,b))+"</mark>";p=b}
+ return o+esc(text.slice(p))}
+function srSnip(text,terms,max=120,lead=28){text=String(text??"").replace(/\s+/g," ").trim();if(text.length<=max)return srHi(text,terms);
+ let at=0;const ts=(terms||[]).filter(Boolean);if(ts.length){const{f,map}=srFoldMap(text);for(const t of ts){const i=f.indexOf(t);if(i>=0){at=map[i];break}}}
+ let a=Math.max(0,at-lead);if(a>0){const sp=text.lastIndexOf(" ",a);if(sp>0&&a-sp<Math.max(6,lead/2))a=sp+1}const b=Math.min(text.length,a+max);
+ return(a>0?"…":"")+srHi(text.slice(a,b),ts)+(b<text.length?"…":"")}
+
+/* --- #etiketler: richText ile aynı kural, ham metinde --- */
+const richTextBase50S=richText;
+richText=function(t){try{const s=String(t??"").replace(/[\u0001\u0002]/g,"");const tags=[];
+ const marked=s.replace(SR_TAG,(m,w)=>{tags.push(w);return"\u0001"+(tags.length-1)+"\u0002"});
+ return esc(marked).replace(/(^|\s)@([a-z0-9._]+)/gi,'$1<button class="ht" data-mention="$2">@$2</button>')
+  .replace(/\u0001(\d+)\u0002/g,(m,i)=>{const w=tags[+i]||"";return`<button class="ht" data-htag="${esc(srLow(w))}">#${esc(w)}</button>`})}
+ catch(e){console.warn("sr",e);return richTextBase50S(t)}};
+function srTagsOf(p){const s=[p.caption,p.text].filter(x=>typeof x==="string").join(" ");const out=new Set();for(const m of s.matchAll(SR_TAG))out.add(srLow(m[1]));return[...out]}
+const srBanned=u=>{try{return isBanned(u)}catch{return false}};
+/* görünür paylaşımlar ve etiket dizini: allPosts (Çocuk Modu) + canSee */
+function srCtx(){const posts=allPosts().filter(p=>canSee(p)&&!srBanned(p.uid));const idx=new Map();
+ for(const p of posts)for(const t of srTagsOf(p)){let e=idx.get(t);if(!e)idx.set(t,e={t,f:srFold(t),n:0,at:0,ps:[]});e.n++;e.at=Math.max(e.at,p.at||0);e.ps.push(p)}
+ return{posts,idx}}
+function srPeopleAll(){return[...new Set([...BOTS.map(b=>b.uid),...Object.keys(S.profiles)])].filter(u=>!P(u).missing&&!srBanned(u))}
+
+/* --- sorgu --- */
+function srParse(raw){raw=String(raw??"").trim();const terms=srFold(raw).split(/\s+/).filter(Boolean);
+ const tagMode=SR_TAGONLY.test(raw),atMode=/^@\S+$/.test(raw);
+ const bare=[...new Set(terms.map(t=>t.replace(/^[#@]+/,"")).filter(Boolean))];
+ return{raw,terms,bare,tagMode,atMode,tag:tagMode?srLow(raw.slice(1)):"",tf:tagMode?srFold(raw.slice(1)):""}}
+function srPeople(qq){if(!qq.bare.length)return[];const t0=qq.bare[0];const out=[];
+ for(const u of srPeopleAll()){const p=P(u);const un=srFold(p.username),nm=srFold(p.name);const hay=un+" "+nm;if(!qq.bare.every(t=>hay.includes(t)))continue;
+  let s=un===t0?6:un.startsWith(t0)?4:(" "+nm).includes(" "+t0)?3:1;if(isFollowing(S.uid,u))s+=.5;if(u===S.uid)s-=.3;out.push([u,s,followerCount(u)])}
+ return out.sort((a,b)=>b[1]-a[1]||b[2]-a[2]).map(x=>x[0])}
+function srTags(qq,idx){const all=[...idx.values()];if(!qq.raw)return all.sort((a,b)=>b.n-a.n||b.at-a.at);
+ const ts=qq.tagMode?[qq.tf]:qq.bare;if(!ts.length)return[];const out=[];
+ for(const e of all){let s=0;for(const t of ts){if(e.f===t)s+=3;else if(e.f.startsWith(t))s+=2;else if(e.f.includes(t))s+=1}if(s)out.push([e,s])}
+ return out.sort((a,b)=>b[1]-a[1]||b[0].n-a[0].n||b[0].at-a[0].at).map(x=>x[0])}
+function srExact(qq,idx){if(!qq.tagMode)return[];const e=idx.get(qq.tag);if(e)return[e];return[...idx.values()].filter(x=>x.f===qq.tf)}
+const srHay=p=>srFold([p.caption,p.text,p.question,...(Array.isArray(p.options)?p.options:[]),p.loc].filter(x=>typeof x==="string").join(" \n "));
+function srPostHits(qq,ctx){if(!qq.raw)return ctx.posts.slice();
+ if(qq.tagMode){const ex=srExact(qq,ctx.idx);if(ex.length){const ids=new Set(ex.flatMap(e=>e.ps.map(p=>p.id)));return ctx.posts.filter(p=>ids.has(p.id))}
+  return ctx.posts.filter(p=>srTagsOf(p).some(t=>srFold(t).startsWith(qq.tf)))}
+ return ctx.posts.filter(p=>{const h=srHay(p);return qq.terms.every(t=>h.includes(t))})}
+function srSorted(list){const lc=new Map(list.map(p=>[p.id,likeCount(p)]));
+ return list.slice().sort(S.srSort==="top"?(a,b)=>lc.get(b.id)-lc.get(a.id)||b.at-a.at:(a,b)=>b.at-a.at)}
+
+/* --- son aramalar (kişiye özel, cihazda) --- */
+const srRecKey=()=>"kadraj_srch_"+(S.uid||"misafir");
+function srRecent(){const a=LS.get(srRecKey(),[]);return Array.isArray(a)?a.filter(r=>r&&["u","t","q"].includes(r.k)&&typeof r.v==="string"&&r.v):[]}
+function srRecentAdd(r){if(!r||typeof r.v!=="string")return;const v=r.k==="q"?r.v.trim():r.v;if(!v||(r.k==="q"&&v.length>=16))return;
+ const id=x=>x.k+":"+(x.k==="u"?x.v:srFold(x.v));const it={k:r.k,v,at:now()};
+ LS.set(srRecKey(),[it,...srRecent().filter(x=>id(x)!==id(it))].slice(0,10))}
+/* yazılan sorgu: 16+ karakter hiç kaydedilmez (yönetici şifresi buraya düşmesin) */
+function srSaveQuery(raw){raw=String(raw??"").trim();if(!raw||raw.length>=16)return;if(SR_TAGONLY.test(raw))srRecentAdd({k:"t",v:srLow(raw.slice(1))});else srRecentAdd({k:"q",v:raw})}
+
+/* --- parçalar --- */
+/* "Flick" marka adı: Vizör büyük harf yazınca Türkçe kuralla "FLİCK" olmasın */
+const srFl=h=>String(h).replace(/Flick/g,'<span lang="en">Flick</span>');
+const SR_TABS=[["all","Hepsi"],["people","Kişiler"],["posts","Paylaşımlar"],["reels","Flick"],["tags","Etiketler"]];
+const srTab=()=>SR_TABS.some(x=>x[0]===S.srTab)?S.srTab:"all";
+function srChips(cnt){const cur=srTab();return`<div class="chips sr-tabs" role="group" aria-label="Arama süzgeci">${SR_TABS.map(([k,l])=>`<button class="chip" data-act="srtab" data-v="${k}" aria-pressed="${cur===k}">${srFl(l)}${cnt&&k!=="all"&&cnt[k]!=null?`<small class="sr-cn">${cnt[k]>99?"99+":cnt[k]}</small>`:""}</button>`).join("")}</div>`}
+function srSec(title,n,tab,shown){return`<h3 class="sec-h"><span>${srFl(esc(title))}${n?` <small class="sr-n">${fmt(n)}</small>`:""}</span>${tab&&n>shown?`<button class="btn ghost sm" data-act="srtab" data-v="${tab}">Tümünü gör</button>`:""}</h3>`}
+function srSortHtml(n){const cur=S.srSort==="top"?"top":"new";return`<div class="sr-tools"><span class="sr-cnt">${fmt(n)} sonuç</span><div class="seg sr-sort" role="group" aria-label="Sıralama">${[["new","En yeni"],["top","En çok beğenilen"]].map(([k,l])=>`<button data-act="srsort" data-v="${k}" aria-pressed="${cur===k}">${l}</button>`).join("")}</div></div>`}
+function srPersonRow(u,ts){const p=P(u);const fol=isFollowing(S.uid,u);const sub=["@"+srHi(p.username,ts)];
+ if(BOT[u])sub.push(BOT[u].ai?"Yapay zekâ rehberi":"Bot");else{if(u===S.uid)sub.push("Sen");const n=followerCount(u);if(n)sub.push(esc(short(n))+" takipçi");if(isActive(u))sub.push("çevrimiçi")}
+ return`<div class="row sr-pr"><button data-prof="${esc(u)}" tabindex="-1" aria-hidden="true">${avatar(u,48,{click:false})}</button><button class="t" data-prof="${esc(u)}"><div><b>${srHi(p.name,ts)}</b>${badge(u)}</div><div class="s">${sub.join(" · ")}</div></button>${u!==S.uid&&!S.guest?`<button class="btn sm ${fol?"sec":""}" data-follow="${esc(u)}">${fol?"Takiptesin":"Takip et"}</button>`:""}</div>`}
+function srTagRow(e,ts){const th=e.ps.map(postThumb).filter(Boolean).slice(0,3);
+ return`<button class="row sr-tg" data-htag="${esc(e.t)}"><span class="sr-hb">${I("hash")}</span><span class="t"><div><b>#${srHi(e.t,ts)}</b></div><div class="s">${fmt(e.n)} paylaşım</div></span>${th.length?`<span class="sr-ths" aria-hidden="true">${th.map(s=>`<img src="${esc(s)}" alt="" loading="lazy">`).join("")}</span>`:""}</button>`}
+function srTagChips(list,ts,one){return`<div class="sr-tch${one?" one":""}">${list.map(e=>`<button class="chip" data-htag="${esc(e.t)}"><span>#${srHi(e.t,ts)}</span><small>${fmt(e.n)}</small></button>`).join("")}</div>`}
+const SR_KIND={reel:"Flick",note:"Not",poll:"Anket",photo:"Fotoğraf"};
+/* satırda gösterilecek metin: eşleşme hangi alandaysa o (anket seçeneği, konum dahil) */
+function srPostText(p,ts){const main=p.caption||p.text||p.question||"";const opts=Array.isArray(p.options)?p.options.filter(x=>typeof x==="string"):[];
+ const cands=[p.caption,p.text,p.question,opts.length?"Seçenekler: "+opts.join(" · "):"",p.loc?"Konum: "+p.loc:""].filter(x=>typeof x==="string"&&x);
+ const tt=(ts||[]).filter(Boolean);if(!tt.length)return main;return cands.find(c=>{const f=srFold(c);return tt.some(t=>f.includes(t))})||main}
+function srPostRow(p,ts){const u=P(p.uid);const th=postThumb(p);const txt=srPostText(p,ts);
+ const thumb=th?`<img src="${esc(th)}" alt="" loading="lazy"${p.css?` style="filter:${esc(p.css)}"`:""}>`:`<span class="sr-nt" style="background:${p.kind==="note"?NOTE_BG[p.bg||0]:p.kind==="poll"?"#0c7a63":"#111"}">${I(p.kind==="note"?"type":p.kind==="poll"?"poll":"play")}</span>`;
+ const lk=settings.hideLikes&&p.uid!==S.uid?"":`<span>${I("heart")}${esc(short(likeCount(p)))}</span>`;const cm=commentsOf(p).length;
+ return`<button class="row sr-po" data-open="${esc(p.id)}"><span class="sr-th">${thumb}${p.kind==="reel"?`<i>${I("reels")}</i>`:""}</span><span class="t"><div class="sr-pu"><b>${esc(u.username)}</b><span class="muted"> · ${esc(SR_KIND[p.kind]||"Paylaşım")} · ${esc(ago(p.at))}</span></div><div class="sr-pc">${txt?srSnip(txt,ts):`<span class="muted">Açıklama yok</span>`}</div>${lk||cm?`<div class="sr-pm">${lk}${cm?`<span>${I("comment")}${esc(short(cm))}</span>`:""}</div>`:""}</span></button>`}
+function srFlTile(p,ts){const th=postThumb(p);const cap=srPostText(p,ts);
+ return`<button class="sr-fl" data-open="${esc(p.id)}" aria-label="Flick'i aç">${th?`<img src="${esc(th)}" alt="" loading="lazy">`:`<span class="sr-fe">${I("play")}</span>`}<span class="sr-flb"><b>@${esc(P(p.uid).username)}</b>${cap?`<span>${srSnip(cap,ts,48,6)}</span>`:""}</span>${settings.hideLikes&&p.uid!==S.uid?"":`<span class="c">${I("heart")}${esc(short(likeCount(p)))}</span>`}</button>`}
+function srEmpty(qq,tab){const what={people:"kişi",posts:"paylaşım",reels:"Flick",tags:"etiket"}[tab]||"bir şey";
+ const tip=qq.tagMode?"Etiketi kısaltmayı ya da başka bir etiket aramayı dene.":tab==="people"?"Kullanıcı adının bir kısmını dene.":tab==="all"?"Kullanıcı adının bir kısmını ya da bir #etiket dene.":"Başka bir kelime dene ya da Hepsi sekmesine bak.";
+ return`<div class="empty sr-empty"><span class="ic">${I(tab==="tags"||qq.tagMode?"hash":"search")}</span><b>Sonuç yok</b><span>“${esc(qq.raw)}” için ${what} bulamadık. ${tip}</span></div>`}
+const srBox=rows=>`<div class="box">${rows}</div>`;
+
+/* --- sonuçlar --- */
+function srResults(qq,tab,ctx){
+ const ppl=srPeople(qq),tags=srTags(qq,ctx.idx),hits=srPostHits(qq,ctx);
+ const posts=hits.filter(p=>p.kind!=="reel"),reels=hits.filter(p=>p.kind==="reel");
+ const hp=qq.bare,ht=qq.tagMode?[qq.tf]:qq.bare,hpo=qq.tagMode?["#"+qq.tf]:qq.terms;
+ let h=srChips({people:ppl.length,posts:posts.length,reels:reels.length,tags:tags.length});
+ if(tab==="people")return h+(ppl.length?srBox(ppl.slice(0,60).map(u=>srPersonRow(u,hp)).join("")):srEmpty(qq,tab));
+ if(tab==="tags")return h+(tags.length?srBox(tags.slice(0,60).map(e=>srTagRow(e,ht)).join("")):srEmpty(qq,tab));
+ if(tab==="posts")return h+(posts.length?srSortHtml(posts.length)+srBox(srSorted(posts).slice(0,80).map(p=>srPostRow(p,hpo)).join("")):srEmpty(qq,tab));
+ if(tab==="reels")return h+(reels.length?srSortHtml(reels.length)+`<div class="sr-flg">${srSorted(reels).slice(0,90).map(p=>srFlTile(p,hpo)).join("")}</div>`:srEmpty(qq,tab));
+ /* Hepsi: tam etiket varsa etiket sayfası */
+ const ex=srExact(qq,ctx.idx);
+ if(ex.length){const sub=`${fmt(hits.length)} paylaşım`+(reels.length?` · ${fmt(reels.length)} Flick`:"");
+  h+=`<div class="sr-hero"><span class="sr-big" aria-hidden="true"><i>#</i></span><div class="t"><b>#${esc(ex[0].t)}</b><small>${srFl(sub)}</small></div></div>`;
+  h+=srSortHtml(hits.length)+grid(srSorted(hits));
+  const sim=tags.filter(e=>!ex.includes(e)).slice(0,10);if(sim.length)h+=srSec("Benzer etiketler")+srTagChips(sim,ht);
+  return h}
+ let any=false;
+ const np=qq.atMode?6:3;
+ if(ppl.length&&!qq.tagMode){any=true;h+=srSec("Kişiler",ppl.length,"people",np)+srBox(ppl.slice(0,np).map(u=>srPersonRow(u,hp)).join(""))}
+ if(tags.length&&!qq.atMode){any=true;h+=srSec("Etiketler",tags.length,"tags",8)+srTagChips(tags.slice(0,8),ht)}
+ if(posts.length){any=true;h+=srSec("Paylaşımlar",posts.length,"posts",3)+srBox(srSorted(posts).slice(0,3).map(p=>srPostRow(p,hpo)).join(""))}
+ if(reels.length){any=true;h+=srSec("Flick",reels.length,"reels",6)+`<div class="sr-flr">${srSorted(reels).slice(0,6).map(p=>srFlTile(p,hpo)).join("")}</div>`}
+ if(!any){h+=srEmpty(qq,"all");const pop=srTags({raw:""},ctx.idx).slice(0,8);if(pop.length)h+=srSec("Popüler etiketler")+srTagChips(pop,[])}
+ return h}
+
+/* --- boş sorgu: göz atma --- */
+function srBrowseAll(ctx){const keep=S.q;let h;S.q="";try{h=vExploreBase50S()}finally{S.q=keep}
+ const i=h.indexOf("</div>");h=i>=0&&h.startsWith('<div class="search">')?h.slice(i+6):h;
+ const pop=srTags({raw:""},ctx.idx).slice(0,12);if(!pop.length)return h;
+ const strip=`<h3 class="sec-h"><span>Gündemdeki etiketler</span><button class="btn ghost sm" data-act="srtab" data-v="tags">Tümü</button></h3>`+srTagChips(pop,[],true);const at=h.indexOf('<h3 class="sec-h"><span>Keşfedilecekler');
+ return at>=0?h.slice(0,at)+strip+h.slice(at):strip+h}
+function srBrowse(tab,ctx){
+ if(tab==="people"){const list=srPeopleAll().filter(u=>u!==S.uid).map(u=>[u,followerCount(u)]).sort((a,b)=>b[1]-a[1]).map(x=>x[0]);
+  return list.length?srSec("Kişiler",list.length)+srBox(list.slice(0,80).map(u=>srPersonRow(u,[])).join("")):`<div class="empty"><span class="ic">${I("users")}</span><b>Henüz kimse yok</b>Arkadaşlarını davet et, burada görünsünler.</div>`}
+ if(tab==="tags"){const tags=srTags({raw:""},ctx.idx);
+  return tags.length?srSec("Popüler etiketler",tags.length)+srBox(tags.slice(0,60).map(e=>srTagRow(e,[])).join("")):`<div class="empty"><span class="ic">${I("hash")}</span><b>Henüz etiket yok</b>Paylaşım açıklamasına #etiket yazınca burada görünür.</div>`}
+ const list=ctx.posts.filter(p=>tab==="reels"?p.kind==="reel":p.kind!=="reel");
+ if(!list.length)return`<div class="empty"><span class="ic">${I(tab==="reels"?"reels":"image")}</span><b>${tab==="reels"?"Henüz Flick yok":"Henüz paylaşım yok"}</b>İlk paylaşımı sen yap: alttaki + düğmesine dokun.</div>`;
+ return srSortHtml(list.length)+(tab==="reels"?`<div class="sr-flg">${srSorted(list).slice(0,90).map(p=>srFlTile(p,[])).join("")}</div>`:grid(srSorted(list)))}
+
+/* --- son aramalar paneli (kutu odakta ve boşken) --- */
+function srRecentRow(r,ctx){const k=esc(r.k),v=esc(r.v);let ic,t,s;
+ if(r.k==="u"){const p=P(r.v);ic=avatar(r.v,40,{click:false,ring:false,online:false});t=`<b>${esc(p.name)}</b>${badge(r.v)}`;s="@"+esc(p.username)}
+ else if(r.k==="t"){const e=ctx.idx.get(r.v);ic=`<span class="sr-hb">${I("hash")}</span>`;t=`<b>#${esc(r.v)}</b>`;s="Etiket"+(e?` · ${fmt(e.n)} paylaşım`:"")}
+ else{ic=`<span class="sr-hb q">${I("clock")}</span>`;t=`<b>${esc(r.v)}</b>`;s="Arama"}
+ return`<div class="row sr-rr"><button class="sr-rm" data-act="srrec" data-k="${k}" data-v="${v}">${ic}<span class="t"><div>${t}</div><div class="s">${s}</div></span></button><button class="ib plain sr-del" data-act="srrm" data-k="${k}" data-v="${v}" aria-label="Son aramalardan kaldır">${I("close")}</button></div>`}
+function srRecentHtml(ctx){const list=srRecent().filter(r=>r.k!=="u"||!P(r.v).missing);let h="";
+ if(list.length)h+=`<h3 class="sec-h"><span>Son aramalar</span><button class="btn ghost sm" data-act="srclear">Temizle</button></h3>`+`<div class="box sr-rec">${list.map(r=>srRecentRow(r,ctx)).join("")}</div>`;
+ else h+=`<div class="empty sr-hint"><span class="ic">${I("search")}</span><b>Ne arıyorsun?</b><span>Bir ad, @kullanıcı adı, #etiket ya da paylaşımdaki bir kelime yaz.</span></div>`;
+ const pop=srTags({raw:""},ctx.idx).slice(0,10);if(pop.length)h+=srSec("Popüler etiketler")+srTagChips(pop,[]);
+ return h}
+
+/* --- canlı öneriler (yazarken) --- */
+function srSugHtml(){const qq=srParse(S.q);if(!qq.raw)return"";const ctx=srCtx();
+ const ppl=qq.tagMode?[]:srPeople(qq).slice(0,4);const tags=qq.atMode?[]:srTags(qq,ctx.idx).slice(0,qq.tagMode?6:3);const ts=qq.tagMode?[qq.tf]:qq.bare;
+ return ppl.map(u=>{const p=P(u);return`<button class="sr-si" role="option" aria-selected="false" data-act="srsug" data-k="u" data-v="${esc(u)}">${avatar(u,34,{click:false,ring:false,online:false})}<span class="t"><b>${srHi(p.username,qq.bare)}${badge(u)}</b><small>${srHi(p.name,qq.bare)}</small></span></button>`}).join("")
+  +tags.map(e=>`<button class="sr-si" role="option" aria-selected="false" data-act="srsug" data-k="t" data-v="${esc(e.t)}"><span class="sr-hb sm">${I("hash")}</span><span class="t"><b>#${srHi(e.t,ts)}</b><small>${fmt(e.n)} paylaşım</small></span></button>`).join("")
+  +`<button class="sr-si go" role="option" aria-selected="false" data-act="srgo"><span class="sr-hb sm q">${I("search")}</span><span class="t"><b>“${esc(qq.raw)}” için tüm sonuçlar</b></span>${I("next")}</button>`}
+
+/* --- görünüm --- */
+function srBarHtml(){const q=S.q||"";const open=!!(S.srMode||q.trim());
+ return`<div class="search sr-bar${open?" on":""}" id="srBar"><div class="sr-in${q?" hasx":""}"><input class="in" id="q" type="search" placeholder="Kişi ya da #etiket ara" value="${esc(q)}" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search" aria-label="Ara" aria-autocomplete="list" aria-controls="srSug" aria-expanded="false"><button class="sr-x" data-act="srx" aria-label="Yazıyı temizle"${q?"":" hidden"}>${I("close")}</button></div><button class="btn ghost sm sr-cancel" data-act="srcancel"${open?"":" hidden"}>Vazgeç</button><div class="sr-sug" id="srSug" role="listbox" aria-label="Öneriler" hidden></div></div>`}
+function srBodyHtml(){const raw=(S.q||"").trim();const ctx=srCtx();
+ if(!raw&&S.srMode)return srRecentHtml(ctx);const tab=srTab();
+ if(!raw)return srChips()+(tab==="all"?srBrowseAll(ctx):srBrowse(tab,ctx));
+ return srResults(srParse(raw),tab,ctx)}
+const vExploreBase50S=vExplore;
+vExplore=function(){try{return srBarHtml()+`<div class="sr-body" id="srBody">${srBodyHtml()}</div>`}catch(e){console.warn("sr",e);return vExploreBase50S()}};
+
+/* yerinde yenile: yalnızca #srBody (odak ve imleç korunur) */
+function srPaint(){const body=$("#srBody");if(!body||S.route.name!=="explore")return;srBarState();
+ if(!(S.q||"").trim()&&!S.srMode&&srTab()==="all"&&document.activeElement!==$("#q")){body._h=null;return render(false)}
+ let html;try{html=srBodyHtml()}catch(e){console.warn("sr",e);return}
+ if(body._h===html)return;const ox=(body.querySelector(".sr-tabs")||{}).scrollLeft||0;body._h=html;body.innerHTML=html;srChipsFix(ox);
+ if(!kbReduce()){body.classList.remove("upd");void body.offsetWidth;body.classList.add("upd");clearTimeout(body._ut);body._ut=setTimeout(()=>body.classList.remove("upd"),260)}}
+function srChipsFix(x){const c=$("#srBody .sr-tabs");if(!c)return;if(x)c.scrollLeft=x;const b=c.querySelector('[aria-pressed="true"]');
+ if(b){const cr=c.getBoundingClientRect(),br=b.getBoundingClientRect();if(br.left<cr.left+6||br.right>cr.right-28)c.scrollLeft+=br.left-cr.left-(cr.width-br.width)/2}
+ const end=()=>c.classList.toggle("end",c.scrollLeft+c.clientWidth>=c.scrollWidth-4);c.onscroll=end;end()}
+function srBarState(){const b=$("#srBar");if(!b)return;const q=S.q||"";const open=!!(S.srMode||q.trim());b.classList.toggle("on",open);
+ const c=b.querySelector(".sr-cancel");if(c)c.hidden=!open;const x=b.querySelector(".sr-x");if(x){x.hidden=!q;x.parentNode.classList.toggle("hasx",!!q)}}
+function srSugShow(){const box=$("#srSug"),q=$("#q");if(!box||!q)return;const on=document.activeElement===q&&!S._sgOff&&!!(S.q||"").trim();
+ if(on){let h="";try{h=srSugHtml()}catch(e){console.warn("sr",e)}if(box._h!==h){box._h=h;box.innerHTML=h}}
+ box.hidden=!on;q.setAttribute("aria-expanded",on?"true":"false");const b=$("#srBar");if(b)b.classList.toggle("sg",on)}
+function srCommit(){const q=$("#q");if(q)clearTimeout(q._t);srSaveQuery(S.q);S._sgOff=true;srSugShow();srPaint();if(q)q.blur()}
+function srKey(e){const box=$("#srSug");const items=box&&!box.hidden?[...box.querySelectorAll(".sr-si")]:[];
+ if((e.key==="ArrowDown"||e.key==="ArrowUp")&&items.length){e.preventDefault();let i=items.findIndex(x=>x.classList.contains("sel"));
+  i=e.key==="ArrowDown"?(i+1)%items.length:(i<=0?items.length-1:i-1);items.forEach((x,j)=>{x.classList.toggle("sel",j===i);x.setAttribute("aria-selected",j===i?"true":"false")});items[i].scrollIntoView({block:"nearest"});return}
+ if(e.key==="Enter"){if(e.isComposing)return;e.preventDefault();const s=items.find(x=>x.classList.contains("sel"));if(s)return s.click();return srCommit()}
+ if(e.key==="Escape"&&items.length){e.preventDefault();S._sgOff=true;srSugShow()}}
+function srWire(){const q=$("#q");if(!q||q._sr)return;q._sr=1;
+ /* yönetici girişi: afterRender'daki kodun aynısı */
+ q.oninput=()=>{S.q=q.value;clearTimeout(S._admT);if(q.value.length>=16){const v=q.value;S._admT=setTimeout(()=>admTry(v),450)}
+  S.srMode=true;S._sgOff=false;srBarState();srSugShow();clearTimeout(q._t);q._t=setTimeout(srPaint,200)};
+ q.onfocus=()=>{clearTimeout(S._srBT);const was=S.srMode;S.srMode=true;S._sgOff=false;srBarState();if(!was&&!(S.q||"").trim())srPaint();srSugShow()};
+ q.onblur=()=>{clearTimeout(S._srBT);S._srBT=setTimeout(()=>{const n=$("#q");if(n&&document.activeElement===n)return;srSugShow();
+  if(S.route.name==="explore"&&!(S.q||"").trim()&&S.srMode&&now()-(S._srTouch||0)>600){S.srMode=false;srPaint()}},220)};
+ q.onkeydown=srKey;srBarState()}
+/* etikete git: Keşfet'teyse yerinde, değilse Keşfet'e geç (geri tuşu döner) */
+function srOpenTag(tag){tag=srLow(String(tag||"").replace(/^#/,""));if(!tag)return;srRecentAdd({k:"t",v:tag});closeAll();
+ S.q="#"+tag;S.srTab="all";S.srMode=false;S._sgOff=true;
+ if(S.route.name==="explore"){const q=$("#q");if(q){clearTimeout(q._t);q.value=S.q;q.blur()}srSugShow();srPaint();const m=main();if(m)m.scrollTop=0;return}
+ go("explore")}
+
+const afterRenderBase50S=afterRender;
+afterRender=function(...a){const r=afterRenderBase50S(...a);try{if(S.route.name==="explore"){srWire();srChipsFix(0)}else S.srMode=false}catch(e){console.warn("sr",e)}return r};
+/* etiketten gelince Keşfet'te geri düğmesi */
+const renderTopBase50S=renderTop;
+renderTop=function(...a){const r=renderTopBase50S(...a);try{if(S.authed&&S.route.name==="explore"&&S.stack.length){const t=$("#top");if(t&&!t.querySelector('[data-act="back"]'))t.insertAdjacentHTML("afterbegin",`<button class="ib plain" data-act="back" aria-label="Geri">${I("back")}</button>`)}}catch{}return r};
+
+/* dokunuşlar: #etiket her yerde; arama sonucundan açılan kişi/paylaşım son aramalara */
+const srTouch=e=>{const t=e.target;if(t&&t.closest&&t.closest("#srBar,#srBody")&&!t.closest("#q"))S._srTouch=now()};
+document.addEventListener("pointerdown",srTouch,true);document.addEventListener("pointerup",srTouch,true);
+/* fareyle öneri seçerken kutu odağı kaybetmesin */
+document.addEventListener("mousedown",e=>{const t=e.target;if(t&&t.closest&&t.closest("#srSug"))e.preventDefault()},true);
+document.addEventListener("click",e=>{const t=e.target;if(!t||!t.closest)return;
+ const tg=t.closest("[data-htag]");if(tg){e.preventDefault();e.stopPropagation();srOpenTag(tg.dataset.htag);return}
+ if(S.route.name!=="explore"||!t.closest("#srBody"))return;const raw=(S.q||"").trim();if(!raw)return;
+ const pr=t.closest("[data-prof]");if(pr){srRecentAdd({k:"u",v:pr.dataset.prof});return}
+ if(t.closest("[data-open]"))srSaveQuery(raw)},true);
+
+ACT.srtab=(t,d)=>{S.srTab=SR_TABS.some(x=>x[0]===d.v)?d.v:"all";srPaint();const m=main();if(m&&m.scrollTop>0)m.scrollTop=0};
+ACT.srsort=(t,d)=>{S.srSort=d.v==="top"?"top":"new";srPaint()};
+ACT.srrec=(t,d)=>{const r=srRecent().find(x=>x.k===d.k&&x.v===d.v);if(!r)return srPaint();
+ if(r.k==="u"){srRecentAdd(r);closeAll();return go("profile",{uid:r.v})}
+ if(r.k==="t")return srOpenTag(r.v);
+ srRecentAdd(r);S.q=r.v;S.srTab="all";S._sgOff=true;const q=$("#q");if(q){clearTimeout(q._t);q.value=r.v;q.blur()}srSugShow();srPaint()};
+ACT.srrm=(t,d)=>{LS.set(srRecKey(),srRecent().filter(x=>!(x.k===d.k&&x.v===d.v)));srPaint()};
+ACT.srclear=()=>{LS.del(srRecKey());srPaint();toast("Son aramalar temizlendi")};
+ACT.srcancel=()=>{S.q="";S.srMode=false;S.srTab="all";S._sgOff=true;const q=$("#q");if(q){clearTimeout(q._t);q.value="";q.blur()}srSugShow();srPaint()};
+ACT.srx=()=>{S.q="";S.srMode=true;S._sgOff=false;const q=$("#q");if(q){clearTimeout(q._t);q.value="";q.focus()}srBarState();srSugShow();srPaint()};
+ACT.srsug=(t,d)=>{if(d.k==="u"){srRecentAdd({k:"u",v:d.v});const q=$("#q");if(q)q.blur();closeAll();return go("profile",{uid:d.v})}if(d.k==="t")return srOpenTag(d.v)};
+ACT.srgo=()=>srCommit();
 /*}@js:50SRCH*/
 
 /*@js:50ADM{*/
