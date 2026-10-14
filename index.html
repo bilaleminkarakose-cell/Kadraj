@@ -1090,6 +1090,193 @@ html[data-accent]:not([data-accent="kadraj"]) .call{background:radial-gradient(1
 /*}@css:50UI*/
 
 /*@css:50CALL{*/
+/* 5.0 arama ekranı (ar5): sesli aramada sahne temaya uyar (açık/koyu), görüntü gelince koyu cam düzenine geçer */
+.ar5{--kc-fg:var(--fg);--kc-mut:var(--muted);--kc-btn:color-mix(in srgb,var(--surface) 82%,transparent);--kc-bfg:var(--fg);--kc-ln:color-mix(in srgb,var(--line) 90%,transparent);--kc-dock:color-mix(in srgb,var(--surface) 58%,transparent);--kc-inv:var(--bg);--lv:0;--tw:min(30vw,150px);
+ position:absolute;inset:0;pointer-events:auto;overflow:hidden;display:flex;flex-direction:column;color:var(--kc-fg);isolation:isolate;
+ background:radial-gradient(110% 60% at 50% 30%,color-mix(in srgb,var(--accent) 26%,transparent),transparent 64%),radial-gradient(80% 50% at 92% 104%,color-mix(in srgb,var(--sun) 18%,transparent),transparent 62%),radial-gradient(70% 46% at -6% 96%,color-mix(in srgb,var(--accent) 14%,transparent),transparent 60%),var(--bg);
+ animation:ar5In .34s cubic-bezier(.2,.8,.2,1)}
+.ar5::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;--g:color-mix(in srgb,var(--fg) 8%,transparent);
+ background:linear-gradient(90deg,transparent calc(33.33% - .5px),var(--g) 0 calc(33.33% + .5px),transparent 0 calc(66.67% - .5px),var(--g) 0 calc(66.67% + .5px),transparent 0),linear-gradient(transparent calc(33.33% - .5px),var(--g) 0 calc(33.33% + .5px),transparent 0 calc(66.67% - .5px),var(--g) 0 calc(66.67% + .5px),transparent 0);
+ -webkit-mask:radial-gradient(80% 62% at 50% 40%,#000 25%,transparent 80%);mask:radial-gradient(80% 62% at 50% 40%,#000 25%,transparent 80%)}
+@keyframes ar5In{from{opacity:0;transform:scale(1.04)}to{opacity:1;transform:none}}
+.ar5.vid{--kc-fg:#fff;--kc-mut:rgba(255,255,255,.8);--kc-btn:rgba(20,26,24,.5);--kc-bfg:#fff;--kc-ln:rgba(255,255,255,.16);--kc-dock:rgba(8,12,11,.42);--kc-inv:#0b0f0e;background:#050807}
+.ar5.vid::before{display:none}
+/* görüntüler */
+.ar5-media{position:absolute;inset:0;z-index:0}
+.ar5-v{position:absolute;overflow:hidden;background:#0b0f0e;opacity:0;pointer-events:none;transition:opacity .35s ease,top .35s ease,right .35s ease,width .35s ease,height .35s ease,border-radius .35s ease}
+.ar5-v video{width:100%;height:100%;object-fit:cover;display:block}
+.ar5-rem{top:0;right:0;width:100%;height:100%}
+.ar5.rvis .ar5-rem{opacity:1}
+.ar5.rshare .ar5-rem video{object-fit:contain}
+.ar5-loc{top:calc(72px + env(safe-area-inset-top,0px));right:14px;width:var(--tw);aspect-ratio:var(--lar,3/4);border-radius:22px;z-index:3;box-shadow:0 12px 32px rgba(0,0,0,.35),0 0 0 1.5px rgba(255,255,255,.42)}
+.ar5.lvis .ar5-loc{opacity:1;pointer-events:auto;cursor:pointer}
+.ar5.mir .ar5-loc video{transform:scaleX(-1)}
+.ar5.self .ar5-loc,.ar5.swap .ar5-loc{top:0;right:0;width:100%;height:100%;aspect-ratio:auto;border-radius:0;box-shadow:none;z-index:0;cursor:default}
+.ar5.swap .ar5-rem{top:calc(72px + env(safe-area-inset-top,0px));right:14px;width:var(--tw);height:auto;aspect-ratio:var(--rar,3/4);border-radius:22px;z-index:3;box-shadow:0 12px 32px rgba(0,0,0,.35),0 0 0 1.5px rgba(255,255,255,.42);pointer-events:auto;cursor:pointer}
+.ar5.swap .ar5-rem video{object-fit:cover}
+.ar5-ltag{position:absolute;left:8px;bottom:8px;display:none;align-items:center;gap:5px;padding:3px 8px 3px 6px;border-radius:9px;background:rgba(0,0,0,.58);color:#fff;font-size:.7rem;font-weight:700}
+.ar5-ltag svg.i{width:.95rem;height:.95rem}
+.ar5.sharing .ar5-ltag{display:inline-flex}
+.ar5-lflip{position:absolute;right:6px;bottom:6px;width:34px;height:34px;border-radius:12px;display:grid;place-items:center;background:rgba(0,0,0,.45);color:#fff;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.ar5-lflip svg.i{width:1.1rem;height:1.1rem}
+.ar5.sharing .ar5-lflip,.ar5.self .ar5-lflip,.ar5.swap .ar5-lflip{display:none}
+.ar5-shade{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:0;transition:opacity .3s;background:linear-gradient(rgba(0,0,0,.55),transparent 24%,transparent 54%,rgba(0,0,0,.68))}
+.ar5.vid .ar5-shade{opacity:1}
+.ar5.idle .ar5-shade{opacity:.2}
+/* üst çubuk */
+.ar5-top{position:relative;z-index:4;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:calc(12px + env(safe-area-inset-top,0px)) 14px 0;transition:opacity .3s,transform .3s}
+.ar5-tb{width:44px;height:44px;border-radius:15px;display:grid;place-items:center;background:var(--kc-btn);color:var(--kc-bfg);border:1px solid var(--kc-ln);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);transition:transform .15s}
+.ar5-tb:active{transform:scale(.92)}
+.ar5-tb svg.i{width:1.3rem;height:1.3rem}
+.ar5-q{display:inline-flex;align-items:center;gap:7px;height:34px;padding:0 12px;border-radius:12px;background:var(--kc-btn);border:1px solid var(--kc-ln);color:var(--kc-fg);font-size:.76rem;font-weight:700;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+.ar5-bars{display:inline-flex;align-items:flex-end;gap:2px;height:13px}
+.ar5-bars i{width:3.5px;border-radius:2px;background:currentColor;opacity:.28}
+.ar5-bars i:nth-child(1){height:5px}.ar5-bars i:nth-child(2){height:9px}.ar5-bars i:nth-child(3){height:13px}
+.ar5-bars.q1 i:nth-child(1),.ar5-bars.q2 i:nth-child(-n+2),.ar5-bars.q3 i{opacity:1}
+.ar5-bars.q3{color:var(--ok)}.ar5-bars.q2{color:#E0A100}.ar5-bars.q1{color:var(--heart)}
+.ar5.vid .ar5-bars.q3{color:#5BE3B3}.ar5.vid .ar5-bars.q2{color:#FFCF4D}.ar5.vid .ar5-bars.q1{color:#FF8597}
+.ar5.idle .ar5-top{opacity:0;transform:translateY(-14px);pointer-events:none}
+/* sahne: vizör köşeleri sesle nefes alır */
+.ar5-stage{position:relative;z-index:2;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:10px 20px;text-align:center;transition:opacity .3s}
+.ar5-vf{position:relative;width:196px;height:196px;display:grid;place-items:center;flex:none}
+.ar5-vf .av{z-index:1}
+.ar5-vf .av img{border-radius:34%;box-shadow:0 18px 44px color-mix(in srgb,var(--accent) 30%,transparent)}
+.ar5-c{position:absolute;width:34px;height:34px;border:3.5px solid var(--accent);transition:transform .1s linear,border-color .25s}
+.ar5-c.tl{left:0;top:0;border-right:0;border-bottom:0;border-top-left-radius:16px;transform:translate(calc(var(--lv)*-14px),calc(var(--lv)*-14px))}
+.ar5-c.tr{right:0;top:0;border-left:0;border-bottom:0;border-top-right-radius:16px;transform:translate(calc(var(--lv)*14px),calc(var(--lv)*-14px))}
+.ar5-c.bl{left:0;bottom:0;border-right:0;border-top:0;border-bottom-left-radius:16px;transform:translate(calc(var(--lv)*-14px),calc(var(--lv)*14px))}
+.ar5-c.br{right:0;bottom:0;border-left:0;border-top:0;border-bottom-right-radius:16px;transform:translate(calc(var(--lv)*14px),calc(var(--lv)*14px))}
+.ar5.spk .ar5-c{border-color:var(--sun)}
+.ar5-aura{position:absolute;inset:26px;border-radius:36%;background:var(--accent);opacity:calc(.12 + var(--lv)*.3);transform:scale(calc(1 + var(--lv)*.3));transition:transform .1s linear,opacity .1s linear}
+.ar5-aura.a2{inset:16px;opacity:calc(.06 + var(--lv)*.16);transform:scale(calc(1 + var(--lv)*.55))}
+.ar5.st-ringing .ar5-vf,.ar5.st-connecting .ar5-vf{animation:ar5Breath 2.2s ease-in-out infinite}
+.ar5.st-incoming .ar5-aura.a2{inset:22px;background:transparent;border:2.5px solid var(--accent);animation:ar5Ring 1.8s ease-out infinite}
+.ar5.st-incoming .ar5-aura:not(.a2){animation:ar5Ring 1.8s ease-out .9s infinite;background:transparent;border:2px solid var(--accent);inset:22px}
+.ar5.st-incoming .ar5-c{animation:ar5Seek 1.7s ease-in-out infinite}
+.ar5.st-connected .ar5-vf{animation:ar5Lock .7s cubic-bezier(.3,1.5,.5,1)}
+@keyframes ar5Breath{50%{transform:scale(1.05)}}
+@keyframes ar5Ring{0%{transform:scale(.95);opacity:.7}100%{transform:scale(1.75);opacity:0}}
+@keyframes ar5Seek{50%{border-color:var(--sun)}}
+@keyframes ar5Lock{0%{transform:scale(1.22);opacity:.5}100%{transform:none;opacity:1}}
+.ar5-who{display:grid;justify-items:center;gap:6px;max-width:100%;min-width:0}
+.ar5-who b{font:600 1.6rem/1.15 var(--f-display);letter-spacing:-.01em;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ar5-st{font:500 .95rem/1.2 var(--f-mono);color:var(--kc-mut);font-variant-numeric:tabular-nums;letter-spacing:.02em;min-height:1.2em}
+.ar5-chips{display:flex;flex-wrap:wrap;justify-content:center;gap:6px}
+.ar5-chips:empty{display:none}
+.ar5-chip2{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:11px;background:var(--kc-btn);border:1px solid var(--kc-ln);font-size:.78rem;font-weight:700;-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+.ar5-chip2 svg.i{width:.95rem;height:.95rem}
+.ar5-chip2.warn{color:var(--heart)}
+.ar5.vid .ar5-chip2.warn{color:#FFB3BE}
+.ar5.vid .ar5-vf{display:none}
+.ar5.vid .ar5-stage{flex:none;align-items:flex-start;justify-content:flex-start;text-align:left;padding:12px 18px 0;gap:0}
+.ar5.vid.lvis:not(.swap):not(.self) .ar5-stage,.ar5.vid.swap .ar5-stage{padding-right:calc(var(--tw) + 28px)}
+.ar5.vid .ar5-who{justify-items:start;text-shadow:0 1px 12px rgba(0,0,0,.5)}
+.ar5.vid .ar5-who b{font-size:1.25rem}
+.ar5.vid .ar5-chips{justify-content:flex-start}
+.ar5.self .ar5-stage{flex:1;align-items:center;justify-content:center;text-align:center;padding:10px 20px}
+.ar5.self .ar5-who{justify-items:center}
+.ar5.self .ar5-who b{font-size:1.6rem}
+.ar5.idle .ar5-stage{opacity:0}
+/* uçan tepkiler */
+.ar5-fx{position:absolute;inset:0;z-index:5;pointer-events:none;overflow:hidden}
+.ar5-fl{position:absolute;bottom:calc(178px + env(safe-area-inset-bottom,0px));width:48px;height:48px;animation:ar5Float var(--d,2.6s) cubic-bezier(.22,.7,.3,1) forwards;filter:drop-shadow(0 6px 12px rgba(0,0,0,.22));will-change:transform,opacity}
+.ar5-fl svg.rx{width:100%;height:100%;display:block}
+.ar5-fl .av{position:absolute;right:-6px;bottom:-4px}
+.ar5-fl .av img{box-shadow:0 0 0 2px var(--surface)}
+@keyframes ar5Float{0%{transform:translate(0,24px) scale(.3) rotate(-8deg);opacity:0}14%{transform:translate(calc(var(--x)*.3),0) scale(1.18) rotate(4deg);opacity:1}62%{opacity:1}100%{transform:translate(var(--x),-46vh) scale(.92) rotate(-4deg);opacity:0}}
+.ar5-fl.rm{animation:none;bottom:calc(210px + env(safe-area-inset-bottom,0px))}
+.ar5-fl.mini{left:50%;top:-40px;bottom:auto;width:34px;height:34px;margin-left:-17px;animation:ar5MiniPop 1.6s ease forwards}
+.ar5-mini.vid .ar5-fl.mini{top:38%}
+.ar5-fl.mini.rm{animation:none}
+@keyframes ar5MiniPop{0%{transform:translateY(12px) scale(.4);opacity:0}20%{transform:none;opacity:1}75%{opacity:1}100%{transform:translateY(-22px);opacity:0}}
+/* alt denetimler */
+.ar5-bot{position:relative;z-index:4;margin-top:auto;display:grid;justify-items:center;gap:14px;padding:10px 12px calc(20px + env(safe-area-inset-bottom,0px));transition:opacity .3s,transform .3s}
+.ar5.idle .ar5-bot{opacity:0;transform:translateY(26px);pointer-events:none}
+.ar5-dock{display:flex;justify-content:center;gap:2px;padding:8px 6px;border-radius:28px;background:var(--kc-dock);border:1px solid var(--kc-ln);-webkit-backdrop-filter:blur(22px) saturate(1.4);backdrop-filter:blur(22px) saturate(1.4);box-shadow:0 16px 40px rgba(0,0,0,.1);max-width:100%}
+.ar5-b{display:grid;justify-items:center;gap:5px;width:clamp(54px,calc((100vw - 48px) / 5),64px);font-size:.7rem;font-weight:700;color:var(--kc-fg);text-align:center;letter-spacing:.01em}
+.ar5-i{width:50px;height:50px;border-radius:18px;display:grid;place-items:center;background:var(--kc-btn);color:var(--kc-bfg);border:1px solid var(--kc-ln);box-shadow:0 0 0 calc(var(--ll,0)*7px) color-mix(in srgb,var(--accent) 38%,transparent);transition:background .2s,color .2s,transform .15s,box-shadow .1s linear}
+.ar5-i svg.i{width:1.45rem;height:1.45rem}
+.ar5-b:active .ar5-i{transform:scale(.9)}
+.ar5-b.act .ar5-i{background:var(--accent);color:var(--accent-ink);border-color:transparent}
+.ar5-b.warn .ar5-i{background:var(--kc-fg);color:var(--kc-inv);border-color:transparent}
+.ar5-b.na .ar5-i{opacity:.5}
+.ar5-lab{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ar5-end{display:inline-flex;align-items:center;justify-content:center;gap:10px;height:54px;min-width:170px;padding:0 28px;border-radius:19px;background:#E23E57;color:#fff;font-weight:800;font-size:1rem;letter-spacing:.01em;box-shadow:0 14px 30px rgba(226,62,87,.3);transition:transform .15s,filter .15s}
+.ar5-end svg.i{width:1.6rem;height:1.6rem;stroke-width:2}
+.ar5-end:hover{filter:brightness(1.06)}
+.ar5-end:active{transform:scale(.96)}
+.ar5-note{margin:-4px 0 0;font-size:.78rem;color:var(--kc-mut);text-align:center;max-width:20rem}
+.ar5-ans{display:flex;justify-content:center;gap:clamp(56px,20vw,120px);width:100%;padding-top:4px}
+.ar5-lb{display:grid;justify-items:center;gap:8px;font-size:.84rem;font-weight:700}
+.ar5-big{width:76px;height:76px;border-radius:27px;display:grid;place-items:center;color:#fff;transition:transform .15s}
+.ar5-big:active{transform:scale(.93)}
+.ar5-big.red{background:#E23E57;box-shadow:0 14px 30px rgba(226,62,87,.3)}
+.ar5-big.green{background:#14A06B;animation:ar5Pulse 1.6s infinite}
+.ar5-big svg.i{width:2rem;height:2rem;stroke-width:2}
+@keyframes ar5Pulse{0%{box-shadow:0 0 0 0 rgba(20,160,107,.55)}70%{box-shadow:0 0 0 22px rgba(20,160,107,0)}100%{box-shadow:0 0 0 0 rgba(20,160,107,0)}}
+.ar5-alt{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+.ar5-chip{display:inline-flex;align-items:center;gap:7px;height:38px;padding:0 14px;border-radius:13px;background:var(--kc-btn);border:1px solid var(--kc-ln);color:var(--kc-fg);font-size:.82rem;font-weight:700;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+.ar5-chip svg.i{width:1.05rem;height:1.05rem}
+.ar5-share{display:flex;align-items:center;gap:10px;padding:6px 6px 6px 12px;border-radius:16px;background:color-mix(in srgb,var(--accent) 88%,#000);color:#fff;font-size:.85rem;font-weight:700;box-shadow:0 10px 26px rgba(0,0,0,.18)}
+.ar5-share svg.i{width:1.15rem;height:1.15rem}
+.ar5-share .ar5-chip{height:32px;background:rgba(255,255,255,.2);border-color:transparent;color:#fff}
+.ar5-tray{display:flex;gap:2px;padding:6px;border-radius:22px;background:var(--kc-dock);border:1px solid var(--kc-ln);-webkit-backdrop-filter:blur(22px);backdrop-filter:blur(22px);animation:ar5Tray .24s cubic-bezier(.2,.9,.3,1.3)}
+.ar5-tray button{width:46px;height:46px;border-radius:15px;display:grid;place-items:center;transition:transform .15s,background .15s}
+.ar5-tray button:hover{background:var(--kc-btn);transform:translateY(-3px)}
+.ar5-tray button:active{transform:scale(.88)}
+.ar5-tray svg.rx{width:32px;height:32px}
+@keyframes ar5Tray{from{opacity:0;transform:translateY(12px) scale(.94)}}
+/* küçültülmüş yüzen pencere */
+.ar5-mini{position:fixed;left:0;top:0;z-index:70;display:flex;align-items:center;gap:10px;padding:8px;border-radius:22px;background:color-mix(in srgb,var(--surface) 92%,transparent);color:var(--fg);border:1px solid var(--line);box-shadow:var(--shadow);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);touch-action:none;-webkit-user-select:none;user-select:none;cursor:grab;max-width:calc(100vw - 24px);animation:ar5MiniIn .32s cubic-bezier(.2,.9,.3,1.25);transition:left .28s cubic-bezier(.2,.8,.2,1),top .28s cubic-bezier(.2,.8,.2,1)}
+.ar5-mini.drag{transition:none;cursor:grabbing;box-shadow:0 20px 44px rgba(0,0,0,.3)}
+.ar5-mini:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+@keyframes ar5MiniIn{from{opacity:0;transform:scale(.8)}}
+.ar5-mav{position:relative;display:grid;flex:none}
+.ar5-mav::before{content:"";position:absolute;inset:-4px;border-radius:38%;border:2px solid var(--accent);opacity:calc(.35 + var(--lv,0)*.65);transform:scale(calc(1 + var(--lv,0)*.2));transition:transform .1s linear,border-color .25s}
+.ar5-mini.spk .ar5-mav::before{border-color:var(--sun)}
+.ar5-mt{display:grid;min-width:0;max-width:9.5rem;line-height:1.25;padding-right:2px}
+.ar5-mt b{font-size:.9rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ar5-mt small{font:600 .78rem/1.2 var(--f-mono);color:var(--accent);font-variant-numeric:tabular-nums}
+.ar5-mb{width:40px;height:40px;border-radius:14px;display:grid;place-items:center;color:#fff;flex:none}
+.ar5-mb.red{background:#E23E57}.ar5-mb.green{background:#14A06B}
+.ar5-mb svg.i{width:1.3rem;height:1.3rem;stroke-width:2}
+.ar5-mini.vid{display:block;width:118px;height:168px;padding:0;overflow:hidden;background:#0b0f0e;border-color:rgba(255,255,255,.22)}
+.ar5-mini.vid video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.ar5-mini.vid .ar5-mt{position:absolute;left:6px;bottom:9px}
+.ar5-mini.vid .ar5-mt b{display:none}
+.ar5-mini.vid .ar5-mt small{padding:2px 7px;border-radius:8px;background:rgba(0,0,0,.58);color:#fff}
+.ar5-mini.vid .ar5-mb{position:absolute;right:6px;bottom:6px;width:34px;height:34px;border-radius:12px}
+/* seçenek sayfaları */
+.ar5-ot{flex:1;min-width:0;display:grid;gap:2px}
+.ar5-ot small{font-weight:500;color:var(--muted);font-size:.8rem}
+.ar5-ov{color:var(--muted);font-weight:500;font-size:.85rem;max-width:45%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ar5-swr{cursor:pointer}
+.ar5-info{display:flex;gap:10px;align-items:flex-start;margin:8px 16px 0;padding:10px 12px;border-radius:14px;background:var(--surface-2);font:500 .8rem/1.45 var(--f-mono);color:var(--muted)}
+.ar5-info svg.i{width:1.1rem;height:1.1rem;flex:none;margin-top:1px}
+.ar5-keys{margin:10px 20px 0;font-size:.78rem;color:var(--muted)}
+.ar5-keys kbd{font:600 .74rem var(--f-mono);padding:1px 6px;border-radius:6px;border:1px solid var(--line);background:var(--surface);color:var(--fg)}
+.ar5-qin{display:flex;gap:8px;padding:8px 16px 0}
+.ar5-qin .in{flex:1;min-height:2.6rem}
+.ar5-qn{margin:8px 20px 0;font-size:.78rem;color:var(--muted)}
+/* geniş ekran */
+@media (min-width:720px){
+ .ar5{--tw:220px}
+ .ar5-loc,.ar5.swap .ar5-rem{top:calc(80px + env(safe-area-inset-top,0px));right:24px}
+ .ar5-vf{width:236px;height:236px}
+ .ar5-vf .av{--s:156px!important}
+ .ar5-who b{font-size:2rem}
+ .ar5-b{width:74px;font-size:.74rem}
+ .ar5-i{width:54px;height:54px}
+ .ar5-dock{gap:6px;padding:10px}
+ .ar5-top{padding-left:24px;padding-right:24px}
+ .ar5.vid .ar5-stage{padding-left:26px}
+ .ar5-fl{width:56px;height:56px}
+}
+@media (min-aspect-ratio:1/1){.ar5-rem video{object-fit:contain}.ar5.swap .ar5-rem video{object-fit:cover}
+ .ar5.rshare:not(.idle):not(.swap) .ar5-rem{top:calc(160px + env(safe-area-inset-top,0px));height:calc(100% - 160px - 196px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px));background:transparent}}
+/* hareketi azalt */
+html.reduce-motion .ar5,html.reduce-motion .ar5 *,html.reduce-motion .ar5-mini,html.reduce-motion .ar5-mini *{animation:none!important;transition:none!important}
+@media (prefers-reduced-motion:reduce){.ar5,.ar5 *,.ar5-mini,.ar5-mini *{animation:none!important;transition:none!important}}
 /*}@css:50CALL*/
 
 /*@css:50SRCH{*/
@@ -4123,6 +4310,339 @@ function fbKey(prefill){S.inReset=false;authShell(`<div>${brandLine}<h2>Kadraj A
 /*}@js:50UI*/
 
 /*@js:50CALL{*/
+/* ===== 5.0 yeni arama sistemi (ar5) =====
+   Yeni arama ekranı (vizör köşeleri karşı tarafın sesiyle nefes alır), bağlantı kalitesi (getStats), ekran paylaşımı
+   (sender.replaceTrack, yeniden anlaşma yok), sesli aramada kamerayı açma, kamera çevirme, ses çıkışı seçimi (setSinkId),
+   gürültü engelleme (applyConstraints), "Küçült" ile sürüklenebilir yüzen pencere, arama içi tepkiler (RTCDataChannel "kadraj"),
+   gelen aramada "Kamerasız yanıtla" ve "Mesajla yanıtla".
+   Uyum: 5.0 arayan her zaman bir video alıcı-vericisi (kamera yoksa izsiz) ve "kadraj" veri kanalı ekler; eski cevaplayıcılar
+   bunları yok sayar. 5.0 cevaplayıcı eski teklifteki video satırını gerekirse sendrecv yapar. Kanal mesajları: hi, st, rx, bye.
+   Eskileri: startCall49, acceptCall49, newPC49, showCallUI49, renderCall49, attachStreams49, callAction49, endCall49,
+   updCallStatus49, incomingCall47 (4.7 sarmalayıcısı). */
+Object.assign(IP,{
+ ar5Screen:'<rect x="2.5" y="4" width="19" height="13" rx="2.5"/><path d="M8.5 21h7M12 17v4"/><path d="M12 13.4V8M9.6 10.3 12 7.9l2.4 2.4"/>',
+ ar5ScreenOff:'<rect x="2.5" y="4" width="19" height="13" rx="2.5"/><path d="M8.5 21h7M12 17v4"/><path d="m9.5 8 5 5M14.5 8l-5 5"/>',
+ ar5Pip:'<rect x="2.5" y="4.5" width="19" height="15" rx="3"/><rect x="11.5" y="11.5" width="7" height="5" rx="1.4"/>',
+ ar5Wave:'<path d="M3 12h1.5M6.5 9v6M10 5.5v13M13.5 8v8M17 10v4M20.5 12h.5"/>',
+ ar5Smile:'<circle cx="12" cy="12" r="9"/><path d="M8.3 14.2a4.6 4.6 0 0 0 7.4 0M9 9.3v1.3M15 9.3v1.3"/>',
+ ar5Swap:'<path d="M7 3.5 3.5 7 7 10.5M3.5 7H16M17 13.5l3.5 3.5-3.5 3.5M20.5 17H8"/>'
+});
+const AR5={pos:null,starting:false,quick:["Şu an konuşamıyorum, sonra ararım.","Müsait olunca yazar mısın?","Toplantıdayım, birazdan dönerim.","Yoldayım, sonra konuşalım."]};
+const AR5_NOSHARE="Ekran paylaşımı bu cihazda desteklenmiyor. Bilgisayarda Chrome, Edge, Firefox ya da Safari ile çalışır.";
+const startCall49=startCall,acceptCall49=acceptCall,newPC49=newPC,showCallUI49=showCallUI,renderCall49=renderCall,attachStreams49=attachStreams,callAction49=callAction,endCall49=endCall,updCallStatus49=updCallStatus,incomingCall47=incomingCall;
+const ar5X=c=>c.x5||(c.x5={rs:{known:false,cam:false,share:false,mic:true},peerV:0,q:0,ns:true,sink:"",sinkLabel:"",tray:false,swap:false,idle:false,lvl:0,llv:0,spk:false,shown:{}});
+const ar5Cam=c=>c&&c.stream?c.stream.getVideoTracks().find(t=>t.readyState==="live")||null:null;
+const ar5CamLive=c=>{const t=ar5Cam(c);return!!(t&&t.enabled&&c.cam)};
+const ar5ShareOK=()=>!!(navigator.mediaDevices&&typeof navigator.mediaDevices.getDisplayMedia==="function");
+const ar5First=c=>{const n=String(P(c.peer).name||"").trim();return n.split(/\s+/)[0]||n};
+const ar5VH=()=>Math.round((window.visualViewport&&visualViewport.height)||innerHeight);
+function ar5VTx(c){if(!c||!c.pc)return null;const x=ar5X(c);const ok=t=>t&&!t.stopped&&t.currentDirection!=="stopped";if(ok(x.vtx))return x.vtx;
+ let ts=[];try{ts=c.pc.getTransceivers()}catch{}const t=ts.find(t=>ok(t)&&t.receiver&&t.receiver.track&&t.receiver.track.kind==="video")||null;if(t)x.vtx=t;return t}
+function ar5CanSend(c){const t=ar5VTx(c);if(!t)return false;const d=t.currentDirection||t.direction;return d==="sendrecv"||d==="sendonly"}
+function ar5RemoteVis(c){const x=ar5X(c);const r=c.remote;if(!r||!r.getVideoTracks().length)return false;if(x.rs.known)return!!(x.rs.cam||x.rs.share);return!!(c.video||x.rvLive)}
+function ar5LocalVis(c){return!!(ar5X(c).ds||ar5CamLive(c))}
+function ar5Status(c){if(c.status==="connected")return mmss(c.start?(now()-c.start)/1000:0);return{ringing:"Çalıyor…",incoming:c.video?"Görüntülü arama geliyor":"Sesli arama geliyor",connecting:"Bağlanıyor…"}[c.status]||""}
+
+/* ---- veri kanalı ---- */
+function ar5WireDC(c,ch){const x=ar5X(c);x.dc=ch;
+ ch.onopen=()=>{if(CALL!==c)return;ar5Send(c,{t:"hi",v:APP_V});ar5SendState(c)};
+ ch.onmessage=e=>{if(CALL!==c||typeof e.data!=="string"||e.data.length>2000)return;let m;try{m=JSON.parse(e.data)}catch{return}if(m&&typeof m==="object")ar5OnMsg(c,m)};
+ ch.onclose=()=>{if(x.dc===ch)x.dc=null}}
+function ar5Send(c,m){const ch=c&&c.x5&&c.x5.dc;if(!ch||ch.readyState!=="open")return false;try{ch.send(JSON.stringify(m));return true}catch{return false}}
+function ar5SendState(c){return ar5Send(c,{t:"st",cam:ar5CamLive(c),share:!!ar5X(c).ds,mic:!!c.mic})}
+function ar5OnMsg(c,m){const x=ar5X(c);
+ /* "hi" hemen ardından gelen "st" ile birlikte değerlendirilir: araya çizim girip görüntü bir an kaybolmasın */
+ if(m.t==="hi"){x.peerV=+m.v||x.peerV;return}
+ if(m.t==="st"){x.rs={known:true,cam:!!m.cam,share:!!m.share,mic:m.mic!==false};return renderCall()}
+ if(m.t==="rx"&&typeof m.k==="string"&&RX[m.k])return ar5Float(m.k,"them");
+ if(m.t==="bye")return endCall(false,"Arama bitti.")}
+
+/* ---- bağlantı: izleri birleştir, veri kanalını yakala, durumları izle ---- */
+newPC=function(id){const pc=newPC49(id);
+ pc.ontrack=e=>{const c=CALL;if(!c||c.pc!==pc)return;const x=ar5X(c);const tr=e.track;
+  if(!c.remote)c.remote=new MediaStream();if(!c.remote.getTrackById(tr.id))c.remote.addTrack(tr);
+  if(tr.kind==="video"){x.rvLive=!tr.muted;tr.addEventListener("unmute",()=>{if(CALL===c){x.rvLive=true;renderCall()}});tr.addEventListener("mute",()=>{if(CALL===c){x.rvLive=false;renderCall()}})}
+  else if(tr.kind==="audio")ar5Meter(c,"mr",tr);
+  renderCall()};
+ pc.ondatachannel=e=>{const c=CALL;if(c&&c.pc===pc&&e.channel&&e.channel.label==="kadraj")ar5WireDC(c,e.channel)};
+ const base=pc.onconnectionstatechange;
+ pc.onconnectionstatechange=()=>{try{base&&base()}finally{const c=CALL;if(c&&c.pc===pc)ar5Conn(c,pc.connectionState)}};
+ return pc};
+function ar5Conn(c,st){const x=ar5X(c);const weak=st==="disconnected";if(!!x.weak!==weak){x.weak=weak;renderCall()}
+ if(st==="connected"){ar5StatsStart(c);ar5Wake(c);ar5SendState(c);const at=c.stream&&c.stream.getAudioTracks()[0];if(at&&!x.ml)ar5Meter(c,"ml",at);ar5Poke(c);renderCall()}}
+
+/* ---- ses düzeyi (WebAudio) ---- */
+function ar5Ctx(){try{return Music.ctx||(Music.ctx=new(window.AudioContext||window.webkitAudioContext)())}catch{return null}}
+function ar5MeterOff(x,k){const m=x[k];if(!m)return;try{m.src.disconnect()}catch{}if(m.clone)try{m.clone.stop()}catch{}x[k]=null}
+function ar5Meter(c,k,track){const x=ar5X(c);const ctx=ar5Ctx();if(!ctx||!track)return;try{if(ctx.state==="suspended")ctx.resume().catch(()=>{})}catch{}
+ ar5MeterOff(x,k);
+ try{let t=track,clone=null;if(k==="ml"){clone=track.clone();clone.enabled=true;t=clone}
+  const src=ctx.createMediaStreamSource(new MediaStream([t]));const an=ctx.createAnalyser();an.fftSize=512;an.smoothingTimeConstant=.5;src.connect(an);
+  x[k]={src,an,buf:new Uint8Array(an.fftSize),clone}}catch(e){console.warn("ses ölçer",e)}
+ ar5Loop(c)}
+function ar5Level(m){if(!m)return 0;try{m.an.getByteTimeDomainData(m.buf)}catch{return 0}let s=0;for(let i=0;i<m.buf.length;i++){const v=(m.buf[i]-128)/128;s+=v*v}return Math.min(1,Math.sqrt(s/m.buf.length)*5)}
+function ar5Loop(c){const x=ar5X(c);if(x.raf)return;let last=0;
+ const step=ts=>{if(CALL!==c){x.raf=0;return}x.raf=requestAnimationFrame(step);const rm=kbReduce();if(ts-last<(rm?240:45))return;last=ts;
+  x.lvl=x.lvl*.5+ar5Level(x.mr)*.5;x.llv=x.llv*.5+ar5Level(x.ml)*.5;ar5Paint(c,rm)};
+ x.raf=requestAnimationFrame(step)}
+function ar5Paint(c,rm){const x=ar5X(c);const lv=rm?0:Math.min(1,x.lvl);x.spk=x.spk?x.lvl>.05:x.lvl>.1;
+ const box=$("#callBox");if(box&&box._ar5===c){box.style.setProperty("--lv",lv.toFixed(3));box.classList.toggle("spk",x.spk);const mb=box.querySelector('.ar5-b[data-cact="mic"] .ar5-i');if(mb)mb.style.setProperty("--ll",(rm||!c.mic?0:Math.min(1,x.llv)).toFixed(3))}
+ const mini=$("#ar5Mini");if(mini){mini.style.setProperty("--lv",lv.toFixed(3));mini.classList.toggle("spk",x.spk)}
+ /* sessizdeyken konuşma: konuşulan süre birikir, sessizlik yavaşça eritir (kelime araları sıfırlamasın) */
+ const t=now(),dt=Math.min(400,t-(x.mhT||t));x.mhT=t;
+ if(!c.mic&&c.status==="connected"){x.mhAcc=Math.max(0,(x.mhAcc||0)+(x.llv>.1?dt:-dt*.35));if(x.mhAcc>1400&&!x.shown.mh){x.shown.mh=true;toast("Mikrofonun kapalı. Konuşmak için Mikrofon'a dokun.")}}else x.mhAcc=0}
+
+/* ---- bağlantı kalitesi ---- */
+function ar5StatsStart(c){const x=ar5X(c);if(x.statT)return;const run=()=>{if(CALL!==c){clearInterval(x.statT);x.statT=0;return}ar5Stats(c)};x.statT=setInterval(run,2000);setTimeout(run,700)}
+async function ar5Stats(c){const x=ar5X(c);const pc=c.pc;if(!pc||pc.connectionState==="closed")return;let r;try{r=await pc.getStats()}catch{return}if(CALL!==c)return;
+ let lost=0,recv=0,bytes=0,pair=null;
+ r.forEach(s=>{if(s.type==="transport"&&s.selectedCandidatePairId&&r.get(s.selectedCandidatePairId))pair=r.get(s.selectedCandidatePairId);else if(s.type==="inbound-rtp"&&(s.kind==="audio"||s.kind==="video")){lost+=Math.max(0,s.packetsLost||0);recv+=s.packetsReceived||0;bytes+=s.bytesReceived||0}});
+ if(!pair)r.forEach(s=>{if(!pair&&s.type==="candidate-pair"&&s.state==="succeeded"&&(s.nominated||s.selected))pair=s});
+ x.rtt=pair&&typeof pair.currentRoundTripTime==="number"?Math.round(pair.currentRoundTripTime*1000):null;
+ const lc=pair&&pair.localCandidateId?r.get(pair.localCandidateId):null,rc=pair&&pair.remoteCandidateId?r.get(pair.remoteCandidateId):null;x.relay=!!((lc&&lc.candidateType==="relay")||(rc&&rc.candidateType==="relay"));
+ const t=now(),p=x.qp;x.qp={lost,recv,bytes,t};if(!p)return;
+ const dl=Math.max(0,lost-p.lost),dr=Math.max(0,recv-p.recv);const loss=dl+dr?dl/(dl+dr)*100:0;x.loss=x.loss==null?loss:x.loss*.5+loss*.5;x.kbps=Math.max(0,Math.round((bytes-p.bytes)*8/Math.max(1,t-p.t)));
+ let q=3;if(pc.connectionState!=="connected"||dr===0||(x.rtt!=null&&x.rtt>450)||x.loss>8)q=1;else if((x.rtt!=null&&x.rtt>220)||x.loss>2.5)q=2;
+ x.q=q;ar5PaintQ(c)}
+const ar5QLabel=q=>q>=3?"İyi bağlantı":q===2?"Orta bağlantı":"Zayıf bağlantı";
+function ar5PaintQ(c){const box=$("#callBox");if(!box||box._ar5!==c)return;const e=box.querySelector(".ar5-q");if(!e)return;const x=ar5X(c);const q=x.weak?1:x.q;const show=c.status==="connected"&&q>0;e.hidden=!show;if(!show)return;
+ const h=`<span class="ar5-bars q${q}" aria-hidden="true"><i></i><i></i><i></i></span><span>${ar5QLabel(q)}</span>`;if(e._h!==h){e._h=h;e.innerHTML=h;e.setAttribute("aria-label",ar5QLabel(q)+". Ayrıntı için dokun.")}}
+function ar5QText(c){const x=ar5X(c);if(!x.qp||x.loss==null)return"Bağlantı ölçülüyor…";const pct=v=>"%"+(Math.round((v||0)*10)/10).toLocaleString("tr-TR");
+ return`${ar5QLabel(x.q)} · gecikme ${x.rtt!=null?x.rtt+" ms":"bilinmiyor"} · kayıp ${pct(x.loss)} · gelen ${x.kbps||0} kbit/sn${x.relay?" · aktarma sunucusu üzerinden":""}`}
+
+/* ---- ekran uyanık kalsın ---- */
+async function ar5Wake(c){const x=ar5X(c);if(x.wl||x.wlp||!navigator.wakeLock||document.visibilityState!=="visible")return;x.wlp=true;
+ try{const l=await navigator.wakeLock.request("screen");if(CALL!==c){l.release().catch(()=>{});return}x.wl=l;l.addEventListener("release",()=>{if(x.wl===l)x.wl=null})}catch{}finally{x.wlp=false}}
+document.addEventListener("visibilitychange",()=>{const c=CALL;if(c&&document.visibilityState==="visible"&&c.status==="connected")ar5Wake(c)});
+
+/* ---- tepkiler ---- */
+function ar5Float(k,who){const c=CALL;if(!c||!RX[k])return;const box=$("#callBox");const host=box&&box._ar5===c?box.querySelector(".ar5-fx"):null;const mini=$("#ar5Mini");if(!host&&!mini)return;
+ const el=document.createElement("span");el.className="ar5-fl "+who;el.innerHTML=rxSvg(k)+(who==="them"?avatar(c.peer,20,{click:false,ring:false,online:false}):"");
+ const rm=kbReduce();if(rm)el.classList.add("rm");
+ if(host){const me=who==="me";el.style.left=(me?64+Math.random()*22:6+Math.random()*22).toFixed(1)+"%";el.style.setProperty("--x",((me?-1:1)*(10+Math.random()*22)).toFixed(0)+"px");el.style.setProperty("--d",(2.3+Math.random()*.9).toFixed(2)+"s");host.appendChild(el);while(host.children.length>24)host.firstChild.remove()}
+ else{el.classList.add("mini");mini.appendChild(el)}
+ if(who==="them")vib(15);
+ const kill=()=>el.remove();el.addEventListener("animationend",kill);setTimeout(kill,rm?1500:3800)}
+function ar5React(k){const c=CALL;if(!c||!RX[k])return;const x=ar5X(c);const t=now();x.rxT=(x.rxT||[]).filter(a=>t-a<3000);if(x.rxT.length>=8)return;x.rxT.push(t);
+ ar5Float(k,"me");vib(10);
+ const sent=ar5Send(c,{t:"rx",k});if((!sent||!x.rs.known)&&!x.shown.rx){x.shown.rx=true;toast(c.status!=="connected"?"Tepki göndermek için bağlantının kurulmasını bekle.":"Arkadaşın tepkileri göremiyor; Kadraj'ını güncellemesi gerekiyor.")}}
+
+/* ---- ekran paylaşımı ---- */
+async function ar5Share(){const c=CALL;if(!c)return;const x=ar5X(c);if(x.ds)return ar5ShareStop(c);
+ if(!ar5ShareOK())return toast(AR5_NOSHARE);
+ if(c.status!=="connected")return toast("Bağlantı kurulunca ekranını paylaşabilirsin.");
+ const tx=ar5VTx(c);if(!tx||!ar5CanSend(c))return toast("Arkadaşının Kadraj'ı eski bir sürüm. Ekran paylaşmak için ikinizin de güncel olması gerek.");
+ if(x.sharing)return;x.sharing=true;let ds;
+ try{ds=await navigator.mediaDevices.getDisplayMedia({video:{frameRate:{ideal:15,max:30},width:{max:1920},height:{max:1080}},audio:false})}
+ catch(e){x.sharing=false;if(e&&(e.name==="NotAllowedError"||e.name==="AbortError"))return;return toast(e&&e.name==="NotSupportedError"?AR5_NOSHARE:"Ekran paylaşılamadı.")}
+ x.sharing=false;const tr=ds.getVideoTracks()[0];if(CALL!==c||!tr){ds.getTracks().forEach(t=>t.stop());return}
+ try{tr.contentHint="detail"}catch{}
+ try{await tx.sender.replaceTrack(tr)}catch(e){console.warn(e);ds.getTracks().forEach(t=>t.stop());return toast("Ekran paylaşılamadı.")}
+ if(CALL!==c){ds.getTracks().forEach(t=>t.stop());return}
+ x.ds=ds;x.swap=false;tr.addEventListener("ended",()=>{if(CALL===c&&x.ds===ds)ar5ShareStop(c)});
+ ar5SendState(c);if(!x.rs.known&&!c.video)toast("Ekranını paylaşıyorsun. Arkadaşının Kadraj'ı eskiyse göremeyebilir.");renderCall()}
+async function ar5ShareStop(c){const x=ar5X(c);const ds=x.ds;if(!ds)return;x.ds=null;const tx=ar5VTx(c);
+ try{if(tx)await tx.sender.replaceTrack(ar5Cam(c)||null)}catch(e){console.warn(e)}
+ ds.getTracks().forEach(t=>t.stop());if(CALL!==c)return;ar5SendState(c);renderCall()}
+
+/* ---- mikrofon, kamera, çevirme, gürültü, ses çıkışı ---- */
+function ar5MicToggle(){const c=CALL;if(!c||c.status==="incoming")return;c.mic=!c.mic;c.stream&&c.stream.getAudioTracks().forEach(t=>t.enabled=c.mic);ar5X(c).mhAcc=0;ar5SendState(c);renderCall()}
+async function ar5CamToggle(){const c=CALL;if(!c||c.status==="incoming")return;const x=ar5X(c);if(x.camBusy)return;const t=ar5Cam(c);
+ if(t&&c.cam){c.cam=false;
+  /* yeni sürümle konuşurken kamera tamamen kapanır (ışık söner); eski sürümle görüntülü aramada siyah görüntü gider */
+  if(x.rs.known||!c.video){c.stream.removeTrack(t);t.stop();const tx=ar5VTx(c);if(tx&&!x.ds)tx.sender.replaceTrack(null).catch(()=>{})}else t.enabled=false;
+  ar5SendState(c);return renderCall()}
+ if(t&&!c.cam){t.enabled=true;c.cam=true;ar5SendState(c);return renderCall()}
+ if(!c.pc||!c.stream)return toast("Bağlantı kurulunca kamerayı açabilirsin.");
+ if(!ar5CanSend(c))return toast("Arkadaşının Kadraj'ı eski bir sürüm. Sesli aramada kamera açmak için ikinizin de güncel olması gerek.");
+ x.camBusy=true;let nt=null;
+ try{nt=(await navigator.mediaDevices.getUserMedia({video:{facingMode:c.facing||"user",width:{ideal:640},height:{ideal:480}}})).getVideoTracks()[0]}catch(e){x.camBusy=false;return mediaErr(e)}
+ x.camBusy=false;if(CALL!==c||!nt){nt&&nt.stop();return}
+ c.stream.addTrack(nt);c.cam=true;const tx=ar5VTx(c);if(tx&&!x.ds){try{await tx.sender.replaceTrack(nt)}catch(e){console.warn(e)}}
+ ar5SendState(c);renderCall()}
+async function ar5Flip(){const c=CALL;if(!c)return;const x=ar5X(c);const old=ar5Cam(c);if(!old||!c.cam)return toast("Önce kamerayı aç.");if(x.camBusy)return;x.camBusy=true;
+ const facing=c.facing==="user"?"environment":"user";const want={video:{facingMode:facing,width:{ideal:640},height:{ideal:480}}};const oldId=(old.getSettings&&old.getSettings().deviceId)||"";
+ let nt=null;try{nt=(await navigator.mediaDevices.getUserMedia(want)).getVideoTracks()[0]}catch{try{old.stop();nt=(await navigator.mediaDevices.getUserMedia(want)).getVideoTracks()[0]}catch{}}
+ x.camBusy=false;if(CALL!==c){nt&&nt.stop();return}
+ if(!nt){if(old.readyState==="ended"){c.stream.removeTrack(old);c.cam=false;const tx=ar5VTx(c);if(tx&&!x.ds)tx.sender.replaceTrack(null).catch(()=>{});ar5SendState(c);renderCall()}return toast("Kamera çevrilemedi.")}
+ if(oldId&&old.readyState==="live"&&nt.getSettings&&nt.getSettings().deviceId===oldId){nt.stop();return toast("Bu cihazda başka kamera bulunamadı.")}
+ const tx=ar5VTx(c);if(tx&&!x.ds){try{await tx.sender.replaceTrack(nt)}catch(e){console.warn(e)}}
+ c.stream.removeTrack(old);old.stop();c.stream.addTrack(nt);c.facing=facing;renderCall()}
+async function ar5Noise(on){const c=CALL;if(!c)return;const x=ar5X(c);const t=c.stream&&c.stream.getAudioTracks()[0];const sync=()=>{const sw=$("#ar5Ns");if(sw)sw.checked=x.ns};
+ if(!t){sync();return toast("Bağlantı kurulunca değiştirebilirsin.")}
+ let cap={};try{cap=t.getCapabilities?t.getCapabilities():{}}catch{}
+ if(Array.isArray(cap.noiseSuppression)&&cap.noiseSuppression.length<2){sync();return toast("Bu cihazda gürültü engelleme değiştirilemiyor.")}
+ try{await t.applyConstraints({echoCancellation:true,noiseSuppression:on,autoGainControl:on});x.ns=on;toast(on?"Gürültü engelleme açık.":"Gürültü engelleme kapalı. Müzik ve ortam sesi daha doğal gider.")}catch{toast("Bu cihazda gürültü engelleme değiştirilemiyor.")}
+ sync()}
+function ar5AudioEl(){let a=document.getElementById("ar5Audio");if(!a){a=document.createElement("audio");a.id="ar5Audio";a.autoplay=true;a.setAttribute("playsinline","");a.hidden=true;document.body.appendChild(a)}return a}
+async function ar5Speaker(){const c=CALL;if(!c)return;const a=ar5AudioEl();
+ if(typeof a.setSinkId!=="function")return toast("Bu tarayıcıda ses çıkışı seçilemiyor. Telefonun ses tuşlarını ya da Bluetooth ayarlarını kullan.");
+ let ds=[];try{ds=(await navigator.mediaDevices.enumerateDevices()).filter(d=>d.kind==="audiooutput"&&d.deviceId)}catch{}
+ if(CALL!==c)return;if(ds.length<2)return toast("Başka bir ses çıkışı bulunamadı. Kulaklık ya da hoparlör bağlayınca burada görünür.");
+ const x=ar5X(c);const cur=x.sink||"default";
+ const l=sheet("callspk","Ses çıkışı",ds.map((d,i)=>`<button class="opt" data-ar5spk="${i}">${I(/kulak|head|bluetooth|airpod|buds/i.test(d.label||"")?"music":"vol")}<span class="ar5-ot">${esc(d.label||("Ses çıkışı "+(i+1)))}</span>${d.deviceId===cur?I("check"):""}</button>`).join(""));
+ l.querySelectorAll("[data-ar5spk]").forEach(b=>b.onclick=async()=>{const d=ds[+b.dataset.ar5spk];closeLayer("callspk");if(!d||CALL!==c)return;
+  try{await a.setSinkId(d.deviceId);x.sink=d.deviceId;x.sinkLabel=d.label||"";toast("Ses artık buradan geliyor: "+(d.label||"seçilen çıkış"))}catch{toast("Bu ses çıkışına geçilemedi.")}})}
+
+/* ---- gelen aramada mesajla yanıt ---- */
+function ar5Quick(){const c=CALL;if(!c||c.status!=="incoming")return;
+ const l=sheet("callq","Mesajla yanıtla",`${AR5.quick.map((q,i)=>`<button class="opt" data-ar5q="${i}">${I("chat")}<span class="ar5-ot">${esc(q)}</span></button>`).join("")}<form class="ar5-qin" id="ar5QF"><input class="in" id="ar5QIn" maxlength="200" placeholder="Kendi mesajını yaz" autocomplete="off" enterkeyhint="send" aria-label="Kendi mesajın"><button class="btn sm" type="submit">Gönder</button></form><p class="ar5-qn">Arama reddedilir, mesajın sohbetinize düşer.</p>`);
+ l.querySelectorAll("[data-ar5q]").forEach(b=>b.onclick=()=>ar5QuickSend(AR5.quick[+b.dataset.ar5q]));
+ const f=l.querySelector("#ar5QF");if(f)f.onsubmit=e=>{e.preventDefault();const v=(l.querySelector("#ar5QIn").value||"").trim();if(v)ar5QuickSend(v)}}
+async function ar5QuickSend(text){closeLayer("callq");const c=CALL;if(!c||!text)return;const peer=c.peer;if(c.status==="incoming")declineCall();
+ let ok=false;try{ok=await sendMessage("u:"+peer,{text})}catch{}if(ok===true)toast("Mesajın gönderildi.")}
+
+/* ---- diğer seçenekler ---- */
+function ar5More(){const c=CALL;if(!c)return;const x=ar5X(c);const cam=ar5CamLive(c),both=ar5RemoteVis(c)&&ar5LocalVis(c);
+ let fine=false;try{fine=matchMedia("(pointer:fine)").matches}catch{}
+ const body=`${cam?`<button class="opt" data-cact="flip">${I("flip")}<span class="ar5-ot">Kamerayı çevir</span></button>`:""}${both?`<button class="opt" data-cact="swap">${I("ar5Swap")}<span class="ar5-ot">Görüntülerin yerini değiştir</span></button>`:""}<button class="opt" data-cact="spk">${I("vol")}<span class="ar5-ot">Ses çıkışı</span><small class="ar5-ov">${esc(x.sinkLabel||"Varsayılan")}</small></button><label class="opt ar5-swr">${I("ar5Wave")}<span class="ar5-ot">Gürültü engelleme<small>Uğultuyu ve klavye sesini azaltır</small></span><span class="sw"><input type="checkbox" id="ar5Ns" ${x.ns?"checked":""} ${c.stream?"":"disabled"}><span></span></span></label><button class="opt" data-cact="mini">${I("ar5Pip")}<span class="ar5-ot">Küçült<small>Arama sürerken uygulamada gezin</small></span></button><div class="ar5-info">${I("info")}<span>${esc(c.status==="connected"?ar5QText(c):"Bağlantı kurulunca kalite bilgisi burada görünür.")}</span></div>${fine?`<p class="ar5-keys">Kısayollar: <kbd>M</kbd> mikrofon · <kbd>V</kbd> kamera · <kbd>Esc</kbd> küçült</p>`:""}`;
+ const l=sheet("callmore","Arama seçenekleri",body);const ns=l.querySelector("#ar5Ns");if(ns)ns.onchange=()=>ar5Noise(ns.checked)}
+
+/* ---- arama ekranı ---- */
+showCallUI=function(){const c=CALL;if(!c)return;ar5X(c);ar5AudioEl();
+ openLayer("call",`<div class="ar5" id="callBox" role="dialog" aria-modal="true" aria-label="${esc(P(c.peer).name)} ile arama"></div>`,{noScrim:true,onClose:()=>{if(CALL===c&&!ar5X(c).ending)setTimeout(()=>{if(CALL===c&&!$("#callBox"))ar5MiniShow(c)},0)}});
+ const m=$("#ar5Mini");if(m)m.remove();renderCall();ar5Poke(c)};
+renderCall=function(){const c=CALL;if(!c)return;ar5Render(c);ar5MiniPaint()};
+function ar5Skel(c){const p=P(c.peer);return`<div class="ar5-media"><div class="ar5-v ar5-rem"><video id="ar5Rv" muted autoplay playsinline></video></div><div class="ar5-v ar5-loc"><video id="ar5Lv" muted autoplay playsinline></video><span class="ar5-ltag">${I("ar5Screen")}Ekranın</span><button class="ar5-lflip" data-cact="flip" aria-label="Kamerayı çevir">${I("flip")}</button></div></div>
+<div class="ar5-shade"></div>
+<div class="ar5-top"><button class="ar5-tb" data-cact="mini" aria-label="Küçült" title="Küçült">${I("ar5Pip")}</button><button class="ar5-q" data-cact="qinfo" hidden></button><button class="ar5-tb" data-cact="more" aria-label="Arama seçenekleri" title="Arama seçenekleri">${I("more")}</button></div>
+<div class="ar5-stage"><div class="ar5-vf" aria-hidden="true"><i class="ar5-aura"></i><i class="ar5-aura a2"></i><span class="ar5-c tl"></span><span class="ar5-c tr"></span><span class="ar5-c bl"></span><span class="ar5-c br"></span>${avatar(c.peer,128,{click:false,ring:false,online:false})}</div><div class="ar5-who"><b>${esc(p.name)}</b><span class="ar5-st" id="callSt"></span><div class="ar5-chips" role="status"></div></div></div>
+<div class="ar5-fx" aria-hidden="true"></div>
+<div class="ar5-bot"></div>`}
+function ar5Controls(c){const x=ar5X(c);
+ if(c.status==="incoming")return`<div class="ar5-alt">${c.video?`<button class="ar5-chip" data-cact="nocam">${I("camoff")}Kamerasız yanıtla</button>`:""}<button class="ar5-chip" data-cact="quick">${I("chat")}Mesajla yanıtla</button></div><div class="ar5-ans"><span class="ar5-lb"><button class="ar5-big red" data-cact="decline" aria-label="Reddet">${I("hangup")}</button>Reddet</span><span class="ar5-lb"><button class="ar5-big green" data-cact="accept" aria-label="Kabul et">${I(c.video?"video":"phone")}</button>Kabul et</span></div>`;
+ const live=c.status==="connected",cam=ar5CamLive(c),sh=!!x.ds;
+ const b=(a,ic,l,st,aria,pr)=>`<button class="ar5-b ${st||""}" data-cact="${a}" aria-label="${esc(aria||l)}"${pr===undefined?"":` aria-pressed="${pr?"true":"false"}"`}><span class="ar5-i">${I(ic)}</span><span class="ar5-lab">${esc(l)}</span></button>`;
+ const dock=[b("mic",c.mic?"mic":"micoff",c.mic?"Mikrofon":"Sessizde",c.mic?"":"warn",c.mic?"Sessize al":"Sesi aç",!c.mic),b("cam",cam?"video":"camoff","Kamera",cam?"act":"",cam?"Kamerayı kapat":"Kamerayı aç",cam)];
+ if(live){dock.push(b("share",sh?"ar5ScreenOff":"ar5Screen",sh?"Durdur":"Ekran",sh?"act":(ar5ShareOK()?"":"na"),sh?"Ekran paylaşımını durdur":"Ekranı paylaş",sh));dock.push(b("tray","ar5Smile","Tepki",x.tray?"act":"","Tepki gönder",x.tray))}
+ dock.push(b("more","more","Diğer","","Diğer seçenekler"));
+ return`${sh?`<div class="ar5-share">${I("ar5Screen")}<span>Ekranını paylaşıyorsun</span><button class="ar5-chip" data-cact="share">Durdur</button></div>`:""}${live&&x.tray?`<div class="ar5-tray" role="group" aria-label="Tepkiler">${REACTS.map(([k,l])=>`<button data-cact="rx:${k}" aria-label="${esc(l)}" title="${esc(l)}">${rxSvg(k)}</button>`).join("")}</div>`:""}<div class="ar5-dock">${dock.join("")}</div><button class="ar5-end" data-cact="end">${I("hangup")}<span>${c.status==="ringing"?"İptal et":"Bitir"}</span></button>${c.status==="ringing"?`<p class="ar5-note">Arkadaşının Kadraj'ı o an açık olmalı.</p>`:""}`}
+function ar5Render(c){const box=$("#callBox");if(!box)return;const x=ar5X(c);
+ if(box._ar5!==c){box._ar5=c;box._bot="";box.innerHTML=ar5Skel(c);ar5WireBox(box,c)}
+ const live=c.status==="connected",rv=ar5RemoteVis(c),lv=ar5LocalVis(c),self=!rv&&lv&&!live,vid=rv||self;
+ if(!(rv&&lv))x.swap=false;if(!(rv&&live))x.idle=false;if(!live)x.tray=false;
+ const cls=["ar5","st-"+c.status];if(vid)cls.push("vid");if(rv)cls.push("rvis");if(lv)cls.push("lvis");if(self)cls.push("self");if(rv&&x.rs.share)cls.push("rshare");if(x.ds)cls.push("sharing");if(x.swap)cls.push("swap");if(x.weak)cls.push("weak");if(c.facing==="user"&&!x.ds)cls.push("mir");if(x.idle)cls.push("idle");if(x.spk)cls.push("spk");
+ const cn=cls.join(" ");if(box.className!==cn)box.className=cn;
+ const st=box.querySelector("#callSt"),stt=ar5Status(c);if(st&&st.textContent!==stt)st.textContent=stt;
+ const nm=ar5First(c),ch=[];
+ if(x.weak)ch.push(["ar5Wave","Bağlantı zayıf, yeniden bağlanıyor…","warn"]);
+ if(live&&x.rs.known&&!x.rs.mic)ch.push(["micoff",nm+" sessizde",""]);
+ if(live&&rv&&x.rs.share)ch.push(["ar5Screen",nm+" ekranını paylaşıyor",""]);
+ const chh=ch.map(([i,t,k])=>`<span class="ar5-chip2 ${k}">${I(i)}${esc(t)}</span>`).join("");const ce=box.querySelector(".ar5-chips");if(ce&&ce._h!==chh){ce._h=chh;ce.innerHTML=chh}
+ const bot=ar5Controls(c);const be=box.querySelector(".ar5-bot");if(be&&box._bot!==bot){box._bot=bot;be.innerHTML=bot}
+ ar5PaintQ(c);attachStreams()}
+function ar5WireBox(box,c){
+ box.addEventListener("pointerdown",()=>{if(CALL!==c)return;const x=ar5X(c);box._wk=x.idle?now():0;ar5Poke(c)},true);
+ box.addEventListener("focusin",()=>{if(CALL===c)ar5Poke(c)});
+ box.addEventListener("click",e=>{if(CALL!==c||e.target.closest("button,label,input"))return;const x=ar5X(c);if(box._wk&&now()-box._wk<500)return;
+  const rv=ar5RemoteVis(c),lv=ar5LocalVis(c);
+  if(rv&&lv&&e.target.closest(x.swap?".ar5-rem":".ar5-loc")){x.swap=!x.swap;return renderCall()}
+  if(x.tray){x.tray=false;return renderCall()}
+  if(rv&&c.status==="connected"&&!e.target.closest(".ar5-bot,.ar5-top")){x.idle=true;clearTimeout(x.idleT);renderCall()}})}
+function ar5Poke(c){const x=ar5X(c);if(x.idle){x.idle=false;renderCall()}clearTimeout(x.idleT);
+ x.idleT=setTimeout(()=>{if(CALL!==c||x.tray||c.status!=="connected"||!ar5RemoteVis(c)||!$("#callBox"))return;if($("#overlay [data-layer='callmore'],#overlay [data-layer='callspk']"))return;x.idle=true;renderCall()},5000)}
+attachStreams=function(){const c=CALL;if(!c)return;const x=ar5X(c);const r=c.remote;
+ const set=(el,tr)=>{if(!el)return;const id=tr?tr.id:null;if(el._tid===id)return;el._tid=id;el.srcObject=tr?new MediaStream([tr]):null;if(tr){const p=el.play();if(p&&p.catch)p.catch(()=>{})}};
+ const at=r?r.getAudioTracks()[0]||null:null,vt=r?r.getVideoTracks()[0]||null:null;
+ set(ar5AudioEl(),at);set($("#ar5Rv"),vt);set($("#ar5Mini video"),vt);
+ const lt=x.ds?x.ds.getVideoTracks()[0]||null:(ar5CamLive(c)?ar5Cam(c):null);set($("#ar5Lv"),lt);
+ const box=$("#callBox");if(box){const ar=t=>{try{const s=t&&t.getSettings?t.getSettings():null;return s&&s.width&&s.height?(s.width/s.height).toFixed(3):""}catch{return""}};const la=ar(lt),ra=ar(vt);if(la)box.style.setProperty("--lar",la);if(ra)box.style.setProperty("--rar",ra)}
+ if(x.sink){const a=ar5AudioEl();if(a.setSinkId&&a.sinkId!==x.sink)a.setSinkId(x.sink).catch(()=>{})}};
+updCallStatus=function(){const c=CALL;if(!c)return;const t=ar5Status(c);const e=$("#callSt");if(e&&e.textContent!==t)e.textContent=t;const m=$("#ar5MiniT");if(m)m.textContent=c.status==="incoming"?"Gelen arama":t};
+
+/* ---- küçültülmüş pencere ---- */
+function ar5MiniShow(c){if(CALL!==c)return;let m=$("#ar5Mini");if(!m){m=document.createElement("div");m.id="ar5Mini";m.tabIndex=0;m.setAttribute("role","button");document.body.appendChild(m);ar5MiniWire(m)}m._key="";ar5MiniPaint()}
+function ar5MiniPaint(){const m=$("#ar5Mini");if(!m)return;const c=CALL;if(!c){m.remove();return}const p=P(c.peer),rv=ar5RemoteVis(c),inc=c.status==="incoming";const key=rv+"|"+inc;
+ if(m._key!==key){m._key=key;m.className="ar5-mini"+(rv?" vid":"")+(inc?" inc":"");m.setAttribute("aria-label",`${p.name} ile arama. Büyütmek için dokun.`);
+  m.innerHTML=`${rv?`<video muted autoplay playsinline></video>`:`<span class="ar5-mav">${avatar(c.peer,40,{click:false,ring:false,online:false})}</span>`}<span class="ar5-mt"><b>${esc(p.name)}</b><small id="ar5MiniT"></small></span>${inc?`<button class="ar5-mb red" data-ar5m="decline" aria-label="Reddet">${I("hangup")}</button><button class="ar5-mb green" data-ar5m="accept" aria-label="Kabul et">${I(c.video?"video":"phone")}</button>`:`<button class="ar5-mb red" data-ar5m="end" aria-label="Aramayı bitir">${I("hangup")}</button>`}`;
+  ar5MiniPlace(m)}
+ const t=m.querySelector("#ar5MiniT");const tt=inc?"Gelen arama":ar5Status(c);if(t&&t.textContent!==tt)t.textContent=tt;attachStreams()}
+function ar5MiniSet(m,x,y){const w=m.offsetWidth,h=m.offsetHeight;const W=document.documentElement.clientWidth,H=ar5VH();x=Math.max(8,Math.min(W-w-8,x));y=Math.max(8,Math.min(H-h-8,y));m.style.left=Math.round(x)+"px";m.style.top=Math.round(y)+"px"}
+function ar5MiniPlace(m){const w=m.offsetWidth,h=m.offsetHeight;const W=document.documentElement.clientWidth,H=ar5VH();const p=AR5.pos;const left=p?p.left:false;const y=p&&p.y!=null?p.y*H:H-h-124;ar5MiniSet(m,left?12:W-w-12,y)}
+function ar5MiniWire(m){let id=null,sx=0,sy=0,ox=0,oy=0,drag=false;
+ m.addEventListener("pointerdown",e=>{if(e.button>0||e.target.closest("[data-ar5m]"))return;id=e.pointerId;sx=e.clientX;sy=e.clientY;ox=m.offsetLeft;oy=m.offsetTop;drag=false});
+ m.addEventListener("pointermove",e=>{if(e.pointerId!==id)return;const dx=e.clientX-sx,dy=e.clientY-sy;if(!drag&&Math.hypot(dx,dy)>6){drag=true;m.classList.add("drag");try{m.setPointerCapture(id)}catch{}}if(drag){e.preventDefault();ar5MiniSet(m,ox+dx,oy+dy)}});
+ const up=e=>{if(e.pointerId!==id)return;id=null;if(!drag)return;drag=false;m.classList.remove("drag");m._dragAt=now();const W=document.documentElement.clientWidth,w=m.offsetWidth;const left=m.offsetLeft+w/2<W/2;ar5MiniSet(m,left?12:W-w-12,m.offsetTop);AR5.pos={left,y:m.offsetTop/ar5VH()}};
+ m.addEventListener("pointerup",up);m.addEventListener("pointercancel",up);
+ m.addEventListener("click",e=>{e.stopPropagation();if(m._dragAt&&now()-m._dragAt<350)return;const b=e.target.closest("[data-ar5m]");const a=b?b.dataset.ar5m:"open";
+  if(a==="end")return callAction("end");if(a==="decline")return declineCall();if(a==="accept"){ar5Restore();return acceptCall()}ar5Restore()});
+ m.addEventListener("keydown",e=>{if((e.key==="Enter"||e.key===" ")&&e.target===m){e.preventDefault();ar5Restore()}})}
+function ar5Restore(){const c=CALL;if(!c)return;const m=$("#ar5Mini");if(m)m.remove();showCallUI()}
+addEventListener("resize",()=>{const m=$("#ar5Mini");if(m)ar5MiniPlace(m)});
+
+/* ---- arama başlatma ve yanıtlama (5.0) ---- */
+startCall=async function(uid,video){
+ if(CALL){if(!$("#callBox"))return ar5Restore();return toast("Zaten bir aramadasın.")}
+ if(!guard())return;if(S.mode!=="cloud")return toast("Arama için Firebase bağlantısı gerekiyor.");if(!callSupported())return toast("Bu tarayıcı aramayı desteklemiyor. Chrome ya da Safari'yi dene.");if(BOT[uid])return toast("Botlar aranamaz.");
+ if(typeof childGate==="function"&&!childGate(uid))return;
+ if(AR5.starting)return;AR5.starting=true;let stream;
+ try{stream=await getMedia(video)}catch(e){if(!video){AR5.starting=false;return mediaErr(e)}try{stream=await getMedia(false);video=false;toast("Kamera açılamadı, sesli arama başlatılıyor.")}catch(e2){AR5.starting=false;return mediaErr(e2)}}
+ AR5.starting=false;if(CALL){stream.getTracks().forEach(t=>t.stop());return toast("Zaten bir aramadasın.")}
+ const{F,db}=FB;const ref=F.doc(F.collection(db,"calls"));const id=ref.id;
+ const c=CALL={id,ref,peer:uid,video:!!video,role:"caller",status:"ringing",stream,unsubs:[],start:0,mic:true,cam:!!video,facing:"user",pend:[]};const x=ar5X(c);
+ const pc=newPC(id);c.pc=pc;const at=stream.getAudioTracks()[0],vt=stream.getVideoTracks()[0];
+ if(at)pc.addTrack(at,stream);
+ try{x.vtx=vt?pc.addTransceiver(vt,{direction:"sendrecv",streams:[stream]}):pc.addTransceiver("video",{direction:"sendrecv",streams:[stream]})}catch(e){console.warn(e);if(vt)pc.addTrack(vt,stream)}
+ try{ar5WireDC(c,pc.createDataChannel("kadraj",{ordered:true}))}catch(e){console.warn(e)}
+ showCallUI();listenCands();
+ try{const offer=await pc.createOffer();await pc.setLocalDescription(offer);await F.setDoc(ref,{from:S.uid,to:uid,video:!!video,status:"ringing",offer:{type:offer.type,sdp:offer.sdp},at:Date.now(),v:APP_V})}catch(e){console.warn(e);c.outcome="failed";return endCall(false,e&&e.code==="permission-denied"?"Arama kuralları eksik. Firestore kurallarını güncelle.":"Arama başlatılamadı.")}
+ if(CALL!==c)return;startTone("back");
+ c.unsubs.push(F.onSnapshot(ref,async s=>{if(CALL!==c)return;const d=s.exists()?s.data():null;if(!d){endCall(false);return}
+  if(d.av)x.peerV=+d.av||x.peerV;
+  if(d.answer&&!x.ans&&!pc.currentRemoteDescription){x.ans=true;try{await pc.setRemoteDescription(d.answer);flushCands();if(CALL===c&&c.status==="ringing"){c.status="connecting";stopTone();renderCall()}}catch(e){x.ans=false;console.warn(e)}}
+  if(d.status==="declined"){c.outcome="declined";endCall(false,"Arama reddedildi.")}else if(d.status==="ended")endCall(false,"Arama bitti.")}));
+ c.noAns=setTimeout(()=>{if(CALL===c&&c.status==="ringing"){c.outcome="missed";F.updateDoc(ref,{status:"missed"}).catch(()=>{});endCall(false,"Cevap yok.")}},40000)};
+function ar5PrepVideo(c){const x=ar5X(c);let ts=[];try{ts=c.pc.getTransceivers()}catch{}
+ const t=ts.find(t=>t.receiver&&t.receiver.track&&t.receiver.track.kind==="video"&&!t.stopped&&t.currentDirection!=="stopped");if(!t)return;x.vtx=t;
+ /* izsiz video satırını gönderebilir yap: akış eşlemesi (setStreams) varsa eski arayan da sesini kaybetmez */
+ if(t.direction==="recvonly"&&!t.sender.track){const ss=typeof t.sender.setStreams==="function";if(ss){try{t.sender.setStreams(c.stream)}catch{}}if(ss||x.peerV>=50000)t.direction="sendrecv"}}
+acceptCall=async function(opts){const c=CALL;if(!c||c.status!=="incoming")return;const x=ar5X(c);stopTone();vibStop();c.status="connecting";c.cam=!!(c.video&&!(opts&&opts.noCam));renderCall();
+ let stream;try{stream=await getMedia(c.cam)}catch(e){if(!c.cam){mediaErr(e);return declineCall()}try{stream=await getMedia(false);c.cam=false;toast("Kamera açılamadı, sesli devam ediyorsun.")}catch(e2){mediaErr(e2);return declineCall()}}
+ if(CALL!==c){stream.getTracks().forEach(t=>t.stop());return}
+ stream.getAudioTracks().forEach(t=>t.enabled=c.mic!==false);
+ c.stream=stream;const pc=newPC(c.id);c.pc=pc;stream.getTracks().forEach(t=>pc.addTrack(t,stream));listenCands();
+ try{await pc.setRemoteDescription(c.offer);ar5PrepVideo(c);flushCands();const ans=await pc.createAnswer();await pc.setLocalDescription(ans);await FB.F.updateDoc(c.ref,{answer:{type:ans.type,sdp:ans.sdp},status:"accepted",av:APP_V})}catch(e){console.warn(e);return endCall(true,"Arama bağlanamadı.")}
+ renderCall()};
+incomingCall=function(id,d){incomingCall47(id,d);const c=CALL;if(!c||c.id!==id)return;const x=ar5X(c);x.peerV=+(d&&d.v)||0;
+ if(document.visibilityState!=="visible"){const p=P(d.from);try{sysNote(p.name+" arıyor",(d.video?"Görüntülü arama":"Sesli arama")+" · yanıtlamak için Kadraj'ı aç","call-"+id,{icon:p.avatar})}catch{}}};
+callAction=async function(a){const c=CALL;if(!c||typeof a!=="string")return;const x=ar5X(c);ar5Poke(c);
+ if(a==="flip"||a==="swap"||a==="spk"||a==="mini")closeLayer("callmore");
+ switch(a){
+  case"accept":return acceptCall();
+  case"nocam":return acceptCall({noCam:true});
+  case"decline":return declineCall();
+  case"end":if(c.role==="caller"&&c.status==="ringing")c.outcome="canceled";ar5Send(c,{t:"bye"});return endCall(true);
+  case"mic":return ar5MicToggle();
+  case"cam":return ar5CamToggle();
+  case"flip":return ar5Flip();
+  case"share":return ar5Share();
+  case"tray":x.tray=!x.tray;return renderCall();
+  case"more":return ar5More();
+  case"mini":return closeLayer("call");
+  case"quick":return ar5Quick();
+  case"qinfo":return toast(ar5QText(c));
+  case"spk":return ar5Speaker();
+  case"swap":x.swap=!x.swap;return renderCall()}
+ if(a.startsWith("rx:"))return ar5React(a.slice(3));
+ return callAction49(a)};
+
+/* ---- kapanış ---- */
+function ar5CloseNote(tag){try{if(!navigator.serviceWorker||!navigator.serviceWorker.ready)return;navigator.serviceWorker.ready.then(reg=>reg.getNotifications?reg.getNotifications({tag}):[]).then(ns=>{for(const n of ns||[])n.close()}).catch(()=>{})}catch{}}
+function ar5Cleanup(c){const x=ar5X(c);
+ try{cancelAnimationFrame(x.raf)}catch{}x.raf=0;clearInterval(x.statT);x.statT=0;clearTimeout(x.idleT);
+ try{x.dc&&x.dc.close()}catch{}x.dc=null;
+ if(x.ds){x.ds.getTracks().forEach(t=>{try{t.stop()}catch{}});x.ds=null}
+ ar5MeterOff(x,"mr");ar5MeterOff(x,"ml");
+ if(x.wl){x.wl.release().catch(()=>{});x.wl=null}
+ const a=document.getElementById("ar5Audio");if(a){try{a.pause()}catch{}a.srcObject=null;a.remove()}
+ const m=$("#ar5Mini");if(m)m.remove();
+ closeLayer("callmore");closeLayer("callspk");closeLayer("callq");ar5CloseNote("call-"+c.id)}
+endCall=function(notify,msg){const c=CALL;if(c){ar5X(c).ending=true;try{ar5Cleanup(c)}catch(e){console.warn(e)}}return endCall49(notify,msg)};
+/* sayfa kapanırken karşı taraf 10 sn beklemesin (gelen, yanıtlanmamış arama arayanın süresine kalır) */
+addEventListener("pagehide",e=>{const c=CALL;if(c&&!e.persisted&&c.status!=="incoming"){ar5Send(c,{t:"bye"});endCall(true)}});
+document.addEventListener("keydown",e=>{const c=CALL;if(!c||!$("#callBox")||e.ctrlKey||e.metaKey||e.altKey||e.repeat||c.status==="incoming")return;const t=e.target;
+ if(t&&t.closest&&t.closest("input,textarea,select,[contenteditable]"))return;if($("#overlay [data-layer='callmore'],#overlay [data-layer='callq'],#overlay [data-layer='callspk']"))return;
+ const k=(e.key||"").toLowerCase();if(k==="m"){e.preventDefault();ar5Poke(c);ar5MicToggle()}else if(k==="v"){e.preventDefault();ar5Poke(c);ar5CamToggle()}});
 /*}@js:50CALL*/
 
 /*@js:50SRCH{*/
