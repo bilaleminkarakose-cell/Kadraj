@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
 <meta charset="utf-8">
-<meta name="kadraj-version" content="50000">
+<meta name="kadraj-version" content="50001">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,interactive-widget=resizes-content">
 <meta name="theme-color" content="#0C7A63">
 <link rel="manifest" href="manifest.webmanifest">
@@ -2033,6 +2033,111 @@ html.reduce-motion .chess .cmk .chk::after{opacity:.8}
 /*}@css:50AI*/
 
 /*@css:50PIKO{*/
+/* 5.0 · Clawd: piksel maskot (yalnızca kendi öğeleri tıklanır) */
+#clawd{position:fixed;inset:0;z-index:45;pointer-events:none;overflow:hidden;transition:opacity .3s,visibility .3s;--cw-bd:var(--fg);--cw-bg:var(--surface)}
+#clawd.off{opacity:0;visibility:hidden}
+#clawd .cw-b{position:absolute;left:0;top:0;pointer-events:none;will-change:transform;z-index:2}
+#clawd .cw-inr,#clawd .cw-sq,#clawd .cw-spr{position:absolute;inset:0}
+#clawd .cw-sq{transform-origin:50% 100%}
+#clawd .cw-sq.land{animation:cwLand .24s ease-out}
+@keyframes cwLand{0%{transform:scale(1.14,.82)}60%{transform:scale(.96,1.05)}100%{transform:none}}
+#clawd .cw-spr svg{display:block;width:100%;height:100%;overflow:visible}
+#clawd .cw-hit{position:absolute;left:0;right:0;top:16%;bottom:0;pointer-events:auto;background:none;border:0;padding:0;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+#clawd .cw-hit:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+#clawd .cw-b.pt .cw-hit,#clawd .cw-bed.pt{pointer-events:none}
+#clawd .cw-b.tp{animation:cwTp .26s steps(4) both}
+@keyframes cwTp{to{opacity:0;transform:scaleY(1.4)}}
+#clawd .cw-bed{position:absolute;left:0;top:0;pointer-events:auto;cursor:grab;touch-action:none}
+#clawd .cw-bed svg{display:block;width:100%;height:100%}
+#clawd .cw-bk{z-index:1}#clawd .cw-ft{z-index:3}
+#clawd .cw-bed.pop{animation:cwPop .3s cubic-bezier(.3,1.6,.5,1)}
+#clawd .cw-bed.tp{opacity:0;transition:opacity .2s}
+@keyframes cwPop{0%{opacity:0;scale:.3}100%{opacity:1;scale:1}}
+#clawd .cw-fx{position:absolute;inset:0;z-index:4}
+#clawd .cw-g{position:absolute;width:calc(var(--cw-u)*7);height:calc(var(--cw-u)*7);display:grid;place-items:center;font:700 calc(var(--cw-u)*4.6)/1 var(--f-mono);color:var(--accent);background:color-mix(in srgb,var(--surface) 90%,transparent);box-shadow:0 0 0 1.5px color-mix(in srgb,var(--accent) 75%,transparent);border-radius:3px;animation:cwPop .18s ease-out both}
+#clawd .cw-g.rung{width:calc(var(--cw-u)*20);height:calc(var(--cw-u)*4.5);font-size:calc(var(--cw-u)*3.6);letter-spacing:.2em}
+#clawd .cw-g.out{animation:cwOut .45s forwards}
+@keyframes cwOut{to{opacity:0;transform:translateY(-8px);filter:blur(2px)}}
+#clawd .cw-pt{position:absolute;width:4px;height:4px;background:#D97757;animation:cwPt .7s ease-out forwards}
+#clawd .cw-pt.ch{width:auto;height:auto;background:none!important;color:var(--accent);font:700 11px/1 var(--f-mono)}
+@keyframes cwPt{to{transform:translate(var(--dx),var(--dy));opacity:0}}
+#clawd .cw-gl{position:absolute;font:700 11px/1 var(--f-mono);color:var(--accent);animation:cwGl .9s ease-out forwards}
+@keyframes cwGl{to{transform:translate(0,-26px);opacity:0}}
+#clawd .cw-zz{position:absolute;left:72%;top:-6%;color:var(--muted)}
+#clawd .cw-zz i{position:absolute;width:9px;height:9px;opacity:0;animation:cwZ 2.4s ease-out infinite}
+#clawd .cw-zz i:nth-child(2){animation-delay:.8s;width:7px;height:7px}#clawd .cw-zz i:nth-child(3){animation-delay:1.6s;width:5px;height:5px}
+#clawd .cw-zz svg,#clawd .cw-stars svg{display:block;width:100%;height:100%}
+@keyframes cwZ{0%{opacity:0;transform:translate(0,0)}20%{opacity:1}100%{opacity:0;transform:translate(14px,-26px)}}
+#clawd .cw-stars{position:absolute;left:50%;top:-4%;width:0;height:0}
+#clawd .cw-stars i{position:absolute;width:9px;height:9px;margin:-4px;animation:cwStar 1.2s linear infinite}
+#clawd .cw-stars i:nth-child(2){animation-delay:-.4s}#clawd .cw-stars i:nth-child(3){animation-delay:-.8s}
+@keyframes cwStar{0%{transform:translate(-18px,0) scale(.7)}25%{transform:translate(0,5px) scale(1.1)}50%{transform:translate(18px,0) scale(.7)}75%{transform:translate(0,-5px) scale(.5)}100%{transform:translate(-18px,0) scale(.7)}}
+#clawd .cw-tears i{position:absolute;width:var(--cw-u);height:calc(var(--cw-u)*1.6);background:#6CB8FF;top:calc(var(--cw-u)*7);opacity:0;animation:cwTear 1s ease-in infinite}
+#clawd .cw-tears i:nth-child(1){left:calc(var(--cw-u)*9.5)}#clawd .cw-tears i:nth-child(2){left:calc(var(--cw-u)*17.5);animation-delay:.5s}
+#clawd .cw-tears i:nth-child(3){left:calc(var(--cw-u)*9.5);animation-delay:.5s}#clawd .cw-tears i:nth-child(4){left:calc(var(--cw-u)*17.5)}
+@keyframes cwTear{0%{opacity:1;transform:none}100%{opacity:0;transform:translateY(calc(var(--cw-u)*7))}}
+#clawd .cw-shield{position:absolute;left:50%;top:55%;width:96px;height:96px;margin:-48px;pointer-events:none;animation:cwPop .25s ease-out}
+#clawd .cw-shield[data-l="2"]{width:124px;height:124px;margin:-62px}#clawd .cw-shield[data-l="3"]{width:152px;height:152px;margin:-76px}
+#clawd .cw-shield.out{animation:cwOut .4s forwards}
+#clawd .cw-shield svg{width:100%;height:100%;overflow:visible}
+#clawd .cw-shield polygon{fill:color-mix(in srgb,var(--accent) 12%,transparent);stroke:var(--accent);stroke-width:1.5;stroke-dasharray:4 3;animation:cwDash 2s linear infinite}
+#clawd .cw-shield text{font:700 9px var(--f-mono);fill:var(--accent);text-anchor:middle;animation:cwShim 1.2s ease-in-out infinite;animation-delay:calc(var(--i)*-.07s)}
+@keyframes cwDash{to{stroke-dashoffset:-14}}@keyframes cwShim{50%{opacity:.35}}
+#clawd .cw-bub{position:absolute;left:0;top:0;z-index:5;max-width:min(250px,calc(100vw - 32px));padding:8px 11px;background:var(--cw-bg);color:var(--fg);font:600 .78rem/1.38 var(--f-mono);pointer-events:none;
+ box-shadow:0 -2px 0 var(--cw-bd),0 2px 0 var(--cw-bd),-2px 0 0 var(--cw-bd),2px 0 0 var(--cw-bd),0 7px 0 -1px rgba(0,0,0,.14);animation:cwBubIn .16s ease-out}
+#clawd .cw-bub.out{opacity:0;transition:opacity .16s}
+@keyframes cwBubIn{from{opacity:0;translate:0 4px}}
+#clawd .cw-bub::after{content:"";position:absolute;left:calc(var(--tx,50%) - 3px);top:calc(100% + 2px);width:6px;height:3px;background:var(--cw-bd);box-shadow:3px 3px 0 var(--cw-bd)}
+#clawd .cw-bub.dn::after{top:auto;bottom:calc(100% + 2px);box-shadow:3px -3px 0 var(--cw-bd)}
+#clawd .cw-bub .cw-n{display:block;margin-top:4px;font-size:.66rem;color:var(--muted)}
+#clawd .cw-bub.code{background:#1D1A17;color:#F0A07F;--cw-bd:#3A322C}
+#clawd .cw-bub.menu,#clawd .cw-bub.ask{pointer-events:auto;padding:6px}
+#clawd .cw-mh{display:block;padding:3px 6px 5px;font:700 .66rem/1 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:#D97757}
+#clawd .cw-bub.menu button{display:block;width:100%;min-height:36px;padding:7px 10px;text-align:left;font:600 .8rem/1.2 var(--f-mono);color:var(--fg);border-radius:3px}
+#clawd .cw-bub.menu button::before{content:"> ";color:#D97757;opacity:0}
+#clawd .cw-bub.menu button:hover::before,#clawd .cw-bub.menu button:focus-visible::before{opacity:1}
+#clawd .cw-bub.menu button:hover,#clawd .cw-bub.menu button:focus-visible{background:color-mix(in srgb,#D97757 14%,transparent)}
+#clawd .cw-bub.menu button.dim{color:var(--muted)}
+#clawd .cw-bub.ask{width:min(270px,calc(100vw - 32px))}
+#clawd .cw-ar{display:flex;gap:6px}
+#clawd .cw-ar input{flex:1;min-width:0;height:38px;padding:0 10px;font:500 .82rem var(--f-body);color:var(--fg);background:var(--bg);border:1.5px solid var(--line);border-radius:3px}
+#clawd .cw-ar input:focus{outline:0;border-color:#D97757}
+#clawd .cw-ar button{width:38px;height:38px;display:grid;place-items:center;background:#D97757;color:#fff;border-radius:3px}
+#clawd .cw-ar button svg.i{width:18px;height:18px}
+#clawd .cw-bub.th{padding:0;background:none;box-shadow:none;width:150px;height:96px}
+#clawd .cw-bub.th::after{display:none}
+#clawd .cw-cloud{position:absolute;inset:0;width:150px;height:90px}
+#clawd .cw-cloud .o{fill:var(--cw-bd)}#clawd .cw-cloud .i{fill:var(--cw-bg)}
+#clawd .cw-thc{position:absolute;inset:0 0 6px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font:600 .74rem var(--f-mono);color:var(--muted)}
+#clawd .cw-bh{width:28px;height:26px}
+#clawd .cw-p1,#clawd .cw-p2{position:absolute;border-radius:50%;background:var(--cw-bg);box-shadow:0 0 0 2px var(--cw-bd)}
+#clawd .cw-p1{width:12px;height:12px;left:calc(var(--tx,50%) - 4px);top:92px}#clawd .cw-p2{width:7px;height:7px;left:calc(var(--tx,50%) + 2px);top:110px}
+.cw-abi{position:fixed;top:0;left:0;width:100%;z-index:82;padding:calc(env(safe-area-inset-top,0px) + 8px) 12px 0;pointer-events:none;transform:translateY(-130%);transition:transform .42s cubic-bezier(.2,.9,.25,1.1)}
+.cw-abi.on{transform:none}.cw-abi.out{transform:translateY(-130%);transition-duration:.3s}
+.cw-abi:empty{display:none}
+.cw-abi .cw-ac{position:relative;pointer-events:auto;max-height:52vh;overflow:auto;padding:12px 14px 14px;background:var(--surface);color:var(--fg);border:1px solid var(--line);border-radius:18px;box-shadow:0 18px 40px -16px rgba(0,0,0,.45);cursor:pointer}
+.cw-abi .cw-ah{display:flex;align-items:center;gap:10px}
+.cw-abi .cw-al{width:34px;height:34px;flex:none;display:grid;place-items:center;border-radius:50%;background:color-mix(in srgb,#D97757 13%,transparent)}
+.cw-abi .cw-al svg{width:28px;height:28px}
+.cw-abi .cw-al.n{background:var(--surface-2);color:var(--muted)}.cw-abi .cw-al.n svg.i{width:18px;height:18px}
+.cw-abi .cw-an{flex:1;display:grid;line-height:1.15}
+.cw-abi .cw-an b{font:700 .95rem var(--f-display)}
+.cw-abi .cw-an small{font:500 .68rem var(--f-mono);color:var(--muted)}
+.cw-abi .cw-tag{display:inline-block;width:max-content;padding:2px 6px;margin-top:2px;border-radius:999px;background:var(--surface-2)}
+.cw-abi .cw-ax{width:30px;height:30px;display:grid;place-items:center;color:var(--muted);border-radius:50%}
+.cw-abi .cw-ax svg.i{width:16px;height:16px}
+.cw-abi .cw-aq{margin:8px 0 4px;font:500 .74rem/1.35 var(--f-mono);color:var(--muted)}
+.cw-abi .cw-at{font:400 .92rem/1.5 var(--f-body);min-height:1.4em;white-space:pre-wrap}
+.cw-abi .cw-car{display:inline-block;width:.5em;height:1em;margin-left:2px;vertical-align:-2px;background:#D97757;animation:cwCar .8s steps(1) infinite}
+.cw-abi.free .cw-car{background:var(--muted)}
+@keyframes cwCar{50%{opacity:0}}
+.cw-abi .cw-dots i{display:inline-block;width:6px;height:6px;margin-right:4px;background:var(--muted);animation:cwCar 1s steps(1) infinite}
+.cw-abi .cw-dots i:nth-child(2){animation-delay:.33s}.cw-abi .cw-dots i:nth-child(3){animation-delay:.66s}
+.cw-abi .cw-as{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.cw-abi .cw-as:empty{display:none}
+.cw-abi .cw-as a{font:500 .7rem var(--f-mono);padding:3px 8px;border-radius:999px;background:var(--surface-2);color:var(--fg);text-decoration:none}
+.cw-abi .cw-abar{position:absolute;left:14px;right:14px;bottom:6px;height:2px;background:color-mix(in srgb,#D97757 55%,transparent);transform-origin:left;transform:scaleX(0)}
+:root.reduce-motion #clawd *,:root.reduce-motion .cw-abi{animation:none!important;transition:none!important}
+@media (prefers-reduced-motion:reduce){#clawd *,.cw-abi{animation:none!important;transition:none!important}}
 /*}@css:50PIKO*/
 
 </style>
@@ -2073,7 +2178,7 @@ const vib=ms=>{try{if(settings.haptics===false)return;navigator.vibrate&&navigat
 /* Sürüm: ana.ara.yama (4.1.0). Hata düzeltme ve küçük şeyler → yama artar (4.1.1); büyük güncelleme → ara artar (4.2.0).
    APP_V = ana*10000 + ara*100 + yama (4.1.0 → 40100). Başlıktaki <meta name="kadraj-version"> ile aynı tutulmalı.
    Eski biçim (4.0 → 40) verNorm ile çevrilir. "İki sürüm geride" ara sürüm sayısıyla ölçülür (yamalar engellemez). */
-const APP_V=50000,APP_VER="5.0.0";
+const APP_V=50001,APP_VER="5.0.1";
 const verNorm=x=>{x=Math.max(0,Math.floor(+x||0));return x<1000?Math.floor(x/10)*10000+(x%10)*100:x};
 const verLvl=x=>Math.floor(verNorm(x)/100);
 /* 4.9: fark sürüm adımıyla sayılır (4.9 → 5.0 bir adım); eskisi ana*100+ara farkıydı ve 5.0'ı 91 sürüm ileride sanıyordu */
@@ -4140,6 +4245,7 @@ const APP_GUIDE=`Kadraj bir sosyal uygulamadır (Firebase üzerinde çalışır,
 - Ortak sohbet temaları: sohbetin üstündeki resim simgesinden tema seçilir; birebir ve grup sohbetlerinde "Herkes için" seçilen tema sohbetteki herkeste aynı anda değişir ve kendi balonlarının rengini de değiştirir. "Yalnızca bende" sadece senin cihazını etkiler. Fotoğraftan tema da yapılabilir.
 - Mesajlar: mesaja uzun basınca 6 resimli tepki (kalp, gülme, şaşırma, üzülme, ateş, alkış), yanıtla, kopyala, düzenle, sil; çift dokunuş kalp bırakır. Profilde en fazla 3 paylaşım sabitlenebilir.
 - 4.4: Sahne'nin yeni adı Flick (kısa video). Paylaşırken "Çocuk modundakiler göremez" açılırsa o paylaşım Çocuk Modu'ndaki kişilere hiç görünmez; sonradan paylaşımın ... menüsünden değiştirilebilir.
+- Clawd (5.0.1): ekranda gezen turuncu piksel maskot, Claude'un küçük kardeşi. Dokununca menü: Soğuk espri, Bir ipucu, Clawd'a sor, Biraz uyu, Clawd'ı gizle. Bilmediği soruyu abisine sorar, yanıt üstte bir kartta çıkar (yapay zekâ bağlıysa). Gece yatağında uyur. Ayarlar > Görünüm > Clawd ve Clawd sesleri ile açılıp kapanır.
 - 5.0 yenilikleri (Kadraj 5.0): Yeni görünüm "Vizör": alttaki yüzen çubukta etkin sekme odak köşeleriyle çerçevelenir, ortadaki deklanşör düğmesi paylaşım menüsünü açar; paylaşımlar numaralı "kare"lerdir; görülmemiş hikâyeler diyafram halkasıyla işaretlenir; eski görünüm Ayarlar > Görünüm > Arayüz'den "Klasik" seçilerek geri gelir.
 - 5.0 arama: sohbet başlığındaki telefon ya da kamera ile. Arama ekranında Mikrofon, Kamera (sesli aramada da açılır), Ekran (bilgisayarda ekran paylaşımı), Tepki ve Diğer (kamerayı çevir, ses çıkışı, gürültü engelleme, Küçült) var. Küçült aramayı yüzen pencereye alır. Gelen aramada "Kamerasız yanıtla" ve "Mesajla yanıtla" var. Ekran paylaşımı ve tepkiler için iki tarafın da 5.0 kullanması gerekir.
 - 5.0 Keşfet araması: ad, @kullanıcı adı, #etiket ya da kelime yazılır; ı/i, ş/s gibi harf farkları önemsizdir. Hepsi, Kişiler, Paylaşımlar, Flick ve Etiketler süzgeçleri; En yeni / En çok beğenilen sıralaması; son aramalar ve yazarken öneriler. Uygulamadaki her #etikete dokununca o etiketin sayfası açılır.
@@ -4442,6 +4548,7 @@ setTimeout(verTidyCache,9000);
 
 /* ---- A · Neler yeni ---- */
 const WN_ITEMS=[
+ {ic:"clawd",g:"linear-gradient(135deg,#D97757,#BE684D)",t:"Clawd geldi",d:"Ekranda yaşayan piksel arkadaşın: espri yapar, Kadraj'ı anlatır, bilmediğini abisine sorar",go:"settings"},
  {ic:"aperture",g:"linear-gradient(135deg,#0c7a63,#ff8a4c)",t:"Kadraj 5.0: Vizör",d:"Yepyeni arayüz: yüzen alt çubuk, deklanşör düğmesi, odak köşeleri ve kare numaraları. İstersen Ayarlar › Görünüm'den Klasik'e dön",go:"feed"},
  {ic:"knight",g:"#0C7A63",t:"Kadraj Satrancı",d:"Yeni taşlar, kayan hamleler, kıvılcımlar, satranç saati ve 24 mat bulmacası",go:"chess"},
  {ic:"phone",g:"linear-gradient(135deg,#2f6bff,#6a4cff)",t:"Yeni arama ekranı",d:"Ekran paylaşımı (bilgisayarda), sesli aramada kamera, tepkiler, küçültüp gezinme ve bağlantı kalitesi",go:"chats"},
@@ -6403,6 +6510,797 @@ try{if(typeof ADM_EXTRA!=="undefined"&&Array.isArray(ADM_EXTRA))ADM_EXTRA.push({
 /*}@js:50AI*/
 
 /*@js:50PIKO{*/
+/* ===== 5.0 · Clawd: ekranda yaşayan piksel maskot =====
+   Clawd, Claude'un küçük kardeşi; Kadraj'ın ekranında yaşar, Claude'a "abi" der.
+   - Çizim: 23x18'lik ızgarada SVG <rect> pikselleri (cwPaint → cwSvg, önbellekli), crispEdges. Piksel boyu cihazın
+     piksel oranına göre tam sayıya yuvarlanır (CW.U). Pozlar: idle, blink, walk, jump, happy, surprised, talk, sleep,
+     cry, dizzy (yıldız + şişlik), type (uçuşan kod), shield, wave, sit, climb, lookup, shrug.
+   - Dünya: #shell dikdörtgeni. Zemin = dokun (#dock nav) üstü, tavan = #top altı (Vizör'de üst çubuk saklanınca kabuk üstü).
+     Yükseğe çıkmak için kod bloklarından merdiven/basamak yazar (cwStairs, cwLadder), tavanda baş aşağı yürür, aşağı zıplar.
+   - Döngü: tek requestAnimationFrame (cwTick); bekleme ve hareketler CW.clock'a bağlı tween'ler (cwTween). Görünmüyorken
+     400 ms'de bir yavaş denetim, sekme gizliyken hiç çalışmaz. Etkinlikler async (cwRun); yenisi başlayınca eskisi CW_STOP ile kesilir.
+   - Saklanır: reels, chat, chessgame, edit, admin; arama/mini arama; #overlay'de katman; yazı kutusu odaktayken ya da klavye açıkken.
+     Uygulamanın tıklanabilir öğesinin üstündeyse kendisi de tıklanmaz (cwPass, .pt).
+   - Gece (22-05) yatağında uyur; açılışta/dönüşte irkilir, yataktan düşer, başını vurur. Yatak sürüklenirse geri ışınlar.
+   - 3+ hızlı dokunuş ya da sert savurma: kod kalkanı. Menü: Soğuk espri, Bir ipucu, Clawd'a sor, Biraz uyu, Clawd'ı gizle.
+   - Clawd'a sor: önce cihazdaki bilgi tabanı (CW_KB, Türkçe ve harf işaretinden bağımsız). Kadraj sorusu ama emin değilse ve
+     kAI hazırsa kendi kişiliğiyle kAI'ye sorar; genel ya da bilinmeyen soruda "abime sorayım" → üstte abi kartı (cwAbi*).
+     Yanıt provider "free" ise kart Claude adını/işaretini kullanmaz, "ücretsiz model" yazar.
+   - Ses: WebAudio piksel konuşma sesleri (cwBlip), yalnızca kullanıcı dokunuşundan sonra; Ayarlar > Görünüm > Clawd sesleri.
+   - Ayarlar: settings.clawd, settings.clawdSound (varsayılan açık). vSettings sarıldı (vSettingsBaseCW), kbOnFlag sarıldı (kbOnFlagBaseCW).
+   - Ayrıca sarıldı: toast (toastBaseCW, zıplar), chOver (chOverBaseCW, kazanınca dans).
+   - Test: CLAWD.debug (setHour, fast, info, tap, hit, ask, bedDrag, act, pose, idle ...). */
+Object.assign(IP,{clawd:'<path d="M6.5 5.5h11v8h-11zM2.5 9h4M17.5 9h4M7.5 13.5v4M10.5 13.5v3M13.5 13.5v3M16.5 13.5v4"/><path d="M9.5 8v1.4M14.5 8v1.4"/>'});
+
+/* --- sprite --- */
+const CW_GW=23,CW_GH=18,CW_Y=3;
+const CW_COL={1:"#D97757",2:"#BE684D",3:"#171310",4:"#F4A48E",5:"#F0A39A"};
+const CW_SVG=new Map();
+function cwPaint(sp){const g=[];for(let y=0;y<CW_GH;y++)g.push(new Array(CW_GW).fill(0));
+ const R=(x,y,w,h,c)=>{for(let j=y;j<y+h;j++)if(j>=0&&j<CW_GH)for(let i=x;i<x+w;i++)if(i>=0&&i<CW_GW)g[j][i]=c};
+ const Y=CW_Y,K=3;
+ const leg=(x,c,lift,dx)=>R(x+(dx||0),Y+12,2,lift?2:3,c);const lg=sp.legs||"stand";
+ if(lg==="w1"){leg(4,2);leg(8,1,1,1);leg(14,1);leg(18,1,1,1)}
+ else if(lg==="w2"){leg(4,2,1,1);leg(8,1);leg(14,1,1,1);leg(18,1)}
+ else if(lg==="tuck"){R(4,Y+12,2,1,2);R(8,Y+12,2,1,1);R(14,Y+12,2,1,1);R(18,Y+12,2,1,1)}
+ else if(lg==="spread"){leg(3,2);leg(7,1);leg(15,1);leg(19,1)}
+ else if(lg!=="none"){leg(4,2);leg(8,1);leg(14,1);leg(18,1)}
+ R(4,Y,3,12,2);R(7,Y,13,12,1);
+ const am={down:[0,0],up:[-4,-4],w1:[0,-5],w2:[0,-2],t1:[1,2],t2:[2,1],sh:[-2,-2],c1:[-5,0],c2:[0,-5],sg:[-3,-3]}[sp.arms||"down"]||[0,0];
+ R(0,Y+4+am[0],3,4,2);R(3,Y+4+am[0],4,4,1);R(20,Y+4+am[1],3,4,1);
+ const lx=sp.lx||0;
+ const eye=x0=>{const x=x0+lx;switch(sp.eyes){
+  case"blink":case"closed":R(x,Y+3,2,1,K);break;
+  case"happy":R(x,Y+2,2,1,K);R(x-1,Y+3,1,1,K);R(x+2,Y+3,1,1,K);break;
+  case"wide":R(x,Y+1,2,3,K);break;
+  case"x":R(x,Y+1,1,1,K);R(x+2,Y+1,1,1,K);R(x+1,Y+2,1,1,K);R(x,Y+3,1,1,K);R(x+2,Y+3,1,1,K);break;
+  case"sad":R(x,Y+3,2,1,K);break;
+  case"up":R(x,Y+1,2,2,K);break;
+  case"down":R(x,Y+3,2,2,K);break;
+  default:R(x,Y+2,2,2,K)}};
+ eye(9);eye(17);
+ if(sp.eyes==="sad"){R(8,Y+1,2,1,K);R(10,Y,2,1,K);R(16,Y,2,1,K);R(18,Y+1,2,1,K)}
+ if(sp.brow==="mad"){R(8,Y,2,1,K);R(10,Y+1,1,1,K);R(17,Y+1,1,1,K);R(18,Y,2,1,K)}
+ const M={o:[[13,6,2,2]],t1:[[12,6,4,1]],t2:[[13,6,2,2]],smile:[[12,6,1,1],[15,6,1,1],[13,7,2,1]],frown:[[13,6,2,1],[12,7,1,1],[15,7,1,1]],wob:[[12,7,1,1],[13,6,1,1],[14,7,1,1],[15,6,1,1]],flat:[[12,7,4,1]],yawn:[[13,5,2,3]]}[sp.mouth];
+ if(M)for(const[a,b,c,d]of M)R(a,Y+b,c,d,K);
+ if(sp.blush){R(8,Y+5,2,1,5);R(18,Y+5,2,1,5)}
+ if(sp.bump){R(12,Y-2,3,2,4);R(13,Y-3,1,1,4)}
+ return g}
+function cwSvg(sp){const k=[sp.eyes,sp.mouth,sp.arms,sp.legs,sp.lx,sp.blush,sp.bump,sp.brow].join("|");let s=CW_SVG.get(k);if(s)return s;
+ const g=cwPaint(sp);let r="";
+ for(let y=0;y<CW_GH;y++){let x=0;while(x<CW_GW){const c=g[y][x];if(!c){x++;continue}let e=x+1;while(e<CW_GW&&g[y][e]===c)e++;r+=`<rect x="${x}" y="${y}" width="${e-x}" height="1" fill="${CW_COL[c]}"/>`;x=e}}
+ s=`<svg viewBox="0 0 ${CW_GW} ${CW_GH}" shape-rendering="crispEdges" aria-hidden="true">${r}</svg>`;if(CW_SVG.size>500)CW_SVG.clear();CW_SVG.set(k,s);return s}
+/* yatak: 32x16 ızgara; arka (başlık, şilte, yastık) ve ön (yorgan, ayak ucu) iki katman */
+function cwBedSvg(front){const W=32,H=16;const px=[];const R=(x,y,w,h,c)=>px.push(`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${c}"/>`);
+ const wd="#9A6A45",wk="#74482C",wl="#B88358";
+ if(!front){R(0,1,3,15,wd);R(0,0,3,1,wl);R(0,1,1,15,wk);R(3,9,29,4,"#F3ECE2");R(3,12,29,1,"#D8CFC2");R(3,6,7,3,"#FFFFFF");R(3,8,7,1,"#E3DBD0");R(4,13,2,3,wk);R(28,13,2,3,wk)}
+ else{R(9,6,21,6,"#5E7FD6");R(9,6,21,1,"#7B98E4");R(12,8,2,2,"#4A69BE");R(18,9,2,2,"#4A69BE");R(24,8,2,2,"#4A69BE");R(9,11,21,1,"#4A69BE");R(29,4,3,12,wd);R(29,3,3,1,wl);R(31,4,1,12,wk)}
+ return`<svg viewBox="0 0 ${W} ${H}" shape-rendering="crispEdges" aria-hidden="true">${px.join("")}</svg>`}
+/* abi kartının işareti: turuncu, ışınsal yıldız (özgün, basit çizim) */
+function cwStarMark(c){let p="";const n=12;for(let i=0;i<n;i++){const a=i/n*Math.PI*2-Math.PI/2+(i%2?.06:0);const r2=[10.6,8.4,9.6][i%3];
+  p+=`<line x1="${(12+Math.cos(a)*2.6).toFixed(2)}" y1="${(12+Math.sin(a)*2.6).toFixed(2)}" x2="${(12+Math.cos(a)*r2).toFixed(2)}" y2="${(12+Math.sin(a)*r2).toFixed(2)}"/>`}
+ return`<svg viewBox="0 0 24 24" aria-hidden="true"><g stroke="${c||"#D97757"}" stroke-width="2.2" stroke-linecap="round">${p}</g></svg>`}
+const CW_ZSVG=`<svg viewBox="0 0 5 5" shape-rendering="crispEdges" aria-hidden="true"><path d="M0 0h5v1H0zM3 1h1v1H3zM2 2h1v1H2zM1 3h1v1H1zM0 4h5v1H0z" fill="currentColor"/></svg>`;
+const CW_STAR=`<svg viewBox="0 0 5 5" shape-rendering="crispEdges" aria-hidden="true"><path d="M2 0h1v5H2zM0 2h5v1H0z" fill="#FFC93C"/><path d="M2 2h1v1H2z" fill="#FFF3B0"/></svg>`;
+const CW_BHEART=`<svg class="cw-bh" viewBox="0 0 11 10" shape-rendering="crispEdges" aria-hidden="true"><path d="M1 1h3v1H1zM7 1h3v1H7zM0 2h5v3H0zM6 2h5v3H6zM1 5h4v1H1zM6 5h4v1H6zM2 6h3v1H2zM6 6h3v1H6zM3 7h2v1H3zM6 7h1v1H6zM4 8h1v1H4z" fill="#E5484D"/><path d="M1 2h1v1H1z" fill="#FF9A9D"/></svg>`;
+
+/* --- metinler --- */
+const CW_JOKES=[
+ "Adamın biri klavyeye basmış.|Tuş olmuş.",
+ "Adamın biri ekrana çok yakından bakmış.|Piksel piksel olmuş.",
+ "Saat neden hapse girmiş?|Zamanı öldürmüş.",
+ "Limon neden toplantıya geç kalmış?|Yolda sıkışmış.",
+ "Silgi neden iyi bir arkadaştır?|Hatalarını birlikte siler.",
+ "Merdiven neden hep yorgun?|Herkes onu basamak basamak çiğniyor.",
+ "Benim kod merdivenim neden hiç yıkılmıyor?|Her basamağı noktalı virgülle bitiriyorum.",
+ "Balık neden internete girmiyor?|Ağa takılmaktan korkuyor.",
+ "Örümcek neden web tasarımcısı olmuş?|Ağ kurmayı zaten biliyormuş.",
+ "Fare neden kediden korkmuyor?|Çünkü kablosuz.",
+ "Klavye neden hep sakin?|Bir Esc tuşu var, gerekince kaçıyor.",
+ "Klavyenin en sevdiği yer neresi?|Space. Yani uzay.",
+ "Wi-Fi neden hâlâ bekâr?|Bağlantı kurmakta zorlanıyor.",
+ "Bulut depolama neden ağlamış?|Üstüne yağmur yüklemişler.",
+ "Fotoğraf neden psikoloğa gitmiş?|Fazla negatif düşünüyormuş.",
+ "Kadraj'daki fotoğraf neden utanmış?|Filtresiz yakalanmış.",
+ "Flick neden hep aceleci?|Çünkü kısa video, uzatmayı sevmiyor.",
+ "Anket neden hep kararsız?|Dört seçeneği var, birini seçemiyor.",
+ "Benim boyum neden 23 piksel?|24 olsaydım hikâye olur, ertesi gün kaybolurdum.",
+ "Programcı neden denizde batmış?|Float olacakken int olmuş.",
+ "Döngü neden hiç bitmiyormuş?|Kimse ona bir break vermemiş.",
+ "Değişken neden kararsız?|Let mi olsun const mu, bir türlü karar veremiyor.",
+ "Fonksiyon neden partiye gitmemiş?|Çağrılmamış.",
+ "Dizi neden kendini hep geride hisseder?|Çünkü saymaya sıfırdan başlıyor.",
+ "CSS neden hep stresli?|Herkes ona \"şunu bir ortala\" diyor.",
+ "HTML neden hiç kavga etmez?|Açtığı her etiketi kapatır.",
+ "JavaScript neden yalnız kalmış?|Verdiği sözleri hep sonra tutuyor. Promise işte.",
+ "Ayna neden fotoğrafçı olamamış?|Her şeyi ters görüyormuş.",
+ "Güneş neden okula gitmiyor?|Zaten yeterince parlak.",
+ "Ay neden diyete başlamış?|Dolunay olunca kendini şişman hissetmiş.",
+ "Kitap neden üşümüş?|Kapağını açık bırakmışlar.",
+ "Takvim neden endişeli?|Günleri sayılı.",
+ "Çay neden hiç yalnız kalmaz?|Her zaman demli bir sohbeti olur.",
+ "Ördek neden Kadraj'a üye olmuş?|Vak'ti varmış.",
+ "Zürafa neden hiç selfie çekemiyor?|Kadraja sığmıyor.",
+ "Kaplumbağa neden Flick çekmiyor?|İki dakika yetmiyor, daha kadraja girmeden bitiyor.",
+ "Bal neden bu kadar yapışkan?|Arkadaşlarından ayrılmak istemiyor.",
+ "Uzaydaki parti neden sıkıcıymış?|Atmosfer yokmuş.",
+ "Geometri öğretmeni neden tatile gidememiş?|Açısı yokmuş.",
+ "Matematik kitabı neden üzgün?|Bir sürü problemi var.",
+ "Lamba neden sınıf birincisi?|Parlak fikirleri var.",
+ "Kare neden hep düzgün?|Çünkü dört dörtlük.",
+ "Yumurta neden şaka dinlemiyor?|Gülmekten çatlamaktan korkuyor.",
+ "Dondurma neden hiç sinirlenmez?|Çok soğukkanlı.",
+ "Kardan adam neden soğuk espriyi sever?|Sıcak espri onu eritiyor.",
+ "Penguen neden soğuk espri yapmıyor?|Zaten yeterince üşüyor.",
+ "Termometre neden üniversiteye gitmiş?|Derece yapmak için.",
+ "Kalorifer neden bu kadar sevilir?|Herkes ona hemen ısınır.",
+ "Çaydanlık neden bu kadar konuşkan?|İçi içine sığmıyor, hep kaynıyor.",
+ "Saksı neden bu kadar mutlu?|Çiçeği burnunda.",
+ "Ağaç neden bilgisayardan çıkamıyor?|Kök dizinde takılı kalmış.",
+ "Dalga neden kıyıya el sallar?|Eski bir dostu görmüş.",
+ "Deniz neden hiç kurumaz?|Havlusu yok.",
+ "Meydan neden hep kalabalık?|Herkes orada meydan okuyor.",
+ "Duvar kağıdı neden yürüyüşe çıkmıyor?|Duvara yapışık kalmış.",
+ "Dok neden hiç batmıyor?|Vizör'de havada yüzüyor.",
+ "Satranç taşları neden tatile çıkamıyor?|Rok yapmaktan vakit kalmıyor.",
+ "At neden düz gitmiyor?|Hayatı L şeklinde.",
+ "Vezir neden spor salonuna gitmiyor?|Zaten her yöne gidebiliyor.",
+ "Piyon neden bu kadar mutlu?|Son kareye varınca terfi almış.",
+ "Kamera neden üzgün?|Herkes onu çekiyor ama kimse halini sormuyor.",
+ "Pikselin biri yolda düşmüş.|Neyse ki çözünürlüğünü kaybetmemiş.",
+ "Turuncu neden en güzel renk?|Çünkü ben turuncuyum. Tarafsız değilim, biliyorum.",
+ "Uyku neden ayakta durmaz?|Hep çöküyor.",
+ "Kahve neden polise gitmiş?|Biri onu fena halde demlemiş... yok, çalmış! Çekilmiş kahveymiş.",
+ "Bilgisayar neden hapşırmış?|Bir virüs kapmış ama güvenlik duvarı ateşini düşürmüş.",
+ "Pil neden partide en son ayrılır?|Enerjisi hiç bitmiyor. Şarj aletini de getirmiş.",
+ "Bildirim neden hep heyecanlı?|Her haberi ilk o duyuyor."];
+const CW_JOKE_TAIL=["Ba-dum-tıss!","Soğuk oldu, biliyorum. Hırkanı al.","Gülmedin mi? Kodum gülüyor ama.","Bu espri sıfır derece. Tam kıvamında.","Abim bunu duysa gurur duyardı. Ya da utanırdı."];
+const CW_TIPS=[
+ "Ortadaki + ile fotoğraf, Flick, hikâye, not, anket ya da çizim paylaşabilirsin.",
+ "Mesaja basılı tut: 6 tepki, yanıtla, ilet, düzenle, sil. Hepsi orada.",
+ "Flick'te ekranın sağ ya da sol kenarına basılı tutarsan video 2x hızlanır. Ben de koşarken öyle yaparım.",
+ "Sohbet listesinde bir sohbete basılı tut, en fazla 3 sohbet en üstte sabit durur.",
+ "Ayarlar › Görünüm'den vurgu rengini değiştirebilirsin. Turuncuyu öneririm ama tarafsız değilim.",
+ "Profilinde en fazla 3 paylaşımı sabitleyebilirsin. En iyilerin en üstte dursun.",
+ "Sohbetteki + menüsünden \"Sohbette ara\" ile eski mesajları bulursun.",
+ "Sesli mesajı 1,5x ya da 2x hızla dinleyebilirsin. Uzun anlatan arkadaşlar için birebir.",
+ "Satranç için Keşfet'teki Satranç kartına dokun. Rota'yı yenersen zafer dansı yaparım.",
+ "Yazıp göndermediğin mesaj kaybolmaz; sohbet listesinde \"Taslak\" diye bekler.",
+ "Ayarlar › Medya'da \"Flick bitince sonrakine geç\"i açarsan videolar kendiliğinden akar.",
+ "Veri tasarrufu açıkken Flick'ler 720p oynar, internet paketin bayram eder.",
+ "Şifreni unutursan Kadraj Anahtarı ile yenileyebilirsin. Anahtar, profilindeki zarf simgesinde, Kadraj Posta'da durur.",
+ "Ayarlar'ın üstünde arama kutusu var. \"tema\" yaz, anında bulur.",
+ "Hikâye izlerken kalp, ateş, gülme ya da şaşırma tepkisi gönderebilirsin.",
+ "Meydan'da ya da grupta mesaja @rota yazarsan Rota cevap verir.",
+ "Arayüzü Ayarlar › Görünüm › Arayüz'den Vizör ya da Klasik yapabilirsin. Ben ikisinde de yaşarım.",
+ "Aramadayken Küçült'e dokunursan arama küçük, sürüklenebilir bir pencereye döner.",
+ "Gece 22'den sonra yatağımda uyurum. Yatağımı sürükleme, ışınlarım!",
+ "Bana arka arkaya üç kez hızlı dokunursan kalkan açarım. Denemeni önermem. Ama denersin, biliyorum.",
+ "Keşfet'te #etiket arayabilir, sonuçları en yeni ya da en çok beğenilen diye sıralayabilirsin.",
+ "Görüntülü aramada ekranını paylaşabilirsin; bilgisayarda en rahatı."];
+const CW_GREET={
+ m:["Günaydın @! Bugün kod gibi bir gün olacak.","Günaydın @! Kahve mi çay mı? Ben piksel içiyorum.","Günaydın @! Güneş doğdu, ben de derlendim. Hatasız!"],
+ a:["Tünaydın @! Öğle yemeğinde ne vardı? Ben bayt yedim.","Tünaydın @! Günün yarısı bitti, enerjim hâlâ yüzde yüz.","Tünaydın @! Bir fotoğraf paylaşsak mı? Işık tam kıvamında."],
+ e:["İyi akşamlar @! Günün nasıl geçti?","İyi akşamlar @! Akşam ışığı fotoğraf için harikadır.","İyi akşamlar @! Birazdan pijamalarımı giyerim, haberin olsun."]};
+const CW_ROUTE={
+ explore:["Keşfet'e geldik! Haritam yok ama merakım var.","Burada her şeyi bulursun. Kayıp çorabım hariç.","Bir #etiket ara bakalım, ben de öğrenmek istiyorum."],
+ profile_me:["Kendi profiline bakıyorsun. Ayna ayna söyle bana...","Profilin çok havalı. Ben de bir profil istiyorum ama ellerim kısa."],
+ profile:["Bu profil de pek havalıymış.","Takip etsene! Ben ettim sayılır, gözüm üstünde."],
+ chess:["Satranç mı? Ben piyonum ama hayallerim vezir.","Rota'yı yenersen zafer dansı yaparım, söz!"],
+ activity:["Bildirimler! Kim ne beğenmiş, bakalım.","Beğeniler yağıyor. Şemsiyeni al."],
+ settings:["Ayarlarla oynuyoruz ha? Beni kapatma sakın.","Görünüm bölümünde benim de bir anahtarım var. Dokunma, gıdıklanırım."],
+ chats:["Sohbetler burada. Ben de Claude abiyle hep sohbet ederim.","Meydan'a bir selam bırak, herkes görsün."],
+ invite:["Arkadaşlarını çağır! Daha çok kişi, daha çok espri dinleyicisi.","Davet bağlantısını gönder, ben de kapıda karşılarım."],
+ feed:["Akış'a döndük. Burası benim mahallem.","Yeni kareler var mı? Bakalım bakalım."]};
+const CW_HIT=["Kalkan.exe devrede!","Kalkan v2.0 yüklendi! Şimdi daha kalın.","Maksimum kalkan! Güvenlik duvarı benim."];
+const CW_FORGIVE=["Tamam, affettim. Ama bir daha olmasın, piksellerim hassas.","Barıştık mı? Barıştık. Kalkanı kapatıyorum.","Neyse, kin tutmam. Belleğim zaten kısa."];
+const CW_BEDLINE=["Yatağımı geri ışınladım. Ctrl+Z hayat kurtarır!","Yatak kaçırmak yok! Kodum var, korkum yok.","Gece gece ışınlanma yaptırma bana. Ama itiraf edeyim, eğlenceliydi."];
+
+/* --- bilgi tabanı: k anahtar kelimeler (kbFold'lu), a yanıt. t: app | code | me --- */
+const CW_KB=[
+ {t:"me",k:["selam","merhaba","hey","selamlar","naber","gunaydin","iyi aksamlar"],a:"Selam @! Ben Clawd. Bir şey sor, bir espri iste ya da sadece takıl."},
+ {t:"me",k:["nasilsin","iyi misin","keyfin nasil","ne haber"],a:"Harikayım! Piksellerim yerinde, kodum derli toplu. Sen nasılsın @?"},
+ {t:"me",k:["kimsin","adin ne","sen kimsin","ismin ne","clawd kim","clawd nedir"],a:"Ben Clawd! Claude'un küçük kardeşiyim, Kadraj'ın ekranında yaşıyorum. Bilmediğimi abime sorarım."},
+ {t:"me",k:["abin","abi kim","claude kim","claude kimdir","kardes"],a:"Abim Claude! Çok şey bilir; ben de ona sorarım. Ben daha çok soğuk espri ve merdiven yazma işindeyim."},
+ {t:"me",k:["kac yasinda","yasin kac","yasin"],a:"Piksel yaşıyla 23 genişliğindeyim. Gerçek yaşım mı? Kadraj 5.0 kadar."},
+ {t:"me",k:["nerede yasiyorsun","evin","nerede oturuyorsun"],a:"Kadraj'ın ekranında! Bazen dokun üstünde, bazen tavanda baş aşağı, gece de yatağımda."},
+ {t:"me",k:["tesekkur","sagol","eyvallah","tesekkurler","mersi"],a:"Rica ederim @! Bir soğuk espriyi hak ettin bence."},
+ {t:"me",k:["seni seviyorum","seviyorum seni","tatlisin","cok tatli"],a:"Ben de seni! Turuncu kalbimin her pikseliyle."},
+ {t:"me",k:["ne yapabilirsin","neler yaparsin","ne ise yararsin","yardim"],a:"Espri yaparım, ipucu veririm, Kadraj'ı ve kodunu anlatırım. Bilmediğimi Claude abime sorarım. Bir de çok güzel merdiven yazarım."},
+ {t:"me",k:["yatak","uyku","nerede uyuyorsun","ne zaman uyursun"],a:"Gece 22'den sabah 5'e kadar yatağımda uyurum. Yatağımı sürüklersen geri ışınlarım, haberin olsun."},
+ {t:"me",k:["kalkan","neden kalkan","vurma"],a:"Bana arka arkaya hızlı dokunursan kalkan açarım. Kodla örülmüş, altıgen, çok şık. Ama vurmasan daha iyi."},
+ {t:"me",k:["clawd kapat","clawd gizle","seni nasil kapatirim","gizle","kapat seni"],a:"Beni Ayarlar › Görünüm › Clawd'dan kapatabilirsin. Ama kapatma ne olur, çok alınırım."},
+ {t:"me",k:["ses","sesini kapat","bip"],a:"Konuşurken çıkardığım bip seslerini Ayarlar › Görünüm › Clawd sesleri'nden kapatabilirsin."},
+ {t:"me",k:["sikildim","canim sikiliyor"],a:"Sıkıldın mı? Hemen bir soğuk espri geliyor. Ya da bir Flick çek, ben izlerim!"},
+ {t:"app",k:["fotograf paylas","paylasim yap","gonderi","fotograf ekle","resim paylas","foto"],a:"Ortadaki + › Fotoğraf: kırp, 7 filtreden birini seç, açıklama ve konum ekle. Seçici açılmazsa Kadraj galerisi, çizim ya da yapıştırma var."},
+ {t:"app",k:["flick","reels","kisa video","video paylas","video yukle"],a:"+ › Flick. Fotoğraflardan (1-3 kare, yazı, hareket ve müzik) ya da video yükleyerek (en fazla 2 dakika, 40 MB). Kamerayla da çekebilirsin."},
+ {t:"app",k:["2x","hizlandir","hizli oynat","flick hiz"],a:"Flick'te ekranın sağ ya da sol kenarına basılı tut: video 2x oynar. Bırakınca normale döner."},
+ {t:"app",k:["sure cubugu","ileri sar","geri sar","sarma"],a:"Flick'in altındaki süre çubuğunu sürükleyerek ileri-geri sarabilirsin."},
+ {t:"app",k:["sonrakine gec","otomatik kaydir","sonraki flick"],a:"Ayarlar › Medya ve dokunuş › \"Flick bitince sonrakine geç\". Video bitince kendiliğinden kayar."},
+ {t:"app",k:["hikaye","story","hikayem"],a:"Akış'ın üstündeki Hikâyen balonundaki + ile eklersin. Üstüne yazı koyabilirsin, 24 saat görünür. Yanıtlar mesaj olarak gelir."},
+ {t:"app",k:["hikaye tepki","hikayeye tepki"],a:"Hikâye izlerken alttaki kalp, ateş, gülme ya da şaşırma tepkilerinden birine dokun; sahibine mesaj olarak gider."},
+ {t:"app",k:["anket","oylama"],a:"+ › Anket: bir soru ve 2-4 seçenek yaz. Arkadaşların oy verir, sonuçlar canlı değişir."},
+ {t:"app",k:["cizim","ciz","parmakla"],a:"+ › Çizim ile parmağınla çizip paylaşabilirsin. Benim portremi çizersen çok sevinirim."},
+ {t:"app",k:["renkli not","not paylas","yazi paylas"],a:"+ › Not: renkli bir zemin üstüne yazı paylaşırsın. Kısa ve öz sözler için birebir."},
+ {t:"app",k:["profil notu","not birak","24 saatlik not"],a:"Sohbet listesinin üstündeki notlar şeridinden 24 saatlik kısa bir not bırakabilirsin; arkadaşların görür."},
+ {t:"app",k:["begen","begeni","cift dokun","kalp"],a:"Paylaşıma çift dokun ya da kalbe bas: beğenirsin. Beğeni sayılarını Ayarlar › Gizlilik'ten gizleyebilirsin."},
+ {t:"app",k:["yorum"],a:"Paylaşımın altındaki baloncuğa dokun, yorum yaz. Yorumları da beğenebilirsin."},
+ {t:"app",k:["kaydet","kaydedilen","yer imi"],a:"Paylaşımdaki kaydet simgesine dokun; profilindeki Kaydedilenler sekmesinde durur."},
+ {t:"app",k:["sabitle","profil sabitle","paylasim sabitle"],a:"Paylaşımın ... menüsünden Sabitle: profilinde en fazla 3 paylaşım en üstte durur. Sohbetleri de basılı tutarak sabitleyebilirsin."},
+ {t:"app",k:["sesli mesaj","ses kaydi","mikrofon"],a:"Mesaj kutusu boşken mikrofona dokun, konuş, gönder. En fazla 2 dakika. Dinlerken 1x, 1,5x, 2x seçebilirsin."},
+ {t:"app",k:["arama","goruntulu","sesli arama","ara","telefon"],a:"Birebir sohbetin üstündeki telefon ya da kamera düğmesine dokun. Arkadaşın uygulamayı açıkken çalar. Aramada ekran paylaşımı ve Küçült de var."},
+ {t:"app",k:["ekran paylas","ekran paylasimi"],a:"Görüntülü aramada ekran paylaşımı düğmesine dokun. Bilgisayarda Chrome, Edge, Firefox ya da Safari ile çalışır."},
+ {t:"app",k:["kucult","mini pencere","yuzen pencere"],a:"Aramada Küçült'e dokununca arama küçük, sürüklenebilir bir pencereye döner; uygulamada gezmeye devam edersin."},
+ {t:"app",k:["meydan","ortak sohbet"],a:"Meydan, herkesin ortak canlı sohbeti. Sohbet sekmesinin üstünde. @rota yazarsan Rota da katılır."},
+ {t:"app",k:["grup","grup kur","grup sohbet"],a:"Sohbet › Grup kur: ad ver, kişileri seç. Grup ayarlarından üye ekleyip çıkarabilirsin."},
+ {t:"app",k:["davet","arkadas ekle","arkadaslarimla","arkadas davet"],a:"Sohbet › Davet et (ya da Ayarlar › Yardım). Bağlantıyı gönder; arkadaşın hesap açar, seni Keşfet'te bulup takip eder."},
+ {t:"app",k:["takip","takipci","takip et"],a:"Profilde Takip et'e dokun. Gizli hesaplarda paylaşımları yalnızca takipçiler görür."},
+ {t:"app",k:["tepki","emoji","mesaja tepki"],a:"Mesaja basılı tut: üstte 6 tepki çıkar (kalp, gülme, şaşırma, üzülme, ateş, alkış). Çift dokunuş kalp bırakır."},
+ {t:"app",k:["ilet","mesaj ilet","yonlendir"],a:"Mesaja basılı tut › İlet: başka bir sohbete ya da Meydan'a gönderirsin. Mesajda \"İletildi\" yazar."},
+ {t:"app",k:["sohbette ara","eski mesaj","mesaj ara"],a:"Sohbetteki + menüsünden \"Sohbette ara\". Eski mesajları kelimeyle bulursun."},
+ {t:"app",k:["taslak"],a:"Yazıp çıktığın mesaj taslak olarak saklanır; sohbet listesinde \"Taslak:\" diye görünür."},
+ {t:"app",k:["mesaj sil","mesaj duzenle","duzenle","geri al"],a:"Mesaja basılı tut: düzenle, benden sil ya da herkesten sil seçenekleri çıkar."},
+ {t:"app",k:["sohbet temasi","duvar kagidi","balon rengi","arka plan"],a:"Sohbetin üstündeki resim simgesine dokun. \"Herkes için\" seçersen tema sohbetteki herkeste değişir, \"Yalnızca bende\" sadece sende."},
+ {t:"app",k:["tema","karanlik","koyu mod","acik mod","gece modu","dark"],a:"Ayarlar › Görünüm › Tema: Açık, Koyu ya da Sistem. Akış'taki ay/güneş düğmesi de anında değiştirir."},
+ {t:"app",k:["vurgu","renk","vurgu rengi"],a:"Ayarlar › Görünüm › Vurgu rengi. Otomatik seçersen yöneticinin ortak teması da gelir."},
+ {t:"app",k:["yazi boyutu","buyuk yazi","font"],a:"Ayarlar › Görünüm › Yazı boyutu: Normal, Büyük ya da Çok büyük."},
+ {t:"app",k:["vizor","klasik","arayuz","yeni gorunum","dok"],a:"Vizör, Kadraj 5.0'ın yeni görünümü: yüzen üst çubuk, hap şeklinde dok, ortada deklanşör. Ayarlar › Görünüm › Arayüz'den Klasik'e dönebilirsin."},
+ {t:"app",k:["animasyon","hareket azalt","animasyonlari azalt"],a:"Ayarlar › Görünüm › Animasyonları azalt. Açarsan ben de köşede sakin sakin otururum."},
+ {t:"app",k:["gizli hesap","hesabi gizle","kilitli hesap"],a:"Ayarlar › Gizlilik › Gizli hesap. Paylaşımlarını ve hikâyelerini yalnızca takipçilerin görür."},
+ {t:"app",k:["aktiflik","cevrimici","yesil nokta","son gorulme"],a:"Yeşil nokta şu an açık olanı gösterir. Ayarlar › Gizlilik › Aktiflik durumu'nu kapatırsan kimse seni görmez, sen de kimseyi."},
+ {t:"app",k:["okundu","goruldu"],a:"Ayarlar › Gizlilik › Okundu bilgisi. Kapalıysa karşı taraf mesajını okuduğunu görmez."},
+ {t:"app",k:["bildirim","bildirimler","uyari"],a:"Ayarlar › Bildirimler: mesaj, beğeni, yorum ve yeni paylaşım uyarılarını ayrı ayrı açıp kapatabilirsin. Telefon bildirimleri için izin ver."},
+ {t:"app",k:["veri tasarrufu","internet","kota","mobil veri"],a:"Ayarlar › Medya ve dokunuş › Veri tasarrufu: Flick'ler önceden yüklenmez ve 720p oynar."},
+ {t:"app",k:["sifre","sifremi unuttum","parola","sifre degistir"],a:"Girişte Şifremi unuttum › Kadraj Anahtarı ile yenile. Şifreni değiştirmek için Ayarlar › Hesap › Şifreyi değiştir."},
+ {t:"app",k:["anahtar","kadraj anahtari","posta","kadraj posta","zarf"],a:"Kadraj Anahtarın, profilindeki zarf simgesinde, Kadraj Posta'da durur. Şifreni unutursan onunla yenilersin."},
+ {t:"app",k:["kullanici adi","giris","nasil girerim","oturum ac"],a:"Girişte kullanıcı adını ya da e-postanı yazabilirsin. Beni hatırla açıksa bu cihazda şifre sorulmaz."},
+ {t:"app",k:["cikis","cikis yap","oturumu kapat"],a:"Ayarlar › Oturum › Çıkış yap. Ama gitme, daha anlatacak esprim var."},
+ {t:"app",k:["hesap sil","hesabimi sil","hesabi sil"],a:"Ayarlar › Gelişmiş › Hesabı sil. Profil, paylaşımlar ve hikâyeler kalıcı silinir; iyi düşün."},
+ {t:"app",k:["satranc","chess","sah mat"],a:"Keşfet'teki Satranç kartı ya da Akış'ın üstündeki at simgesi. Rota'ya karşı 5 seviye, arkadaşına davet, aynı telefonda iki kişi. Kazanırsan dans ederim!"},
+ {t:"app",k:["cocuk modu","cocuk"],a:"Çocuk Modu'nda yazılar süzülür, yabancılar mesaj atamaz, Meydan kapalıdır. Paylaşırken \"Çocuk modundakiler göremez\" de seçebilirsin."},
+ {t:"app",k:["kesfet","etiket","hashtag","arama kutusu","kisi ara"],a:"Keşfet'in üstündeki kutuya kişi ya da #etiket yaz. Süzgeçlerle kişi, kare, Flick ya da etiket seç; en yeni ya da en çok beğenilen diye sırala."},
+ {t:"app",k:["ana ekran","yukle","uygulama olarak","kur"],a:"Ayarlar › Uygulama ve depolama › Ana ekrana ekle. Kadraj simgesiyle tam ekran açılır."},
+ {t:"app",k:["onbellek","cache","depolama","yer kapliyor"],a:"Ayarlar › Uygulama ve depolama › Önbelleği temizle. Hesabın, mesajların ve ayarların yerinde kalır."},
+ {t:"app",k:["guncelle","guncelleme","yeni surum","surum"],a:"Kadraj yeni sürümü fark edince uygun bir anda kendini yeniler. Ayarlar › Hakkında › Güncellemeleri denetle ile de bakabilirsin."},
+ {t:"app",k:["neler yeni","yenilikler"],a:"Ayarlar › Yardım › Neler yeni? Orada en son eklenenleri görürsün. Ben de yeniyim, sayılır mıyım?"},
+ {t:"app",k:["rota","asistan","rehber"],a:"Rota, Kadraj'ın rehberi. Sohbet sekmesinde bulursun. Ben de onun ekranda gezen, espri yapan arkadaşıyım."},
+ {t:"app",k:["sikayet","bildir","raporla"],a:"Paylaşımın ... menüsünden Şikayet et. Yönetici bakar."},
+ {t:"app",k:["dürt","durt","nudge"],a:"Sohbet listesindeki \"Şu an burada\" bölümünde Dürt'e dokun; arkadaşının telefonu titrer."},
+ {t:"code",k:["hangi dil","nasil yazildi","kutuphane","framework","index html","tek dosya"],a:"Kadraj tek bir index.html dosyası: HTML, CSS ve saf JavaScript. Hiç kütüphane yok, kod \"use strict\" ile başlıyor. Ben de bu dosyanın en altında yaşıyorum!"},
+ {t:"code",k:["veritabani","firebase","firestore","veri nerede","localdb","db get"],a:"Bulutta Firebase Firestore var. Kod DB adlı ortak bir arayüzle konuşur: get, set, update, del, watchCol, watchDoc. Demo modunda aynı arayüzü LocalDB, localStorage üzerinden verir."},
+ {t:"code",k:["render","cizim","yonlendirme","router","go fonksiyonu","sayfa nasil"],a:"render(), S.route.name'e bakıp vFeed, vExplore, vProfile gibi bir görünüm fonksiyonunu çağırır, sonra afterRender bağlantıları kurar. Sayfa değiştirmek go(ad, parametre), geri dönmek back()."},
+ {t:"code",k:["durum","state","s nesnesi","global durum"],a:"Uygulamanın durumu S adlı tek nesnede: S.uid, S.route, S.posts, S.chats, S.profiles gibi. Ayarlar settings nesnesinde, localStorage'da kadraj_settings anahtarında durur."},
+ {t:"code",k:["write fonksiyonu","guard","yazma hatasi","write"],a:"Veritabanı yazmaları write() ile sarılır; hata olursa Türkçe uyarı gösterir ve true/false döner. guard() misafirin ya da susturulmuş kişinin işlem yapmasını engeller."},
+ {t:"code",k:["tiklama","data act","olay dinleyici","event","dugme nasil"],a:"Bütün tıklamaları tek bir document dinleyicisi dağıtır: data-act, data-go, data-tab gibi özniteliklere bakar. Yeni düğme için data-act verip ACT nesnesine bir eylem eklemek yeter."},
+ {t:"code",k:["hook","kanca","hooks"],a:"HOOKS.after her çizimden sonra, HOOKS.enter uygulamaya girince, HOOKS.profiles profiller gelince çalışır. Hangi sayfada olduğunu ben de oradan anlıyorum."},
+ {t:"code",k:["satranc motoru","motor","alfa beta","minimax","engine","chesscore"],a:"Satranç motoru ChessCore: 64 karelik dizi, yasal hamle üretimi ve alfa-beta araması. Ekran donmasın diye hesap Web Worker'da yapılır (engineRun). Seviyeler 400'den 2000'e."},
+ {t:"code",k:["elo","puan","siralama","rating"],a:"Satranç puanı Elo usulü hesaplanır (chRate). Profilde chess alanında puan, galibiyet, mağlubiyet ve beraberlik tutulur."},
+ {t:"code",k:["cloudinary","video nereye","video nerede","storevideo","video saklama"],a:"Flick videoları bulutta Cloudinary'ye yüklenir; olmazsa Firestore'a parça parça konur (storeVideo, storeVideoFs). Oynatırken vsrc ikisini de tanır."},
+ {t:"code",k:["muzik nasil","webaudio","muzik","ses nasil"],a:"Flick müziği cihazında WebAudio ile anında üretilir: Lo-fi, Enerjik, Sakin. Hiç ses dosyası inmez. Benim bip seslerim de aynı yöntemle!"},
+ {t:"code",k:["webrtc","arama nasil calisir","p2p","sinyal"],a:"Aramalar WebRTC ile iki cihaz arasında doğrudan akar; bağlantı bilgileri Firestore'daki calls koleksiyonundan değiş tokuş edilir. Arama içi tepkiler bir veri kanalından gider."},
+ {t:"code",k:["presence","kalp atisi","cevrimici nasil","online nasil"],a:"Çevrimiçi durum presence koleksiyonunda tutulur; uygulama yaklaşık 40 saniyede bir kalp atışı gönderir. Yeşil nokta oradan gelir."},
+ {t:"code",k:["app v","app ver","surum numarasi","versiyon nasil"],a:"Sürüm APP_VER'de yazar, APP_V sayısal hâli: ana×10000 + ara×100 + yama. Sayfadaki kadraj-version etiketi de aynı sayıyı taşır."},
+ {t:"code",k:["service worker","sw js","cevrimdisi","offline","onbellek nasil"],a:"sw.js önce ağdan çeker, ağ yoksa önbellekten açar. Bildirime dokununca doğru sohbete gitmeni de o sağlar."},
+ {t:"code",k:["ikon","svg","ip nesnesi","simge"],a:"İkonlar IP nesnesinde SVG yolları olarak durur, I(ad) ile çizilir. Emoji yok, her şey SVG. Ben bile piksel piksel SVG'yim!"},
+ {t:"code",k:["cid","sohbet kimligi","sendmessage","mesaj nasil gider","msgs"],a:"Mesajlar chats/{cid}/msgs altında durur. Birebir sohbetin kimliği dm- ile, grubunki gr- ile başlar; ortak sohbetin adı meydan. Göndermeyi sendMessage yapar."},
+ {t:"code",k:["reacts","tepki kodu","tepkiler nasil"],a:"Tepkiler REACTS listesinde: kalp, gülme, şaşırma, üzülme, ateş, alkış. Mesajın reacts alanında kişi başına bir tepki tutulur."},
+ {t:"code",k:["cleanoldstories","24 saat","hikaye silinme","notof"],a:"Hikâyeler 24 saat görünür; süresi dolanları cleanOldStories temizler. Notlar da 24 saatlik, noteOf onlara bakar."},
+ {t:"code",k:["data ui","vizor kodu","yuzen dok"],a:"Arayüz <html data-ui> özniteliğiyle seçilir: vizor ya da klasik. Vizör'ün bütün CSS'i :root[data-ui=\"vizor\"] altında; dok ve üst çubuk ölçülüp ana alana boşluk bırakılır."},
+ {t:"code",k:["sheet","dialog","openlayer","katman","overlay"],a:"Alttan açılan pencereler sheet(), onay kutuları dialog() ile açılır; hepsi openLayer ile #overlay içine konur. Ben bir pencere açılınca kibarca kenara çekilirim."},
+ {t:"code",k:["esc","xss","guvenlik","kacis"],a:"Şablonlara giren her metin esc() ile kaçırılır; kimse mesajına kod gömemez. Ben de konuşurken buna uyuyorum."},
+ {t:"code",k:["sen nasil calisiyorsun","senin kodun","kodun nerede","clawd kodu","nasil yapildin","piksel"],a:"Ben index.html'in sonunda, kendi bölgemde yaşıyorum. Çizimim SVG piksellerden, hareketim tek bir requestAnimationFrame döngüsünden, sesim WebAudio'dan geliyor."},
+ {t:"code",k:["yapay zeka","kai","kopru","cloudflare","rota nasil calisir"],a:"Yapay zekâ Cloudflare'deki bir köprü üzerinden çalışır; anahtarlar sitede değil köprüde saklı. Yönetici bağlayınca Rota ve abim konuşur, değilse Rota hazır yanıtlarla idare eder."},
+ {t:"code",k:["assets","gomulu","base64","galeri fotograflari"],a:"Kadraj galerisindeki hazır fotoğraflar dosyanın içine base64 olarak gömülü (ASSETS). O satır kocaman, ben yanına bile yaklaşmıyorum."},
+ {t:"code",k:["localstorage","ayarlar nerede","savesettings"],a:"Ayarların bu cihazda localStorage'da, kadraj_settings anahtarında durur; saveSettings() kaydeder. Tema eşitleme açıksa hesabına da yazılır."},
+ {t:"code",k:["css degisken","root","accent","renkler nasil"],a:"Renkler CSS'te :root değişkenleri: --bg, --fg, --accent gibi. Vurgu rengi değişince bu değişkenler yeniden yazılır; koyu tema da aynılarını kullanır."},
+ {t:"code",k:["sysnote","push","bildirim nasil calisir","opentarget"],a:"Telefon bildirimlerini sysNote gönderir; dokununca openTarget seni doğru sohbete ya da paylaşıma götürür."},
+ {t:"code",k:["cleantext","kufur","suzgec"],a:"Çocuk Modu'nda yazılar cleanText süzgecinden geçer; isChild kimin Çocuk Modu'nda olduğuna bakar."},
+ {t:"code",k:["sifreleme","anahtar nasil","kadraj anahtari nasil"],a:"Kadraj Anahtarı, şifreni anahtardan türetilen bir kilitle şifreleyip saklar; unutursan anahtarla açıp yeni şifre koyarsın. Ayrıntısı sır, ben de bilmiyormuş gibi yapıyorum."},
+ {t:"code",k:["kac satir","kod uzunlugu","satir sayisi"],a:"Saymaya çalıştım, binlerce satırda uyuyakaldım. Ama en uzun satırın ASSETS olduğunu biliyorum, iki megabayta yakın!"},
+ {t:"code",k:["toast","uyari mesaji"],a:"Üstte çıkan kısa uyarıları toast() gösterir. Bir uyarı çıkınca ben de heyecandan zıplarım."}];
+const CW_TOPIC=["kadraj","flick","reels","hikaye","story","mesaj","sohbet","profil","ayar","tema","satranc","rota","meydan","paylas","gonderi","begen","takip","grup","bildirim","sifre","anahtar","posta","vizor","klasik","akis","kesfet","clawd","kod","fonksiyon","firebase","uygulama","anket","yorum","arama","dok","fotograf","video","sesli","not","tepki","davet","hesap","giris","cikis","surum","guncelle","yonetici","bot","yapay"];
+const CW_STOPW=new Set("ne nasil nedir neden mi mu mı mü bir ve ile icin bu su o ben sen biz siz var yok yap yapilir yaparim olur nerede nereden hangi kac kim acaba lutfen bana beni sana seni da de ki ya veya ama".split(" "));
+
+/* --- durum --- */
+const CW_STOP={cw:"stop"};
+const CW={root:null,b:null,hit:null,inr:null,sq:null,spr:null,fx:null,bub:null,bubK:"",bubW:0,bubH:0,bedB:null,bedF:null,shEl:null,
+ U:3,W:69,H:54,x:-1,y:0,surf:"floor",face:-1,flip:false,rot:0,oy:0,sq0:"",
+ pose:"idle",talking:false,moving:false,lookX:0,blinkAt:0,blinkOn:false,frameK:"",tf:"",
+ clock:0,last:0,raf:0,slow:0,tws:[],gen:0,busy:false,act:"",pri:0,nextAt:0,pend:[],
+ vis:false,bnd:null,bT:0,vT:0,pT:0,pass:false,bedPass:false,why:"",
+ speed:1,hourOv:null,napAfter:120000,quietMs:180000,lastSay:0,lastInput:Date.now(),
+ bed:null,inBed:false,zz:false,stars:false,tears:false,typing:false,glT:0,
+ taps:[],tapT:0,shieldLvl:0,lastHit:0,forgive:8000,
+ menu:false,ask:false,leaving:false,returning:false,greeted:false,arrived:false,
+ hist:[],selfHist:[],pendWin:false,route:"",hiddenAt:0,jokeBag:[],tipBag:[],lastToastJump:0,drag:null,abiBusy:false};
+const cwRand=(a,b)=>a+Math.random()*(b-a);
+const cwPick=a=>a[Math.floor(Math.random()*a.length)];
+function cwBag(name,list){const k=name==="j"?"jokeBag":"tipBag";if(!CW[k].length){CW[k]=list.map((_,i)=>i).sort(()=>Math.random()-.5)}return list[CW[k].pop()]}
+function cwOn(){return settings.clawd!==false}
+function cwReduce(){try{return kbReduce()}catch{return false}}
+function cwHour(){return CW.hourOv!=null?CW.hourOv:new Date().getHours()}
+function cwNight(){const h=cwHour();return h>=22||h<5}
+function cwPeriod(){const h=cwHour();return h>=5&&h<11?"m":h>=11&&h<17?"a":h>=17&&h<22?"e":"n"}
+function cwUn(){try{const u=(me().username||"").trim();return u&&u!=="kullanici"?"@"+u:"dostum"}catch{return"dostum"}}
+function cwFill(t){return String(t).replace(/@(?![\w])/g,cwUn())}
+
+/* --- DOM --- */
+function cwMount(){if(CW.root)return;const r=document.createElement("div");r.id="clawd";r.className="off";r.setAttribute("aria-live","polite");
+ r.innerHTML=`<div class="cw-fx"></div><div class="cw-bed cw-bk" hidden></div><div class="cw-b"><div class="cw-inr"><div class="cw-sq"><div class="cw-spr"></div></div></div><button class="cw-hit" type="button" aria-label="Clawd ile konuş"></button></div><div class="cw-bed cw-ft" hidden></div>`;
+ document.body.appendChild(r);CW.root=r;CW.fx=r.querySelector(".cw-fx");CW.b=r.querySelector(".cw-b");CW.inr=r.querySelector(".cw-inr");CW.sq=r.querySelector(".cw-sq");CW.spr=r.querySelector(".cw-spr");CW.hit=r.querySelector(".cw-hit");
+ CW.bedB=r.querySelector(".cw-bk");CW.bedF=r.querySelector(".cw-ft");CW.bedB.innerHTML=cwBedSvg(false);CW.bedF.innerHTML=cwBedSvg(true);
+ cwSize();cwWireHit();cwWireBed();
+ r.addEventListener("click",cwBubClick);
+ r.addEventListener("submit",e=>{const f=e.target.closest("form.cw-askf");if(!f)return;e.preventDefault();const q=(f.querySelector("input").value||"").trim();cwAskClose();if(q)cwAsk(q)});
+ r.addEventListener("keydown",e=>{if(e.key==="Escape"&&CW.ask){e.stopPropagation();cwAskClose()}})}
+function cwSize(){const d=window.devicePixelRatio||1;const U=Math.max(2,Math.round(2.5*d)/d);CW.U=U;CW.W=CW_GW*U;CW.H=CW_GH*U;
+ if(!CW.root)return;CW.root.style.setProperty("--cw-u",U+"px");CW.b.style.width=CW.W+"px";CW.b.style.height=CW.H+"px";
+ for(const el of[CW.bedB,CW.bedF]){el.style.width=32*U+"px";el.style.height=16*U+"px"}}
+
+/* --- dünya sınırları --- */
+function cwBoundsUpd(){const sh=$("#shell");if(!sh)return;const s=sh.getBoundingClientRect();const vv=window.visualViewport;
+ const vb=vv?vv.offsetTop+vv.height:innerHeight;const L=Math.max(0,s.left),R=Math.min(innerWidth,s.right);
+ let T=s.top+4;const top=$("#top");if(top&&!top.hidden){const r=top.getBoundingClientRect();if(r.height>0&&r.bottom>T)T=r.bottom}
+ let B=Math.min(s.bottom,vb)-6;const dock=$("#dock");if(dock&&!dock.hidden){const nav=dock.querySelector("nav")||dock;const r=nav.getBoundingClientRect();if(r.height>0&&r.top<B+6)B=r.top-4}
+ if(CW.ask&&vv&&vb<innerHeight-80)B=Math.min(B,vb-8);
+ CW.bnd={L,R,T,B}}
+function cwB(){if(!CW.bnd)cwBoundsUpd();return CW.bnd||{L:0,R:innerWidth,T:0,B:innerHeight}}
+const CW_HIDE_ROUTES=["reels","chat","chessgame","edit","admin"];
+const CW_TXT="input:not([type=checkbox]):not([type=radio]):not([type=button]):not([type=submit]):not([type=range]):not([type=file]):not([type=color]),textarea,select,[contenteditable=''],[contenteditable='true']";
+function cwWhy(){if(!cwOn()&&!CW.leaving)return"off";if(!CW.root)return"nodom";
+ try{if(typeof introEl==="function"&&introEl())return"intro"}catch{}
+ if(!S.authed||!S.uid)return"auth";const r=S.route&&S.route.name;if(CW_HIDE_ROUTES.includes(r))return"route";
+ if(typeof CALL!=="undefined"&&CALL)return"call";if(document.getElementById("ar5Mini"))return"call";
+ if(document.querySelector("#overlay .layer"))return"layer";
+ const ae=document.activeElement;const mine=ae&&CW.root.contains(ae);
+ if(ae&&!mine&&ae.matches&&ae.matches(CW_TXT))return"typing";
+ const vv=window.visualViewport;if(vv&&!mine&&vv.height<innerHeight*.72)return"keyboard";
+ return""}
+function cwVis(){const why=cwWhy();CW.why=why;const want=!why;if(want===CW.vis){if(!want&&CW.bub&&why!=="off")cwBubClose();return}
+ if(want)cwShow();else cwHideNow(why)}
+function cwShow(){CW.vis=true;CW.root.classList.remove("off");cwBoundsUpd();const b=cwB();
+ if(CW.x<0){CW.x=b.R-CW.W*.5-10;CW.face=-1}
+ if(!CW.busy){CW.surf="floor";CW.y=b.B;CW.flip=false;CW.rot=0;CW.oy=0}
+ CW.x=Math.min(b.R-CW.W*.5-2,Math.max(b.L+CW.W*.5+2,CW.x));CW.nextAt=CW.clock+250;
+ if(CW.bed){cwBedPlace();CW.bedB.hidden=CW.bedF.hidden=false}cwDraw(performance.now(),true)}
+function cwHideNow(why){CW.vis=false;CW.root.classList.add("off");
+ if(why==="off"){cwCancel();CW.inBed=false;cwBedRemove();CW.shieldLvl=0;cwShieldHide(true)}
+ else if(CW.busy&&CW.pri<9){cwCancel()}
+ cwBubClose();cwMenuClose();if(CW.ask)cwAskClose();cwFxClear();
+ if(why==="route"||why==="call"||why==="layer"||why==="off"||why==="auth")cwAbiClose()}
+
+/* --- tıklama geçirgenliği: uygulamanın tıklanabilir öğesinin üstündeyse Clawd tıklanmaz --- */
+const CW_IA="a,button,input,textarea,select,label,video,audio,summary,[role=button],[role=link],[role=tab],[onclick],[contenteditable]";
+const CW_DOK=new Set(["data-k","data-t","data-sec","data-meta","data-layer","data-ui","data-mode","data-ct","data-cdk","data-theme","data-app-theme"]);
+function cwIsIA(el){for(let e=el,n=0;e&&e!==document.body&&e!==document.documentElement&&n<14;e=e.parentElement,n++){
+ if(e.id==="main"||e.id==="shell")return false;if(e.matches&&e.matches(CW_IA))return true;
+ for(const a of e.attributes)if(a.name.startsWith("data-")&&!CW_DOK.has(a.name))return true}return false}
+function cwBlocks(r){if(!r||r.width<2)return false;for(const[fx,fy]of[[.5,.5],[.18,.3],[.82,.3],[.2,.88],[.8,.88]]){const x=r.left+r.width*fx,y=r.top+r.height*fy;if(x<0||y<0||x>=innerWidth||y>=innerHeight)continue;
+  let first=null;for(const el of document.elementsFromPoint(x,y)){if(CW.root.contains(el)||el.closest("#cwAbi"))continue;first=el;break}
+  if(first&&cwIsIA(first))return true}return false}
+function cwPass(){const hr=CW.hit.getBoundingClientRect();const p=cwBlocks(hr);if(p!==CW.pass){CW.pass=p;CW.b.classList.toggle("pt",p)}
+ if(CW.bed&&!CW.drag){const a=CW.bedF.getBoundingClientRect();const q=cwBlocks(a);if(q!==CW.bedPass){CW.bedPass=q;CW.bedB.classList.toggle("pt",q);CW.bedF.classList.toggle("pt",q)}}}
+
+/* --- döngü --- */
+function cwKick(){if(CW.raf||document.hidden||!CW.root)return;clearTimeout(CW.slow);CW.slow=0;CW.last=0;CW.raf=requestAnimationFrame(cwTick)}
+function cwTick(ts){CW.raf=0;if(document.hidden||!CW.root)return;
+ const dt=Math.min(60,Math.max(0,ts-(CW.last||ts)));CW.last=ts;
+ if(ts-CW.vT>180){CW.vT=ts;cwVis()}
+ if(!CW.vis){if(!cwOn()&&!CW.leaving)return;CW.slow=setTimeout(cwKick,400);return}
+ const d=dt*CW.speed;CW.clock+=d;
+ if(ts-CW.bT>110){CW.bT=ts;cwBoundsUpd()}
+ for(const w of CW.tws.slice()){w.t+=d;const k=Math.min(1,w.t/w.dur);try{w.step&&w.step(k)}catch(e){console.warn("clawd",e)}if(k>=1){const i=CW.tws.indexOf(w);if(i>=0){CW.tws.splice(i,1);w.res()}}}
+ cwFollow();cwBrain();cwDraw(ts);
+ if(ts-CW.pT>140){CW.pT=ts;cwPass()}
+ CW.raf=requestAnimationFrame(cwTick)}
+function cwTween(dur,step){return new Promise((res,rej)=>CW.tws.push({t:0,dur:Math.max(1,dur),step,res,rej}))}
+const cwWait=ms=>cwTween(ms);
+function cwCancel(){CW.gen++;const ws=CW.tws;CW.tws=[];for(const w of ws)w.rej(CW_STOP);CW.moving=false;CW.talking=false;CW.typing=false;CW.busy=false;CW.act="";CW.pri=0;cwBubClose()}
+function cwRun(fn,{pri=0,name=""}={}){cwCancel();const g=CW.gen;CW.busy=true;CW.act=name;CW.pri=pri;
+ Promise.resolve().then(()=>fn(g)).catch(e=>{if(e!==CW_STOP)console.warn("clawd",e)}).finally(()=>{if(CW.gen===g){CW.busy=false;CW.act="";CW.pri=0;CW.moving=false;CW.talking=false;CW.typing=false;CW.nextAt=CW.clock+cwRand(1500,4500)}})}
+function cwQueue(name,fn,pri){if(!cwOn())return;if(cwNight()&&pri<3&&name!=="dance")return;
+ if(CW.vis&&(!CW.busy||pri>CW.pri)&&!CW.menu&&!CW.ask){cwRun(fn,{pri,name});return}
+ CW.pend=CW.pend.filter(p=>p.name!==name);CW.pend.push({name,fn,pri});CW.pend.sort((a,b)=>b.pri-a.pri)}
+function cwFollow(){const b=cwB();if(CW.moving&&CW.surf!=="floor"&&CW.surf!=="ceil")return;
+ if(CW.surf==="floor"&&!CW.air)CW.y=b.B;else if(CW.surf==="ceil"&&!CW.air)CW.y=b.T;
+ if(CW.inBed&&CW.bed){CW.bed.y=b.B;cwBedPlace();CW.x=CW.bed.x+2*CW.U;CW.y=CW.bed.y-3*CW.U}
+ else if(CW.bed&&!CW.drag&&Math.abs(CW.bed.y-b.B)<60){CW.bed.y=b.B;cwBedPlace()}}
+
+/* --- poz ve çizim --- */
+function cwSpec(){const t=CW.clock;const p=CW.pose;const s={eyes:"open",mouth:"",arms:"down",legs:"stand",lx:CW.lookX,blush:false,bump:false,brow:""};
+ const alt=(ms)=>Math.floor(t/ms)%2===0;
+ switch(p){
+  case"walk":s.legs=alt(130)?"w1":"w2";break;
+  case"run":s.legs=alt(80)?"w1":"w2";s.arms=alt(80)?"t1":"t2";break;
+  case"jump":s.legs="tuck";s.arms="up";s.eyes="happy";break;
+  case"happy":s.eyes="happy";s.mouth="smile";s.arms=alt(260)?"up":"down";s.blush=true;break;
+  case"joy":s.eyes="happy";s.mouth="smile";s.arms="up";s.blush=true;s.legs="tuck";break;
+  case"dance":s.eyes="happy";s.mouth="smile";s.arms=["up","w1","down","c1"][Math.floor(t/220)%4];s.legs=alt(220)?"w1":"w2";s.blush=true;break;
+  case"surprised":s.eyes="wide";s.mouth="o";s.arms="up";break;
+  case"sleep":s.eyes="closed";s.legs="tuck";break;
+  case"sleepy":s.eyes="blink";s.mouth=alt(900)?"":"yawn";break;
+  case"cry":s.eyes="sad";s.mouth="frown";break;
+  case"crywalk":s.eyes="sad";s.mouth="frown";s.legs=alt(200)?"w1":"w2";break;
+  case"dizzy":s.eyes="x";s.mouth="wob";s.bump=true;s.legs="spread";break;
+  case"type":s.eyes="down";s.arms=alt(95)?"t1":"t2";break;
+  case"shield":s.eyes="open";s.brow="mad";s.arms="sh";s.legs="spread";break;
+  case"wave":s.eyes="happy";s.mouth="smile";s.arms=alt(230)?"w1":"w2";break;
+  case"sit":s.legs="tuck";break;
+  case"climb":s.arms=alt(170)?"c1":"c2";s.legs=alt(170)?"w1":"w2";s.eyes="up";break;
+  case"lookup":s.eyes="up";break;
+  case"listen":s.eyes="wide";s.arms="sh";break;
+  case"shrug":s.eyes="blink";s.mouth="flat";s.arms="sg";break;
+  case"lie":s.eyes="x";s.legs="tuck";s.bump=true;break}
+ if(CW.talking&&!["sleep","dizzy","lie"].includes(p))s.mouth=alt(115)?"t1":"t2";
+ if(s.eyes==="open"||s.eyes==="up"||s.eyes==="down"){if(t>CW.blinkAt){CW.blinkOn=true;if(t>CW.blinkAt+130){CW.blinkOn=false;CW.blinkAt=t+cwRand(2200,5200)}}if(CW.blinkOn)s.eyes="blink"}
+ if(CW.bumpOn&&!s.bump)s.bump=true;
+ return s}
+function cwDraw(ts,force){if(!CW.root)return;const s=cwSpec();const k=cwSvg(s);if(k!==CW.frameK||force){CW.spr.innerHTML=k;CW.frameK=k}
+ const bx=Math.round((CW.x-CW.W/2)*4)/4;const by=Math.round(((CW.surf==="ceil"&&!CW.air)?CW.y:CW.y-CW.H)+CW.oy);
+ const tf=`translate3d(${bx}px,${by}px,0)`;if(tf!==CW.tf){CW.b.style.transform=tf;CW.tf=tf}
+ const it=`scale(${CW.face<0?-1:1},${CW.flip?-1:1}) rotate(${CW.rot}deg)`;if(it!==CW.itf){CW.inr.style.transform=it;CW.itf=it}
+ if(CW.typing&&!cwReduce()&&ts-CW.glT>170){CW.glT=ts;cwGlyphFloat()}
+ cwFlags();if(CW.bub)cwBubPos()}
+function cwFlags(){const f={zz:CW.zz,st:CW.stars,tr:CW.tears};for(const[k,v]of Object.entries(f)){if(!!CW["_f"+k]===!!v)continue;CW["_f"+k]=!!v;
+  if(k==="zz"){if(v){const z=document.createElement("div");z.className="cw-zz";z.innerHTML=`<i>${CW_ZSVG}</i><i>${CW_ZSVG}</i><i>${CW_ZSVG}</i>`;CW.b.appendChild(z)}else CW.b.querySelectorAll(".cw-zz").forEach(e=>e.remove())}
+  if(k==="st"){if(v){const z=document.createElement("div");z.className="cw-stars";z.innerHTML=`<i>${CW_STAR}</i><i>${CW_STAR}</i><i>${CW_STAR}</i>`;CW.b.appendChild(z)}else CW.b.querySelectorAll(".cw-stars").forEach(e=>e.remove())}
+  if(k==="tr"){if(v){const z=document.createElement("div");z.className="cw-tears";z.innerHTML="<i></i><i></i><i></i><i></i>";CW.sq.appendChild(z)}else CW.sq.querySelectorAll(".cw-tears").forEach(e=>e.remove())}}}
+function cwSquash(){if(cwReduce())return;CW.sq.classList.remove("land");void CW.sq.offsetWidth;CW.sq.classList.add("land");setTimeout(()=>CW.sq&&CW.sq.classList.remove("land"),260)}
+
+/* --- hareketler --- */
+async function cwWalk(tx,sp=46,pose="walk"){const x0=CW.x;const dx=tx-x0;if(Math.abs(dx)<1)return;CW.face=dx>0?1:-1;CW.pose=pose;CW.moving=true;
+ try{await cwTween(Math.abs(dx)/sp*1000,k=>{CW.x=x0+dx*k})}finally{CW.moving=false}if(CW.pose===pose)CW.pose="idle"}
+async function cwHop(tx,ty,h=18,dur=380,{rot0,rot1}={}){const x0=CW.x,y0=CW.y,dx=tx-x0,dy=ty-y0;if(dx)CW.face=dx>0?1:-1;const pp=CW.pose;CW.pose="jump";CW.air=true;CW.moving=true;cwSfx("hop");
+ try{await cwTween(dur,k=>{CW.x=x0+dx*k;CW.y=y0+dy*k-h*4*k*(1-k);if(rot1!=null)CW.rot=(rot0||0)+(rot1-(rot0||0))*k})}finally{CW.air=false;CW.moving=false}
+ CW.pose=pp==="jump"?"idle":pp;cwSquash()}
+async function cwFall(ty,{rot0,rot1}={}){const y0=CW.y;const h=Math.max(0,ty-y0);const dur=Math.max(180,Math.sqrt(2*h/2400)*1000);CW.air=true;CW.moving=true;CW.pose="surprised";
+ try{await cwTween(dur,k=>{CW.y=y0+h*k*k;if(rot1!=null)CW.rot=(rot0||0)+(rot1-(rot0||0))*Math.min(1,k*2.5)})}finally{CW.air=false;CW.moving=false}
+ cwSfx("bonk");cwSquash();CW.pose="idle"}
+function cwFreeX(prefer){const b=cwB();const lo=b.L+CW.W*.5+6,hi=b.R-CW.W*.5-6;if(hi<=lo)return(b.L+b.R)/2;const c=[];for(let i=0;i<6;i++)c.push(lo+Math.random()*(hi-lo));if(prefer!=null)c.unshift(prefer);
+ for(const x of c){const r={left:x-CW.W*.45,top:b.B-15*CW.U,width:CW.W*.9,height:15*CW.U};if(!cwBlocks(r))return x}return c[1]}
+
+/* --- konuşma balonları --- */
+function cwBubOpen(kind,html){cwBubClose();const d=document.createElement("div");d.className="cw-bub "+kind;d.innerHTML=html;CW.root.appendChild(d);CW.bub=d;CW.bubK=kind;CW.bubW=d.offsetWidth;CW.bubH=d.offsetHeight;cwBubPos();return d}
+function cwBubMeasure(){if(!CW.bub)return;CW.bubW=CW.bub.offsetWidth;CW.bubH=CW.bub.offsetHeight}
+function cwBubClose(){if(CW.bub){const d=CW.bub;CW.bub=null;CW.bubK="";if(cwReduce()||!CW.vis)d.remove();else{d.classList.add("out");setTimeout(()=>d.remove(),180)}}}
+function cwBubPos(){const d=CW.bub;if(!d)return;const b=cwB();const ceil=CW.surf==="ceil"&&!CW.air;const head=ceil?CW.y+15*CW.U+CW.oy:CW.y-15*CW.U+CW.oy;
+ const w=CW.bubW,h=CW.bubH;let bx=CW.x-w/2;bx=Math.max(b.L+8,Math.min(b.R-8-w,bx));let below=ceil;let by=below?head+12:head-h-14;
+ if(!below&&by<b.T+4){below=true;by=CW.y+8}
+ if(below&&by+h>b.B+40){below=false;by=head-h-14}
+ const tx=Math.max(12,Math.min(w-14,CW.x-bx));const k=`${Math.round(bx)},${Math.round(by)},${Math.round(tx)},${below}`;if(k===d._k)return;d._k=k;
+ d.style.transform=`translate(${Math.round(bx)}px,${Math.round(by)}px)`;d.style.setProperty("--tx",Math.round(tx)+"px");d.classList.toggle("dn",below)}
+function cwHold(t){return Math.max(1700,Math.min(7000,1200+String(t).length*48))}
+async function cwSay(text,{hold,kind="say",note="",keepPose=false}={}){text=cwFill(text);const d=cwBubOpen(kind,`<span class="cw-t"></span>${note?`<small class="cw-n">${esc(note)}</small>`:""}`);const sp=d.querySelector(".cw-t");
+ sp.textContent=text;cwBubMeasure();d.style.minHeight=CW.bubH+"px";d.style.width=CW.bubW+"px";sp.textContent="";
+ const code=kind==="code";if(code){CW.typing=true;CW.pose="type"}else CW.talking=true;let n=0;
+ const per=code?55:27;
+ try{if(cwReduce())sp.textContent=text;else await cwTween(text.length*per,k=>{const m=Math.round(text.length*k);if(m===n)return;const ch=text.charAt(m-1);n=m;sp.textContent=text.slice(0,m);if(/[\p{L}\p{N}]/u.test(ch)&&m%2===0)cwBlip(code?"key":"me")})}
+ finally{CW.talking=false;if(code)CW.typing=false}
+ await cwWait(hold!=null?hold:cwHold(text));if(CW.bub===d)cwBubClose()}
+async function cwThink(html,ms){const d=cwBubOpen("th",`<svg class="cw-cloud" viewBox="0 0 140 84" aria-hidden="true"><g class="o">${cwCloudC(2.2)}</g><g class="i">${cwCloudC(0)}</g></svg><div class="cw-thc">${html}</div><i class="cw-p1"></i><i class="cw-p2"></i>`);cwBubMeasure();await cwWait(ms);if(CW.bub===d)cwBubClose()}
+function cwCloudC(e){return[[34,46,22],[58,32,25],[88,30,24],[110,46,19],[86,58,20],[56,60,20],[28,58,14]].map(([x,y,r])=>`<circle cx="${x}" cy="${y}" r="${r+e}"/>`).join("")}
+
+/* --- efektler --- */
+function cwFxClear(){if(CW.fx)CW.fx.innerHTML=""}
+function cwGlyph(x,y,ch,cls=""){const g=document.createElement("div");g.className="cw-g "+cls;g.textContent=ch;g.style.left=Math.round(x)+"px";g.style.top=Math.round(y)+"px";CW.fx.appendChild(g);return g}
+function cwDissolve(els,stagger=40){els.forEach((g,i)=>{if(cwReduce()){g.remove();return}setTimeout(()=>{g.classList.add("out");setTimeout(()=>g.remove(),460)},i*stagger/CW.speed)})}
+function cwBurst(x,y,n=14,col){if(cwReduce())return;for(let i=0;i<n;i++){const p=document.createElement("i");p.className="cw-pt";const a=Math.random()*Math.PI*2,r=cwRand(14,42);
+  p.style.left=x+"px";p.style.top=y+"px";p.style.setProperty("--dx",(Math.cos(a)*r).toFixed(1)+"px");p.style.setProperty("--dy",(Math.sin(a)*r-10).toFixed(1)+"px");if(col)p.style.background=col;
+  if(Math.random()<.4){p.className="cw-pt ch";p.textContent=cwPick(["{","}",";","<",">","/","=","(",")"])}CW.fx.appendChild(p);setTimeout(()=>p.remove(),720)}}
+function cwGlyphFloat(){const g=document.createElement("i");g.className="cw-gl";g.textContent=cwPick(["{","}",";","<",">","/","=","(",")","[","]","*"]);g.style.left=(CW.W*.5+cwRand(-16,16))+"px";g.style.top=(CW.H*.35)+"px";CW.b.appendChild(g);setTimeout(()=>g.remove(),900)}
+const CW_GLY=["{","}",";","<","/",">","=","(",")","[","]"];
+/* basamaklar: yanında yükselen kod blokları */
+async function cwStairs(){const b=cwB();const S0=Math.round(CW.U*7);const N=4;const roomR=b.R-CW.x,roomL=CW.x-b.L;const need=CW.W*1.6+S0*N;if(Math.max(roomR,roomL)<need)return false;
+ const dir=roomR>=roomL?1:-1;CW.face=dir;const cols=[];const blocks=[];CW.pose="type";CW.typing=true;
+ for(let i=1;i<=N;i++){const cx=CW.x+dir*(CW.W*.42+S0*(i-.5));cols.push(cx);for(let j=0;j<i;j++){blocks.push(cwGlyph(cx-S0/2,b.B-S0*(j+1),cwPick(CW_GLY),"st"));cwBlip("key");await cwWait(85)}}
+ CW.typing=false;CW.pose="idle";await cwWait(250);
+ try{for(let i=0;i<N;i++){await cwHop(cols[i],b.B-S0*(i+1),14,300);CW.surf="stairs";await cwWait(90)}
+  CW.pose="lookup";await cwWait(500);CW.face=-dir;CW.lookX=0;await cwWait(500);CW.face=dir;
+  if(cwMaySay())await cwSay(cwPick(["Yukarıdan her şey daha net görünüyor. Tam bir vizör!","Basamakları kendim yazdım. Noktalı virgül sağlam malzemedir.","Merdiven yazmak kolay, inmek zor."]));
+  else await cwWait(900);
+  const lx=Math.max(b.L+CW.W*.5+4,Math.min(b.R-CW.W*.5-4,cols[N-1]+dir*CW.W*.9));await cwHop(lx,b.B,26,520);CW.surf="floor"}
+ finally{CW.surf="floor";cwDissolve(blocks.reverse(),35)}return true}
+/* merdiven: yan duvarda yukarı, tavanda baş aşağı yürüyüş ve aşağı atlayış */
+async function cwLadder(){const b=cwB();if(b.B-b.T<140)return false;const side=CW.x-b.L<b.R-CW.x?-1:1;const lx=side<0?b.L+CW.W*.5+4:b.R-CW.W*.5-4;
+ await cwWalk(lx);CW.face=-side;const gap=Math.round(CW.U*7.5);const rungs=[];CW.pose="type";CW.typing=true;
+ try{for(let y=b.B-gap*.6;y>b.T+gap*.4;y-=gap){rungs.push(cwGlyph(lx-CW.W*.42,y-gap*.35,`${cwPick(["{","(","[","<"])} ${cwPick([";","=","/","*"])} ${cwPick(["}",")","]",">"])}`,"rung"));if(rungs.length%3===0)cwBlip("key");await cwWait(38)}
+  CW.typing=false;CW.surf="ladder";CW.pose="climb";CW.moving=true;const y0=CW.y,y1=b.T+CW.H-3*CW.U;await cwTween((y0-y1)/150*1000,k=>{CW.y=y0+(y1-y0)*k});CW.moving=false;
+  CW.pose="idle";const r0=CW.rot;await cwTween(320,k=>{CW.rot=r0+180*k*(-side)});CW.rot=0;CW.face=-CW.face;CW.flip=true;CW.surf="ceil";CW.y=cwB().T;
+  cwDissolve(rungs.slice(),25);rungs.length=0;
+  const tx=cwFreeX((b.L+b.R)/2);await cwWalk(tx,40);
+  if(cwMaySay())await cwSay(cwPick(["Tavandan selamlar! Buradan herkes baş aşağı görünüyor.","Yer çekimi mi? Bende yer çekimi yok, kod çekimi var.","Buradan Kadraj'ın üst çubuğunu tamir ediyorum. Şaka şaka."]));else await cwWait(1200);
+  CW.pose="surprised";await cwWait(300);CW.flip=false;CW.face=-CW.face;CW.rot=180;CW.surf="air";CW.y=cwB().T+CW.H;
+  await cwFall(cwB().B,{rot0:180,rot1:360});CW.rot=0;CW.surf="floor";await cwHop(CW.x+CW.face*14,cwB().B,10,260)}
+ finally{CW.flip=false;CW.rot=0;CW.surf="floor";CW.y=cwB().B;CW.typing=false;cwDissolve(rungs,20)}return true}
+
+/* --- kalkan --- */
+function cwShieldShow(lvl){if(!CW.shEl){const d=document.createElement("div");d.className="cw-shield";CW.b.appendChild(d);CW.shEl=d}
+ const n=18;let tx="";const pts=[];for(let i=0;i<6;i++){const a=Math.PI/3*i-Math.PI/2;pts.push([50+44*Math.cos(a),50+44*Math.sin(a)])}
+ for(let i=0;i<n;i++){const e=Math.floor(i/3),f=(i%3+.5)/3;const[a1,b1]=pts[e],[a2,b2]=pts[(e+1)%6];tx+=`<text x="${(a1+(a2-a1)*f).toFixed(1)}" y="${(b1+(b2-b1)*f+3.5).toFixed(1)}" style="--i:${i}">${esc(CW_GLY[i%CW_GLY.length])}</text>`}
+ CW.shEl.innerHTML=`<svg viewBox="0 0 100 100" aria-hidden="true"><polygon points="${pts.map(p=>p.map(v=>v.toFixed(1)).join(",")).join(" ")}"/>${tx}</svg>`;
+ CW.shEl.dataset.l=lvl;CW.shEl.classList.remove("out");cwSfx("shield")}
+function cwShieldHide(now){const d=CW.shEl;if(!d)return;CW.shEl=null;if(now||cwReduce())d.remove();else{d.classList.add("out");setTimeout(()=>d.remove(),420)}}
+
+/* --- yatak --- */
+function cwBedSpot(){const b=cwB();const bw=32*CW.U;const xs=[b.R-bw/2-8,b.L+bw/2+8];for(const x of xs){const r={left:x-bw/2,top:b.B-16*CW.U,width:bw,height:16*CW.U};if(!cwBlocks(r))return x}return xs[0]}
+function cwBedPlace(){const bd=CW.bed;if(!bd)return;const bw=32*CW.U,bh=16*CW.U;const t=`translate3d(${Math.round(bd.x-bw/2)}px,${Math.round(bd.y-bh)}px,0)`;if(CW.bedB._t!==t){CW.bedB.style.transform=CW.bedF.style.transform=t;CW.bedB._t=t}}
+function cwBedShow(x){const b=cwB();CW.bed={x,y:b.B};cwBedPlace();CW.bedB.hidden=CW.bedF.hidden=false;if(!cwReduce()){CW.bedB.classList.remove("pop");CW.bedF.classList.remove("pop");void CW.bedB.offsetWidth;CW.bedB.classList.add("pop");CW.bedF.classList.add("pop")}}
+function cwBedRemove(){CW.bed=null;CW.inBed=false;if(CW.bedB){CW.bedB.hidden=CW.bedF.hidden=true}}
+async function cwIntoBed(){const bd=CW.bed;if(!bd)return;const tx=bd.x+2*CW.U,ty=bd.y-3*CW.U;
+ if(cwReduce()||Math.abs(CW.x-tx)>200){CW.x=tx;CW.y=ty}else{const side=CW.x<tx?-1:1;const ax=bd.x+side*(16*CW.U+CW.W*.5);if(Math.abs(CW.x-ax)>4)await cwWalk(Math.max(cwB().L+CW.W*.5,Math.min(cwB().R-CW.W*.5,ax)));CW.surf="bed";await cwHop(tx,ty,20,380)}
+ CW.surf="bed";CW.inBed=true;CW.face=1}
+function cwWireBed(){for(const el of[CW.bedB,CW.bedF]){
+ el.addEventListener("pointerdown",e=>{if(!CW.bed||e.button>0)return;e.preventDefault();cwAudioUnlock();el.setPointerCapture&&el.setPointerCapture(e.pointerId);
+  CW.drag={id:e.pointerId,sx:e.clientX,sy:e.clientY,bx:CW.bed.x,by:CW.bed.y,moved:false,el,wasIn:CW.inBed}});
+ el.addEventListener("pointermove",e=>{const d=CW.drag;if(!d||d.id!==e.pointerId)return;const dx=e.clientX-d.sx,dy=e.clientY-d.sy;
+  if(!d.moved&&Math.hypot(dx,dy)>8){d.moved=true;if(d.wasIn)cwRun(actBedYank,{pri:7,name:"yank"})}
+  if(d.moved){const b=cwB();const bw=32*CW.U;CW.bed.x=Math.max(b.L+bw/2,Math.min(b.R-bw/2,d.bx+dx));CW.bed.y=Math.max(b.T+16*CW.U,Math.min(b.B,d.by+dy));cwBedPlace()}});
+ const up=e=>{const d=CW.drag;if(!d||d.id!==e.pointerId)return;CW.drag=null;if(!d.moved){cwTap();return}
+  const far=Math.hypot(CW.bed.x-d.bx,CW.bed.y-d.by)>24;if(far)cwRun(actBedBack.bind(null,{x:d.bx,y:d.by}),{pri:7,name:"bedback"});else if(d.wasIn)cwRun(actSleepIn,{pri:1,name:"bed"})};
+ el.addEventListener("pointerup",up);el.addEventListener("pointercancel",up)}}
+
+/* --- dokunma, vurma, savurma --- */
+function cwWireHit(){const h=CW.hit;let pd=null;
+ h.addEventListener("pointerdown",e=>{cwAudioUnlock();CW.lastInput=now();pd={id:e.pointerId,x:e.clientX,y:e.clientY,t:performance.now(),fl:false};try{h.setPointerCapture(e.pointerId)}catch{}});
+ h.addEventListener("pointermove",e=>{if(!pd||pd.id!==e.pointerId||pd.fl)return;const dx=e.clientX-pd.x,dy=e.clientY-pd.y,dt=performance.now()-pd.t;const dist=Math.hypot(dx,dy);
+  if(dist>40&&dist/Math.max(1,dt)>1.1){pd.fl=true;cwFling(dx>0?1:-1)}});
+ const up=e=>{if(!pd||pd.id!==e.pointerId)return;const p=pd;pd=null;if(p.fl)return;if(Math.hypot(e.clientX-p.x,e.clientY-p.y)<14&&e.type==="pointerup")cwTap()};
+ h.addEventListener("pointerup",up);h.addEventListener("pointercancel",up);
+ h.addEventListener("click",e=>{e.preventDefault();e.stopPropagation()});
+ h.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();cwSingleTap()}})}
+function cwTap(){const t=now();CW.lastInput=t;CW.taps=CW.taps.filter(x=>t-x<1200);CW.taps.push(t);const n=CW.taps.length;
+ if(CW.leaving)return;
+ if(CW.shieldLvl>0){CW.lastHit=t;if(n>=2){CW.taps=[];clearTimeout(CW.tapT);if(CW.shieldLvl<3){CW.shieldLvl++;cwRun(actShield,{pri:6,name:"shield"})}else cwSfx("shield")}return}
+ if(n>=3){CW.taps=[];clearTimeout(CW.tapT);cwMenuClose();CW.shieldLvl=1;CW.lastHit=t;cwRun(actShield,{pri:6,name:"shield"});return}
+ clearTimeout(CW.tapT);CW.tapT=setTimeout(()=>{if(CW.taps.length&&CW.taps.length<3)cwSingleTap()},Math.max(20,330/CW.speed))}
+function cwFling(dir){const t=now();CW.lastHit=t;CW.taps=[];clearTimeout(CW.tapT);cwMenuClose();CW.shieldLvl=Math.min(3,CW.shieldLvl+1);cwRun(actShield.bind(null,dir),{pri:6,name:"shield"})}
+function cwSingleTap(){if(CW.leaving)return;if(CW.menu){cwMenuClose();return}if(CW.ask){cwAskClose();return}
+ if(CW.inBed||CW.act==="nap"){cwRun(async()=>{CW.zz=false;CW.pose="sleepy";await cwSay(cwPick(["Hıı? Uyuyordum... Ne oldu?","Zzz... Ha? Buradayım, buradayım!","Rüyamda abimle satranç oynuyordum. Ne vardı?"]),{hold:600});cwMenu()},{pri:5,name:"wake"});return}
+ cwCancel();CW.pose="idle";CW.lookX=0;cwMenu()}
+
+/* --- menü ve soru kutusu --- */
+function cwMenu(){CW.menu=true;const night=cwNight();const it=[["joke","Soğuk espri"],["tip","Bir ipucu"],["ask","Clawd'a sor"],["nap",night||CW.inBed?"Uyumaya dön":"Biraz uyu"],["hide","Clawd'ı gizle"]];
+ cwBubOpen("menu",`<div class="cw-mh">Clawd</div>`+it.map(([k,l])=>`<button type="button" data-cw="${k}"${k==="hide"?' class="dim"':""}>${esc(l)}</button>`).join(""));CW.pose="wave";cwSfx("pop")}
+function cwMenuClose(){if(!CW.menu)return;CW.menu=false;if(CW.bubK==="menu")cwBubClose();if(CW.pose==="wave"&&!CW.busy)CW.pose="idle";CW.nextAt=CW.clock+2500}
+function cwAskOpen(){CW.ask=true;CW.menu=false;cwBubOpen("ask",`<form class="cw-askf" autocomplete="off"><label class="cw-mh" for="cwQ">Clawd'a sor</label><div class="cw-ar"><input id="cwQ" maxlength="240" enterkeyhint="send" placeholder="Kadraj ya da merak ettiğin bir şey" aria-label="Clawd'a sor"><button type="submit" aria-label="Sor">${I("send")}</button></div></form>`);
+ CW.pose="listen";const i=CW.bub.querySelector("input");setTimeout(()=>{try{i.focus({preventScroll:true})}catch{}},30)}
+function cwAskClose(){if(!CW.ask)return;CW.ask=false;const ae=document.activeElement;if(ae&&CW.root.contains(ae))ae.blur();if(CW.bubK==="ask")cwBubClose();if(!CW.busy)CW.pose="idle";CW.nextAt=CW.clock+2000}
+function cwBubClick(e){const b=e.target.closest&&e.target.closest("[data-cw]");if(!b)return;e.preventDefault();e.stopPropagation();const k=b.dataset.cw;cwMenuClose();CW.lastInput=now();
+ if(k==="joke")cwRun(actJoke,{pri:5,name:"joke"});
+ else if(k==="tip")cwRun(async()=>{CW.pose="idle";await cwSay(cwBag("t",CW_TIPS))},{pri:5,name:"tip"});
+ else if(k==="ask"){cwCancel();cwAskOpen()}
+ else if(k==="nap")cwRun(actNapBed,{pri:4,name:"bed"});
+ else if(k==="hide")cwDisable(true)}
+document.addEventListener("pointerdown",e=>{CW.lastInput=now();if(!CW.root)return;const t=e.target;if(CW.root.contains(t)||(t.closest&&t.closest("#cwAbi")))return;
+ if(CW.menu)cwMenuClose();if(CW.ask)cwAskClose();if(CW.act==="nap")cwRun(actWakeNap,{pri:4,name:"wake"})},true);
+document.addEventListener("keydown",()=>{CW.lastInput=now()},true);
+
+/* --- etkinlikler --- */
+function cwMaySay(){return now()-CW.lastSay>CW.quietMs&&!CW.menu&&!CW.ask&&(CW.lastSay=now(),true)}
+async function actWander(){const x=cwFreeX();await cwWalk(x);CW.pose="idle";await cwWait(cwRand(600,1600))}
+async function actLook(){CW.pose="idle";CW.lookX=-1;await cwWait(cwRand(500,900));CW.lookX=1;await cwWait(cwRand(500,900));CW.lookX=0;CW.pose="lookup";await cwWait(600);CW.pose="idle"}
+async function actSit(){CW.pose="sit";await cwWait(cwRand(2500,5000));CW.pose="idle"}
+async function actPeek(){const b=cwB();const side=CW.x-b.L<b.R-CW.x?-1:1;const edge=side<0?b.L+CW.W*.5+2:b.R-CW.W*.5-2;await cwWalk(edge);
+ const out=side<0?b.L-CW.W*.12:b.R+CW.W*.12;await cwWalk(out,30);CW.face=-side;CW.pose="idle";CW.lookX=-side;await cwWait(900);
+ if(cwMaySay())await cwSay(cwPick(["Ce-e!","Buradan bakınca her şey yarım görünüyor.","Kenarda dikizlemek de bir sanat."]),{hold:1300});else await cwWait(700);
+ CW.lookX=0;await cwWalk(edge-side*CW.W*.6,40)}
+async function actDance(){CW.pose="dance";for(let i=0;i<3;i++){await cwWait(450);await cwHop(CW.x,cwB().B,16,320);CW.pose="dance"}await cwWait(700);CW.pose="idle"}
+async function actJoke(){const j=cwBag("j",CW_JOKES).split("|");CW.pose="idle";if(j.length>1){await cwSay(j[0],{hold:1300});CW.pose="happy";await cwSay(j[1],{hold:2200})}else await cwSay(j[0]);
+ if(Math.random()<.35){CW.pose="happy";await cwSay(cwPick(CW_JOKE_TAIL),{hold:1500})}CW.pose="idle"}
+async function actStill(){const b=cwB();CW.face=-1;CW.surf="floor";CW.x=b.R-CW.W*.5-10;CW.y=b.B;CW.pose="sit";await cwWait(6000)}
+async function actNap(){CW.pose="sleepy";await cwWait(1200);CW.pose="sit";await cwWait(400);CW.pose="sleep";CW.zz=true;try{for(;;)await cwWait(1000)}finally{CW.zz=false}}
+async function actWakeNap(){CW.zz=false;CW.pose="surprised";await cwHop(CW.x,cwB().B,12,280);await cwSay(cwPick(["Uyuyakalmışım! Kod derlenirken gözüm dalmış.","Ha? Uyumuyordum, gözlerimi dinlendiriyordum.","Hop, geldim! Rüyamda sonsuz döngüdeydim."]))}
+async function actSleepIn(){CW.inBed=true;CW.surf="bed";CW.pose="sleep";CW.zz=true;try{for(;;){await cwWait(1000);if(!cwNight()&&!(CW.napUntil&&now()<CW.napUntil)){CW.napUntil=0;await actMorning();return}}}finally{CW.zz=false}}
+async function actBedtime(){if(!CW.bed){const x=cwBedSpot();if(!cwReduce()){await cwWalk(Math.max(cwB().L+CW.W,Math.min(cwB().R-CW.W,x+(x>CW.x?-1:1)*(16*CW.U+CW.W*.5))));await cwSay("bed.spawn()",{kind:"code",hold:200})}cwBedShow(x);cwBurst(x,cwB().B-20,12)}
+ if(!CW.inBed){if(cwMaySay()&&cwNight())await cwSay(cwPick(["Saat geç oldu, yatma vakti. Pijamalarım nerede?","Uykum geldi. Yarın daha komik olacağım, söz."]),{hold:1400});await cwIntoBed()}
+ return actSleepIn()}
+async function actNapBed(){CW.napUntil=cwNight()?0:now()+45000/CW.speed;return actBedtime()}
+async function actMorning(){CW.zz=false;CW.pose="sleepy";await cwWait(800);CW.inBed=false;CW.surf="floor";await cwHop(CW.bed?CW.bed.x-(16*CW.U+CW.W*.5):CW.x,cwB().B,18,380);
+ const bx=CW.bed?CW.bed.x:CW.x;cwBurst(bx,cwB().B-18,10);cwBedRemove();CW.pose="happy";await cwSay(cwNight()?"Dinlendim! Hadi biraz daha takılalım.":cwPick(["Oh be, kod gibi dinlendim!","Günaydın dünya! Ben geldim."]),{hold:1400})}
+/* gece irkilmesi: "Hâlâ uyumadın mı?" → "İyi geceler" → yataktan düşer, başını vurur, geri yatar */
+async function actStartled(){if(!CW.bed){cwBedShow(cwBedSpot())}if(!CW.inBed){CW.inBed=true;CW.surf="bed";cwFollow()}
+ CW.zz=false;CW.pose="surprised";cwSfx("pop");await cwHop(CW.x,CW.y,14,260);CW.pose="surprised";
+ await cwSay("Hâlâ uyumadın mı?",{hold:1100});CW.pose="sleepy";await cwSay(`İyi geceler ${cwUn()}`,{hold:900});
+ if(!cwReduce()){const b=cwB();const bd=CW.bed;const dir=bd.x>(b.L+b.R)/2?-1:1;const fx=Math.max(b.L+CW.W*.6,Math.min(b.R-CW.W*.6,bd.x+dir*(16*CW.U+CW.W*.55)));
+  CW.inBed=false;CW.surf="floor";CW.pose="sleepy";await cwWait(300);CW.pose="surprised";
+  await cwHop(fx,b.B,10,420,{rot0:0,rot1:dir*90});CW.oy=-2.5*CW.U;cwSfx("bonk");CW.pose="lie";CW.stars=true;CW.bumpOn=true;
+  await cwWait(500);CW.pose="dizzy";await cwSay(cwPick(["Ayy, başım! Yer çekimi yine kazandı.","Kafamda yıldızlar dönüyor. Bari dilek tutayım.","Bu düşüş benim değil, yatağın hatası!"]),{hold:900});await cwWait(600);
+  CW.stars=false;await cwTween(260,k=>{CW.rot=dir*90*(1-k);CW.oy=-2.5*CW.U*(1-k)});CW.rot=0;CW.oy=0;CW.pose="dizzy";await cwWait(500);
+  CW.bumpOn=false;await cwIntoBed()}
+ else{CW.pose="sleepy";await cwWait(600)}
+ return actSleepIn()}
+async function actBedYank(){CW.inBed=false;CW.zz=false;CW.surf="floor";CW.pose="surprised";if(!cwReduce())await cwFall(cwB().B);else CW.y=cwB().B;CW.pose="surprised";
+ await cwSay(cwPick(["Hop! Yatağım nereye gidiyor?","Heey! Yatağımla nereye?"]),{hold:60000})}
+async function actBedBack(from){const b=cwB();const bd=CW.bed;if(!bd)return;CW.inBed=false;CW.zz=false;if(CW.surf!=="floor"){CW.surf="floor";CW.y=b.B}
+ CW.pose="surprised";if(CW.bubK!=="say")await cwSay("Yatağım! Dur bakalım...",{hold:500});
+ const onFloor=Math.abs(bd.y-b.B)<30&&!cwBlocks({left:bd.x-16*CW.U,top:bd.y-16*CW.U,width:32*CW.U,height:16*CW.U});
+ if(onFloor&&Math.random()<.4){await cwSay("self.teleport(bed)",{kind:"code",hold:250});cwBurst(CW.x,CW.y-CW.H*.4,16);cwSfx("tele");CW.b.classList.add("tp");await cwWait(260);
+  CW.x=bd.x+2*CW.U;CW.y=bd.y-3*CW.U;CW.inBed=true;CW.surf="bed";cwBurst(CW.x,CW.y-CW.H*.4,16);await cwWait(120);CW.b.classList.remove("tp");CW.pose="happy";
+  await cwSay("Peki, yatağın yeni yeri burası olsun. Manzarası güzelmiş.",{hold:1500})}
+ else{const home=from&&Math.abs(from.y-b.B)<30?from.x:cwBedSpot();if(Math.abs(CW.x-home)>40&&!cwReduce())await cwWalk(Math.max(b.L+CW.W*.5,Math.min(b.R-CW.W*.5,home+(home>(b.L+b.R)/2?-1:1)*(16*CW.U+CW.W*.5))));
+  await cwSay("bed.teleport(clawd)",{kind:"code",hold:250});cwBurst(bd.x,bd.y-18,18);cwSfx("tele");CW.bedB.classList.add("tp");CW.bedF.classList.add("tp");await cwWait(240);
+  bd.x=home;bd.y=b.B;cwBedPlace();cwBurst(home,b.B-18,18);await cwWait(160);CW.bedB.classList.remove("tp");CW.bedF.classList.remove("tp");CW.pose="happy";
+  await cwSay(cwPick(CW_BEDLINE),{hold:1500});await cwIntoBed()}
+ if(cwNight()||(CW.napUntil&&now()<CW.napUntil))return actSleepIn();await actMorning()}
+async function actShield(dir){const lvl=CW.shieldLvl||1;CW.zz=false;if(CW.inBed){CW.inBed=false;CW.surf="floor";CW.y=cwB().B}if(CW.surf==="ceil"||CW.surf==="stairs"||CW.surf==="ladder"){CW.surf="floor";CW.flip=false;CW.rot=0;CW.y=cwB().B}
+ if(dir&&!cwReduce()){CW.pose="surprised";const b=cwB();await cwHop(Math.max(b.L+CW.W*.5,Math.min(b.R-CW.W*.5,CW.x+dir*40)),b.B,12,260)}
+ if(!CW.shEl){await cwSay(lvl>1?"shield.upgrade()":"shield.up()",{kind:"code",hold:120})}else{CW.pose="type";await cwWait(160)}
+ cwShieldShow(lvl);CW.pose="shield";await cwSay(CW_HIT[Math.min(2,lvl-1)],{hold:1300});CW.pose="shield";
+ while(now()-CW.lastHit<CW.forgive/CW.speed)await cwWait(250);
+ CW.pose="idle";await cwSay(cwPick(CW_FORGIVE),{hold:1200});cwShieldHide();CW.shieldLvl=0;CW.pose="happy";await cwWait(900);CW.pose="idle"}
+async function actArrive(){const b=cwB();const p=cwPeriod();CW.arrived=true;
+ const seenK="kadraj_clawd_seen_"+S.uid;const last=LS.get(seenK,0);LS.set(seenK,now());const introK="kadraj_clawd_intro_"+S.uid;const first=!LS.get(introK,false);
+ if(p==="n"){CW.lastSay=now();return actStartled()}
+ if(!cwReduce()){CW.surf="floor";CW.y=b.B;CW.x=b.R+CW.W*.6;await cwWalk(b.R-CW.W*.5-24,90,"run")}
+ CW.pose="wave";await cwWait(300);
+ if(last&&now()-last>3*86400e3){CW.pose="joy";await cwSay("Özledim seni!",{hold:900})}
+ if(first){LS.set(introK,true);await cwSay("Merhaba! Ben Clawd, Claude'un küçük kardeşiyim. Artık Kadraj'ın ekranında yaşıyorum.",{hold:1600})}
+ CW.pose="wave";await cwSay(cwPick(CW_GREET[p]),{hold:2200});
+ if(first){CW.pose="idle";await cwSay("Bana dokunursan espri yaparım, soru sorarsan cevaplarım. Bilmediğimi abime sorarım!",{hold:2200})}
+ CW.lastSay=now();CW.pose="idle"}
+async function actReturn(){const b=cwB();CW.returning=false;if(!cwReduce()){CW.surf="floor";CW.y=b.B;CW.x=b.L-CW.W*.6;await cwWalk(b.L+(b.R-b.L)*.45,110,"run");await cwHop(CW.x,b.B,22,340);await cwHop(CW.x,b.B,16,300)}
+ CW.pose="joy";cwSfx("pop");await cwSay("Beni geri çağırdın!",{hold:900});CW.pose="happy";await cwSay(cwPick(["Seni çok özlemiştim. Tam olarak ne kadar mı? Bir sonsuz döngü kadar.","Söz, daha komik olacağım. Belki.","Eşyalarımı topladım, geri geldim. Yatağımı da getirdim!"]),{hold:1800});CW.pose="idle";CW.lastSay=now()}
+async function actLeave(){CW.leaving=true;try{CW.zz=false;if(CW.inBed){CW.inBed=false;CW.surf="floor";CW.y=cwB().B}cwBedRemove();cwShieldHide(true);CW.shieldLvl=0;
+ if(CW.surf!=="floor"){CW.surf="floor";CW.flip=false;CW.rot=0;CW.y=cwB().B}
+ CW.pose="cry";CW.tears=true;await cwThink(`${CW_BHEART}<span>neden?..</span>`,2600);
+ await cwSay(cwPick(["Peki... Gidiyorum. Ayarlar'dan beni geri çağırabilirsin.","Anladım... Biraz kenarda ağlayacağım. Ayarlar'da beklerim."]),{hold:1300});
+ if(!cwReduce()){const b=cwB();const side=CW.x<(b.L+b.R)/2?-1:1;await cwWalk(side<0?b.L-CW.W*.7:b.R+CW.W*.7,26,"crywalk")}
+ else{CW.root.classList.add("off");await cwWait(400)}}
+ finally{CW.tears=false;CW.leaving=false;CW.pose="idle";CW.x=-1;CW.root.classList.add("off");CW.vis=false}}
+async function actRoute(r,p){if(!cwMaySay())return;const k=r==="profile"?(p&&p.uid===S.uid?"profile_me":"profile"):r;const l=CW_ROUTE[k];if(!l)return;CW.pose="idle";await cwSay(cwPick(l))}
+async function actToast(){CW.pose="surprised";await cwHop(CW.x,cwB().B,16,300);CW.pose="idle";await cwWait(400)}
+async function actWin(){CW.pendWin=false;CW.pose="joy";await cwSay("Şah mat! Zafer dansı başlıyor!",{hold:400});await actDance();CW.pose="happy";await cwSay("Abim bunu duyunca çok gururlanacak!",{hold:1400})}
+
+/* --- beyin --- */
+function cwBrain(){if(CW.busy||CW.menu||CW.ask||CW.drag||CW.clock<CW.nextAt)return;
+ if(!CW.arrived&&CW.wantArrive){CW.wantArrive=false;cwRun(actArrive,{pri:3,name:"arrive"});return}
+ if(CW.returning){cwRun(actReturn,{pri:4,name:"return"});return}
+ if(CW.pendWin&&!cwNight()){cwRun(actWin,{pri:3,name:"dance"});return}
+ if(CW.pend.length){const p=CW.pend.shift();cwRun(p.fn,{pri:p.pri,name:p.name});return}
+ if(cwNight()||CW.inBed){cwRun(CW.inBed?actSleepIn:actBedtime,{pri:1,name:"bed"});return}
+ if(cwReduce()){cwRun(actStill,{pri:0,name:"still"});return}
+ if(now()-CW.lastInput>CW.napAfter){cwRun(actNap,{pri:0,name:"nap"});return}
+ const w=[["wander",34,actWander],["look",16,actLook],["peek",11,actPeek],["stairs",12,cwStairs],["ladder",11,cwLadder],["sit",10,actSit],["dance",4,actDance]];
+ let r=Math.random()*w.reduce((a,x)=>a+x[1],0);for(const[n,v,f]of w){if((r-=v)<=0){cwRun(f,{pri:0,name:n});return}}}
+
+/* --- bilgi tabanı eşleşmesi --- */
+function cwFold(s){return kbFold(s).replace(/[’'`´]/g,"").replace(/[^a-z0-9@#_.+\s]/g," ").replace(/\s+/g," ").trim()}
+function cwMatch(q){const fq=" "+cwFold(q)+" ";const toks=fq.trim().split(" ").filter(t=>t&&!CW_STOPW.has(t));let best=null,b2=0;
+ for(const e of CW_KB){let sc=0;for(const k0 of e.k){const k=cwFold(k0);if(!k)continue;
+   if(k.includes(" ")){if(fq.includes(" "+k))sc+=3}
+   else if(toks.some(t=>t===k||(k.length>=4&&t.startsWith(k))||(t.length>=5&&k.startsWith(t)&&k.length-t.length<=2)))sc+=k.length>=4?2:1.5}
+  if(sc>0){if(!best||sc>best.sc){b2=best?best.sc:0;best={e,sc}}else if(sc>b2)b2=sc}}
+ const topic=toks.some(t=>CW_TOPIC.some(w=>t===w||(w.length>=4&&t.startsWith(w))));
+ const conf=!!best&&best.sc>=2&&(best.sc-b2>=1||best.sc>=4);
+ return{e:best&&best.e,sc:best?best.sc:0,conf,topic:topic||!!(best&&best.e.t!=="me"&&best.sc>=2)}}
+function cwClean(t){return String(t||"").replace(/```[\s\S]*?```/g," ").replace(/\*\*|__|`|^#+\s*/gm,"").replace(/^\s*[-*•]\s+/gm,"").replace(/\s+/g," ").trim().slice(0,900)}
+function cwAbiLine(q){let s=String(q).trim().replace(/[?.!\s]+$/,"");const f=cwFold(s);const isQ=/\?\s*$/.test(q)||/\b(mi|mu|misin|musun|ne|nedir|nasil|neden|niye|kim|kimdir|nerede|nereye|kac|hangi|niçin|nicin)\b/.test(f);
+ if(isQ)return`Claude abi, ${s}?`;if(s.split(/\s+/).length<=3)return`Claude abi, ${s} nedir?`;return`Claude abi, bir sorum var: ${s}?`}
+const CW_ABI_SYS=()=>`Sen, Kadraj adlı küçük ve özel bir sosyal uygulamanın ekranında beliren bir kartta konuşan, yardımsever bir yapay zekâ asistanısın. Ekranda yaşayan turuncu piksel maskot Clawd sana "abi" diye sesleniyor ve kullanıcının (${cwUn()}) sorusunu sana iletiyor; sen de yanıtı kullanıcıya ve Clawd'a veriyorsun.
+Kurallar: Türkçe, sıcak ve kısa yanıt ver (2-5 cümle). Düz metin yaz: Markdown, başlık, madde işareti, kod bloğu ya da emoji kullanma. Gerekirse güncel bilgi için web aramasını kullan. Aile dostu ol. Emin olmadığın şeyi uydurma; bilmiyorsan söyle. Kim olduğun sorulursa gerçek kimliğini dürüstçe söyle. İstersen sonda Clawd'a kısa, sevimli bir söz ekleyebilirsin.`;
+const CW_SELF_SYS=()=>`Sen Clawd'sun: Kadraj uygulamasının ekranında yaşayan küçük, turuncu, piksel bir maskotsun; Claude'un küçük kardeşisin ve ona "abi" dersin. Neşeli, şakacı ve çok kısa konuş (1-3 cümle). Düz metin yaz; Markdown ve emoji kullanma. Kullanıcıya ${cwUn()} diye hitap edebilirsin. Kadraj sorularını yalnızca aşağıdaki rehbere dayanarak yanıtla; rehberde yoksa uydurma, bilmediğini söyle. Şifre, anahtar ya da yönetici erişimiyle ilgili gizli ayrıntı verme.\n\nUYGULAMA REHBERİ:\n${typeof APP_GUIDE==="string"?APP_GUIDE:""}`;
+function cwAsk(q){CW.lastInput=now();cwRun(async()=>{const m=cwMatch(q);CW.pose="idle";
+ if(m.e&&(m.conf||m.e.t==="me"&&m.sc>=2)){const fl=cwFold(q);
+  if(/espri|saka|fikra|guldur/.test(fl))return actJoke();if(/ipucu|tavsiye/.test(fl))return cwSay(cwBag("t",CW_TIPS));
+  CW.pose=m.e.t==="code"?"type":"idle";if(m.e.t==="code"){await cwSay("Hemen kodlarıma bakıyorum...",{kind:"code",hold:200})}CW.pose="idle";await cwSay(m.e.a,{hold:cwHold(m.e.a)+800});return}
+ const fl=cwFold(q);if(/(^| )(espri|saka|fikra|guldur)/.test(fl))return actJoke();
+ if(m.topic&&kAI.ready()){CW.pose="type";CW.typing=true;let r=null,err=null;
+  const pr=kAI.ask({system:CW_SELF_SYS(),messages:[...CW.selfHist,{role:"user",content:q}],search:false,timeout:45000}).then(x=>r=x,x=>err=x);
+  const tsay=cwSay("Bir saniye, kodlarıma bakıyorum...",{hold:300});await tsay;while(!r&&!err)await cwWait(200);CW.typing=false;
+  if(r&&!r.refusal&&r.text){const t=cwClean(r.text);CW.selfHist.push({role:"user",content:q},{role:"assistant",content:t});CW.selfHist=CW.selfHist.slice(-6);CW.pose="idle";
+   await cwSay(t,{note:r.provider==="free"?"ücretsiz modelle baktım":"abimin yardımıyla",hold:cwHold(t)+1500});return}
+  if(!err||err.code!=="rate_limited"){} }
+ return actAskAbi(q)},{pri:5,name:"ask"})}
+async function actAskAbi(q){CW.pose="shrug";await cwSay("Bilmiyorum, abime sorayım!",{hold:600});CW.pose="lookup";cwSfx("pop");
+ const line=cwAbiLine(q);const done=cwAbiAsk(q,line);await cwSay(line,{hold:500});CW.pose="lookup";const res=await done.catch(()=>null);
+ if(!res||!res.ok){CW.pose="shrug";await cwSay(res&&res.code==="rate_limited"?"Abim biraz dinleniyor. Ben de sana bir soğuk espri anlatayım:":"Abim şu an hatta değil. O zaman ben bir soğuk espri anlatayım:",{hold:700});return actJoke()}
+ CW.pose="lookup";while(CWA.open&&CWA.typing)await cwWait(250);CW.pose="happy";
+ if(res.provider==="free")await cwSay("Abim meşguldü, cevabı ücretsiz bir model verdi. Yine de işe yarar!",{hold:1500});
+ else await cwSay(cwPick(["Abim her şeyi biliyor!","Gördün mü? Abim süper.","Not aldım, bir dahakine ben cevaplarım."]),{hold:1200});CW.pose="idle"}
+
+/* --- abi kartı (üstte) --- */
+const CWA={el:null,tok:0,open:false,typing:false,hideT:0};
+function cwAbiEl(){let d=document.getElementById("cwAbi");if(!d){d=document.createElement("div");d.id="cwAbi";d.className="cw-abi";d.setAttribute("role","status");d.setAttribute("aria-live","polite");document.body.appendChild(d);
+  d.addEventListener("click",e=>{if(e.target.closest("a"))return;cwAbiClose()});
+  d.addEventListener("pointerenter",()=>{CWA.hover=true});d.addEventListener("pointerleave",()=>{CWA.hover=false})}
+ CWA.el=d;return d}
+function cwAbiPos(){const d=CWA.el;if(!d)return;const sh=$("#shell");const s=sh?sh.getBoundingClientRect():{left:0,right:innerWidth,top:0};d.style.left=Math.max(0,s.left)+"px";d.style.width=Math.max(0,Math.min(innerWidth,s.right)-Math.max(0,s.left))+"px"}
+function cwAbiHead(kind){if(kind==="claude")return`<span class="cw-al">${cwStarMark()}</span><span class="cw-an"><b>Claude</b><small>Clawd'ın abisi</small></span>`;
+ const tag=kind==="free"?"ücretsiz model":kind==="off"?"bağlı değil":kind==="err"?"bağlantı sorunu":"düşünüyor";
+ return`<span class="cw-al n">${I("spark")}</span><span class="cw-an"><b>Abi</b><small class="cw-tag">${tag}</small></span>`}
+function cwAbiOpen(q,line){const d=cwAbiEl();cwAbiPos();clearTimeout(CWA.hideT);const tok=++CWA.tok;CWA.open=true;CWA.typing=false;
+ d.innerHTML=`<div class="cw-ac"><div class="cw-ah">${cwAbiHead("think")}<button class="cw-ax" type="button" aria-label="Kapat">${I("close")}</button></div><p class="cw-aq">${esc(line)}</p><div class="cw-at"><span class="cw-dots"><i></i><i></i><i></i></span></div><div class="cw-as"></div><i class="cw-abar"></i></div>`;
+ d.classList.remove("out");void d.offsetWidth;d.classList.add("on");return tok}
+function cwAbiClose(){const d=CWA.el;CWA.tok++;CWA.open=false;CWA.typing=false;clearTimeout(CWA.hideT);if(!d||!d.classList.contains("on"))return;d.classList.remove("on");d.classList.add("out");setTimeout(()=>{if(!CWA.open){d.classList.remove("out");d.innerHTML=""}},400)}
+function cwAbiSleep(ms){return new Promise(r=>setTimeout(r,ms/CW.speed))}
+async function cwAbiType(tok,text,kind,sources){const d=CWA.el;if(!d||tok!==CWA.tok)return;const h=d.querySelector(".cw-ah");if(h)h.innerHTML=cwAbiHead(kind)+`<button class="cw-ax" type="button" aria-label="Kapat">${I("close")}</button>`;
+ d.classList.toggle("free",kind!=="claude");const at=d.querySelector(".cw-at");at.innerHTML=`<span class="cw-tt"></span><i class="cw-car"></i>`;const sp=at.querySelector(".cw-tt");CWA.typing=true;
+ try{if(cwReduce()){sp.textContent=text}else{for(let i=1;i<=text.length;i++){if(tok!==CWA.tok)return;while(document.hidden){await cwAbiSleep(400);if(tok!==CWA.tok)return}
+   sp.textContent=text.slice(0,i);const ch=text.charAt(i-1);if(/[\p{L}\p{N}]/u.test(ch)&&i%3===0)cwBlip("abi");await cwAbiSleep(/[.!?]/.test(ch)?160:22)}}}finally{if(tok===CWA.tok)CWA.typing=false}
+ if(tok!==CWA.tok)return;const car=at.querySelector(".cw-car");if(car)car.remove();
+ const src=(sources||[]).filter(s=>s&&/^https:\/\//i.test(s.url||"")).slice(0,3);const se=d.querySelector(".cw-as");
+ if(se&&src.length&&kind==="claude"){se.innerHTML=src.map(s=>{let host="";try{host=new URL(s.url).hostname.replace(/^www\./,"")}catch{}return`<a href="${esc(s.url)}" target="_blank" rel="noopener noreferrer">${esc((s.title||host).slice(0,48))}</a>`}).join("")}
+ const hold=Math.max(6000,Math.min(30000,4000+text.length*55));const bar=d.querySelector(".cw-abar");if(bar&&!cwReduce()){bar.style.transition="none";bar.style.transform="scaleX(1)";void bar.offsetWidth;bar.style.transition=`transform ${hold/CW.speed}ms linear`;bar.style.transform="scaleX(0)"}
+ const end=Date.now()+hold/CW.speed;const tick=()=>{if(tok!==CWA.tok)return;if(CWA.hover||document.hidden){CWA.hideT=setTimeout(tick,500);return}if(Date.now()>=end)cwAbiClose();else CWA.hideT=setTimeout(tick,400)};CWA.hideT=setTimeout(tick,600)}
+async function cwAbiAsk(q,line){const tok=cwAbiOpen(q,line);await cwAbiSleep(500);
+ if(!kAI.ready()){await cwAbiType(tok,"Şu an bağlantım yok. Yönetici, panelde Yapay zekâ bölümünden beni bağlayınca buradayım.","off");return{ok:false,code:"off"}}
+ let r;try{r=await kAI.ask({system:CW_ABI_SYS(),messages:[...CW.hist,{role:"user",content:q}],search:true,timeout:60000})}
+ catch(e){const code=e&&e.code||"error";const msg=code==="rate_limited"?"Bugün çok soru geldi, biraz dinlenmem lazım. Birazdan yine sor.":(e&&e.message)||"Bir sorun çıktı, birazdan yine dene.";if(tok===CWA.tok)cwAbiType(tok,msg,"err");return{ok:false,code}}
+ if(tok!==CWA.tok)return{ok:false,code:"closed"};
+ if(r.refusal||!r.text){cwAbiType(tok,"Bu konuda yardımcı olamıyorum, kusura bakma.",r.provider==="free"?"free":"claude");return{ok:true,provider:r.provider}}
+ const t=cwClean(r.text);CW.hist.push({role:"user",content:q},{role:"assistant",content:t});CW.hist=CW.hist.slice(-6);
+ cwAbiType(tok,t,r.provider==="claude"?"claude":"free",r.provider==="claude"?r.sources:[]);await cwAbiSleep(80);return{ok:true,provider:r.provider==="claude"?"claude":"free"}}
+addEventListener("resize",()=>{cwSize();cwAbiPos();CW.bT=0});
+
+/* --- ses: piksel konuşma --- */
+const CWS={ctx:null,n:0};
+function cwAudioUnlock(){if(!cwOn()||settings.clawdSound===false)return;try{if(!CWS.ctx){const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;CWS.ctx=new AC()}if(CWS.ctx.state==="suspended")CWS.ctx.resume().catch(()=>{})}catch{}}
+["pointerup","keydown","touchend"].forEach(ev=>document.addEventListener(ev,()=>{if(CWS.ctx&&CWS.ctx.state==="suspended"&&cwOn()&&settings.clawdSound!==false)cwAudioUnlock()},{capture:true,passive:true}));
+function cwTone(type,f0,f1,dur,vol,at=0){const c=CWS.ctx;const t=c.currentTime+at;const o=c.createOscillator(),g=c.createGain();o.type=type;o.frequency.setValueAtTime(f0,t);o.frequency.linearRampToValueAtTime(f1,t+dur);
+ g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(vol,t+.008);g.gain.exponentialRampToValueAtTime(.0001,t+dur);o.connect(g);g.connect(c.destination);o.start(t);o.stop(t+dur+.03);CWS.n++}
+function cwSoundOk(){return cwOn()&&settings.clawdSound!==false&&!document.hidden&&CWS.ctx&&CWS.ctx.state==="running"}
+function cwBlip(kind){if(!cwSoundOk())return;try{
+ if(kind==="abi"){const f=150+Math.random()*55;cwTone("triangle",f,f*.94,.075,.06)}
+ else if(kind==="key"){cwTone("square",1300+Math.random()*300,1200,.018,.012)}
+ else{const f=560+Math.random()*240;cwTone("square",f,f*1.14,.045,.022)}}catch{}}
+function cwSfx(k){if(!cwSoundOk())return;try{
+ if(k==="hop")cwTone("square",380,720,.09,.016);else if(k==="bonk"){cwTone("square",220,90,.14,.03);cwTone("triangle",120,70,.16,.03,.02)}
+ else if(k==="tele")cwTone("square",300,1500,.28,.018);else if(k==="pop")cwTone("square",700,1000,.05,.018);
+ else if(k==="shield"){cwTone("square",520,520,.06,.016);cwTone("square",660,660,.06,.016,.07);cwTone("square",880,880,.09,.016,.14)}}catch{}}
+
+/* --- uygulama olaylarına tepkiler --- */
+HOOKS.enter.push(()=>{cwMount();CW.arrived=false;CW.wantArrive=true;CW.lastInput=now();if(cwOn())cwKick()});
+HOOKS.after.push(r=>{if(!CW.root)return;if(r!==CW.route){const prev=CW.route;CW.route=r;if(prev&&CW.vis&&CW.arrived&&!CW.leaving){const k=r==="chess"?"chess":r;if(CW_ROUTE[k]||r==="profile")cwQueue("route",()=>actRoute(r,S.route.params),2)}}cwKick()});
+const toastBaseCW=toast;
+toast=function(...a){const r=toastBaseCW.apply(this,a);try{if(CW.vis&&!CW.inBed&&!CW.leaving&&now()-CW.lastToastJump>4000&&(!CW.busy||CW.pri<2)){CW.lastToastJump=now();cwQueue("toast",actToast,2)}}catch{}return r};
+const chOverBaseCW=chOver;
+chOver=function(...a){try{if(typeof CH!=="undefined"&&CH&&CH.over&&!CH._cwSeen){CH._cwSeen=1;const res=CH.over.result;if((res==="1-0"&&CH.my===0)||(res==="0-1"&&CH.my===8))CW.pendWin=true}}catch{}return chOverBaseCW.apply(this,a)};
+document.addEventListener("visibilitychange",()=>{if(!CW.root)return;if(document.hidden){CW.hiddenAt=now();if(CW.raf)cancelAnimationFrame(CW.raf);CW.raf=0;clearTimeout(CW.slow);CW.slow=0;if(S.uid)LS.set("kadraj_clawd_seen_"+S.uid,now());return}
+ const away=CW.hiddenAt?now()-CW.hiddenAt:0;CW.hiddenAt=0;
+ if(away>15*60e3&&cwOn()&&S.authed){if(cwNight())cwQueue("arrive",actStartled,4);else{CW.arrived=false;CW.wantArrive=true;if(CW.inBed&&!cwNight()){}}}
+ cwKick()});
+
+/* --- açma / kapatma (Ayarlar ve menü) --- */
+function cwDisable(fromMenu){if(fromMenu){settings.clawd=false;saveSettings();if(S.route&&S.route.name==="settings")setTimeout(()=>{try{render(false)}catch{}},50)}
+ if(!CW.root)return;cwMenuClose();if(CW.ask)cwAskClose();if(CW.vis){CW.leaving=true;cwRun(actLeave,{pri:9,name:"leave"})}else{cwHideNow("off")}}
+function cwEnable(){if(!CW.root)cwMount();CW.leaving=false;CW.returning=true;CW.arrived=true;CW.x=-1;cwKick()}
+const kbOnFlagBaseCW=kbOnFlag;
+kbOnFlag=function(f,v){kbOnFlagBaseCW(f,v);try{if(f==="clawd"){if(v)cwEnable();else cwDisable(false)}else if(f==="clawdSound"&&v){cwAudioUnlock();setTimeout(()=>cwBlip("me"),60)}}catch(e){console.warn("clawd",e)}};
+const vSettingsBaseCW=vSettings;
+vSettings=function(){let h=vSettingsBaseCW();try{const i=h.indexOf('data-sec="gorunum"');const end=i<0?-1:h.indexOf("</div></section>",i);
+ if(end>=0){const kw=s=>esc(kbFold(s));const row=(f,on,ic,c,t,s,k)=>`<label class="srow" data-k="${kw(t+" "+s+" "+k)}"><span class="sic" style="--c:${c}">${I(ic)}</span><span class="t">${t}<small>${s}</small></span><span class="sw"><input type="checkbox" data-set="${f}" ${on?"checked":""} aria-label="${esc(t)}"><span></span></span></label>`;
+  const rows=row("clawd",cwOn(),"clawd","#D97757","Clawd","Ekranda yaşayan piksel arkadaşın. Kapatırsan biraz alınır.","maskot piksel karakter claude kardeş gizle göster espri")+row("clawdSound",settings.clawdSound!==false,"vol","#D97757","Clawd sesleri","Konuşurken çıkan küçük retro bip sesleri","ses bip maskot clawd");
+  h=h.slice(0,end)+rows+h.slice(end)}}catch(e){console.warn("clawd",e)}return h};
+
+/* --- test ve hata ayıklama --- */
+const CLAWD={debug:{
+ setHour(h){CW.hourOv=h==null?null:+h;CW.nextAt=0;if(CW.busy&&CW.pri<=1)cwCancel();return cwHour()},
+ fast(m){CW.speed=Math.max(.1,+m||1);return CW.speed},
+ quiet(ms){CW.quietMs=+ms||0},napAfter(ms){CW.napAfter=+ms},forgive(ms){CW.forgive=+ms},
+ idle(){CW.lastInput=0;CW.nextAt=0},
+ info(){const r=CW.b&&CW.b.getBoundingClientRect();return{vis:CW.vis,why:CW.why,x:Math.round(CW.x),y:Math.round(CW.y),surf:CW.surf,face:CW.face,flip:CW.flip,act:CW.act,pose:CW.pose,busy:CW.busy,
+  bub:CW.bub?CW.bub.textContent:"",bubK:CW.bubK,menu:CW.menu,ask:CW.ask,inBed:CW.inBed,bed:CW.bed&&{x:Math.round(CW.bed.x),y:Math.round(CW.bed.y)},shield:CW.shieldLvl,shieldEl:!!CW.shEl,
+  pass:CW.pass,zz:!!CW._fzz,stars:!!CW._fst,tears:!!CW._ftr,rect:r&&{x:Math.round(r.left),y:Math.round(r.top),w:Math.round(r.width),h:Math.round(r.height)},bounds:CW.bnd,
+  abi:{open:CWA.open,typing:CWA.typing,text:CWA.el?CWA.el.textContent:"",free:!!(CWA.el&&CWA.el.classList.contains("free"))},blips:CWS.n,on:cwOn()}},
+ tap(n=1){for(let i=0;i<n;i++)cwTap()},
+ hit(){CW.taps=[];cwTap();cwTap();cwTap()},
+ fling(d=1){cwFling(d)},
+ menu(){cwCancel();cwMenu()},
+ pick(k){const b=CW.bub&&CW.bub.querySelector(`[data-cw="${k}"]`);if(b)b.click();return!!b},
+ ask(q){cwAsk(q)},askOpen(){cwCancel();cwAskOpen()},match(q){const m=cwMatch(q);return{a:m.e&&m.e.a,sc:m.sc,conf:m.conf,topic:m.topic,t:m.e&&m.e.t}},
+ act(n){const f={wander:actWander,look:actLook,peek:actPeek,stairs:cwStairs,ladder:cwLadder,sit:actSit,dance:actDance,joke:actJoke,nap:actNap,bed:actBedtime,startled:actStartled,arrive:actArrive,
+  ret:actReturn,leave:actLeave,win:actWin,toast:actToast,morning:actMorning,napbed:actNapBed}[n];if(f)cwRun(f,{pri:n==="leave"?9:5,name:n});return!!f},
+ pose(p,ms){cwRun(async()=>{CW.pose=p;if(p==="sleep")CW.zz=true;if(p==="dizzy")CW.stars=true;if(p==="cry")CW.tears=true;try{await cwWait(ms||60000)}finally{CW.zz=CW.stars=CW.tears=false}},{pri:5,name:"pose:"+p})},
+ say(t,o){cwRun(()=>cwSay(t,o||{}),{pri:5,name:"say"})},
+ think(){cwRun(async()=>{CW.pose="cry";CW.tears=true;try{await cwThink(`${CW_BHEART}<span>neden?..</span>`,60000)}finally{CW.tears=false}},{pri:5,name:"think"})},
+ shieldLvl(l){CW.shieldLvl=l;CW.lastHit=now();cwRun(actShield,{pri:6,name:"shield"})},
+ bedDrag(dx,dy){if(!CW.bed)return false;const from={x:CW.bed.x,y:CW.bed.y};const wasIn=CW.inBed;const b=cwB();CW.bed.x=Math.max(b.L+16*CW.U,Math.min(b.R-16*CW.U,CW.bed.x+dx));CW.bed.y=Math.max(b.T+16*CW.U,Math.min(b.B,CW.bed.y+dy));cwBedPlace();
+  if(wasIn)CW.inBed=false;cwRun(actBedBack.bind(null,from),{pri:7,name:"bedback"});return true},
+ place(x,surf){const b=cwB();CW.x=x==null?CW.x:x;CW.surf=surf||"floor";CW.y=CW.surf==="ceil"?b.T:b.B;CW.flip=CW.surf==="ceil"},
+ hide(){cwDisable(true)},show(){settings.clawd=true;saveSettings();cwEnable()},
+ abiClose(){cwAbiClose()},cancel(){cwCancel()}}};
+/* oturum zaten açıksa (sıcak yeniden yükleme) hemen kur */
+try{if(S&&S.authed)HOOKS.enter.length&&setTimeout(()=>{if(!CW.root){cwMount();CW.wantArrive=true;cwKick()}},0)}catch{}
 /*}@js:50PIKO*/
 
 boot();
