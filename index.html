@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
 <meta charset="utf-8">
-<meta name="kadraj-version" content="40900">
+<meta name="kadraj-version" content="50000">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,interactive-widget=resizes-content">
 <meta name="theme-color" content="#0C7A63">
 <link rel="manifest" href="manifest.webmanifest">
@@ -2073,7 +2073,7 @@ const vib=ms=>{try{if(settings.haptics===false)return;navigator.vibrate&&navigat
 /* Sürüm: ana.ara.yama (4.1.0). Hata düzeltme ve küçük şeyler → yama artar (4.1.1); büyük güncelleme → ara artar (4.2.0).
    APP_V = ana*10000 + ara*100 + yama (4.1.0 → 40100). Başlıktaki <meta name="kadraj-version"> ile aynı tutulmalı.
    Eski biçim (4.0 → 40) verNorm ile çevrilir. "İki sürüm geride" ara sürüm sayısıyla ölçülür (yamalar engellemez). */
-const APP_V=40900,APP_VER="4.9.0";
+const APP_V=50000,APP_VER="5.0.0";
 const verNorm=x=>{x=Math.max(0,Math.floor(+x||0));return x<1000?Math.floor(x/10)*10000+(x%10)*100:x};
 const verLvl=x=>Math.floor(verNorm(x)/100);
 /* 4.9: fark sürüm adımıyla sayılır (4.9 → 5.0 bir adım); eskisi ana*100+ara farkıydı ve 5.0'ı 91 sürüm ileride sanıyordu */
@@ -4140,6 +4140,11 @@ const APP_GUIDE=`Kadraj bir sosyal uygulamadır (Firebase üzerinde çalışır,
 - Ortak sohbet temaları: sohbetin üstündeki resim simgesinden tema seçilir; birebir ve grup sohbetlerinde "Herkes için" seçilen tema sohbetteki herkeste aynı anda değişir ve kendi balonlarının rengini de değiştirir. "Yalnızca bende" sadece senin cihazını etkiler. Fotoğraftan tema da yapılabilir.
 - Mesajlar: mesaja uzun basınca 6 resimli tepki (kalp, gülme, şaşırma, üzülme, ateş, alkış), yanıtla, kopyala, düzenle, sil; çift dokunuş kalp bırakır. Profilde en fazla 3 paylaşım sabitlenebilir.
 - 4.4: Sahne'nin yeni adı Flick (kısa video). Paylaşırken "Çocuk modundakiler göremez" açılırsa o paylaşım Çocuk Modu'ndaki kişilere hiç görünmez; sonradan paylaşımın ... menüsünden değiştirilebilir.
+- 5.0 yenilikleri (Kadraj 5.0): Yeni görünüm "Vizör": alttaki yüzen çubukta etkin sekme odak köşeleriyle çerçevelenir, ortadaki deklanşör düğmesi paylaşım menüsünü açar; paylaşımlar numaralı "kare"lerdir; görülmemiş hikâyeler diyafram halkasıyla işaretlenir; eski görünüm Ayarlar > Görünüm > Arayüz'den "Klasik" seçilerek geri gelir.
+- 5.0 arama: sohbet başlığındaki telefon ya da kamera ile. Arama ekranında Mikrofon, Kamera (sesli aramada da açılır), Ekran (bilgisayarda ekran paylaşımı), Tepki ve Diğer (kamerayı çevir, ses çıkışı, gürültü engelleme, Küçült) var. Küçült aramayı yüzen pencereye alır. Gelen aramada "Kamerasız yanıtla" ve "Mesajla yanıtla" var. Ekran paylaşımı ve tepkiler için iki tarafın da 5.0 kullanması gerekir.
+- 5.0 Keşfet araması: ad, @kullanıcı adı, #etiket ya da kelime yazılır; ı/i, ş/s gibi harf farkları önemsizdir. Hepsi, Kişiler, Paylaşımlar, Flick ve Etiketler süzgeçleri; En yeni / En çok beğenilen sıralaması; son aramalar ve yazarken öneriler. Uygulamadaki her #etikete dokununca o etiketin sayfası açılır.
+- 5.0 satranç: lobideki Görünüm kartından taş seti (Kadraj ya da Klasik) ve tahta teması (Zümrüt, Gün batımı, Vizör dahil) seçilir. Süre: Süresiz, 3+2, 5+0, 10+0 (Rota'ya karşı ve aynı telefonda; süresi biten kaybeder). 24 mat bulmacası: yanlış hamle geri döner, İpucu önce taşı sonra hamleyi gösterir, Çözüm oynatır. Tahtanın üstünde alınan taşlar ve malzeme farkı görünür.
+- 5.0 yönetici paneli: bölümler başlığa dokununca açılıp kapanır; Sürüm arşivi kapalı durur, dokununca açılır; kullanıcılarda arama, sıralama ve süzgeçler var.
 - 4.9 (hata temizliği): Rota'ya "Test bildirimleri oluştur" ya da "Satranç oynayalım" yazmak da çalışır; video eklerken, kamera ya da arama açıkken Flick susar; yarım kalan kaydırmada Flick kaldığı yerden devam eder, başka Flick'ten dönünce baştan başlar; gönderilemeyen mesaj kutuda kalır; gizli hesabın paylaşımı takip etmeyene açılmaz; çevrim içi satranç oyun ekranı açılmasa da puanlanır; gruptan çıkarılan kişi mesaj yazamaz.
 - 4.8 yenilikleri: Ayarlar > Medya ve dokunuş > "Flick bitince sonrakine geç" açılırsa video bitince sonraki Flick'e kendiliğinden kayar; Flick'te videolar yalnızca izlenen ve yanındakiler için indirilir (daha az internet).
 - 4.7 yenilikleri: sohbette yazıp çıktığın mesaj taslak olarak saklanır (listede "Taslak:"); Flick'te 2x için ekranın sağ ya da sol kenarına basılı tut; başka Flick'e geçip dönünce video baştan başlar; açtığın sohbetin telefon bildirimi kapanır.
@@ -4437,6 +4442,11 @@ setTimeout(verTidyCache,9000);
 
 /* ---- A · Neler yeni ---- */
 const WN_ITEMS=[
+ {ic:"aperture",g:"linear-gradient(135deg,#0c7a63,#ff8a4c)",t:"Kadraj 5.0: Vizör",d:"Yepyeni arayüz: yüzen alt çubuk, deklanşör düğmesi, odak köşeleri ve kare numaraları. İstersen Ayarlar › Görünüm'den Klasik'e dön",go:"feed"},
+ {ic:"knight",g:"#0C7A63",t:"Kadraj Satrancı",d:"Yeni taşlar, kayan hamleler, kıvılcımlar, satranç saati ve 24 mat bulmacası",go:"chess"},
+ {ic:"phone",g:"linear-gradient(135deg,#2f6bff,#6a4cff)",t:"Yeni arama ekranı",d:"Ekran paylaşımı (bilgisayarda), sesli aramada kamera, tepkiler, küçültüp gezinme ve bağlantı kalitesi",go:"chats"},
+ {ic:"search",g:"#0C7A63",t:"Keşfet'te daha iyi arama",d:"Kişiler, Paylaşımlar, Flick ve Etiketler süzgeçleri; harf farkı gözetmez, son aramaların burada. Her #etikete dokunabilirsin",go:"explore"},
+ {ic:"grid",g:"linear-gradient(135deg,#1f2937,#0c7a63)",t:"Kontak baskı profil",d:"Paylaşımların numaralı karelerle bir kontak baskı gibi dizilir",go:"profile"},
  {ic:"check",g:"linear-gradient(135deg,#0c7a63,#34c759)",t:"Büyük hata temizliği",d:"Sohbet, Flick, satranç ve hesaplarda 30'dan fazla hata düzeltildi",go:"feed"},
  {ic:"reels",g:"linear-gradient(135deg,#ff4f7b,#ff8a3d)",t:"Daha sağlam Flick",d:"Video eklerken ya da aramadayken Flick susar; yarım kaydırmada kaldığı yerden devam eder",go:"reels"},
  {ic:"next",g:"linear-gradient(135deg,#5856d6,#0ea5e9)",t:"Flick bitince sonrakine geç",d:"Ayarlar › Medya: video bitince kendiliğinden sonraki Flick'e kayar",go:"settings"},
