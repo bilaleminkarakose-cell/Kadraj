@@ -6868,15 +6868,23 @@ function cwUn(){try{const u=(me().username||"").trim();return u&&u!=="kullanici"
 function cwFill(t){return String(t).replace(/@(?![\w])/g,cwUn())}
 
 /* --- DOM --- */
-function cwMount(){if(CW.root)return;const r=document.createElement("div");r.id="clawd";r.className="off";r.setAttribute("aria-live","polite");
+function cwMount(){if(CW.root)return;const r=document.createElement("div");r.id="clawd";r.className="off cw-scope";r.setAttribute("aria-live","polite");
  r.innerHTML=`<div class="cw-fx"></div><div class="cw-bed cw-bk" hidden></div><div class="cw-b"><div class="cw-inr"><div class="cw-sq"><div class="cw-spr"></div></div></div><button class="cw-hit" type="button" aria-label="Clawd ile konuş"></button></div><div class="cw-bed cw-ft" hidden></div>`;
  document.body.appendChild(r);CW.root=r;CW.fx=r.querySelector(".cw-fx");CW.b=r.querySelector(".cw-b");CW.inr=r.querySelector(".cw-inr");CW.sq=r.querySelector(".cw-sq");CW.spr=r.querySelector(".cw-spr");CW.hit=r.querySelector(".cw-hit");
  CW.bedB=r.querySelector(".cw-bk");CW.bedF=r.querySelector(".cw-ft");CW.bedB.innerHTML=cwBedSvg(false);CW.bedF.innerHTML=cwBedSvg(true);
+ CW.rootFx=CW.fx;CW.rootBed={B:CW.bedB,F:CW.bedF};
  cwSize();cwWireHit();cwWireBed();
  r.addEventListener("click",cwBubClick);
  r.addEventListener("submit",e=>{const f=e.target.closest("form.cw-askf");if(!f)return;e.preventDefault();const q=(f.querySelector("input").value||"").trim();cwAskClose();if(q)cwAsk(q)});
  r.addEventListener("keydown",e=>{if(e.key==="Escape"&&CW.ask){e.stopPropagation();cwAskClose()}})}
-function cwSize(){const d=window.devicePixelRatio||1;const U=Math.max(2,Math.round(2.5*d)/d);CW.U=U;CW.W=CW_GW*U;CW.H=CW_GH*U;
+/* 5.1: Clawd yaklaşık 1,5 kat büyüdü; piksel boyu ekran genişliğine göre seçilir ve cihaz pikseline yuvarlanır (keskin).
+   Odadayken piksel boyu odanın ölçüsünden gelir (CW.room.u). */
+function cwRoamU(){const sh=$("#shell");const w=sh?sh.getBoundingClientRect().width||innerWidth:innerWidth;return w<520?3.6:w<900?4.2:4.6}
+function cwPx(f){const d=window.devicePixelRatio||1;return Math.max(1.5,Math.round(f*d)/d)}
+function cwSize(){const U=CW.room?CW.room.u:cwPx(cwRoamU());CW.uRoam=cwPx(cwRoamU());CW.U=U;CW.W=CW_GW*U;CW.H=CW_GH*U;
+ if(!CW.root)return;CW.root.style.setProperty("--cw-u",U+"px");if(CW.room)CW.room.el.style.setProperty("--cw-u",U+"px");CW.b.style.width=CW.W+"px";CW.b.style.height=CW.H+"px";
+ if(!CW.room)for(const el of[CW.bedB,CW.bedF]){el.style.width=32*U+"px";el.style.height=16*U+"px"}}
+function cwSizeOld(){const d=window.devicePixelRatio||1;const U=Math.max(2,Math.round(2.5*d)/d);CW.U=U;CW.W=CW_GW*U;CW.H=CW_GH*U;
  if(!CW.root)return;CW.root.style.setProperty("--cw-u",U+"px");CW.b.style.width=CW.W+"px";CW.b.style.height=CW.H+"px";
  for(const el of[CW.bedB,CW.bedF]){el.style.width=32*U+"px";el.style.height=16*U+"px"}}
 
@@ -6886,16 +6894,17 @@ function cwBoundsUpd(){const sh=$("#shell");if(!sh)return;const s=sh.getBounding
  let T=s.top+4;const top=$("#top");if(top&&!top.hidden){const r=top.getBoundingClientRect();if(r.height>0&&r.bottom>T)T=r.bottom}
  let B=Math.min(s.bottom,vb)-6;const dock=$("#dock");if(dock&&!dock.hidden){const nav=dock.querySelector("nav")||dock;const r=nav.getBoundingClientRect();if(r.height>0&&r.top<B+6)B=r.top-4}
  if(CW.ask&&vv&&vb<innerHeight-80)B=Math.min(B,vb-8);
- CW.bnd={L,R,T,B}}
+ CW.wb={L,R,T,B};CW.bnd=CW.room?CW.room.bnd:CW.wb}
 function cwB(){if(!CW.bnd)cwBoundsUpd();return CW.bnd||{L:0,R:innerWidth,T:0,B:innerHeight}}
-const CW_HIDE_ROUTES=["reels","chat","chessgame","edit","admin"];
+const CW_HIDE_ROUTES=["chat","chessgame","edit","admin"];
 const CW_TXT="input:not([type=checkbox]):not([type=radio]):not([type=button]):not([type=submit]):not([type=range]):not([type=file]):not([type=color]),textarea,select,[contenteditable=''],[contenteditable='true']";
 function cwWhy(){if(!cwOn()&&!CW.leaving)return"off";if(!CW.root)return"nodom";
  try{if(typeof introEl==="function"&&introEl())return"intro"}catch{}
- if(!S.authed||!S.uid)return"auth";const r=S.route&&S.route.name;if(CW_HIDE_ROUTES.includes(r))return"route";
+ if(!S.authed||!S.uid)return"auth";const r=S.route&&S.route.name;if(CW_HIDE_ROUTES.includes(r))return"route";const rk=CW.room&&CW.room.kind;if(r==="reels"&&rk!=="nook")return"route";
  if(typeof CALL!=="undefined"&&CALL)return"call";if(document.getElementById("ar5Mini"))return"call";
- if(document.querySelector("#overlay .layer"))return"layer";
+ if(document.querySelector("#overlay .layer")&&rk!=="disco")return"layer";
  const ae=document.activeElement;const mine=ae&&CW.root.contains(ae);
+ if(rk==="disco")return"";
  if(ae&&!mine&&ae.matches&&ae.matches(CW_TXT))return"typing";
  const vv=window.visualViewport;if(vv&&!mine&&vv.height<innerHeight*.72)return"keyboard";
  return""}
@@ -6921,14 +6930,14 @@ function cwIsIA(el){for(let e=el,n=0;e&&e!==document.body&&e!==document.document
 function cwBlocks(r){if(!r||r.width<2)return false;for(const[fx,fy]of[[.5,.5],[.18,.3],[.82,.3],[.2,.88],[.8,.88]]){const x=r.left+r.width*fx,y=r.top+r.height*fy;if(x<0||y<0||x>=innerWidth||y>=innerHeight)continue;
   let first=null;for(const el of document.elementsFromPoint(x,y)){if(CW.root.contains(el)||el.closest(".cw-room"))continue;first=el;break}
   if(first&&cwIsIA(first))return true}return false}
-function cwPass(){const hr=CW.hit.getBoundingClientRect();const p=cwBlocks(hr);if(p!==CW.pass){CW.pass=p;CW.b.classList.toggle("pt",p)}
+function cwPass(){if(CW.room){if(CW.pass){CW.pass=false;CW.b.classList.remove("pt")}return}const hr=CW.hit.getBoundingClientRect();const p=cwBlocks(hr);if(p!==CW.pass){CW.pass=p;CW.b.classList.toggle("pt",p)}
  if(CW.bed&&!CW.drag){const a=CW.bedF.getBoundingClientRect();const q=cwBlocks(a);if(q!==CW.bedPass){CW.bedPass=q;CW.bedB.classList.toggle("pt",q);CW.bedF.classList.toggle("pt",q)}}}
 
 /* --- döngü --- */
 function cwKick(){if(CW.raf||document.hidden||!CW.root)return;clearTimeout(CW.slow);CW.slow=0;CW.last=0;CW.raf=requestAnimationFrame(cwTick)}
 function cwTick(ts){CW.raf=0;if(document.hidden||!CW.root)return;
  const dt=Math.min(60,Math.max(0,ts-(CW.last||ts)));CW.last=ts;
- if(ts-CW.vT>180){CW.vT=ts;cwVis()}
+ if(ts-CW.vT>180){CW.vT=ts;try{cwRoomSync()}catch(e){console.warn("clawd",e)}cwVis()}
  if(!CW.vis){if(!cwOn()&&!CW.leaving)return;CW.slow=setTimeout(cwKick,400);return}
  const d=dt*CW.speed;CW.clock+=d;
  if(ts-CW.bT>110){CW.bT=ts;cwBoundsUpd()}
@@ -6946,7 +6955,7 @@ function cwQueue(name,fn,pri){if(!cwOn())return;if(cwNight()&&pri<3&&name!=="dan
  CW.pend=CW.pend.filter(p=>p.name!==name);CW.pend.push({name,fn,pri});CW.pend.sort((a,b)=>b.pri-a.pri)}
 function cwFollow(){const b=cwB();if(CW.moving&&CW.surf!=="floor"&&CW.surf!=="ceil")return;
  if(CW.surf==="floor"&&!CW.air)CW.y=b.B;else if(CW.surf==="ceil"&&!CW.air)CW.y=b.T;
- if(CW.inBed&&CW.bed){CW.bed.y=b.B;cwBedPlace();CW.x=CW.bed.x+2*CW.U;CW.y=CW.bed.y-3*CW.U}
+ if(CW.inBed&&CW.bed){const G=cwBG();CW.bed.y=b.B;cwBedPlace();CW.x=CW.bed.x+G.ix*CW.U;CW.y=CW.bed.y-G.iy*CW.U}
  else if(CW.bed&&!CW.drag&&Math.abs(CW.bed.y-b.B)<60){CW.bed.y=b.B;cwBedPlace()}}
 
 /* --- poz ve çizim --- */
@@ -6999,18 +7008,21 @@ async function cwHop(tx,ty,h=18,dur=380,{rot0,rot1}={}){const x0=CW.x,y0=CW.y,dx
 async function cwFall(ty,{rot0,rot1}={}){const y0=CW.y;const h=Math.max(0,ty-y0);const dur=Math.max(180,Math.sqrt(2*h/2400)*1000);CW.air=true;CW.moving=true;CW.pose="surprised";
  try{await cwTween(dur,k=>{CW.y=y0+h*k*k;if(rot1!=null)CW.rot=(rot0||0)+(rot1-(rot0||0))*Math.min(1,k*2.5)})}finally{CW.air=false;CW.moving=false}
  cwSfx("bonk");cwSquash();CW.pose="idle"}
-function cwFreeX(prefer){const b=cwB();const lo=b.L+CW.W*.5+6,hi=b.R-CW.W*.5-6;if(hi<=lo)return(b.L+b.R)/2;const c=[];for(let i=0;i<6;i++)c.push(lo+Math.random()*(hi-lo));if(prefer!=null)c.unshift(prefer);
+function cwFreeX(prefer){const b=cwB();if(CW.room){const lo=b.L+CW.W*.5,hi=b.R-CW.W*.5;return hi>lo?cwRand(lo,hi):(lo+hi)/2}const lo=b.L+CW.W*.5+6,hi=b.R-CW.W*.5-6;if(hi<=lo)return(b.L+b.R)/2;const c=[];for(let i=0;i<6;i++)c.push(lo+Math.random()*(hi-lo));if(prefer!=null)c.unshift(prefer);
  for(const x of c){const r={left:x-CW.W*.45,top:b.B-15*CW.U,width:CW.W*.9,height:15*CW.U};if(!cwBlocks(r))return x}return c[1]}
 
 /* --- konuşma balonları --- */
 function cwBubOpen(kind,html){cwBubClose();const d=document.createElement("div");d.className="cw-bub "+kind;d.innerHTML=html;CW.root.appendChild(d);CW.bub=d;CW.bubK=kind;CW.bubW=d.offsetWidth;CW.bubH=d.offsetHeight;cwBubPos();return d}
 function cwBubMeasure(){if(!CW.bub)return;CW.bubW=CW.bub.offsetWidth;CW.bubH=CW.bub.offsetHeight}
 function cwBubClose(){if(CW.bub){const d=CW.bub;CW.bub=null;CW.bubK="";if(cwReduce()||!CW.vis)d.remove();else{d.classList.add("out");setTimeout(()=>d.remove(),180)}}}
-function cwBubPos(){const d=CW.bub;if(!d)return;const b=cwB();const ceil=CW.surf==="ceil"&&!CW.air;const head=ceil?CW.y+15*CW.U+CW.oy:CW.y-15*CW.U+CW.oy;
- const w=CW.bubW,h=CW.bubH;let bx=CW.x-w/2;bx=Math.max(b.L+8,Math.min(b.R-8-w,bx));let below=ceil;let by=below?head+12:head-h-14;
- if(!below&&by<b.T+4){below=true;by=CW.y+8}
+/* 5.1: balon her zaman ekran koordinatında (#clawd içinde); Clawd odadaysa odanın konumu eklenir, oda ekran dışındaysa balon saklanır. */
+function cwBubPos(){const d=CW.bub;if(!d)return;if(!CW.wb)cwBoundsUpd();const b=CW.wb||cwB();let ox=0,oy=0;
+ if(CW.room){const r=CW.room.el.getBoundingClientRect();ox=r.left;oy=r.top;const off=!CW.room.el.isConnected||r.bottom<b.T+6||r.top>b.B-6;if(off!==!!d._off){d._off=off;d.style.visibility=off?"hidden":""}}
+ const X=CW.x+ox,Yf=CW.y+oy;const ceil=CW.surf==="ceil"&&!CW.air;const head=ceil?Yf+15*CW.U+CW.oy:Yf-15*CW.U+CW.oy;
+ const w=CW.bubW,h=CW.bubH;let bx=X-w/2;bx=Math.max(b.L+8,Math.min(b.R-8-w,bx));let below=ceil;let by=below?head+12:head-h-14;
+ if(!below&&by<b.T+4){below=true;by=Yf+8}
  if(below&&by+h>b.B+40){below=false;by=head-h-14}
- const tx=Math.max(12,Math.min(w-14,CW.x-bx));const k=`${Math.round(bx)},${Math.round(by)},${Math.round(tx)},${below}`;if(k===d._k)return;d._k=k;
+ const tx=Math.max(12,Math.min(w-14,X-bx));const k=`${Math.round(bx)},${Math.round(by)},${Math.round(tx)},${below}`;if(k===d._k)return;d._k=k;
  d.style.transform=`translate(${Math.round(bx)}px,${Math.round(by)}px)`;d.style.setProperty("--tx",Math.round(tx)+"px");d.classList.toggle("dn",below)}
 function cwHold(t){return Math.max(1700,Math.min(7000,1200+String(t).length*48))}
 async function cwSay(text,{hold,kind="say",note="",keepPose=false}={}){text=cwFill(text);const d=cwBubOpen(kind,`<span class="cw-t"></span>${note?`<small class="cw-n">${esc(note)}</small>`:""}`);const sp=d.querySelector(".cw-t");
@@ -7065,12 +7077,13 @@ function cwShieldShow(lvl){if(!CW.shEl){const d=document.createElement("div");d.
 function cwShieldHide(now){const d=CW.shEl;if(!d)return;CW.shEl=null;if(now||cwReduce())d.remove();else{d.classList.add("out");setTimeout(()=>d.remove(),420)}}
 
 /* --- yatak --- */
-function cwBedSpot(){const b=cwB();const bw=32*CW.U;const xs=[b.R-bw/2-8,b.L+bw/2+8];for(const x of xs){const r={left:x-bw/2,top:b.B-16*CW.U,width:bw,height:16*CW.U};if(!cwBlocks(r))return x}return xs[0]}
-function cwBedPlace(){const bd=CW.bed;if(!bd)return;const bw=32*CW.U,bh=16*CW.U;const t=`translate3d(${Math.round(bd.x-bw/2)}px,${Math.round(bd.y-bh)}px,0)`;if(CW.bedB._t!==t){CW.bedB.style.transform=CW.bedF.style.transform=t;CW.bedB._t=t}}
-function cwBedShow(x){const b=cwB();CW.bed={x,y:b.B};cwBedPlace();CW.bedB.hidden=CW.bedF.hidden=false;if(!cwReduce()){CW.bedB.classList.remove("pop");CW.bedF.classList.remove("pop");void CW.bedB.offsetWidth;CW.bedB.classList.add("pop");CW.bedF.classList.add("pop")}}
-function cwBedRemove(){CW.bed=null;CW.inBed=false;if(CW.bedB){CW.bedB.hidden=CW.bedF.hidden=true}}
-async function cwIntoBed(){const bd=CW.bed;if(!bd)return;const tx=bd.x+2*CW.U,ty=bd.y-3*CW.U;
- if(cwReduce()||Math.abs(CW.x-tx)>200){CW.x=tx;CW.y=ty}else{const side=CW.x<tx?-1:1;const ax=bd.x+side*(16*CW.U+CW.W*.5);if(Math.abs(CW.x-ax)>4)await cwWalk(Math.max(cwB().L+CW.W*.5,Math.min(cwB().R-CW.W*.5,ax)));CW.surf="bed";await cwHop(tx,ty,20,380)}
+function cwBG(){return CW.room?{w:26,h:13,ix:1,iy:2}:{w:32,h:16,ix:2,iy:3}}
+function cwBedSpot(){if(CW.room)return CW.room.bed.x;const b=cwB();const bw=32*CW.U;const xs=[b.R-bw/2-8,b.L+bw/2+8];for(const x of xs){const r={left:x-bw/2,top:b.B-16*CW.U,width:bw,height:16*CW.U};if(!cwBlocks(r))return x}return xs[0]}
+function cwBedPlace(){const bd=CW.bed;if(!bd)return;const G=cwBG();const bw=G.w*CW.U,bh=G.h*CW.U;const t=`translate3d(${Math.round(bd.x-bw/2)}px,${Math.round(bd.y-bh)}px,0)`;if(CW.bedB._t!==t){CW.bedB.style.transform=CW.bedF.style.transform=t;CW.bedB._t=t}}
+function cwBedShow(x){if(CW.room)return;const b=cwB();CW.bed={x,y:b.B};cwBedPlace();CW.bedB.hidden=CW.bedF.hidden=false;if(!cwReduce()){CW.bedB.classList.remove("pop");CW.bedF.classList.remove("pop");void CW.bedB.offsetWidth;CW.bedB.classList.add("pop");CW.bedF.classList.add("pop")}}
+function cwBedRemove(){if(CW.room){CW.inBed=false;return}CW.bed=null;CW.inBed=false;if(CW.bedB){CW.bedB.hidden=CW.bedF.hidden=true}}
+async function cwIntoBed(){const bd=CW.bed;if(!bd)return;const G=cwBG();const tx=bd.x+G.ix*CW.U,ty=bd.y-G.iy*CW.U;
+ if(cwReduce()||Math.abs(CW.x-tx)>200){CW.x=tx;CW.y=ty}else{const side=CW.x<tx?-1:1;const ax=bd.x+side*(G.w/2*CW.U+CW.W*.5);if(Math.abs(CW.x-ax)>4)await cwWalk(Math.max(cwB().L+CW.W*.5,Math.min(cwB().R-CW.W*.5,ax)));CW.surf="bed";await cwHop(tx,ty,20,380)}
  CW.surf="bed";CW.inBed=true;CW.face=1}
 function cwWireBed(){for(const el of[CW.bedB,CW.bedF]){
  el.addEventListener("pointerdown",e=>{if(!CW.bed||e.button>0)return;e.preventDefault();cwAudioUnlock();el.setPointerCapture&&el.setPointerCapture(e.pointerId);
@@ -7102,7 +7115,8 @@ function cwSingleTap(){if(CW.leaving)return;if(CW.menu){cwMenuClose();return}if(
  cwCancel();CW.pose="idle";CW.lookX=0;cwMenu()}
 
 /* --- menü ve soru kutusu --- */
-function cwMenu(){CW.menu=true;const night=cwNight();const it=[["joke","Soğuk espri"],["tip","Bir ipucu"],["ask","Clawd'a sor"],["nap",night||CW.inBed?"Uyumaya dön":"Biraz uyu"],["hide","Clawd'ı gizle"]];
+function cwMenu(){CW.menu=true;const night=cwNight();const rm=CW.room&&CW.room.kind==="room";
+ const it=[["joke","Soğuk espri"],["tip","Bir ipucu"],["ask","Clawd'a sor"],["play",cwPeriod()==="m"?"Gitar çal":"Dans et"],...(rm?[["light",CW.room.light?"Işığı kapat":"Işığı aç"]]:[]),["nap",night||CW.inBed?"Uyumaya dön":"Biraz uyu"],["hide","Clawd'ı gizle"]];
  cwBubOpen("menu",`<div class="cw-mh">Clawd</div>`+it.map(([k,l])=>`<button type="button" data-cw="${k}"${k==="hide"?' class="dim"':""}>${esc(l)}</button>`).join(""));CW.pose="wave";cwSfx("pop")}
 function cwMenuClose(){if(!CW.menu)return;CW.menu=false;if(CW.bubK==="menu")cwBubClose();if(CW.pose==="wave"&&!CW.busy)CW.pose="idle";CW.nextAt=CW.clock+2500}
 function cwAskOpen(){CW.ask=true;CW.menu=false;cwBubOpen("ask",`<form class="cw-askf" autocomplete="off"><label class="cw-mh" for="cwQ">Clawd'a sor</label><div class="cw-ar"><input id="cwQ" maxlength="240" enterkeyhint="send" placeholder="Kadraj ya da merak ettiğin bir şey" aria-label="Clawd'a sor"><button type="submit" aria-label="Sor">${I("send")}</button></div></form>`);
@@ -7113,6 +7127,8 @@ function cwBubClick(e){const b=e.target.closest&&e.target.closest("[data-cw]");i
  else if(k==="tip")cwRun(async()=>{CW.pose="idle";await cwSay(cwBag("t",CW_TIPS))},{pri:5,name:"tip"});
  else if(k==="ask"){cwCancel();cwAskOpen()}
  else if(k==="nap")cwRun(actNapBed,{pri:4,name:"bed"});
+ else if(k==="play")cwRun(cwPeriod()==="m"?actGuitar:actDance,{pri:5,name:cwPeriod()==="m"?"guitar":"dance"});
+ else if(k==="light")cwRun(actSwitch,{pri:5,name:"switch"});
  else if(k==="hide")cwDisable(true)}
 document.addEventListener("pointerdown",e=>{CW.lastInput=now();if(!CW.root)return;const t=e.target;if(CW.root.contains(t)||(t.closest&&t.closest(".cw-room .cw-hit")))return;
  if(CW.menu)cwMenuClose();if(CW.ask)cwAskClose();if(CW.act==="nap")cwRun(actWakeNap,{pri:4,name:"wake"})},true);
@@ -7133,18 +7149,23 @@ async function actJoke(){const j=cwBag("j",CW_JOKES).split("|");CW.pose="idle";i
 async function actStill(){const b=cwB();CW.face=-1;CW.surf="floor";CW.x=b.R-CW.W*.5-10;CW.y=b.B;CW.pose="sit";await cwWait(6000)}
 async function actNap(){CW.pose="sleepy";await cwWait(1200);CW.pose="sit";await cwWait(400);CW.pose="sleep";CW.zz=true;try{for(;;)await cwWait(1000)}finally{CW.zz=false}}
 async function actWakeNap(){CW.zz=false;CW.pose="surprised";await cwHop(CW.x,cwB().B,12,280);await cwSay(cwPick(["Uyuyakalmışım! Kod derlenirken gözüm dalmış.","Ha? Uyumuyordum, gözlerimi dinlendiriyordum.","Hop, geldim! Rüyamda sonsuz döngüdeydim."]))}
-async function actSleepIn(){CW.inBed=true;CW.surf="bed";CW.pose="sleep";CW.zz=true;try{for(;;){await cwWait(1000);if(!cwNight()&&!(CW.napUntil&&now()<CW.napUntil)){CW.napUntil=0;await actMorning();return}}}finally{CW.zz=false}}
+async function actSleepIn(){CW.inBed=true;CW.surf="bed";CW.pose="sleep";CW.zz=true;CW.sleptAt=now();cwRoomLamp(false);
+ try{for(;;){await cwWait(1000);if(!cwNight()&&!(CW.napUntil&&now()<CW.napUntil)){CW.napUntil=0;await actMorning();return}
+  if(cwNight()&&!CW.napUntil&&cwOwlWake()){CW.zz=false;await actOwlUp();return}}}finally{CW.zz=false}}
+async function actSleepInOld(){CW.inBed=true;CW.surf="bed";CW.pose="sleep";CW.zz=true;try{for(;;){await cwWait(1000);if(!cwNight()&&!(CW.napUntil&&now()<CW.napUntil)){CW.napUntil=0;await actMorning();return}}}finally{CW.zz=false}}
 async function actBedtime(){if(!CW.bed){const x=cwBedSpot();if(!cwReduce()){await cwWalk(Math.max(cwB().L+CW.W,Math.min(cwB().R-CW.W,x+(x>CW.x?-1:1)*(16*CW.U+CW.W*.5))));await cwSay("bed.spawn()",{kind:"code",hold:200})}cwBedShow(x);cwBurst(x,cwB().B-20,12)}
  if(!CW.inBed){if(cwMaySay()&&cwNight())await cwSay(cwPick(["Saat geç oldu, yatma vakti. Pijamalarım nerede?","Uykum geldi. Yarın daha komik olacağım, söz."]),{hold:1400});await cwIntoBed()}
  return actSleepIn()}
 async function actNapBed(){CW.napUntil=cwNight()?0:now()+45000/CW.speed;return actBedtime()}
-async function actMorning(){CW.zz=false;CW.pose="sleepy";await cwWait(800);CW.inBed=false;CW.surf="floor";await cwHop(CW.bed?CW.bed.x-(16*CW.U+CW.W*.5):CW.x,cwB().B,18,380);
- const bx=CW.bed?CW.bed.x:CW.x;cwBurst(bx,cwB().B-18,10);cwBedRemove();CW.pose="happy";await cwSay(cwNight()?"Dinlendim! Hadi biraz daha takılalım.":cwPick(["Oh be, kod gibi dinlendim!","Günaydın dünya! Ben geldim."]),{hold:1400})}
+async function actMorning(){CW.zz=false;CW.pose="sleepy";await cwWait(800);CW.inBed=false;CW.surf="floor";await cwHop(CW.bed?Math.max(cwB().L+CW.W*.5,CW.bed.x-(cwBG().w/2*CW.U+CW.W*.5)):CW.x,cwB().B,CW.room?10:18,380);
+ const bx=CW.bed?CW.bed.x:CW.x;if(!CW.room)cwBurst(bx,cwB().B-18,10);cwBedRemove();CW.pose="happy";cwRoomLamp();
+ if(!cwNight()&&cwPeriod()==="m"&&now()-CW.lastGuitar>60000){await cwSay(cwPick(["Günaydın! Sabah rutini: önce gitar, sonra her şey.","Günaydın dünya! Amfiyi açıyorum."]),{hold:900});return actGuitar()}
+ await cwSay(cwNight()?"Dinlendim! Hadi biraz daha takılalım.":cwPick(["Oh be, kod gibi dinlendim!","Günaydın dünya! Ben geldim."]),{hold:1400})}
 /* gece irkilmesi: "Hâlâ uyumadın mı?" → "İyi geceler" → yataktan düşer, başını vurur, geri yatar */
 async function actStartled(){if(!CW.bed){cwBedShow(cwBedSpot())}if(!CW.inBed){CW.inBed=true;CW.surf="bed";cwFollow()}
  CW.zz=false;CW.pose="surprised";cwSfx("pop");await cwHop(CW.x,CW.y,14,260);CW.pose="surprised";
  await cwSay("Hâlâ uyumadın mı?",{hold:1100});CW.pose="sleepy";await cwSay(`İyi geceler ${cwUn()}`,{hold:900});
- if(!cwReduce()){const b=cwB();const bd=CW.bed;const dir=bd.x>(b.L+b.R)/2?-1:1;const fx=Math.max(b.L+CW.W*.6,Math.min(b.R-CW.W*.6,bd.x+dir*(16*CW.U+CW.W*.55)));
+ if(!cwReduce()){const b=cwB();const bd=CW.bed;const dir=bd.x>(b.L+b.R)/2?-1:1;const fx=Math.max(b.L+CW.W*.6,Math.min(b.R-CW.W*.6,bd.x+dir*(cwBG().w/2*CW.U+CW.W*.55)));
   CW.inBed=false;CW.surf="floor";CW.pose="sleepy";await cwWait(300);CW.pose="surprised";
   await cwHop(fx,b.B,10,420,{rot0:0,rot1:dir*90});CW.oy=-2.5*CW.U;cwSfx("bonk");CW.pose="lie";CW.stars=true;CW.bumpOn=true;
   await cwWait(500);CW.pose="dizzy";await cwSay(cwPick(["Ayy, başım! Yer çekimi yine kazandı.","Kafamda yıldızlar dönüyor. Bari dilek tutayım.","Bu düşüş benim değil, yatağın hatası!"]),{hold:900});await cwWait(600);
@@ -7174,12 +7195,13 @@ async function actShield(dir){const lvl=CW.shieldLvl||1;CW.zz=false;if(CW.inBed)
 async function actArrive(){const b=cwB();const p=cwPeriod();CW.arrived=true;
  const seenK="kadraj_clawd_seen_"+S.uid;const last=LS.get(seenK,0);LS.set(seenK,now());const introK="kadraj_clawd_intro_"+S.uid;const first=!LS.get(introK,false);
  if(p==="n"){CW.lastSay=now();return actStartled()}
- if(!cwReduce()){CW.surf="floor";CW.y=b.B;CW.x=b.R+CW.W*.6;await cwWalk(b.R-CW.W*.5-24,90,"run")}
+ if(!cwReduce()&&!CW.room){CW.surf="floor";CW.y=b.B;CW.x=b.R+CW.W*.6;await cwWalk(b.R-CW.W*.5-24,90,"run")}
+ else if(CW.room&&!cwReduce()){CW.inBed=false;CW.surf="floor";CW.y=b.B;CW.pose="surprised";await cwHop(CW.x,b.B,10,300)}
  CW.pose="wave";await cwWait(300);
  if(last&&now()-last>3*86400e3){CW.pose="joy";await cwSay("Özledim seni!",{hold:900})}
  if(first){LS.set(introK,true);await cwSay("Merhaba! Ben Clawd, Claude'un küçük kardeşiyim. Artık Kadraj'ın ekranında yaşıyorum.",{hold:1600})}
  CW.pose="wave";await cwSay(cwPick(CW_GREET[p]),{hold:2200});
- if(first){CW.pose="idle";await cwSay("Bana dokunursan espri yaparım, soru sorarsan cevaplarım. Bilmediğimi abime sorarım!",{hold:2200})}
+ if(first){CW.pose="idle";await cwSay("Bana dokunursan espri yaparım, soru sorarsan cevaplarım. Bilmediğimi itiraf ederim, sonra soğuk bir espri patlatırım!",{hold:2200})}
  CW.lastSay=now();CW.pose="idle"}
 async function actReturn(){const b=cwB();CW.returning=false;if(!cwReduce()){CW.surf="floor";CW.y=b.B;CW.x=b.L-CW.W*.6;await cwWalk(b.L+(b.R-b.L)*.45,110,"run");await cwHop(CW.x,b.B,22,340);await cwHop(CW.x,b.B,16,300)}
  CW.pose="joy";cwSfx("pop");await cwSay("Beni geri çağırdın!",{hold:900});CW.pose="happy";await cwSay(cwPick(["Seni çok özlemiştim. Tam olarak ne kadar mı? Bir sonsuz döngü kadar.","Söz, daha komik olacağım. Belki.","Eşyalarımı topladım, geri geldim. Yatağımı da getirdim!"]),{hold:1800});CW.pose="idle";CW.lastSay=now()}
@@ -7190,7 +7212,10 @@ async function actLeave(){CW.leaving=true;try{CW.zz=false;if(CW.inBed){CW.inBed=
  if(!cwReduce()){const b=cwB();const side=CW.x<(b.L+b.R)/2?-1:1;await cwWalk(side<0?b.L-CW.W*.7:b.R+CW.W*.7,26,"crywalk")}
  else{CW.root.classList.add("off");await cwWait(400)}}
  finally{CW.tears=false;CW.leaving=false;CW.pose="idle";CW.x=-1;CW.root.classList.add("off");CW.vis=false}}
-async function actRoute(r,p){if(!cwMaySay())return;const k=r==="profile"?(p&&p.uid===S.uid?"profile_me":"profile"):r;const l=CW_ROUTE[k];if(!l)return;CW.pose="idle";await cwSay(cwPick(l))}
+async function actRoute(r,p){const k=r==="profile"?(p&&p.uid===S.uid?"profile_me":"profile"):r;const l=CW_ROUTE[k];
+ if(!l||!cwMaySay()){if(now()-CW.lastWave<15000)return;CW.lastWave=now();CW.pose="wave";await cwWait(1100);CW.pose="idle";return}
+ CW.lastWave=now();CW.pose="wave";await cwWait(400);CW.pose="idle";await cwSay(cwPick(l))}
+async function actRouteOld(r,p){if(!cwMaySay())return;const k=r==="profile"?(p&&p.uid===S.uid?"profile_me":"profile"):r;const l=CW_ROUTE[k];if(!l)return;CW.pose="idle";await cwSay(cwPick(l))}
 async function actToast(){CW.pose="surprised";await cwHop(CW.x,cwB().B,16,300);CW.pose="idle";await cwWait(400)}
 async function actWin(){CW.pendWin=false;CW.pose="joy";await cwSay("Şah mat! Zafer dansı başlıyor!",{hold:400});await actDance();CW.pose="happy";await cwSay("Abim bunu duyunca çok gururlanacak!",{hold:1400})}
 
@@ -7200,10 +7225,14 @@ function cwBrain(){if(CW.busy||CW.menu||CW.ask||CW.drag||CW.clock<CW.nextAt)retu
  if(CW.returning){cwRun(actReturn,{pri:4,name:"return"});return}
  if(CW.pendWin&&!cwNight()){cwRun(actWin,{pri:3,name:"dance"});return}
  if(CW.pend.length){const p=CW.pend.shift();cwRun(p.fn,{pri:p.pri,name:p.name});return}
- if(cwNight()||CW.inBed){cwRun(CW.inBed?actSleepIn:actBedtime,{pri:1,name:"bed"});return}
+ const rk=CW.room&&CW.room.kind;
+ if(rk==="disco"){cwRun(actDisco,{pri:0,name:"disco"});return}
+ if(rk==="nook"){cwRun(actNook,{pri:0,name:"nook"});return}
+ if(CW.inBed){cwRun(actSleepIn,{pri:1,name:"bed"});return}
+ if(cwNight()){if(cwOwlOk())cwRun(actOwl,{pri:1,name:"owl"});else cwRun(actBedtime,{pri:1,name:"bed"});return}
  if(cwReduce()){cwRun(actStill,{pri:0,name:"still"});return}
  if(now()-CW.lastInput>CW.napAfter){cwRun(actNap,{pri:0,name:"nap"});return}
- const w=[["wander",34,actWander],["look",16,actLook],["peek",11,actPeek],["stairs",12,cwStairs],["ladder",11,cwLadder],["sit",10,actSit],["dance",4,actDance]];
+ const w=cwWeights();
  let r=Math.random()*w.reduce((a,x)=>a+x[1],0);for(const[n,v,f]of w){if((r-=v)<=0){cwRun(f,{pri:0,name:n});return}}}
 
 /* --- bilgi tabanı eşleşmesi --- */
@@ -7289,7 +7318,7 @@ const CLAWD={debug:{
  pick(k){const b=CW.bub&&CW.bub.querySelector(`[data-cw="${k}"]`);if(b)b.click();return!!b},
  ask(q){cwAsk(q)},askOpen(){cwCancel();cwAskOpen()},match(q){const m=cwMatch(q);return{a:m.e&&m.e.a,sc:m.sc,conf:m.conf,topic:m.topic,t:m.e&&m.e.t}},
  act(n){const f={wander:actWander,look:actLook,peek:actPeek,stairs:cwStairs,ladder:cwLadder,sit:actSit,dance:actDance,joke:actJoke,nap:actNap,bed:actBedtime,startled:actStartled,arrive:actArrive,
-  ret:actReturn,leave:actLeave,win:actWin,toast:actToast,morning:actMorning,napbed:actNapBed}[n];if(f)cwRun(f,{pri:n==="leave"?9:5,name:n});return!!f},
+  ret:actReturn,leave:actLeave,win:actWin,toast:actToast,morning:actMorning,napbed:actNapBed,...CW_ACTS51}[n];if(f)cwRun(f,{pri:n==="leave"?9:5,name:n});return!!f},
  pose(p,ms){cwRun(async()=>{CW.pose=p;if(p==="sleep")CW.zz=true;if(p==="dizzy")CW.stars=true;if(p==="cry")CW.tears=true;try{await cwWait(ms||60000)}finally{CW.zz=CW.stars=CW.tears=false}},{pri:5,name:"pose:"+p})},
  say(t,o){cwRun(()=>cwSay(t,o||{}),{pri:5,name:"say"})},
  think(){cwRun(async()=>{CW.pose="cry";CW.tears=true;try{await cwThink(`${CW_BHEART}<span>neden?..</span>`,60000)}finally{CW.tears=false}},{pri:5,name:"think"})},
