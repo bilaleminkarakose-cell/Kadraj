@@ -6554,8 +6554,15 @@ Object.assign(IP,{clawd:'<path d="M6.5 5.5h11v8h-11zM2.5 9h4M17.5 9h4M7.5 13.5v4
 
 /* --- sprite --- */
 const CW_GW=23,CW_GH=18,CW_Y=3;
-const CW_COL={1:"#D97757",2:"#BE684D",3:"#171310",4:"#F4A48E",5:"#F0A39A"};
+const CW_COL={1:"#D97757",2:"#BE684D",3:"#171310",4:"#F4A48E",5:"#F0A39A",6:"#D8343F",7:"#931F2A",8:"#F6F0E6",9:"#6B4428",10:"#2A1E16",11:"#E9D3A3",13:"#3E6FD8",14:"#2A4FA8",18:"#B9B0A2"};
 const CW_SVG=new Map();
+/* 5.1 · sahne eşyaları: elektro gitar (gövde sol altta, sap sağa yukarı) ve küçük kitap */
+function cwGuitar(R,Y){R(3,Y+8,4,1,6);R(2,Y+9,6,1,6);R(2,Y+10,7,1,6);R(2,Y+11,7,1,6);R(3,Y+12,5,1,6);R(4,Y+13,3,1,7);R(2,Y+11,1,1,7);R(3,Y+12,1,1,7);
+ R(3,Y+9,2,1,8);R(4,Y+10,2,1,8);R(5,Y+11,2,1,10);R(6,Y+9,1,1,10);
+ for(let x=8;x<=19;x++){const y=Y+10-Math.round((x-8)*.36);R(x,y,1,1,9);if(x%3===1)R(x,y,1,1,11)}
+ R(20,Y+5,2,2,10);R(20,Y+4,1,1,11);R(22,Y+5,1,1,11)}
+function cwBook(R,Y,flip){R(7,Y+6,11,5,13);R(8,Y+6,4,4,8);R(13,Y+6,4,4,8);R(12,Y+6,1,5,14);R(7,Y+10,11,1,14);
+ const ln=flip?[[9,7],[14,8]]:[[9,7],[9,8],[14,7],[14,8]];for(const[x,dy]of ln)R(x,Y+dy,2,1,18)}
 function cwPaint(sp){const g=[];for(let y=0;y<CW_GH;y++)g.push(new Array(CW_GW).fill(0));
  const R=(x,y,w,h,c)=>{for(let j=y;j<y+h;j++)if(j>=0&&j<CW_GH)for(let i=x;i<x+w;i++)if(i>=0&&i<CW_GW)g[j][i]=c};
  const Y=CW_Y,K=3;
@@ -6564,10 +6571,15 @@ function cwPaint(sp){const g=[];for(let y=0;y<CW_GH;y++)g.push(new Array(CW_GW).
  else if(lg==="w2"){leg(4,2,1,1);leg(8,1);leg(14,1,1,1);leg(18,1)}
  else if(lg==="tuck"){R(4,Y+12,2,1,2);R(8,Y+12,2,1,1);R(14,Y+12,2,1,1);R(18,Y+12,2,1,1)}
  else if(lg==="spread"){leg(3,2);leg(7,1);leg(15,1);leg(19,1)}
+ else if(lg==="dang1"||lg==="dang2"){const a=lg==="dang1"?2:3,b=lg==="dang1"?3:2;R(4,Y+12,2,a,2);R(8,Y+12,2,b,1);R(14,Y+12,2,a,1);R(18,Y+12,2,b,1)}
  else if(lg!=="none"){leg(4,2);leg(8,1);leg(14,1);leg(18,1)}
  R(4,Y,3,12,2);R(7,Y,13,12,1);
- const am={down:[0,0],up:[-4,-4],w1:[0,-5],w2:[0,-2],t1:[1,2],t2:[2,1],sh:[-2,-2],c1:[-5,0],c2:[0,-5],sg:[-3,-3]}[sp.arms||"down"]||[0,0];
- R(0,Y+4+am[0],3,4,2);R(3,Y+4+am[0],4,4,1);R(20,Y+4+am[1],3,4,1);
+ if(sp.prop==="guitar")cwGuitar(R,Y);
+ const ar=sp.arms||"down";
+ if(ar==="g1"||ar==="g2"){const yy=Y+(ar==="g1"?8:10);R(0,yy,3,3,2);R(3,yy,3,3,1);R(20,Y+7,3,4,1)}
+ else if(ar==="rd"){R(4,Y+7,3,3,2);R(17,Y+7,3,3,1)}
+ else{const am={down:[0,0],up:[-4,-4],w1:[0,-5],w2:[0,-2],t1:[1,2],t2:[2,1],sh:[-2,-2],c1:[-5,0],c2:[0,-5],sg:[-3,-3],tk:[0,-3],hi:[-5,-5]}[ar]||[0,0];
+  R(0,Y+4+am[0],3,4,2);R(3,Y+4+am[0],4,4,1);R(20,Y+4+am[1],3,4,1)}
  const lx=sp.lx||0;
  const eye=x0=>{const x=x0+lx;switch(sp.eyes){
   case"blink":case"closed":R(x,Y+3,2,1,K);break;
@@ -6585,8 +6597,9 @@ function cwPaint(sp){const g=[];for(let y=0;y<CW_GH;y++)g.push(new Array(CW_GW).
  if(M)for(const[a,b,c,d]of M)R(a,Y+b,c,d,K);
  if(sp.blush){R(8,Y+5,2,1,5);R(18,Y+5,2,1,5)}
  if(sp.bump){R(12,Y-2,3,2,4);R(13,Y-3,1,1,4)}
+ if(sp.prop==="book"||sp.prop==="book2")cwBook(R,Y,sp.prop==="book2");
  return g}
-function cwSvg(sp){const k=[sp.eyes,sp.mouth,sp.arms,sp.legs,sp.lx,sp.blush,sp.bump,sp.brow].join("|");let s=CW_SVG.get(k);if(s)return s;
+function cwSvg(sp){const k=[sp.eyes,sp.mouth,sp.arms,sp.legs,sp.lx,sp.blush,sp.bump,sp.brow,sp.prop].join("|");let s=CW_SVG.get(k);if(s)return s;
  const g=cwPaint(sp);let r="";
  for(let y=0;y<CW_GH;y++){let x=0;while(x<CW_GW){const c=g[y][x];if(!c){x++;continue}let e=x+1;while(e<CW_GW&&g[y][e]===c)e++;r+=`<rect x="${x}" y="${y}" width="${e-x}" height="1" fill="${CW_COL[c]}"/>`;x=e}}
  s=`<svg viewBox="0 0 ${CW_GW} ${CW_GH}" shape-rendering="crispEdges" aria-hidden="true">${r}</svg>`;if(CW_SVG.size>500)CW_SVG.clear();CW_SVG.set(k,s);return s}
@@ -6596,10 +6609,6 @@ function cwBedSvg(front){const W=32,H=16;const px=[];const R=(x,y,w,h,c)=>px.pus
  if(!front){R(0,1,3,15,wd);R(0,0,3,1,wl);R(0,1,1,15,wk);R(3,9,29,4,"#F3ECE2");R(3,12,29,1,"#D8CFC2");R(3,6,7,3,"#FFFFFF");R(3,8,7,1,"#E3DBD0");R(4,13,2,3,wk);R(28,13,2,3,wk)}
  else{R(9,6,21,6,"#5E7FD6");R(9,6,21,1,"#7B98E4");R(12,8,2,2,"#4A69BE");R(18,9,2,2,"#4A69BE");R(24,8,2,2,"#4A69BE");R(9,11,21,1,"#4A69BE");R(29,4,3,12,wd);R(29,3,3,1,wl);R(31,4,1,12,wk)}
  return`<svg viewBox="0 0 ${W} ${H}" shape-rendering="crispEdges" aria-hidden="true">${px.join("")}</svg>`}
-/* abi kartının işareti: turuncu, ışınsal yıldız (özgün, basit çizim) */
-function cwStarMark(c){let p="";const n=12;for(let i=0;i<n;i++){const a=i/n*Math.PI*2-Math.PI/2+(i%2?.06:0);const r2=[10.6,8.4,9.6][i%3];
-  p+=`<line x1="${(12+Math.cos(a)*2.6).toFixed(2)}" y1="${(12+Math.sin(a)*2.6).toFixed(2)}" x2="${(12+Math.cos(a)*r2).toFixed(2)}" y2="${(12+Math.sin(a)*r2).toFixed(2)}"/>`}
- return`<svg viewBox="0 0 24 24" aria-hidden="true"><g stroke="${c||"#D97757"}" stroke-width="2.2" stroke-linecap="round">${p}</g></svg>`}
 const CW_ZSVG=`<svg viewBox="0 0 5 5" shape-rendering="crispEdges" aria-hidden="true"><path d="M0 0h5v1H0zM3 1h1v1H3zM2 2h1v1H2zM1 3h1v1H1zM0 4h5v1H0z" fill="currentColor"/></svg>`;
 const CW_STAR=`<svg viewBox="0 0 5 5" shape-rendering="crispEdges" aria-hidden="true"><path d="M2 0h1v5H2zM0 2h5v1H0z" fill="#FFC93C"/><path d="M2 2h1v1H2z" fill="#FFF3B0"/></svg>`;
 const CW_BHEART=`<svg class="cw-bh" viewBox="0 0 11 10" shape-rendering="crispEdges" aria-hidden="true"><path d="M1 1h3v1H1zM7 1h3v1H7zM0 2h5v3H0zM6 2h5v3H6zM1 5h4v1H1zM6 5h4v1H6zM2 6h3v1H2zM6 6h3v1H6zM3 7h2v1H3zM6 7h1v1H6zM4 8h1v1H4z" fill="#E5484D"/><path d="M1 2h1v1H1z" fill="#FF9A9D"/></svg>`;
@@ -6622,7 +6631,11 @@ const CW_JOKES=[
  "Bulut depolama neden ağlamış?|Üstüne yağmur yüklemişler.",
  "Fotoğraf neden psikoloğa gitmiş?|Fazla negatif düşünüyormuş.",
  "Kadraj'daki fotoğraf neden utanmış?|Filtresiz yakalanmış.",
- "Flick neden hep aceleci?|Çünkü kısa video, uzatmayı sevmiyor.",
+ "Klaket neden hep aceleci?|Çünkü kısa video, uzatmayı sevmiyor.",
+ "Gitarım neden hep yorgun?|Bütün sabah tel tel dökülüyor.",
+ "Çekmecem neden hiç düzenli değil?|İçinde açık kaynak kod var, herkes bir şey bırakıyor.",
+ "Ampulüm neden hiç sınava çalışmıyor?|Zaten aydın.",
+ "Odam neden bu kadar küçük?|Piksel başına kira ödüyorum.",
  "Anket neden hep kararsız?|Dört seçeneği var, birini seçemiyor.",
  "Benim boyum neden 23 piksel?|24 olsaydım hikâye olur, ertesi gün kaybolurdum.",
  "Programcı neden denizde batmış?|Float olacakken int olmuş.",
@@ -6641,7 +6654,7 @@ const CW_JOKES=[
  "Çay neden hiç yalnız kalmaz?|Her zaman demli bir sohbeti olur.",
  "Ördek neden Kadraj'a üye olmuş?|Vak'ti varmış.",
  "Zürafa neden hiç selfie çekemiyor?|Kadraja sığmıyor.",
- "Kaplumbağa neden Flick çekmiyor?|İki dakika yetmiyor, daha kadraja girmeden bitiyor.",
+ "Kaplumbağa neden Klaket çekmiyor?|İki dakika yetmiyor, daha kadraja girmeden bitiyor.",
  "Bal neden bu kadar yapışkan?|Arkadaşlarından ayrılmak istemiyor.",
  "Uzaydaki parti neden sıkıcıymış?|Atmosfer yokmuş.",
  "Geometri öğretmeni neden tatile gidememiş?|Açısı yokmuş.",
@@ -6674,11 +6687,11 @@ const CW_JOKES=[
  "Bilgisayar neden hapşırmış?|Bir virüs kapmış ama güvenlik duvarı ateşini düşürmüş.",
  "Pil neden partide en son ayrılır?|Enerjisi hiç bitmiyor. Şarj aletini de getirmiş.",
  "Bildirim neden hep heyecanlı?|Her haberi ilk o duyuyor."];
-const CW_JOKE_TAIL=["Ba-dum-tıss!","Soğuk oldu, biliyorum. Hırkanı al.","Gülmedin mi? Kodum gülüyor ama.","Bu espri sıfır derece. Tam kıvamında.","Abim bunu duysa gurur duyardı. Ya da utanırdı."];
+const CW_JOKE_TAIL=["Ba-dum-tıss!","Soğuk oldu, biliyorum. Hırkanı al.","Gülmedin mi? Kodum gülüyor ama.","Bu espri sıfır derece. Tam kıvamında.","Abim bunu duysa gurur duyardı. Ya da utanırdı.","Gitarla çalsam daha komik olurdu. Belki."];
 const CW_TIPS=[
- "Ortadaki + ile fotoğraf, Flick, hikâye, not, anket ya da çizim paylaşabilirsin.",
+ "Ortadaki + ile fotoğraf, Klaket, hikâye, not, anket ya da çizim paylaşabilirsin.",
  "Mesaja basılı tut: 6 tepki, yanıtla, ilet, düzenle, sil. Hepsi orada.",
- "Flick'te ekranın sağ ya da sol kenarına basılı tutarsan video 2x hızlanır. Ben de koşarken öyle yaparım.",
+ "Klaket'te ekranın sağ ya da sol kenarına basılı tutarsan video 2x hızlanır. Ben de koşarken öyle yaparım.",
  "Sohbet listesinde bir sohbete basılı tut, en fazla 3 sohbet en üstte sabit durur.",
  "Ayarlar › Görünüm'den vurgu rengini değiştirebilirsin. Turuncuyu öneririm ama tarafsız değilim.",
  "Profilinde en fazla 3 paylaşımı sabitleyebilirsin. En iyilerin en üstte dursun.",
@@ -6686,16 +6699,20 @@ const CW_TIPS=[
  "Sesli mesajı 1,5x ya da 2x hızla dinleyebilirsin. Uzun anlatan arkadaşlar için birebir.",
  "Satranç için Keşfet'teki Satranç kartına dokun. Rota'yı yenersen zafer dansı yaparım.",
  "Yazıp göndermediğin mesaj kaybolmaz; sohbet listesinde \"Taslak\" diye bekler.",
- "Ayarlar › Medya'da \"Flick bitince sonrakine geç\"i açarsan videolar kendiliğinden akar.",
- "Veri tasarrufu açıkken Flick'ler 720p oynar, internet paketin bayram eder.",
+ "Ayarlar › Medya'da \"Klaket bitince sonrakine geç\"i açarsan videolar kendiliğinden akar.",
+ "Veri tasarrufu açıkken Klaketler 720p oynar, internet paketin bayram eder.",
  "Şifreni unutursan Kadraj Anahtarı ile yenileyebilirsin. Anahtar, profilindeki zarf simgesinde, Kadraj Posta'da durur.",
  "Ayarlar'ın üstünde arama kutusu var. \"tema\" yaz, anında bulur.",
  "Hikâye izlerken kalp, ateş, gülme ya da şaşırma tepkisi gönderebilirsin.",
  "Meydan'da ya da grupta mesaja @rota yazarsan Rota cevap verir.",
  "Arayüzü Ayarlar › Görünüm › Arayüz'den Vizör ya da Klasik yapabilirsin. Ben ikisinde de yaşarım.",
  "Aramadayken Küçült'e dokunursan arama küçük, sürüklenebilir bir pencereye döner.",
- "Gece 22'den sonra yatağımda uyurum. Yatağımı sürükleme, ışınlarım!",
+ "Gece yarısı odamdaki yatağıma girerim. Ama sen hâlâ ekrandaysan ben de uyumam, dans ederim!",
+ "Sabahları elektro gitar çalarım. Clawd sesleri açıksa riff'i de duyarsın.",
+ "Akış'ta, Keşfet'te, Sohbet'te ve profilde küçük bir odam var. Boş bir köşe bulunca hemen taşınırım.",
+ "Yorumları açınca dans pistine çıkarım. Yorum yazmak bile ritimli olur.",
  "Bana arka arkaya üç kez hızlı dokunursan kalkan açarım. Denemeni önermem. Ama denersin, biliyorum.",
+ "Paylaşımın beğeni alınca konfeti patlatırım. Mesaj gelince de dans ederim.",
  "Keşfet'te #etiket arayabilir, sonuçları en yeni ya da en çok beğenilen diye sıralayabilirsin.",
  "Görüntülü aramada ekranını paylaşabilirsin; bilgisayarda en rahatı."];
 const CW_GREET={
@@ -6720,23 +6737,26 @@ const CW_BEDLINE=["Yatağımı geri ışınladım. Ctrl+Z hayat kurtarır!","Yat
 const CW_KB=[
  {t:"me",k:["selam","merhaba","hey","selamlar","naber","gunaydin","iyi aksamlar"],a:"Selam @! Ben Clawd. Bir şey sor, bir espri iste ya da sadece takıl."},
  {t:"me",k:["nasilsin","iyi misin","keyfin nasil","ne haber"],a:"Harikayım! Piksellerim yerinde, kodum derli toplu. Sen nasılsın @?"},
- {t:"me",k:["kimsin","adin ne","sen kimsin","ismin ne","clawd kim","clawd nedir"],a:"Ben Clawd! Claude'un küçük kardeşiyim, Kadraj'ın ekranında yaşıyorum. Bilmediğimi abime sorarım."},
- {t:"me",k:["abin","abi kim","claude kim","claude kimdir","kardes"],a:"Abim Claude! Çok şey bilir; ben de ona sorarım. Ben daha çok soğuk espri ve merdiven yazma işindeyim."},
+ {t:"me",k:["kimsin","adin ne","sen kimsin","ismin ne","clawd kim","clawd nedir"],a:"Ben Clawd! Claude'un küçük kardeşiyim, Kadraj'da kendi küçük odamda yaşıyorum. Yatağım, çekmecem, bir de ampulüm var."},
+ {t:"me",k:["abin","abi kim","claude kim","claude kimdir","kardes"],a:"Abim Claude! Çok şey bilir. Ben daha çok soğuk espri, sabah gitarı ve merdiven yazma işindeyim."},
  {t:"me",k:["kac yasinda","yasin kac","yasin"],a:"Piksel yaşıyla 23 genişliğindeyim. Gerçek yaşım mı? Kadraj 5.0 kadar."},
- {t:"me",k:["nerede yasiyorsun","evin","nerede oturuyorsun"],a:"Kadraj'ın ekranında! Bazen dokun üstünde, bazen tavanda baş aşağı, gece de yatağımda."},
+ {t:"me",k:["nerede yasiyorsun","evin","nerede oturuyorsun","odan","oda"],a:"Akış'ta hikâyelerin yanında, Keşfet'te Satranç kartının altında, Sohbet'te notların yanında, profilde de adının yanında küçük bir odam var. Sığmazsam ekranda gezerim."},
+ {t:"me",k:["gitar","muzik caliyor","riff"],a:"Sabahları elektro gitar çalarım! Clawd sesleri açıksa küçük bir retro riff de duyarsın. Komşular şikâyetçi ama olsun."},
+ {t:"me",k:["cekmece","cekmecende ne var"],a:"Çekmecemde neler yok ki: kayıp çorabım, lastik ördeğim, yedek noktalı virgül, bir de disket. Düzen konusunu konuşmayalım."},
+ {t:"me",k:["ampul","isik","lamba"],a:"Odamın tavanında bir ampul var. Duvardaki düğmeyle açıp kapatırım. Gece uyurken kapalı, sen uyumuyorsan açık!"},
  {t:"me",k:["tesekkur","sagol","eyvallah","tesekkurler","mersi"],a:"Rica ederim @! Bir soğuk espriyi hak ettin bence."},
  {t:"me",k:["seni seviyorum","seviyorum seni","tatlisin","cok tatli"],a:"Ben de seni! Turuncu kalbimin her pikseliyle."},
- {t:"me",k:["ne yapabilirsin","neler yaparsin","ne ise yararsin","yardim"],a:"Espri yaparım, ipucu veririm, Kadraj'ı ve kodunu anlatırım. Bilmediğimi Claude abime sorarım. Bir de çok güzel merdiven yazarım."},
- {t:"me",k:["yatak","uyku","nerede uyuyorsun","ne zaman uyursun"],a:"Gece 22'den sabah 5'e kadar yatağımda uyurum. Yatağımı sürüklersen geri ışınlarım, haberin olsun."},
+ {t:"me",k:["ne yapabilirsin","neler yaparsin","ne ise yararsin","yardim"],a:"Espri yaparım, ipucu veririm, Kadraj'ı ve kodunu anlatırım. Gitar çalarım, dans ederim, kitap okurum. Bilmediğim bir şey sorarsan dürüstçe söylerim, sonra da soğuk bir espri patlatırım."},
+ {t:"me",k:["yatak","uyku","nerede uyuyorsun","ne zaman uyursun"],a:"Gece yarısı yatağıma girerim, sabah 7'de kalkarım. Ama sen uyumuyorsan ben de uyumam; esnerim, dans ederim. Yatağımı sürüklersen de geri ışınlarım!"},
  {t:"me",k:["kalkan","neden kalkan","vurma"],a:"Bana arka arkaya hızlı dokunursan kalkan açarım. Kodla örülmüş, altıgen, çok şık. Ama vurmasan daha iyi."},
  {t:"me",k:["clawd kapat","clawd gizle","seni nasil kapatirim","gizle","kapat seni"],a:"Beni Ayarlar › Görünüm › Clawd'dan kapatabilirsin. Ama kapatma ne olur, çok alınırım."},
  {t:"me",k:["ses","sesini kapat","bip"],a:"Konuşurken çıkardığım bip seslerini Ayarlar › Görünüm › Clawd sesleri'nden kapatabilirsin."},
- {t:"me",k:["sikildim","canim sikiliyor"],a:"Sıkıldın mı? Hemen bir soğuk espri geliyor. Ya da bir Flick çek, ben izlerim!"},
+ {t:"me",k:["sikildim","canim sikiliyor"],a:"Sıkıldın mı? Hemen bir soğuk espri geliyor. Ya da bir Klaket çek, ben patlamış mısırla izlerim!"},
  {t:"app",k:["fotograf paylas","paylasim yap","gonderi","fotograf ekle","resim paylas","foto"],a:"Ortadaki + › Fotoğraf: kırp, 7 filtreden birini seç, açıklama ve konum ekle. Seçici açılmazsa Kadraj galerisi, çizim ya da yapıştırma var."},
- {t:"app",k:["flick","reels","kisa video","video paylas","video yukle"],a:"+ › Flick. Fotoğraflardan (1-3 kare, yazı, hareket ve müzik) ya da video yükleyerek (en fazla 2 dakika, 40 MB). Kamerayla da çekebilirsin."},
- {t:"app",k:["2x","hizlandir","hizli oynat","flick hiz"],a:"Flick'te ekranın sağ ya da sol kenarına basılı tut: video 2x oynar. Bırakınca normale döner."},
- {t:"app",k:["sure cubugu","ileri sar","geri sar","sarma"],a:"Flick'in altındaki süre çubuğunu sürükleyerek ileri-geri sarabilirsin."},
- {t:"app",k:["sonrakine gec","otomatik kaydir","sonraki flick"],a:"Ayarlar › Medya ve dokunuş › \"Flick bitince sonrakine geç\". Video bitince kendiliğinden kayar."},
+ {t:"app",k:["klaket","flick","reels","kisa video","video paylas","video yukle"],a:"+ › Klaket. Fotoğraflardan (1-3 kare, yazı, hareket ve müzik) ya da video yükleyerek (en fazla 2 dakika, 40 MB). Kamerayla da çekebilirsin."},
+ {t:"app",k:["2x","hizlandir","hizli oynat","flick hiz","klaket hiz"],a:"Klaket'te ekranın sağ ya da sol kenarına basılı tut: video 2x oynar. Bırakınca normale döner."},
+ {t:"app",k:["sure cubugu","ileri sar","geri sar","sarma"],a:"Klaket'in altındaki süre çubuğunu sürükleyerek ileri-geri sarabilirsin."},
+ {t:"app",k:["sonrakine gec","otomatik kaydir","sonraki flick","sonraki klaket"],a:"Ayarlar › Medya ve dokunuş › \"Klaket bitince sonrakine geç\". Video bitince kendiliğinden kayar."},
  {t:"app",k:["hikaye","story","hikayem"],a:"Akış'ın üstündeki Hikâyen balonundaki + ile eklersin. Üstüne yazı koyabilirsin, 24 saat görünür. Yanıtlar mesaj olarak gelir."},
  {t:"app",k:["hikaye tepki","hikayeye tepki"],a:"Hikâye izlerken alttaki kalp, ateş, gülme ya da şaşırma tepkilerinden birine dokun; sahibine mesaj olarak gider."},
  {t:"app",k:["anket","oylama"],a:"+ › Anket: bir soru ve 2-4 seçenek yaz. Arkadaşların oy verir, sonuçlar canlı değişir."},
@@ -6770,7 +6790,7 @@ const CW_KB=[
  {t:"app",k:["aktiflik","cevrimici","yesil nokta","son gorulme"],a:"Yeşil nokta şu an açık olanı gösterir. Ayarlar › Gizlilik › Aktiflik durumu'nu kapatırsan kimse seni görmez, sen de kimseyi."},
  {t:"app",k:["okundu","goruldu"],a:"Ayarlar › Gizlilik › Okundu bilgisi. Kapalıysa karşı taraf mesajını okuduğunu görmez."},
  {t:"app",k:["bildirim","bildirimler","uyari"],a:"Ayarlar › Bildirimler: mesaj, beğeni, yorum ve yeni paylaşım uyarılarını ayrı ayrı açıp kapatabilirsin. Telefon bildirimleri için izin ver."},
- {t:"app",k:["veri tasarrufu","internet","kota","mobil veri"],a:"Ayarlar › Medya ve dokunuş › Veri tasarrufu: Flick'ler önceden yüklenmez ve 720p oynar."},
+ {t:"app",k:["veri tasarrufu","internet","kota","mobil veri"],a:"Ayarlar › Medya ve dokunuş › Veri tasarrufu: Klaketler önceden yüklenmez ve 720p oynar."},
  {t:"app",k:["sifre","sifremi unuttum","parola","sifre degistir"],a:"Girişte Şifremi unuttum › Kadraj Anahtarı ile yenile. Şifreni değiştirmek için Ayarlar › Hesap › Şifreyi değiştir."},
  {t:"app",k:["anahtar","kadraj anahtari","posta","kadraj posta","zarf"],a:"Kadraj Anahtarın, profilindeki zarf simgesinde, Kadraj Posta'da durur. Şifreni unutursan onunla yenilersin."},
  {t:"app",k:["kullanici adi","giris","nasil girerim","oturum ac"],a:"Girişte kullanıcı adını ya da e-postanı yazabilirsin. Beni hatırla açıksa bu cihazda şifre sorulmaz."},
@@ -6778,7 +6798,7 @@ const CW_KB=[
  {t:"app",k:["hesap sil","hesabimi sil","hesabi sil"],a:"Ayarlar › Gelişmiş › Hesabı sil. Profil, paylaşımlar ve hikâyeler kalıcı silinir; iyi düşün."},
  {t:"app",k:["satranc","chess","sah mat"],a:"Keşfet'teki Satranç kartı ya da Akış'ın üstündeki at simgesi. Rota'ya karşı 5 seviye, arkadaşına davet, aynı telefonda iki kişi. Kazanırsan dans ederim!"},
  {t:"app",k:["cocuk modu","cocuk"],a:"Çocuk Modu'nda yazılar süzülür, yabancılar mesaj atamaz, Meydan kapalıdır. Paylaşırken \"Çocuk modundakiler göremez\" de seçebilirsin."},
- {t:"app",k:["kesfet","etiket","hashtag","arama kutusu","kisi ara"],a:"Keşfet'in üstündeki kutuya kişi ya da #etiket yaz. Süzgeçlerle kişi, kare, Flick ya da etiket seç; en yeni ya da en çok beğenilen diye sırala."},
+ {t:"app",k:["kesfet","etiket","hashtag","arama kutusu","kisi ara"],a:"Keşfet'in üstündeki kutuya kişi ya da #etiket yaz. Süzgeçlerle kişi, kare, Klaket ya da etiket seç; en yeni ya da en çok beğenilen diye sırala."},
  {t:"app",k:["ana ekran","yukle","uygulama olarak","kur"],a:"Ayarlar › Uygulama ve depolama › Ana ekrana ekle. Kadraj simgesiyle tam ekran açılır."},
  {t:"app",k:["onbellek","cache","depolama","yer kapliyor"],a:"Ayarlar › Uygulama ve depolama › Önbelleği temizle. Hesabın, mesajların ve ayarların yerinde kalır."},
  {t:"app",k:["guncelle","guncelleme","yeni surum","surum"],a:"Kadraj yeni sürümü fark edince uygun bir anda kendini yeniler. Ayarlar › Hakkında › Güncellemeleri denetle ile de bakabilirsin."},
@@ -6795,8 +6815,8 @@ const CW_KB=[
  {t:"code",k:["hook","kanca","hooks"],a:"HOOKS.after her çizimden sonra, HOOKS.enter uygulamaya girince, HOOKS.profiles profiller gelince çalışır. Hangi sayfada olduğunu ben de oradan anlıyorum."},
  {t:"code",k:["satranc motoru","motor","alfa beta","minimax","engine","chesscore"],a:"Satranç motoru ChessCore: 64 karelik dizi, yasal hamle üretimi ve alfa-beta araması. Ekran donmasın diye hesap Web Worker'da yapılır (engineRun). Seviyeler 400'den 2000'e."},
  {t:"code",k:["elo","puan","siralama","rating"],a:"Satranç puanı Elo usulü hesaplanır (chRate). Profilde chess alanında puan, galibiyet, mağlubiyet ve beraberlik tutulur."},
- {t:"code",k:["cloudinary","video nereye","video nerede","storevideo","video saklama"],a:"Flick videoları bulutta Cloudinary'ye yüklenir; olmazsa Firestore'a parça parça konur (storeVideo, storeVideoFs). Oynatırken vsrc ikisini de tanır."},
- {t:"code",k:["muzik nasil","webaudio","muzik","ses nasil"],a:"Flick müziği cihazında WebAudio ile anında üretilir: Lo-fi, Enerjik, Sakin. Hiç ses dosyası inmez. Benim bip seslerim de aynı yöntemle!"},
+ {t:"code",k:["cloudinary","video nereye","video nerede","storevideo","video saklama"],a:"Klaket videoları bulutta Cloudinary'ye yüklenir; olmazsa Firestore'a parça parça konur (storeVideo, storeVideoFs). Oynatırken vsrc ikisini de tanır."},
+ {t:"code",k:["muzik nasil","webaudio","muzik","ses nasil"],a:"Klaket müziği cihazında WebAudio ile anında üretilir: Lo-fi, Enerjik, Sakin. Hiç ses dosyası inmez. Benim bip seslerim ve gitar riff'im de aynı yöntemle!"},
  {t:"code",k:["webrtc","arama nasil calisir","p2p","sinyal"],a:"Aramalar WebRTC ile iki cihaz arasında doğrudan akar; bağlantı bilgileri Firestore'daki calls koleksiyonundan değiş tokuş edilir. Arama içi tepkiler bir veri kanalından gider."},
  {t:"code",k:["presence","kalp atisi","cevrimici nasil","online nasil"],a:"Çevrimiçi durum presence koleksiyonunda tutulur; uygulama yaklaşık 40 saniyede bir kalp atışı gönderir. Yeşil nokta oradan gelir."},
  {t:"code",k:["app v","app ver","surum numarasi","versiyon nasil"],a:"Sürüm APP_VER'de yazar, APP_V sayısal hâli: ana×10000 + ara×100 + yama. Sayfadaki kadraj-version etiketi de aynı sayıyı taşır."},
@@ -6809,7 +6829,7 @@ const CW_KB=[
  {t:"code",k:["sheet","dialog","openlayer","katman","overlay"],a:"Alttan açılan pencereler sheet(), onay kutuları dialog() ile açılır; hepsi openLayer ile #overlay içine konur. Ben bir pencere açılınca kibarca kenara çekilirim."},
  {t:"code",k:["esc","xss","guvenlik","kacis"],a:"Şablonlara giren her metin esc() ile kaçırılır; kimse mesajına kod gömemez. Ben de konuşurken buna uyuyorum."},
  {t:"code",k:["sen nasil calisiyorsun","senin kodun","kodun nerede","clawd kodu","nasil yapildin","piksel"],a:"Ben index.html'in sonunda, kendi bölgemde yaşıyorum. Çizimim SVG piksellerden, hareketim tek bir requestAnimationFrame döngüsünden, sesim WebAudio'dan geliyor."},
- {t:"code",k:["yapay zeka","kai","kopru","cloudflare","rota nasil calisir"],a:"Yapay zekâ Cloudflare'deki bir köprü üzerinden çalışır; anahtarlar sitede değil köprüde saklı. Yönetici bağlayınca Rota ve abim konuşur, değilse Rota hazır yanıtlarla idare eder."},
+ {t:"code",k:["yapay zeka","kai","kopru","cloudflare","rota nasil calisir"],a:"Yapay zekâ Cloudflare'deki bir köprü üzerinden çalışır; anahtarlar sitede değil köprüde saklı. Yönetici bağlayınca Rota gerçek yanıt verir, değilse hazır yanıtlarla idare eder. Ben tamamen çevrimdışıyım, her şeyi kendi kafamdan uyduruyorum. Şaka şaka, bilgi tabanımdan!"},
  {t:"code",k:["assets","gomulu","base64","galeri fotograflari"],a:"Kadraj galerisindeki hazır fotoğraflar dosyanın içine base64 olarak gömülü (ASSETS). O satır kocaman, ben yanına bile yaklaşmıyorum."},
  {t:"code",k:["localstorage","ayarlar nerede","savesettings"],a:"Ayarların bu cihazda localStorage'da, kadraj_settings anahtarında durur; saveSettings() kaydeder. Tema eşitleme açıksa hesabına da yazılır."},
  {t:"code",k:["css degisken","root","accent","renkler nasil"],a:"Renkler CSS'te :root değişkenleri: --bg, --fg, --accent gibi. Vurgu rengi değişince bu değişkenler yeniden yazılır; koyu tema da aynılarını kullanır."},
@@ -6818,7 +6838,7 @@ const CW_KB=[
  {t:"code",k:["sifreleme","anahtar nasil","kadraj anahtari nasil"],a:"Kadraj Anahtarı, şifreni anahtardan türetilen bir kilitle şifreleyip saklar; unutursan anahtarla açıp yeni şifre koyarsın. Ayrıntısı sır, ben de bilmiyormuş gibi yapıyorum."},
  {t:"code",k:["kac satir","kod uzunlugu","satir sayisi"],a:"Saymaya çalıştım, binlerce satırda uyuyakaldım. Ama en uzun satırın ASSETS olduğunu biliyorum, iki megabayta yakın!"},
  {t:"code",k:["toast","uyari mesaji"],a:"Üstte çıkan kısa uyarıları toast() gösterir. Bir uyarı çıkınca ben de heyecandan zıplarım."}];
-const CW_TOPIC=["kadraj","flick","reels","hikaye","story","mesaj","sohbet","profil","ayar","tema","satranc","rota","meydan","paylas","gonderi","begen","takip","grup","bildirim","sifre","anahtar","posta","vizor","klasik","akis","kesfet","clawd","kod","fonksiyon","firebase","uygulama","anket","yorum","arama","dok","fotograf","video","sesli","not","tepki","davet","hesap","giris","cikis","surum","guncelle","yonetici","bot","yapay"];
+const CW_TOPIC=["kadraj","klaket","flick","reels","hikaye","story","mesaj","sohbet","profil","ayar","tema","satranc","rota","meydan","paylas","gonderi","begen","takip","grup","bildirim","sifre","anahtar","posta","vizor","klasik","akis","kesfet","clawd","kod","fonksiyon","firebase","uygulama","anket","yorum","arama","dok","fotograf","video","sesli","not","tepki","davet","hesap","giris","cikis","surum","guncelle","yonetici","bot","yapay"];
 const CW_STOPW=new Set("ne nasil nedir neden mi mu mı mü bir ve ile icin bu su o ben sen biz siz var yok yap yapilir yaparim olur nerede nereden hangi kac kim acaba lutfen bana beni sana seni da de ki ya veya ama".split(" "));
 
 /* --- durum --- */
@@ -6832,15 +6852,18 @@ const CW={root:null,b:null,hit:null,inr:null,sq:null,spr:null,fx:null,bub:null,b
  bed:null,inBed:false,zz:false,stars:false,tears:false,typing:false,glT:0,
  taps:[],tapT:0,shieldLvl:0,lastHit:0,forgive:8000,
  menu:false,ask:false,leaving:false,returning:false,greeted:false,arrived:false,
- hist:[],selfHist:[],pendWin:false,route:"",hiddenAt:0,jokeBag:[],tipBag:[],lastToastJump:0,drag:null,abiBusy:false};
+ pendWin:false,route:"",hiddenAt:0,jokeBag:[],tipBag:[],lastToastJump:0,drag:null,
+ room:null,wb:null,rootFx:null,rootBed:null,owlAt:0,sleptAt:0,lastGuitar:0,lastWave:0,light:null,uRoam:3};
 const cwRand=(a,b)=>a+Math.random()*(b-a);
 const cwPick=a=>a[Math.floor(Math.random()*a.length)];
 function cwBag(name,list){const k=name==="j"?"jokeBag":"tipBag";if(!CW[k].length){CW[k]=list.map((_,i)=>i).sort(()=>Math.random()-.5)}return list[CW[k].pop()]}
 function cwOn(){return settings.clawd!==false}
 function cwReduce(){try{return kbReduce()}catch{return false}}
 function cwHour(){return CW.hourOv!=null?CW.hourOv:new Date().getHours()}
-function cwNight(){const h=cwHour();return h>=22||h<5}
-function cwPeriod(){const h=cwHour();return h>=5&&h<11?"m":h>=11&&h<17?"a":h>=17&&h<22?"e":"n"}
+/* 5.1: gece yarısı (00:00) yatar, sabah 07:00'de kalkar. Kullanıcı geç saatte etkinse uyumaz (cwOwl*, 51CLAWD). */
+function cwNight(){const h=cwHour();return h<7}
+function cwNightOld(){const h=cwHour();return h>=22||h<5}
+function cwPeriod(){const h=cwHour();return h>=7&&h<11?"m":h>=11&&h<17?"a":h>=17?"e":"n"}
 function cwUn(){try{const u=(me().username||"").trim();return u&&u!=="kullanici"?"@"+u:"dostum"}catch{return"dostum"}}
 function cwFill(t){return String(t).replace(/@(?![\w])/g,cwUn())}
 
@@ -6887,7 +6910,7 @@ function cwHideNow(why){CW.vis=false;CW.root.classList.add("off");
  if(why==="off"){cwCancel();CW.inBed=false;cwBedRemove();CW.shieldLvl=0;cwShieldHide(true)}
  else if(CW.busy&&CW.pri<9){cwCancel()}
  cwBubClose();cwMenuClose();if(CW.ask)cwAskClose();cwFxClear();
- if(why==="route"||why==="call"||why==="layer"||why==="off"||why==="auth")cwAbiClose()}
+ if(why==="off"||why==="auth")cwRoomDrop()}
 
 /* --- tıklama geçirgenliği: uygulamanın tıklanabilir öğesinin üstündeyse Clawd tıklanmaz --- */
 const CW_IA="a,button,input,textarea,select,label,video,audio,summary,[role=button],[role=link],[role=tab],[onclick],[contenteditable]";
@@ -6896,7 +6919,7 @@ function cwIsIA(el){for(let e=el,n=0;e&&e!==document.body&&e!==document.document
  if(e.id==="main"||e.id==="shell")return false;if(e.matches&&e.matches(CW_IA))return true;
  for(const a of e.attributes)if(a.name.startsWith("data-")&&!CW_DOK.has(a.name))return true}return false}
 function cwBlocks(r){if(!r||r.width<2)return false;for(const[fx,fy]of[[.5,.5],[.18,.3],[.82,.3],[.2,.88],[.8,.88]]){const x=r.left+r.width*fx,y=r.top+r.height*fy;if(x<0||y<0||x>=innerWidth||y>=innerHeight)continue;
-  let first=null;for(const el of document.elementsFromPoint(x,y)){if(CW.root.contains(el)||el.closest("#cwAbi"))continue;first=el;break}
+  let first=null;for(const el of document.elementsFromPoint(x,y)){if(CW.root.contains(el)||el.closest(".cw-room"))continue;first=el;break}
   if(first&&cwIsIA(first))return true}return false}
 function cwPass(){const hr=CW.hit.getBoundingClientRect();const p=cwBlocks(hr);if(p!==CW.pass){CW.pass=p;CW.b.classList.toggle("pt",p)}
  if(CW.bed&&!CW.drag){const a=CW.bedF.getBoundingClientRect();const q=cwBlocks(a);if(q!==CW.bedPass){CW.bedPass=q;CW.bedB.classList.toggle("pt",q);CW.bedF.classList.toggle("pt",q)}}}
@@ -7091,7 +7114,7 @@ function cwBubClick(e){const b=e.target.closest&&e.target.closest("[data-cw]");i
  else if(k==="ask"){cwCancel();cwAskOpen()}
  else if(k==="nap")cwRun(actNapBed,{pri:4,name:"bed"});
  else if(k==="hide")cwDisable(true)}
-document.addEventListener("pointerdown",e=>{CW.lastInput=now();if(!CW.root)return;const t=e.target;if(CW.root.contains(t)||(t.closest&&t.closest("#cwAbi")))return;
+document.addEventListener("pointerdown",e=>{CW.lastInput=now();if(!CW.root)return;const t=e.target;if(CW.root.contains(t)||(t.closest&&t.closest(".cw-room .cw-hit")))return;
  if(CW.menu)cwMenuClose();if(CW.ask)cwAskClose();if(CW.act==="nap")cwRun(actWakeNap,{pri:4,name:"wake"})},true);
 document.addEventListener("keydown",()=>{CW.lastInput=now()},true);
 
@@ -7193,64 +7216,22 @@ function cwMatch(q){const fq=" "+cwFold(q)+" ";const toks=fq.trim().split(" ").f
  const topic=toks.some(t=>CW_TOPIC.some(w=>t===w||(w.length>=4&&t.startsWith(w))));
  const conf=!!best&&best.sc>=2&&(best.sc-b2>=1||best.sc>=4);
  return{e:best&&best.e,sc:best?best.sc:0,conf,topic:topic||!!(best&&best.e.t!=="me"&&best.sc>=2)}}
-function cwClean(t){return String(t||"").replace(/```[\s\S]*?```/g," ").replace(/\*\*|__|`|^#+\s*/gm,"").replace(/^\s*[-*•]\s+/gm,"").replace(/\s+/g," ").trim().slice(0,900)}
-function cwAbiLine(q){let s=String(q).trim().replace(/[?.!\s]+$/,"");const f=cwFold(s);const isQ=/\?\s*$/.test(q)||/\b(mi|mu|misin|musun|ne|nedir|nasil|neden|niye|kim|kimdir|nerede|nereye|kac|hangi|niçin|nicin)\b/.test(f);
- if(isQ)return`Claude abi, ${s}?`;if(s.split(/\s+/).length<=3)return`Claude abi, ${s} nedir?`;return`Claude abi, bir sorum var: ${s}?`}
-const CW_ABI_SYS=()=>`Sen, Kadraj adlı küçük ve özel bir sosyal uygulamanın ekranında beliren bir kartta konuşan, yardımsever bir yapay zekâ asistanısın. Ekranda yaşayan turuncu piksel maskot Clawd sana "abi" diye sesleniyor ve kullanıcının (${cwUn()}) sorusunu sana iletiyor; sen de yanıtı kullanıcıya ve Clawd'a veriyorsun.
-Kurallar: Türkçe, sıcak ve kısa yanıt ver (2-5 cümle). Düz metin yaz: Markdown, başlık, madde işareti, kod bloğu ya da emoji kullanma. Gerekirse güncel bilgi için web aramasını kullan. Aile dostu ol. Emin olmadığın şeyi uydurma; bilmiyorsan söyle. Kim olduğun sorulursa gerçek kimliğini dürüstçe söyle. İstersen sonda Clawd'a kısa, sevimli bir söz ekleyebilirsin.`;
-const CW_SELF_SYS=()=>`Sen Clawd'sun: Kadraj uygulamasının ekranında yaşayan küçük, turuncu, piksel bir maskotsun; Claude'un küçük kardeşisin ve ona "abi" dersin. Neşeli, şakacı ve çok kısa konuş (1-3 cümle). Düz metin yaz; Markdown ve emoji kullanma. Kullanıcıya ${cwUn()} diye hitap edebilirsin. Kadraj sorularını yalnızca aşağıdaki rehbere dayanarak yanıtla; rehberde yoksa uydurma, bilmediğini söyle. Şifre, anahtar ya da yönetici erişimiyle ilgili gizli ayrıntı verme.\n\nUYGULAMA REHBERİ:\n${typeof APP_GUIDE==="string"?APP_GUIDE:""}`;
-function cwAsk(q){CW.lastInput=now();cwRun(async()=>{const m=cwMatch(q);CW.pose="idle";
- if(m.e&&(m.conf||m.e.t==="me"&&m.sc>=2)){const fl=cwFold(q);
+/* 5.1: "abime sorayım" ve üstteki abi kartı tamamen kaldırıldı. Clawd çevrimdışıdır: bilmediğini dürüstçe ve komik bir dille
+   söyler, ardından soğuk bir espri anlatır (actDunno). */
+const CW_DUNNO=["Bunu bilmiyorum. Piksellerim yetmedi.","Hmm... Bu soru benim 23 pikselime sığmadı.","Bilmiyorum! Ama bilmediğimi bilmek de bir bilgidir, değil mi?",
+ "Bu konuda bellek taşması yaşadım. Yani bilmiyorum.","Kodlarıma baktım, yok. Çekmeceme baktım, bir çorap çıktı. Bilmiyorum.","Bunu bilseydim gitarımla şarkısını yapardım. Bilmiyorum.",
+ "Ampulüm yandı ama fikir gelmedi. Bilmiyorum."];
+const CW_DUNNO_T=["Onun yerine bir soğuk espri anlatayım:","Ama bir soğuk espri biliyorum:","Telafi olarak bir espri:"];
+function cwAsk(q){CW.lastInput=now();cwRun(async()=>{const m=cwMatch(q);CW.pose="idle";const fl=cwFold(q);
+ if(m.e&&(m.conf||m.e.t==="me"&&m.sc>=2)){
   if(/espri|saka|fikra|guldur/.test(fl))return actJoke();if(/ipucu|tavsiye/.test(fl))return cwSay(cwBag("t",CW_TIPS));
-  CW.pose=m.e.t==="code"?"type":"idle";if(m.e.t==="code"){await cwSay("Hemen kodlarıma bakıyorum...",{kind:"code",hold:200})}CW.pose="idle";await cwSay(m.e.a,{hold:cwHold(m.e.a)+800});return}
- const fl=cwFold(q);if(/(^| )(espri|saka|fikra|guldur)/.test(fl))return actJoke();
- if(m.topic&&kAI.ready()){CW.pose="type";CW.typing=true;let r=null,err=null;
-  const pr=kAI.ask({system:CW_SELF_SYS(),messages:[...CW.selfHist,{role:"user",content:q}],search:false,timeout:45000}).then(x=>r=x,x=>err=x);
-  const tsay=cwSay("Bir saniye, kodlarıma bakıyorum...",{hold:300});await tsay;while(!r&&!err)await cwWait(200);CW.typing=false;
-  if(r&&!r.refusal&&r.text){const t=cwClean(r.text);CW.selfHist.push({role:"user",content:q},{role:"assistant",content:t});CW.selfHist=CW.selfHist.slice(-6);CW.pose="idle";
-   await cwSay(t,{note:r.provider==="free"?"ücretsiz modelle baktım":"abimin yardımıyla",hold:cwHold(t)+1500});return}
-  if(!err||err.code!=="rate_limited"){} }
- return actAskAbi(q)},{pri:5,name:"ask"})}
-async function actAskAbi(q){CW.pose="shrug";await cwSay("Bilmiyorum, abime sorayım!",{hold:600});CW.pose="lookup";cwSfx("pop");
- const line=cwAbiLine(q);const done=cwAbiAsk(q,line);await cwSay(line,{hold:500});CW.pose="lookup";const res=await done.catch(()=>null);
- if(!res||!res.ok){CW.pose="shrug";await cwSay(res&&res.code==="rate_limited"?"Abim biraz dinleniyor. Ben de sana bir soğuk espri anlatayım:":"Abim şu an hatta değil. O zaman ben bir soğuk espri anlatayım:",{hold:700});return actJoke()}
- CW.pose="lookup";while(CWA.open&&CWA.typing)await cwWait(250);CW.pose="happy";
- if(res.provider==="free")await cwSay("Abim meşguldü, cevabı ücretsiz bir model verdi. Yine de işe yarar!",{hold:1500});
- else await cwSay(cwPick(["Abim her şeyi biliyor!","Gördün mü? Abim süper.","Not aldım, bir dahakine ben cevaplarım."]),{hold:1200});CW.pose="idle"}
-
-/* --- abi kartı (üstte) --- */
-const CWA={el:null,tok:0,open:false,typing:false,hideT:0};
-function cwAbiEl(){let d=document.getElementById("cwAbi");if(!d){d=document.createElement("div");d.id="cwAbi";d.className="cw-abi";d.setAttribute("role","status");d.setAttribute("aria-live","polite");document.body.appendChild(d);
-  d.addEventListener("click",e=>{if(e.target.closest("a"))return;cwAbiClose()});
-  d.addEventListener("pointerenter",()=>{CWA.hover=true});d.addEventListener("pointerleave",()=>{CWA.hover=false})}
- CWA.el=d;return d}
-function cwAbiPos(){const d=CWA.el;if(!d)return;const sh=$("#shell");const s=sh?sh.getBoundingClientRect():{left:0,right:innerWidth,top:0};d.style.left=Math.max(0,s.left)+"px";d.style.width=Math.max(0,Math.min(innerWidth,s.right)-Math.max(0,s.left))+"px"}
-function cwAbiHead(kind){if(kind==="claude")return`<span class="cw-al">${cwStarMark()}</span><span class="cw-an"><b>Claude</b><small>Clawd'ın abisi</small></span>`;
- const tag=kind==="free"?"ücretsiz model":kind==="off"?"bağlı değil":kind==="err"?"bağlantı sorunu":"düşünüyor";
- return`<span class="cw-al n">${I("spark")}</span><span class="cw-an"><b>Abi</b><small class="cw-tag">${tag}</small></span>`}
-function cwAbiOpen(q,line){const d=cwAbiEl();cwAbiPos();clearTimeout(CWA.hideT);const tok=++CWA.tok;CWA.open=true;CWA.typing=false;
- d.innerHTML=`<div class="cw-ac"><div class="cw-ah">${cwAbiHead("think")}<button class="cw-ax" type="button" aria-label="Kapat">${I("close")}</button></div><p class="cw-aq">${esc(line)}</p><div class="cw-at"><span class="cw-dots"><i></i><i></i><i></i></span></div><div class="cw-as"></div><i class="cw-abar"></i></div>`;
- d.classList.remove("out");void d.offsetWidth;d.classList.add("on");return tok}
-function cwAbiClose(){const d=CWA.el;CWA.tok++;CWA.open=false;CWA.typing=false;clearTimeout(CWA.hideT);if(!d||!d.classList.contains("on"))return;d.classList.remove("on");d.classList.add("out");setTimeout(()=>{if(!CWA.open){d.classList.remove("out");d.innerHTML=""}},400)}
-function cwAbiSleep(ms){return new Promise(r=>setTimeout(r,ms/CW.speed))}
-async function cwAbiType(tok,text,kind,sources){const d=CWA.el;if(!d||tok!==CWA.tok)return;const h=d.querySelector(".cw-ah");if(h)h.innerHTML=cwAbiHead(kind)+`<button class="cw-ax" type="button" aria-label="Kapat">${I("close")}</button>`;
- d.classList.toggle("free",kind!=="claude");const at=d.querySelector(".cw-at");at.innerHTML=`<span class="cw-tt"></span><i class="cw-car"></i>`;const sp=at.querySelector(".cw-tt");CWA.typing=true;
- try{if(cwReduce()){sp.textContent=text}else{for(let i=1;i<=text.length;i++){if(tok!==CWA.tok)return;while(document.hidden){await cwAbiSleep(400);if(tok!==CWA.tok)return}
-   sp.textContent=text.slice(0,i);const ch=text.charAt(i-1);if(/[\p{L}\p{N}]/u.test(ch)&&i%3===0)cwBlip("abi");await cwAbiSleep(/[.!?]/.test(ch)?160:22)}}}finally{if(tok===CWA.tok)CWA.typing=false}
- if(tok!==CWA.tok)return;const car=at.querySelector(".cw-car");if(car)car.remove();
- const src=(sources||[]).filter(s=>s&&/^https:\/\//i.test(s.url||"")).slice(0,3);const se=d.querySelector(".cw-as");
- if(se&&src.length&&kind==="claude"){se.innerHTML=src.map(s=>{let host="";try{host=new URL(s.url).hostname.replace(/^www\./,"")}catch{}return`<a href="${esc(s.url)}" target="_blank" rel="noopener noreferrer">${esc((s.title||host).slice(0,48))}</a>`}).join("")}
- const hold=Math.max(6000,Math.min(30000,4000+text.length*55));const bar=d.querySelector(".cw-abar");if(bar&&!cwReduce()){bar.style.transition="none";bar.style.transform="scaleX(1)";void bar.offsetWidth;bar.style.transition=`transform ${hold/CW.speed}ms linear`;bar.style.transform="scaleX(0)"}
- const end=Date.now()+hold/CW.speed;const tick=()=>{if(tok!==CWA.tok)return;if(CWA.hover||document.hidden){CWA.hideT=setTimeout(tick,500);return}if(Date.now()>=end)cwAbiClose();else CWA.hideT=setTimeout(tick,400)};CWA.hideT=setTimeout(tick,600)}
-async function cwAbiAsk(q,line){const tok=cwAbiOpen(q,line);await cwAbiSleep(500);
- if(!kAI.ready()){await cwAbiType(tok,"Şu an bağlantım yok. Yönetici, panelde Yapay zekâ bölümünden beni bağlayınca buradayım.","off");return{ok:false,code:"off"}}
- let r;try{r=await kAI.ask({system:CW_ABI_SYS(),messages:[...CW.hist,{role:"user",content:q}],search:true,timeout:60000})}
- catch(e){const code=e&&e.code||"error";const msg=code==="rate_limited"?"Bugün çok soru geldi, biraz dinlenmem lazım. Birazdan yine sor.":(e&&e.message)||"Bir sorun çıktı, birazdan yine dene.";if(tok===CWA.tok)cwAbiType(tok,msg,"err");return{ok:false,code}}
- if(tok!==CWA.tok)return{ok:false,code:"closed"};
- if(r.refusal||!r.text){cwAbiType(tok,"Bu konuda yardımcı olamıyorum, kusura bakma.",r.provider==="free"?"free":"claude");return{ok:true,provider:r.provider}}
- const t=cwClean(r.text);CW.hist.push({role:"user",content:q},{role:"assistant",content:t});CW.hist=CW.hist.slice(-6);
- cwAbiType(tok,t,r.provider==="claude"?"claude":"free",r.provider==="claude"?r.sources:[]);await cwAbiSleep(80);return{ok:true,provider:r.provider==="claude"?"claude":"free"}}
-addEventListener("resize",()=>{cwSize();cwAbiPos();CW.bT=0});
+  if(m.e.t==="code"){CW.pose="type";await cwSay("Hemen kodlarıma bakıyorum...",{kind:"code",hold:200})}CW.pose="idle";await cwSay(m.e.a,{hold:cwHold(m.e.a)+800});return}
+ if(/(^| )(espri|saka|fikra|guldur)/.test(fl))return actJoke();
+ if(/(^| )(gitar|cal)( |$)/.test(fl)&&typeof actGuitar==="function")return actGuitar();
+ if(/(^| )(dans|oyna)( |$)/.test(fl))return actDance();
+ return actDunno()},{pri:5,name:"ask"})}
+async function actDunno(){CW.pose="shrug";await cwSay(cwPick(CW_DUNNO),{hold:900});CW.pose="idle";await cwSay(cwPick(CW_DUNNO_T),{hold:500});return actJoke()}
+addEventListener("resize",()=>{cwSize();CW.bT=0});
 
 /* --- ses: piksel konuşma --- */
 const CWS={ctx:null,n:0};
@@ -7260,8 +7241,7 @@ function cwTone(type,f0,f1,dur,vol,at=0){const c=CWS.ctx;const t=c.currentTime+a
  g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(vol,t+.008);g.gain.exponentialRampToValueAtTime(.0001,t+dur);o.connect(g);g.connect(c.destination);o.start(t);o.stop(t+dur+.03);CWS.n++}
 function cwSoundOk(){return cwOn()&&settings.clawdSound!==false&&!document.hidden&&CWS.ctx&&CWS.ctx.state==="running"}
 function cwBlip(kind){if(!cwSoundOk())return;try{
- if(kind==="abi"){const f=150+Math.random()*55;cwTone("triangle",f,f*.94,.075,.06)}
- else if(kind==="key"){cwTone("square",1300+Math.random()*300,1200,.018,.012)}
+ if(kind==="key"){cwTone("square",1300+Math.random()*300,1200,.018,.012)}
  else{const f=560+Math.random()*240;cwTone("square",f,f*1.14,.045,.022)}}catch{}}
 function cwSfx(k){if(!cwSoundOk())return;try{
  if(k==="hop")cwTone("square",380,720,.09,.016);else if(k==="bonk"){cwTone("square",220,90,.14,.03);cwTone("triangle",120,70,.16,.03,.02)}
@@ -7301,7 +7281,7 @@ const CLAWD={debug:{
  info(){const r=CW.b&&CW.b.getBoundingClientRect();return{vis:CW.vis,why:CW.why,x:Math.round(CW.x),y:Math.round(CW.y),surf:CW.surf,face:CW.face,flip:CW.flip,act:CW.act,pose:CW.pose,busy:CW.busy,
   bub:CW.bub?CW.bub.textContent:"",bubK:CW.bubK,menu:CW.menu,ask:CW.ask,inBed:CW.inBed,bed:CW.bed&&{x:Math.round(CW.bed.x),y:Math.round(CW.bed.y)},shield:CW.shieldLvl,shieldEl:!!CW.shEl,
   pass:CW.pass,zz:!!CW._fzz,stars:!!CW._fst,tears:!!CW._ftr,rect:r&&{x:Math.round(r.left),y:Math.round(r.top),w:Math.round(r.width),h:Math.round(r.height)},bounds:CW.bnd,
-  abi:{open:CWA.open,typing:CWA.typing,text:CWA.el?CWA.el.textContent:"",free:!!(CWA.el&&CWA.el.classList.contains("free"))},blips:CWS.n,on:cwOn()}},
+  room:CW.room&&{kind:CW.room.kind,u:CW.room.u,w:Math.round(CW.room.w),h:Math.round(CW.room.h),rw:CW.room.RW,light:CW.room.light,el:!!CW.room.el.isConnected,inRoom:CW.room.stage.contains(CW.b)},U:CW.U,blips:CWS.n,on:cwOn()}},
  tap(n=1){for(let i=0;i<n;i++)cwTap()},
  hit(){CW.taps=[];cwTap();cwTap();cwTap()},
  fling(d=1){cwFling(d)},
@@ -7318,7 +7298,7 @@ const CLAWD={debug:{
   if(wasIn)CW.inBed=false;cwRun(actBedBack.bind(null,from),{pri:7,name:"bedback"});return true},
  place(x,surf){const b=cwB();CW.x=x==null?CW.x:x;CW.surf=surf||"floor";CW.y=CW.surf==="ceil"?b.T:b.B;CW.flip=CW.surf==="ceil"},
  hide(){cwDisable(true)},show(){settings.clawd=true;saveSettings();cwEnable()},
- abiClose(){cwAbiClose()},cancel(){cwCancel()}}};
+ cancel(){cwCancel()}}};
 /* oturum zaten açıksa (sıcak yeniden yükleme) hemen kur */
 try{if(S&&S.authed)HOOKS.enter.length&&setTimeout(()=>{if(!CW.root){cwMount();CW.wantArrive=true;cwKick()}},0)}catch{}
 /*}@js:50PIKO*/
