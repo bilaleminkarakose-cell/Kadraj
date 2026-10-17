@@ -2233,12 +2233,12 @@ h1 .rzs{vertical-align:middle}
 .ctile.k51off{opacity:.5}
 .ctile.k51off small{color:var(--heart)}
 /* sürüm etiketi ve yapımcılar */
-#k51Ver{position:fixed;z-index:4;right:max(8px,env(safe-area-inset-right,0px));bottom:calc(env(safe-area-inset-bottom,0px) + 2px);pointer-events:none;user-select:none;-webkit-user-select:none;font:600 9px/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--fg);opacity:.32;white-space:nowrap}
+#k51Ver{position:fixed;z-index:4;right:max(8px,env(safe-area-inset-right,0px));bottom:calc(env(safe-area-inset-bottom,0px) + 2px);pointer-events:none;user-select:none;-webkit-user-select:none;font:600 9px/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--fg);opacity:.42;white-space:nowrap;text-shadow:0 0 3px var(--bg),0 0 1px var(--bg)}
 #k51Ver[data-r="chat"],#k51Ver[data-r="reels"],#k51Ver[data-r="chessgame"]{display:none}
 @media (min-width:700px){#k51Ver{right:14px;bottom:calc(env(safe-area-inset-bottom,0px) + 10px);font-size:10px}}
 @media print{#k51Ver{display:none}}
 .k51cred{margin:10px 0 0;text-align:center;font-size:.74rem;color:var(--muted);letter-spacing:.01em}
-.setfoot .k51cred{display:block;flex-basis:100%;margin:2px 0 0;font-size:.72rem}
+.setfoot .k51cred{display:block;flex-basis:100%;margin:2px 0 0;font:500 .72rem/1.3 var(--f-body);letter-spacing:0;text-transform:none}
 .k51credrow small{white-space:normal}
 .k51closed{display:grid;justify-items:center;gap:8px;padding:22px 16px;border-radius:18px;background:var(--surface-2);text-align:center}
 .k51closed svg.i{width:2.4rem;height:2.4rem;padding:10px;border-radius:50%;background:var(--accent-soft);color:var(--accent)}
@@ -7659,7 +7659,10 @@ function mdnSync(){let el=document.getElementById("k51Mdn");const r=S.route;cons
 
 /* ---------- 5 · Sürüm etiketi ve yapımcılar ---------- */
 function verTagSync(){let el=document.getElementById("k51Ver");if(!el){el=document.createElement("div");el.id="k51Ver";el.setAttribute("aria-hidden","true");el.textContent="Kadraj "+APP_VER;document.body.appendChild(el)}
- el.dataset.r=(S.authed&&S.route&&S.route.name)||"auth"}
+ el.dataset.r=(S.authed&&S.route&&S.route.name)||"auth";verTagPlace(el)}
+/* dok sağ alt köşeyi kaplıyorsa (Klasik tablet) etiket dokun hemen üstüne çıkar; yoksa CSS'teki köşe */
+function verTagPlace(el){let b="";try{const d=$("#dock");const nav=d&&!d.hidden&&(d.querySelector("nav")||d);if(nav){const r=nav.getBoundingClientRect(),vw=innerWidth,vh=(window.visualViewport&&visualViewport.height)||innerHeight;
+ if(r.height&&r.right>vw-96&&r.bottom>vh-13)b=Math.round(vh-r.top+5)+"px"}}catch{}if(el.style.bottom!==b)el.style.bottom=b}
 const welScreen51=welScreen;
 welScreen=function(...a){const h=welScreen51.apply(this,a);try{return h.replace(/<\/div>\s*$/,`<p class="k51cred">${esc(K51_CRED)}</p></div>`)}catch{return h}};
 const vSettings51=vSettings;
@@ -7700,7 +7703,7 @@ render=function(full){if(S.authed&&!S.admin&&S.uid&&k51SusOf(S.uid)&&S.route.nam
  k51Sync();try{if(!full&&m&&m.firstElementChild&&m.firstElementChild.id==="k51Ann"&&m.scrollTop!==st)m.scrollTop=st}catch{}return r};
 const renderTop51=renderTop;
 renderTop=function(...a){const r=renderTop51.apply(this,a);if(!S._k51R)k51Sync();return r};
-addEventListener("resize",()=>{const el=document.getElementById("k51Ann");if(el&&el.classList.contains("float"))annTop(el)});
+addEventListener("resize",()=>{const el=document.getElementById("k51Ann");if(el&&el.classList.contains("float"))annTop(el);const v=document.getElementById("k51Ver");if(v)verTagPlace(v)});
 verTagSync();
 
 /* ---------- 8 · Keşfet'ten gizleme ---------- */
