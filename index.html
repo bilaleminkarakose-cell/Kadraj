@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
 <meta charset="utf-8">
-<meta name="kadraj-version" content="50110">
+<meta name="kadraj-version" content="50111">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,interactive-widget=resizes-content">
 <meta name="theme-color" content="#0A110F">
 <link rel="manifest" href="manifest.webmanifest">
@@ -2934,7 +2934,7 @@ const vib=ms=>{try{if(settings.haptics===false)return;navigator.vibrate&&navigat
 /* Sürüm: ana.ara.yama (4.1.0). Hata düzeltme ve küçük şeyler → yama artar (4.1.1); büyük güncelleme → ara artar (4.2.0).
    APP_V = ana*10000 + ara*100 + yama (4.1.0 → 40100). Başlıktaki <meta name="kadraj-version"> ile aynı tutulmalı.
    Eski biçim (4.0 → 40) verNorm ile çevrilir. "İki sürüm geride" ara sürüm sayısıyla ölçülür (yamalar engellemez). */
-const APP_V=50110,APP_VER="5.1.10";
+const APP_V=50111,APP_VER="5.1.11";
 const verNorm=x=>{x=Math.max(0,Math.floor(+x||0));return x<1000?Math.floor(x/10)*10000+(x%10)*100:x};
 const verLvl=x=>Math.floor(verNorm(x)/100);
 /* 4.9: fark sürüm adımıyla sayılır (4.9 → 5.0 bir adım); eskisi ana*100+ara farkıydı ve 5.0'ı 91 sürüm ileride sanıyordu */
@@ -4249,7 +4249,9 @@ function compressVideo(file,{maxS=30,limit=VMAX,onProg,maxSide=854}={}){return n
 let INSTALL=null;
 addEventListener("beforeinstallprompt",e=>{e.preventDefault();INSTALL=e;scheduleRefresh()});
 addEventListener("appinstalled",()=>{INSTALL=null;LS.set("kadraj_installed",1);toast("Kadraj ana ekranına eklendi");scheduleRefresh()});
-const isStandalone=()=>{try{return matchMedia("(display-mode: standalone)").matches||navigator.standalone===true}catch{return false}};
+const isStandaloneOld=()=>{try{return matchMedia("(display-mode: standalone)").matches||navigator.standalone===true}catch{return false}};
+/* 5.1.11: manifest artık tam ekran (fullscreen); ana ekrandan açılan Kadraj o modda da "uygulama" sayılır */
+const isStandalone=()=>{try{return isStandaloneOld()||matchMedia("(display-mode: fullscreen)").matches}catch{return false}};
 if("serviceWorker"in navigator&&(location.protocol==="https:"||location.hostname==="127.0.0.1"||location.hostname==="localhost"))addEventListener("load",()=>{navigator.serviceWorker.register("sw.js").catch(()=>{})});
 async function installApp(){if(isStandalone())return toast("Kadraj zaten ana ekranında açık.");
  if(INSTALL){const ev=INSTALL;INSTALL=null;try{ev.prompt();const r=await ev.userChoice;if(r&&r.outcome==="accepted"){LS.set("kadraj_installed",1);toast("Kadraj yükleniyor…")}}catch{}return scheduleRefresh()}
