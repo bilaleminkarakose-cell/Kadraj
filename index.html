@@ -2811,6 +2811,52 @@ html.reduce-motion .k51pt,html.reduce-motion .rzchip{transition:none!important}
 /*}@css:51BLOCK*/
 
 /*@css:51REV{*/
+/* 5.1 · Oyun incelemesi: rozetler, hamle listesi simgeleri, inceleme penceresi */
+.rvi{display:block;width:100%;height:100%;overflow:visible}
+.crv{position:absolute;inset:0;pointer-events:none;z-index:7}
+.crv .rvsq{position:absolute;left:0;top:0;width:12.5%;height:12.5%}
+.crv .rvbd{position:absolute;top:-13%;right:-13%;width:46%;height:46%;border-radius:50%;filter:drop-shadow(0 1px 2px rgba(0,0,0,.45));transform-origin:50% 50%}
+.crv .rvsq.ex .rvbd{right:2%}
+.crv .rvsq.ey .rvbd{top:2%}
+.crv .rvbd.pop{animation:rvPop .46s cubic-bezier(.3,1.6,.5,1) .22s both}
+@keyframes rvPop{0%{transform:scale(0) rotate(-30deg);opacity:0}60%{opacity:1}100%{transform:none;opacity:1}}
+.cmv .rvq{display:inline-block;flex:none;width:15px;height:15px;margin-left:3px;align-self:center}
+.cmv[data-rv="br"],.cmv[data-rv="gr"]{color:var(--fg)}
+.crvbar{display:flex;align-items:center;gap:10px;padding:7px 6px 7px 10px;background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--rc,var(--line));border-radius:14px;min-height:52px}
+.crvbar>.rvi,.crvbar>.rvph{width:28px;height:28px;flex:none}
+.crvbar .rvph{display:grid;place-items:center;border-radius:50%;background:var(--surface-2);color:var(--muted)}
+.crvbar .rvph svg.i{width:1rem;height:1rem}
+.crvbar .t{flex:1;min-width:0;display:grid;gap:1px}
+.crvbar .t b{font-size:.88rem;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.crvbar .t span{font-size:.8rem;color:var(--muted);line-height:1.3}
+.crvbar .rvbb{flex:none;width:36px;height:36px;border-radius:12px;display:grid;place-items:center;color:var(--muted);background:var(--surface-2)}
+.crvbar .rvbb svg.i{width:1.1rem;height:1.1rem}
+.rv{display:grid;gap:12px;padding:2px 14px 16px}
+.rv-acc{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.rv-acc>div{display:grid;justify-items:center;gap:2px;padding:12px 8px;border-radius:16px;background:var(--surface-2);text-align:center;min-width:0}
+.rv-acc .rv-who{display:flex;align-items:center;gap:6px;font-weight:700;font-size:.88rem;max-width:100%;min-width:0}
+.rv-acc .rv-who img{width:20px;height:20px;flex:none}
+.rv-acc b{font:600 1.75rem/1.1 var(--f-display);letter-spacing:-.02em}
+.rv-acc small{color:var(--muted);font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.rv-gr{display:block;width:100%;height:auto;border-radius:12px;cursor:pointer;touch-action:manipulation}
+.rv-tb{display:grid;grid-template-columns:1fr auto auto;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--surface)}
+.rv-tb>span{display:flex;align-items:center;gap:9px;padding:6px 12px;font-size:.88rem;border-top:1px solid var(--line);min-width:0}
+.rv-tb>span:nth-child(-n+3){border-top:0}
+.rv-tb .l .rvi{width:20px;height:20px;flex:none}
+.rv-tb .n{justify-content:center;min-width:3.6rem;font:700 .95rem/1 var(--f-mono)}
+.rv-tb .h{font:700 .7rem/1.2 var(--f-body);color:var(--muted);text-transform:uppercase;letter-spacing:.05em;padding:8px 6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:6.5rem;display:block;text-align:center}
+.rv-pg{height:6px;border-radius:3px;background:var(--surface-2);overflow:hidden}
+.rv-pg i{display:block;height:100%;background:var(--accent);border-radius:3px;transition:width .3s}
+.rv-pgt,.rv-nt{color:var(--muted);font-size:.76rem;text-align:center;margin-top:-6px}
+.rv-nt{margin-top:-4px}
+.rv-set .rv-seg{margin:0 12px}
+.rv-set .rv-hint{display:block;color:var(--muted);font-size:.76rem;padding:6px 14px 12px;line-height:1.35}
+.opt .rvo,.rv-endb .rvi{width:1.25rem;height:1.25rem;flex:none}
+.rv-endb{gap:8px}
+:root[data-ui="vizor"] .crvbar{border-radius:20px}
+:root[data-ui="vizor"] .rv-acc>div,:root[data-ui="vizor"] .rv-tb{border-radius:20px}
+:root[data-ui="vizor"] .rv-acc>div{border:1px solid var(--vz-hair,var(--line))}
+@media (prefers-reduced-motion:reduce){.crv .rvbd.pop{animation:none}.rv-pg i{transition:none}}
 /*}@css:51REV*/
 
 
@@ -10215,6 +10261,230 @@ HOOKS.after.push(r=>{if(r!=="settings"||S.guest)return;const m=$("#main");if(!m|
 /*}@js:51BLOCK*/
 
 /*@js:51REV{*/
+/* ===== 5.1 · Oyun incelemesi: hamle değerlendirmesi (chess.com benzeri) =====
+   ChessCore, CLEVELS ve CHC_LV değişmedi. Her şey sarma ile (…Base51R).
+   - Analiz: ayrı bir Web Worker (RVS.wk, ChessCore.toString()); botun motoruyla (CWK) aynı kuyruğu paylaşmaz, botu yavaşlatmaz.
+     Her konum için search({all:true,depth:3}) (telefonda yavaşsa kendiliğinden 2). Sonuç konum anahtarına göre önbellekte (RVS.cache,
+     CC.toFen(g,true)); geri alma ve yeniden açmada aynı konum tekrar hesaplanmaz. Rota/Clawd düşünürken en fazla 0,8 sn bekler.
+     Sıra: en yeni hamle önce (canlı rozet), sonra geriye doğru; oyun bitince eksikler tamamlanır.
+   - Sınıflar (RVC): br Muhteşem (!!), gr Harika (!), be En iyi, ex Mükemmel, go İyi, bk Kitap, in Hatalı (?!), mi Hata (?),
+     ms Kaçırılan, bl Büyük hata (??), fo Zorunlu. Kayıp, kazanma olasılığı (rvWp, lojistik) farkıyla ölçülür: ≤.02 ex, ≤.05 go,
+     ≤.10 in, ≤.20 mi, fazlası bl. Muhteşem: en iyi/neredeyse en iyi + taş fedası (rvSee ile, önceden açıkta olanı saymadan ≥200)
+     + sonrası kaybetmiyor + zaten ezici önde değil. Harika: tek iyi hamle (ikinci en iyi ≥.20 kötü), geri alma/kaçma/bedava alma değil.
+     Kaçırılan: rakip az önce Hata/Büyük hata yaptı ve bu hamle fırsatı geri verdi. Kitap: RV_BOOK (yaklaşık 170 açılış çizgisi,
+     önek sıkıştırmalı UCI; konum anahtarıyla, aktarım sayılır).
+   - Gösterim: settings.chessReview "live" (varsayılan) | "end" (oyun bitince) | "off". Çevrim içi oyunda her zaman yalnızca oyun bitince.
+     Tahtada son (ya da geçmişte bakılan) hamlenin hedef karesinde rozet (#cRv), hamle listesinde renkli simge.
+     Oyun sonu kartında ve oyun menüsünde "Oyun incelemesi" (rvOpen): doğruluk (hamle başına 103.17·e^(-4.354·kayıp)-3.17,
+     aritmetik ve harmonik ortalamanın ortası), sınıf sayıları, değerlendirme grafiği (dokununca o hamleye gider), "Hamleleri incele"
+     (CH._rvStep, #cRvBar: hamle başına tek satır açıklama, en iyi hamlenin SAN'ı).
+   - Tepki: Rota/Clawd'a karşı oyuncu Muhteşem ya da Büyük hata oynayınca (canlı modda) bot konuşur (RV_L). Kısa süre botun kendi
+     hazır cümlesi araya girmez (chBubble sarıldı, CH._rvHold).
+   - Sarılanlar: chApply, chUI, chMenu, chOver, chwCard, chBubble. HOOKS.after: satranç ekranına dönünce analiz sürer. */
+const RV_BOOK="ab1c3d7d5e2e4d5d4c3e2e7e5,ab2b3e7e5c1b2b8c6e2e3d7d5f1b5f8d6,ac2c4c7c5b1c3b8c6g2g3g7g6f1g2f8g7g1f3e7e6e1g1g8e7,cg1f3g8f6b1c3d7d5c4d5f6d5d2d4c5d4,bc7c6e2e4d7d5e4d5c6d5d2d4g8f6,be7e5b1c3b8c6g2g3g7g6f1g2f8g7d2d3d7d6e2e4g8e7,dg8f6g1f3b8c6g2g3d7d5c4d5f6d5f1g2d5b6e1g1f8e7,cg2g3g8f6f1g2d7d5c4d5f6d5b1c3d5b6g1f3b8c6,be7e6b1c3d7d5d2d4g8f6,bg8f6b1c3e7e5g1f3b8c6e2e3f8b4,de7e6e2e4d7d5e4e5d5d4e5f6d4c3,cg1f3g7g6g2g3f8g7f1g2e8g8e1g1d7d6,ad2d4c7c5d4d5e7e5e2e4d7d6,bd7d5b1c3g8f6c1f4e7e6e2e3a7a6g1f3c7c5,cc1f4c7c5e2e3b8c6c2c3g8f6b1d2e7e6,dg8f6e2e3c7c5c2c3b8c6g1f3e7e6b1d2f8d6f4g3e8g8,cc2c4b8c6b1c3d5c4g1f3g8f6e2e4c8g4,dc7c6c4d5c6d5b1c3g8f6c1f4b8c6e2e3c8f5,eg1f3g8f6b1c3d5c4a2a4c8f5e2e3e7e6f1c4f8b4,he7e6c1g5h7h6g5h4d5c4,ie2e3b8d7f1d3d5c4d3c4b7b5,ge2e3c8f5b1c3e7e6,dd5c4e2e4e7e5g1f3e5d4f1c4b8c6,eg1f3g8f6e2e3e7e6f1c4c7c5e1g1a7a6d1e2b7b5,de7e5d4e5d5d4g1f3b8c6g2g3c8g4,de7e6b1c3c7c5c4d5e6d5g1f3b8c6g2g3g8f6,ff8e7g1f3g8f6c1f4e8g8e2e3c7c5,fg8f6c1g5f8e7e2e3e8g8g1f3b8d7a1c1c7c6,gc4d5e6d5c1g5c7c6e2e3f8e7f1d3b8d7,eg1f3g8f6g2g3f8e7f1g2e8g8e1g1d5c4d1c2a7a6,ce2e3g8f6f1d3c7c5c2c3b8c6f2f4c8g4,cg1f3g8f6c1f4c7c5e2e3b8c6c2c3d8b6,ec2c4e7e6b1c3f8e7c1f4e8g8,ee2e3e7e6f1d3c7c5b2b3b8c6e1g1f8d6c1b2e8g8,be7e6c2c4f7f5g2g3g8f6f1g2d7d5g1f3c7c6e1g1f8d6,df8b4c1d2d8e7,bf7f5c2c4g8f6g2g3e7e6f1g2f8e7g1f3e8g8e1g1d7d5,cg2g3g8f6f1g2g7g6g1f3f8g7e1g1e8g8c2c4d7d6b1c3d8e8,bg8f6c1f4d7d5e2e3e7e6g1f3f8d6f4g3e8g8,dg7g6e2e3f8g7g1f3e8g8f1e2d7d6h2h3c7c5,cc1g5e7e6e2e4h7h6g5f6d8f6,df6e4g5f4c7c5f2f3d8a5c2c3e4f6,cc2c4c7c5d4d5b7b5c4b5a7a6b5a6g7g6b1c3c8a6,fe7e5b1c3d7d6e2e4f8e7,fe7e6b1c3e6d5c4d5d7d6e2e4g7g6g1f3f8g7f1e2e8g8,de7e6b1c3d7d5c1g5f8e7e2e3e8g8g1f3h7h6,ff8b4d1c2e8g8a2a3b4c3c2c3b7b6c1g5c8b7,ge2e3e8g8f1d3d7d5g1f3c7c5e1g1b8c6,gf2f3d7d5a2a3b4e7,gg1f3c7c5g2g3c5d4f3d4e8g8,eg1f3b7b6a2a3c8b7b1c3d7d5,gg2g3c8a6b2b3f8b4c1d2b4e7f1g2c7c6,fd7d5b1c3f8e7c1f4e8g8e2e3c7c5,ff8b4c1d2d8e7g2g3b8c6,eg2g3d7d5f1g2f8e7g1f3e8g8e1g1d5c4d1c2a7a6,dg7g6b1c3d7d5c1f4f8g7e2e3c7c5,gc4d5f6d5e2e4d5c3b2c3f8g7g1f3c7c5a1b1e8g8,gg1f3f8g7d1b3d5c4b3c4e8g8,ff8g7e2e4d7d6f1e2e8g8c1g5b8a6,if2f3e8g8c1e3e7e5d4d5c7c6,if2f4e8g8g1f3c7c5d4d5e7e6,ig1f3e8g8f1e2e7e5e1g1b8c6d4d5c6e7f3e1f6d7,eg1f3f8g7g2g3e8g8f1g2d7d6e1g1b8c6b1c3a7a6,cg1f3d7d5c2c4c7c6b1c3d5c4,de7e6c1g5c7c5e2e3b7b6,ec2c4d7d5b1c3f8e7c1g5h7h6,dg7g6c2c4f8g7b1c3e8g8e2e4d7d6f1e2e7e5,ae2e3e7e5d2d4e5d4e3d4d7d5,ae2e4b7b6d2d4c8b7f1d3e7e6,bb8c6g1f3d7d6d2d4g8f6b1c3c8g4,bc7c5b1c3b8c6f2f4g7g6g1f3f8g7f1b5c6d4,eg2g3g7g6f1g2f8g7d2d3d7d6f2f4e7e6,cc2c3d7d5e4d5d8d5d2d4g8f6g1f3e7e6,dg8f6e4e5f6d5d2d4c5d4g1f3b8c6c3d4d7d6,cd2d4c5d4c2c3d4c3b1c3b8c6g1f3d7d6f1c4e7e6,cg1f3b8c6d2d4c5d4f3d4e7e5d4b5d7d6,hg7g6b1c3f8g7c1e3g8f6f1c4e8g8,hg8f6b1c3e7e5d4b5d7d6c1g5a7a6b5a3b7b5g5f6g7f6,ef1b5e7e6e1g1g8e7,fg7g6e1g1f8g7f1e1e7e5,dd7d6d2d4c5d4d1d4b8c6f1b5c8d7,gf3d4g8f6b1c3a7a6c1e3e7e5d4b3c8e6f2f3f8e7,kc1g5e7e6f2f4f8e7d1f3d8c7,kf1e2e7e5d4b3f8e7e1g1e8g8,kh2h3e7e5d4e2h7h5,jb8c6c1g5e7e6d1d2a7a6e1c1c8d7,je7e6f1e2a7a6e1g1f8e7f2f4e8g8,jg7g6c1e3f8g7f2f3e8g8d1d2b8c6f1c4c8d7,ef1b5b8d7d2d4g8f6,fc8d7b5d7d8d7c2c4b8c6,de7e6d2d4c5d4f3d4a7a6f1d3g8f6e1g1d8c7,hb8c6b1c3d8c7c1e3a7a6f1d3g8f6,hg8f6b1c3f8b4,dg7g6d2d4c5d4f3d4b8c6,bc7c6b1c3d7d5g1f3c8g4h2h3g4f3d1f3e7e6d2d4g8f6,cd2d4d7d5b1c3d5e4c3e4c8f5e4g3f5g6h2h4h7h6g1f3b8d7h4h5g6h7,eb1d2d5e4d2e4b8d7g1f3g8f6e4f6d7f6,ee4d5c6d5c2c4g8f6b1c3e7e6g1f3f8e7,gf1d3b8c6c2c3g8f6c1f4c8g4,ee4e5c8f5b1c3e7e6g2g4f5g6g1e2c6c5,gg1f3e7e6f1e2c6c5c1e3b8d7,ef2f3e7e6b1c3f8b4c1e3g8e7,bd7d5e4d5d8d5b1c3d5a5d2d4g8f6g1f3c8f5f1c4e7e6c1d2c7c6,fd5d6d2d4g8f6g1f3a7a6g2g3c8g4,fd5d8d2d4g8f6g1f3c8g4,dg8f6d2d4f6d5g1f3g7g6c2c4d5b6,bd7d6d2d4g8f6b1c3e7e5g1f3b8d7f1c4f8e7,fg7g6f2f4f8g7g1f3c7c5d4c5d8a5,gg1f3f8g7f1e2e8g8e1g1c7c6,be7e5b1c3b8c6f1c4g8f6d2d3f8c5f2f4d7d6,dg8f6f2f4d7d5f4e5f6e4g1f3f8e7,eg2g3d7d5e4d5f6d5f1g2,cd2d4e5d4d1d4b8c6d4e3g8f6b1c3f8b4,cf1c4g8f6d2d3c7c6g1f3d7d5c4b3f8d6,cf2f4d7d5e4d5e5e4,de5f4g1f3d7d6d2d4g7g5,fg7g5h2h4g5g4f3e5g8f6,df8c5g1f3d7d6c2c3g8f6,cg1f3b8c6b1c3g8f6d2d4e5d4f3d4f8b4d4c6b7c6f1d3d7d5,gf1b5f8b4e1g1e8g8d2d3d7d6,ec2c3g8f6d2d4f6e4d4d5c6e7,ed2d4e5d4f1c4g8f6e4e5d7d5c4b5f6e4,gf3d4f8c5c1e3d8f6c2c3g8e7,id4b3c5b6b1c3g8f6,hg8f6d4c6b7c6e4e5d8e7d1e2f6d5c2c4,ef1b5a7a6b5a4g8f6e1g1f6e4d2d4b7b5a4b3d7d5d4e5c8e6,jf8e7f1e1b7b5a4b3d7d6c2c3e8g8h2h3,ne8g8c2c3d7d5e4d5f6d5,gb5c6d7c6e1g1f7f6d2d4e5d4f3d4,ff8c5c2c3g8f6e1g1e8g8d2d4c5b6,fg8f6d2d3f8c5c2c3e8g8e1g1d7d6,ge1g1f6e4d2d4e4d6b5c6d7c6d4e5d6f5d1d8e8d8,ef1c4f8c5b2b4c5b4c2c3b4a5d2d4e5d4,gc2c3g8f6d2d3d7d6e1g1e8g8f1e1a7a6,id2d4e5d4c3d4c5b4c1d2b4d2b1d2d7d5,ge1g1g8f6d2d3d7d6c2c3e8g8,ff8e7d2d4d7d6,fg8f6d2d3f8c5c2c3d7d6e1g1e8g8,hf8e7e1g1e8g8f1e1d7d6,gf3g5d7d5e4d5c6a5c4b5c7c6d5c6b7c6b5e2h7h6,dd7d6d2d4e5d4f3d4g8f6b1c3f8e7f1e2e8g8,fg8f6b1c3b8d7f1c4f8e7,dg8f6d2d4f6e4f1d3d7d5f3e5b8d7,ef3e5d7d6e5f3f6e4d2d4d6d5f1d3b8c6e1g1f8e7,be7e6d2d3d7d5b1d2g8f6g1f3c7c5g2g3b8c6f1g2f8e7e1g1e8g8,cd2d4d7d5b1c3d5e4c3e4b8d7g1f3g8f6e4f6d7f6,ff8b4e4e5c7c5a2a3b4c3b2c3g8e7d1g4d8c7,fg8f6c1g5f8e7e4e5f6d7g5e7d8e7f2f4e8g8,ge4e5f6d7f2f4c7c5g1f3b8c6c1e3,eb1d2c7c5g1f3g8f6e4d5e6d5,fg8f6e4e5f6d7f1d3c7c5c2c3b8c6g1e2c5d4c3d4f7f6,ee4d5e6d5g1f3g8f6f1d3f8d6e1g1e8g8,ee4e5c7c5c2c3b8c6g1f3d8b6a2a3c5c4,bg7g6d2d4f8g7b1c3d7d6c1e3a7a6d1d2b7b5,bg8f6e4e5f6d5c2c4d5b6d2d4d7d6f2f4d6e5f4e5b8c6,ed2d4d7d6g1f3c8g4f1e2e7e6e1g1f8e7,af2f4d7d5g1f3g8f6e2e3g7g6f1e2f8g7e1g1e8g8,be7e5f4e5d7d6e5d6f8d6,ag1f3c7c5c2c4b8c6b1c3g7g6g2g3f8g7,ce2e4d7d6d2d4c5d4f3d4g8f6,bd7d5c2c4d5d4e2e3b8c6e3d4c6d4,de7e6g2g3g8f6f1g2f8e7e1g1e8g8b2b3c7c5,cd2d4g8f6c2c4e7e6b1c3f8e7,cg2g3g8f6f1g2c7c6e1g1c8g4,bg8f6c2c4e7e6b1c3d7d5d2d4f8e7,cg2g3g7g6f1g2f8g7e1g1e8g8d2d3d7d6e2e4e7e5,ag2g3d7d5f1g2g8f6g1f3c7c6";
+const RVC={br:["Muhteşem","#1baca6","!!"],gr:["Harika","#5a8fcc","!"],be:["En iyi","#7db544",""],ex:["Mükemmel","#9ec95a",""],go:["İyi","#7d9a86",""],bk:["Kitap","#a8865f",""],
+ in:["Hatalı","#f2b73b","?!"],mi:["Hata","#e98a2c","?"],ms:["Kaçırılan","#ef6f68",""],bl:["Büyük hata","#d43b36","??"],fo:["Zorunlu","#8e9994",""]};
+const RV_ORD=["br","gr","be","ex","go","bk","in","mi","ms","bl"];
+const RV_GLY={be:'<path d="M12 5.2l2.05 4.3 4.7.55-3.5 3.2.95 4.65L12 15.55 7.8 17.9l.95-4.65-3.5-3.2 4.7-.55z" fill="#fff"/>',
+ ex:'<path d="M6.8 11.2h2.4v6.6H6.8zM10.4 17.8h5.3c.75 0 1.35-.45 1.55-1.15l1.05-4c.25-.95-.4-1.75-1.35-1.75h-3.1l.45-2.3c.15-.75-.25-1.45-.95-1.65l-.5-.15-2.45 4.25z" fill="#fff"/>',
+ go:'<path d="M7 12.4l3.3 3.3L17.2 8.8" fill="none" stroke="#fff" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round"/>',
+ bk:'<path d="M6.5 7.6c1.9-.7 3.8-.5 5.5.9 1.7-1.4 3.6-1.6 5.5-.9v9.2c-1.9-.7-3.8-.5-5.5.9-1.7-1.4-3.6-1.6-5.5-.9zM12 8.5v9.2" fill="none" stroke="#fff" stroke-width="1.7" stroke-linejoin="round"/>',
+ ms:'<path d="M8.3 8.3l7.4 7.4M15.7 8.3l-7.4 7.4" stroke="#fff" stroke-width="2.7" stroke-linecap="round"/>',
+ fo:'<path d="M7 12h8.5M12.5 8.5 16 12l-3.5 3.5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>'};
+function rvIcon(c,cls){const d=RVC[c];if(!d)return"";const t=d[2];
+ const gl=t?`<text x="12" y="${t.length>1?16.4:17}" text-anchor="middle" font-size="${t.length>1?12.5:15}" font-weight="800" font-family="Figtree,system-ui,sans-serif" letter-spacing="-.6" fill="${c==="in"?"#3a2800":"#fff"}">${t}</text>`:RV_GLY[c]||"";
+ return`<svg class="rvi ${cls||""}" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="12" fill="${d[1]}"/>${gl}</svg>`}
+const RV_L={
+ r:{br:["Vay! Bunu nasıl gördün? Hesaplarımı baştan yapıyorum.","Taş feda edip öne geçmek... Pusulam bile şaştı. Bravo!","Muhteşem bir hamle. Bunu not ediyorum, sonra çalışacağım.","Bu hamleyi beklemiyordum. Gerçekten etkilendim!"],
+  bl:["Eyvah, bu büyük bir hataydı.","Bunu gerçekten oynamak istedin mi? Geri almak serbest, söylemedim.","Hmm, sanırım bir taşı unuttun.","Teşekkürler, bu hamleyi hesaplarıma hediye olarak yazdım."]},
+ c:{br:["Ne?! Bu hamleyi nasıl buldun? Kıskaçlarım titredi.","Muhteşem! Bütün piksellerim ayağa kalktı.","Taş feda mı? Ben olsam kabuğuma saklanırdım. Cesursun!","Bunu görünce yan yan yürümeyi unuttum. Harika!"],
+  bl:["Oha! Bu taş bana hediye mi?","Hmm, bu hamleyi bir daha düşünmek ister misin? Ben istemem.","Teşekkürler! Kıskaçlarım zaten açtı.","Bunu gördüm ve dans etmeye başladım."]}};
+const RVS={cache:new Map(),deep:new Map(),wk:null,n:0,pend:{},busy:false,depth:3,timer:0,wait:0,say:false,popK:""};
+const RV_M=CC.MATE-1000;
+const RV_PV=[0,100,320,330,500,900,5000];
+const rvKey=f=>String(f).split(" ").slice(0,3).join(" ");
+const rvWp=s=>s>RV_M?1:s<-RV_M?0:1/(1+Math.exp(-0.00368208*Math.max(-1500,Math.min(1500,s))));
+const rvMode=()=>["live","end","off"].includes(settings.chessReview)?settings.chessReview:"live";
+const rvTn=t=>{const n=PNAME[t]||"taş";return n[0].toLocaleUpperCase("tr")+n.slice(1)};
+let RV_BSET=null;
+function rvBook(){if(RV_BSET)return RV_BSET;RV_BSET=new Set();try{const g=CC.fromFen(CC.START);let p=[];
+ for(const e of RV_BOOK.split(",")){const k=e.charCodeAt(0)-97;while(p.length>k){CC.unmake(g);p.pop()}
+  for(const u of e.slice(1).match(/.{4}/g)||[]){const m=CC.fromUci(g,u);if(!m)break;CC.make(g,m);p.push(u);RV_BSET.add(rvKey(CC.toFen(g,true)))}}}catch(e){console.warn("rv",e)}return RV_BSET}
+
+/* --- statik değişim (SEE): b tahta dizisi, c renk (0/8) --- */
+function rvAtk(b,s,c){let best=-1,bv=1e9;const r=s>>3,f=s&7;const ok=(q,t)=>{if(RV_PV[t]<bv){bv=RV_PV[t];best=q}};
+ const pr=c===0?r+1:r-1;if(pr>=0&&pr<8)for(const df of[-1,1]){const ff=f+df;if(ff>=0&&ff<8&&b[pr*8+ff]===(c|1))ok(pr*8+ff,1)}
+ for(const[a,d]of[[-2,-1],[-2,1],[-1,-2],[-1,2],[1,-2],[1,2],[2,-1],[2,1]]){const R=r+a,F=f+d;if(R>=0&&R<8&&F>=0&&F<8&&b[R*8+F]===(c|2))ok(R*8+F,2)}
+ for(const[a,d]of[[-1,0],[1,0],[0,-1],[0,1],[-1,-1],[-1,1],[1,-1],[1,1]]){const st=!a||!d;let R=r+a,F=f+d,one=true;
+  while(R>=0&&R<8&&F>=0&&F<8){const p=b[R*8+F];if(p){if((p&8)===c){const t=p&7;if(t===5||(st?t===4:t===3)||(one&&t===6))ok(R*8+F,t)}break}R+=a;F+=d;one=false}}
+ return best}
+function rvSee(b0,from,to){const b=Int8Array.from(b0);const vals=[RV_PV[b[to]&7]||0];let cur=b[from];b[from]=0;b[to]=cur;let side=(cur&8)^8;
+ for(let k=0;k<32;k++){const a=rvAtk(b,to,side);if(a<0)break;vals.push(RV_PV[cur&7]);cur=b[a];b[a]=0;b[to]=cur;side^=8}
+ let s=0;for(let k=vals.length-1;k>=1;k--)s=Math.max(0,vals[k]-s);return vals[0]-s}
+/* c renginin rakibe karşı hemen kazanabileceği en çok malzeme (sözde yasal, sıra c'de sayılır) */
+function rvHang(b,c){let best=0;for(let s=0;s<64;s++){const p=b[s];if(!p||(p&8)===c||(p&7)===6)continue;const a=rvAtk(b,s,c);if(a<0)continue;const v=rvSee(b,a,s);if(v>best)best=v}return best}
+/* sıradaki tarafın yasal almalarla en iyi kazancı: [kazanç, kare, alınan tür] */
+function rvThreat(g){let r=[0,-1,0];for(const m of CC.legal(g)){if(!m.c)continue;const v=m.fl&1?100:rvSee(g.b,m.f,m.t);if(v>r[0])r=[v,m.t,m.c&7]}return r}
+function rvMat(b,c){let s=0;for(let i=0;i<64;i++){const p=b[i];if(p&&(p&7)!==6)s+=(p&8)===c?RV_PV[p&7]:-RV_PV[p&7]}return s}
+
+/* --- analiz işçisi --- */
+function rvWorker(){if(RVS.wk!==null)return RVS.wk;
+ try{const src=`const C=(${ChessCore.toString()})();onmessage=e=>{const{id,fen,depth,time}=e.data;let o;try{const g=C.fromFen(fen);const r=C.search(g,time?{depth,time}:{all:true,depth});o=time?{id,d:{u:r.move?C.uci(r.move):null,s:r.score}}:{id,d:(r.all||[]).map(x=>({u:C.uci(x.m),s:x.s}))}}catch(err){o={id,err:String(err)}}postMessage(o)}`;
+  const w=new Worker(URL.createObjectURL(new Blob([src],{type:"text/javascript"})));
+  w.onmessage=e=>{const p=RVS.pend[e.data.id];if(p){delete RVS.pend[e.data.id];p(e.data.err?null:e.data.d)}};
+  w.onerror=()=>{RVS.wk=false;for(const k of Object.keys(RVS.pend)){const p=RVS.pend[k];delete RVS.pend[k];p(undefined)}};RVS.wk=w}catch{RVS.wk=false}return RVS.wk}
+function rvLocal(fen,deep){try{const g=CC.fromFen(fen);if(deep){const r=CC.search(g,{depth:4,time:600});return{u:r.move?CC.uci(r.move):null,s:r.score}}
+ const r=CC.search(g,{all:true,depth:2});return(r.all||[]).map(x=>({u:CC.uci(x.m),s:x.s}))}catch{return null}}
+const rvPut=(M,k,v)=>{if(M.size>1500){let i=0;for(const x of M.keys()){M.delete(x);if(++i>=200)break}}M.set(k,v)};
+/* deep: false → tüm hamlelerin puanı (RVS.cache), true → derin arama, en iyi hamle (RVS.deep; fedaları ve büyük hataları doğrular) */
+function rvEval(fen,key,deep){const M=deep?RVS.deep:RVS.cache;if(M.has(key))return Promise.resolve(M.get(key));
+ return new Promise(res=>{const t0=Date.now();
+  const done=d=>{if(d&&(deep?d.u:d.length))rvPut(M,key,d);else if(deep)rvPut(M,key,{u:null,s:0});if(!deep&&Date.now()-t0>2600&&RVS.depth>2)RVS.depth=2;res(d||null)};
+  const w=rvWorker();
+  if(w){const id=++RVS.n;const to=setTimeout(()=>{if(RVS.pend[id]){delete RVS.pend[id];try{w.terminate()}catch{}RVS.wk=null;RVS.depth=2;done(null)}},20000);
+   RVS.pend[id]=d=>{clearTimeout(to);if(d===undefined)setTimeout(()=>done(rvLocal(fen,deep)),20);else done(d)};w.postMessage(deep?{id,fen,depth:5,time:1300}:{id,fen,depth:RVS.depth});return}
+  setTimeout(()=>done(rvLocal(fen,deep)),30)})}
+
+/* --- oyunun konumları ve sınıflar --- */
+function rvPos(){const n=CH.moves.length,st=CH.startFen||"";let P=CH._rvP;
+ if(P&&P.st===st&&P.n===n&&(!n||CH.moves[n-1].u===P.lu))return P;
+ if(!(P&&P.st===st&&P.n<n&&(!P.n||CH.moves[P.n-1].u===P.lu))){const g=CC.fromFen(CH.startFen||CC.START);P=CH._rvP={st,n:0,lu:"",g,f:[CC.toFen(g)],k:[CC.toFen(g,true)],sd:[g.turn],res:[]}}
+ for(let i=P.n;i<n;i++){const m=CC.fromUci(P.g,CH.moves[i].u);if(!m)break;CC.make(P.g,m);P.f.push(CC.toFen(P.g));P.k.push(CC.toFen(P.g,true));P.sd.push(P.g.turn);P.n=i+1;P.lu=CH.moves[i].u}
+ return P}
+function rvIsBook(P,j){if(j>=30||CH.startFen)return false;const B=rvBook();return B.has(rvKey(P.k[j+1]))&&(j===0||B.has(rvKey(P.k[j])))}
+function rvClassify(P,i){const u=CH.moves[i]&&CH.moves[i].u;if(!u)return null;
+ if(rvIsBook(P,i))return{u,c:"bk",fin:true,l:0};
+ const gB=CC.fromFen(P.f[i]);const side=gB.turn;const mP=CC.fromUci(gB,u);if(!mP)return null;
+ if(CC.legal(gB).length===1)return{u,c:"fo",fin:true,l:0};
+ const A=RVS.cache.get(P.k[i]);if(!A||!A.length)return null;
+ const e=A.find(x=>x.u===u);if(!e)return null;
+ const sB=A[0].s,sP=e.s,wB=rvWp(sB),wP=rvWp(sP),loss=Math.max(0,wB-wP),cpl=sB-sP;
+ const o={u,fin:true,l:loss,sb:sB,sp:sP,bu:A[0].u,bs:A[0].u};
+ const mB=CC.fromUci(gB,A[0].u);if(mB){o.bs=CC.san(gB,mB);if(mB.c&&!(mB.fl&1)&&rvSee(gB.b,mB.f,mB.t)>=200)o.cw=mB.c&7}
+ const pre=rvHang(gB.b,side^8);const capV=mP.c?RV_PV[mP.c&7]:0,prV=mP.pr?RV_PV[mP.pr&7]-100:0;const mat=rvMat(gB.b,side);
+ CC.make(gB,mP);const th=rvThreat(gB);CC.unmake(gB);
+ const sac=th[0]-capV-prV-pre;
+ let c=cpl<=0||u===A[0].u?"be":loss<=.02?"ex":loss<=.05?"go":loss<=.10?"in":loss<=.20?"mi":"bl";
+ /* sığ arama fedayı ya da büyük hatayı yanlış görebilir: derin aramayla doğrula */
+ let wQ=wP;if(c!=="be"&&c!=="ex"&&(sac>=200||c==="bl")){const D=RVS.deep.get(P.k[i]);if(!D){o.dp=1;o.fin=false;o.wait=1}else{o.dp=1;if(D.u===u){c="be";wQ=rvWp(D.s);o.l=0;o.sp=D.s;o.dv=1}}}
+ if((c==="be"||(c==="ex"&&cpl<=15))&&sac>=200&&wQ>=.45&&(sB>RV_M?mat<=200:sB<600&&mat<600)){c="br";o.st=th[2]}
+ if(c==="be"&&A.length>=2){const o2=A.find(x=>x.u!==u);const w2=rvWp(o2.s);const pv=CH.moves[i-1];
+  const recap=!!(pv&&pv.m&&pv.m.c&&pv.m.t===mP.t);const a=rvAtk(gB.b,mP.f,side^8);const flee=a>=0&&rvSee(gB.b,a,mP.f)>=100;
+  const free=!!(mP.c&&rvSee(gB.b,mP.f,mP.t)>=200);const evade=CC.inCheck(gB)&&A.length<=3;
+  if(!o.dv&&!/#$/.test(CH.moves[i].san||"")&&wB-w2>=.2&&w2<=.8&&wP>=.25&&!recap&&!flee&&!free&&!evade)c="gr"}
+ if(["in","mi","bl"].includes(c)&&i>0){const pr=P.res[i-1];if(!pr||pr.wait)o.fin=false;
+  else if((pr.c==="mi"||pr.c==="bl")&&pr.l>=.15&&c!=="in"){const Ap=RVS.cache.get(P.k[i-1]);if(Ap&&Ap.length){const base=1-rvWp(Ap[0].s);if(wB>=base+.15&&wP>=base-.05)c="ms"}}}
+ o.om=sP<-RV_M&&sB>=-RV_M;o.mm=sB>RV_M&&sP<=RV_M;if(th[0]>=200&&th[0]-pre>=150)o.hg=th[2];o.mate=/#$/.test(CH.moves[i].san||"");
+ o.c=c;return o}
+const rvR=(P,i)=>{const r=P.res[i];return r&&!r.wait?r:null};
+function rvClassAll(){const P=rvPos();for(let i=0;i<P.n;i++){const r=P.res[i];if(r&&r.fin&&r.u===CH.moves[i].u)continue;let x=null;try{x=rvClassify(P,i)}catch(e){console.warn("rv",e)}P.res[i]=x||undefined}return P}
+
+/* --- kuyruk --- */
+function rvActive(){return!!(CH&&CH.mode!=="puzzle"&&S.route&&S.route.name==="chessgame"&&(rvMode()!=="off"||CH._rvForce))}
+function rvKick(){clearTimeout(RVS.timer);RVS.timer=setTimeout(rvStep,40)}
+async function rvStep(){if(RVS.busy||!rvActive())return;let P;try{P=rvPos()}catch(e){console.warn("rv",e);return}
+ let i=-1,deep=false;for(let j=P.n-1;j>=0;j--){if(RVS.cache.has(P.k[j])||rvIsBook(P,j))continue;i=j;break}
+ if(i<0){try{rvClassAll()}catch{}for(let j=P.n-1;j>=0;j--){const r=P.res[j];if(r&&r.dp&&!RVS.deep.has(P.k[j])){i=j;deep=true;break}}}
+ if(i<0){RVS.wait=0;rvRefresh();return}
+ /* Rota/Clawd düşünürken (ayrı işçide) kısa bir süre bekle: telefonda işlemciyi paylaşmasınlar */
+ if(CH.thinking&&CH.mode==="bot"){if(!RVS.wait)RVS.wait=Date.now();if(Date.now()-RVS.wait<800){RVS.timer=setTimeout(rvStep,150);return}}
+ RVS.wait=0;RVS.busy=true;const tok=CH;try{await rvEval(P.f[i],P.k[i],deep)}catch(e){console.warn("rv",e)}finally{RVS.busy=false}
+ if(CH===tok)rvRefresh();rvKick()}
+
+/* --- gösterim --- */
+function rvShow(){if(!CH||CH.mode==="puzzle")return false;if(CH.mode==="online"&&!CH.over)return false;if(CH._rvForce)return true;const md=rvMode();if(md==="off")return false;return md==="live"||!!CH.over}
+function rvRefresh(){if(!CH||!$("#cBoard"))return;try{rvClassAll();rvPaintUI();rvSheetPaint();rvReact()}catch(e){console.warn("rv",e)}}
+function rvPaintUI(){if(!CH||CH.mode==="puzzle")return;const P=rvClassAll();rvList(P);rvBadge(P);rvBar(P)}
+function rvList(P){const mv=$("#cMoves");if(!mv||!rvShow())return;
+ for(const b of mv.querySelectorAll(".cmv[data-cply]")){const i=+b.dataset.cply-1;const r=rvR(P,i);const want=r?r.c:"";if((b.dataset.rv||"")===want&&b._rv)continue;b._rv=1;
+  const em=b.querySelector("em");if(em)em.remove();b.dataset.rv=want;if(want)b.insertAdjacentHTML("beforeend",`<em class="rvq" title="${esc(RVC[want][0])}">${rvIcon(want)}</em>`)}}
+function rvBadge(P){const bd=$("#cBoard");if(!bd)return;let L=$("#cRv");if(!L){L=document.createElement("div");L.className="crv";L.id="cRv";L.setAttribute("aria-hidden","true");bd.insertBefore(L,$("#cOv")||null)}
+ const idx=CH.view==null?CH.moves.length-1:CH.view-1;const r=idx>=0&&rvShow()?rvR(P,idx):null;
+ if(!r){if(L.innerHTML)L.innerHTML="";L.dataset.k="";return}
+ const m=CH.moves[idx].m;const[x,y]=sqXY(m.t);const id=idx+":"+r.c+":"+CH.moves[idx].u;const k=id+":"+(CH.flip?1:0);if(L.dataset.k===k)return;L.dataset.k=k;
+ const pop=RVS.popK!==id&&!kbReduce();RVS.popK=id;
+ L.innerHTML=`<i class="rvsq${x===7?" ex":""}${y===0?" ey":""}" style="transform:${tf(m.t)}"><b class="rvbd${pop?" pop":""}">${rvIcon(r.c)}</b></i>`}
+function rvWhy(P,i){if(i<0)return"Başlangıç konumu. İleri giderek hamleleri tek tek incele.";const r=rvR(P,i);if(!r)return"Analiz ediliyor…";
+ if(r.c==="bk")return"Bilinen bir açılış hamlesi.";if(r.c==="fo")return"Tek yasal hamle buydu.";
+ if(r.c==="br")return`${rvTn(r.st)} fedası! Rakip alırsa zor duruma düşüyor.`;
+ if(r.c==="gr")return"Bu konumdaki tek iyi hamle. Başka hamleler durumu bozuyordu.";
+ if(r.c==="be")return r.mate?"Şah mat! En iyi hamle.":"En iyi hamle.";
+ if(r.c==="ex")return`Çok iyi bir hamle. En iyisi ${r.bs} idi.`;
+ if(r.c==="go")return`İyi bir hamle. En iyisi ${r.bs} idi.`;
+ let w="";if(r.c==="ms")w="Rakibin hatası cezalandırılmadı. ";
+ if(r.om)w+="Rakibe mat yolu açıldı. ";else if(r.mm)w+="Mat fırsatı kaçtı. ";else if(r.hg)w+=`${rvTn(r.hg)} karşılıksız kaldı. `;else if(r.cw)w+=`${rvTn(r.cw)} alınabilirdi. `;
+ return w+`En iyi hamle ${r.bs} idi.`}
+function rvBar(P){let el=$("#cRvBar");if(!CH._rvStep||!rvShow()){if(el)el.remove();return}
+ if(!el){const mv=$("#cMoves");if(!mv)return;mv.insertAdjacentHTML("afterend",`<div class="crvbar" id="cRvBar" aria-live="polite"></div>`);el=$("#cRvBar")}
+ const idx=CH.view==null?CH.moves.length-1:CH.view-1;const r=idx>=0?rvR(P,idx):null;const mv=CH.moves[idx];
+ const head=idx<0?"Başlangıç":`${Math.floor(idx/2)+1}.${P.sd[idx]?"..":""} ${mv.san}${r?" · "+RVC[r.c][0]:""}`;
+ const h=`${r?rvIcon(r.c):`<span class="rvph">${I("knight")}</span>`}<div class="t"><b>${esc(head)}</b><span>${esc(rvWhy(P,idx))}</span></div><button class="rvbb" data-act="rvopen" aria-label="Özet">${I("grid")}</button><button class="rvbb" data-act="rvstepx" aria-label="İncelemeyi kapat">${I("close")}</button>`;
+ if(el._h!==h){el._h=h;el.innerHTML=h;if(r)el.style.setProperty("--rc",RVC[r.c][1]);else el.style.removeProperty("--rc")}}
+
+/* --- istatistik, grafik, inceleme penceresi --- */
+function rvStats(P){const st={0:{n:0,s:0,h:0,c:{}},8:{n:0,s:0,h:0,c:{}}};let done=0;
+ for(let i=0;i<P.n;i++){const r=rvR(P,i);if(!r)continue;done++;const o=st[P.sd[i]];o.c[r.c]=(o.c[r.c]||0)+1;if(r.c==="fo")continue;
+  const a=r.c==="bk"?100:Math.max(0,Math.min(100,103.1668*Math.exp(-0.04354*r.l*100)-3.1669));o.n++;o.s+=a;o.h+=1/Math.max(a,5)}
+ for(const c of[0,8]){const o=st[c];o.acc=o.n?Math.max(0,Math.min(100,(o.s/o.n+o.n/o.h)/2)):null}return{st,done}}
+function rvSeries(P){const n=P.n,out=[];for(let i=0;i<=n;i++){let s=0,c=0;
+ const A=i<n?RVS.cache.get(P.k[i]):null;if(A&&A.length){const w=rvWp(A[0].s);s+=P.sd[i]===0?w:1-w;c++}
+ if(i>0){const B=RVS.cache.get(P.k[i-1]);const e=B&&B.find(x=>x.u===CH.moves[i-1].u);if(e){const w=rvWp(e.s);s+=P.sd[i-1]===0?w:1-w;c++}}
+ let v=c?s/c:null;const pr=i>0?rvR(P,i-1):null;if(pr&&pr.dv){const w=rvWp(pr.sp);v=P.sd[i-1]===0?w:1-w}if(i===n&&CH.over){const o=CH.over;if(o.reason==="mat")v=o.result==="1-0"?1:0;else if(o.result==="1/2"&&o.reason!=="iptal")v=.5}
+ out.push(v)}let last=.5;return out.map(v=>{if(v!=null)last=v;return last})}
+function rvGraph(P,W){const n=P.n,H=96;const ys=rvSeries(P);const X=i=>n?(i/n)*W:0,Y=v=>(1-v)*(H-8)+4;
+ let d=`M0 ${H}`;ys.forEach((v,i)=>{d+=` L${X(i).toFixed(1)} ${Y(v).toFixed(1)}`});d+=` L${W} ${H}Z`;
+ let dots="";for(let i=0;i<n;i++){const r=rvR(P,i);if(!r||!["br","gr","mi","bl","ms"].includes(r.c))continue;dots+=`<circle cx="${X(i+1).toFixed(1)}" cy="${Y(ys[i+1]).toFixed(1)}" r="4" fill="${RVC[r.c][1]}" stroke="#fff" stroke-width="1.5"/>`}
+ const v=CH.view==null?n:CH.view;const cx=X(v).toFixed(1);
+ return`<svg class="rv-gr" id="rvGr" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Değerlendirme grafiği. Bir noktaya dokununca o hamleye gider."><rect width="${W}" height="${H}" fill="#403f3c"/><path d="${d}" fill="#f2f1ec"/><line x1="0" y1="${H/2}" x2="${W}" y2="${H/2}" stroke="#8a8a85" stroke-width="1" stroke-dasharray="3 3"/><line x1="${cx}" y1="0" x2="${cx}" y2="${H}" stroke="var(--accent)" stroke-width="2"/>${dots}</svg>`}
+function rvNames(){if(chwOn()){const cw=CH.wv.cw;return{0:cw===0?"Clawd":"Rota",8:cw===8?"Clawd":"Rota"}}
+ if(CH.mode==="bot"){const o=chcOn()?"Clawd":"Rota";return{[CH.my]:"Sen",[CH.my^8]:o}}
+ if(CH.mode==="online"){const op=oppOf(CH.doc||{});return{[CH.my]:"Sen",[CH.my^8]:op?P(op).name:"Rakip"}}
+ return{0:"Beyaz",8:"Siyah"}}
+const rvPct=v=>v==null?"…":v.toLocaleString("tr-TR",{minimumFractionDigits:1,maximumFractionDigits:1});
+function rvSheetPaint(){const body=$("#rvBody");if(!body||!CH)return;const P=rvPos();const{st,done}=rvStats(P);const nm=rvNames();const n=P.n;
+ let pend=0;for(let j=0;j<n;j++)if(!RVS.cache.has(P.k[j])&&!rvIsBook(P,j))pend++;const busy=pend>0&&done<n;
+ const W=Math.max(220,Math.round(body.clientWidth||300));
+ const card=c=>`<div class="${c?"b":"w"}"><span class="rv-who"><img src="${chPimg(c|6)}" alt="">${esc(nm[c])}</span><b>${busy&&st[c].acc!=null?"~":""}${rvPct(st[c].acc)}</b><small>Doğruluk</small></div>`;
+ const rows=RV_ORD.filter(c=>(st[0].c[c]||0)+(st[8].c[c]||0)>0||["br","gr","be","in","mi","bl"].includes(c)).map(c=>`<span class="l">${rvIcon(c)}${esc(RVC[c][0])}</span><span class="n" style="color:${RVC[c][1]}">${st[0].c[c]||0}</span><span class="n" style="color:${RVC[c][1]}">${st[8].c[c]||0}</span>`).join("");
+ const h=`${busy?`<div class="rv-pg" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.round((n-pend)/n*100)}"><i style="width:${Math.round((n-pend)/n*100)}%"></i></div><small class="rv-pgt">Analiz ediliyor… ${n-pend}/${n}</small>`:""}
+ <div class="rv-acc">${card(0)}${card(8)}</div>${rvGraph(P,W)}
+ <div class="rv-tb"><span class="h"></span><span class="h n">${esc(nm[0])}</span><span class="h n">${esc(nm[8])}</span>${rows}</div>
+ <button class="btn block" data-act="rvstep">${I("play")}Hamleleri incele</button><small class="rv-nt">Değerlendirme cihazında, hızlı bir analizle yapılır; yaklaşık sonuç verir.</small>`;
+ if(body._h===h)return;body._h=h;body.innerHTML=h;
+ const gr=$("#rvGr",body);if(gr)gr.onclick=e=>{const r=gr.getBoundingClientRect();if(!r.width)return;rvJump(Math.round((e.clientX-r.left)/r.width*n))}}
+function rvOpen(){if(!CH||CH.mode==="puzzle")return;if(CH.mode==="online"&&!CH.over)return toast("Çevrim içi oyun bitince incelenebilir");if(!CH.moves.length)return toast("Henüz hamle yok");
+ CH._rvForce=true;closeLayer("cmenu");sheet("rvsheet","Oyun incelemesi",`<div class="rv" id="rvBody"></div>`,{tall:true});rvClassAll();rvSheetPaint();rvKick();rvPaintUI()}
+function rvCloseOv(){const ov=$("#cOv");if(ov&&ov.classList.contains("on")){ov.classList.remove("on");ov.innerHTML=""}}
+function rvJump(k){if(!CH)return;const n=CH.moves.length;k=Math.max(0,Math.min(n,k|0));CH._rvForce=true;CH._rvStep=true;closeLayer("rvsheet");rvCloseOv();CH.view=k>=n?null:k;CH.sel=-1;CH.targets=[];chDraw()}
+function rvEndBtn(){const c=$("#cOv .cend .cbtns");if(!c||!CH||CH.mode==="puzzle"||!CH.moves.length||c.querySelector('[data-act="rvopen"]'))return;
+ const h=`<button class="btn sec rv-endb" data-act="rvopen">${rvIcon("be")}Oyun incelemesi</button>`;const rb=c.querySelector('[data-chs="review"]');if(rb)rb.insertAdjacentHTML("beforebegin",h);else c.insertAdjacentHTML("beforeend",h)}
+
+/* --- tepki: Rota/Clawd --- */
+function rvReact(){if(!CH||CH.mode!=="bot"||CH.over||rvMode()!=="live"||!rvShow())return;const P=CH._rvP;if(!P)return;const n=CH.moves.length;
+ for(const i of[n-1,n-2]){if(i<0)continue;const r=P.res[i];if(!r||!r.fin||P.sd[i]!==CH.my||(r.c!=="br"&&r.c!=="bl"))continue;CH._rvR=CH._rvR||{};if(CH._rvR[i])continue;CH._rvR[i]=1;
+  const L=RV_L[chcOn()?"c":"r"][r.c];chMood(r.c==="br"?"surp":"happy");RVS.say=true;try{chBubble(pick(L),4600)}finally{RVS.say=false}CH._rvHold=Date.now()+2600;return}}
+
+/* --- sarmalar --- */
+const chApplyBase51R=chApply;
+chApply=function(m,q){const r=chApplyBase51R.call(this,m,q);try{if(CH&&CH.mode!=="puzzle")rvKick()}catch{}return r};
+const chUIBase51R=chUI;
+chUI=function(...a){const r=chUIBase51R.apply(this,a);try{if(CH&&CH.mode!=="puzzle"&&$("#cBoard"))rvPaintUI()}catch(e){console.warn("rv",e)}return r};
+const chBubbleBase51R=chBubble;
+chBubble=function(t,ms){if(!RVS.say&&CH&&!CH.over&&(CH._rvHold||0)>Date.now())return;return chBubbleBase51R.call(this,t,ms)};
+const chOverBase51R=chOver;
+chOver=async function(...a){const r=await chOverBase51R.apply(this,a);try{rvEndBtn();rvKick()}catch(e){console.warn("rv",e)}return r};
+const chwCardBase51R=chwCard;
+chwCard=function(...a){const r=chwCardBase51R.apply(this,a);try{rvEndBtn()}catch{}return r};
+const chMenuBase51R=chMenu;
+chMenu=function(...a){const r=chMenuBase51R.apply(this,a);try{const l=$('#overlay [data-layer="cmenu"]');if(l&&CH&&CH.mode!=="puzzle"){const md=rvMode();
+  const x=l.querySelector('.opt[data-act="close"]');const can=CH.moves.length&&(CH.mode!=="online"||CH.over);
+  const h=`<div class="set rv-set" style="margin:0 0 6px"><h3>Hamle değerlendirmesi</h3><div class="seg rv-seg" role="group" aria-label="Hamle değerlendirmesi">${[["live","Canlı"],["end","Oyun sonunda"],["off","Kapalı"]].map(([v,t])=>`<button data-act="rvmode" data-v="${v}" aria-pressed="${md===v}">${t}</button>`).join("")}</div><small class="rv-hint">Hamlelere Muhteşem, En iyi, Hata gibi rozetler verir. Çevrim içi oyunlarda yalnızca oyun bitince görünür.</small></div>${can?`<button class="opt" data-act="rvopen">${rvIcon("be","rvo")}Oyun incelemesi</button>`:""}`;
+  if(x)x.insertAdjacentHTML("beforebegin",h);else l.querySelector(".body")?.insertAdjacentHTML("beforeend",h)}}catch(e){console.warn("rv",e)}return r};
+ACT.rvopen=()=>rvOpen();
+ACT.rvmode=(t,d)=>{if(!["live","end","off"].includes(d.v))return;settings.chessReview=d.v;saveSettings();vib(6);$$('[data-act="rvmode"]').forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.v===d.v)));if(CH){rvKick();chUI()}};
+ACT.rvstep=()=>{if(!CH)return;rvJump(CH.moves.length?1:0)};
+ACT.rvstepx=()=>{if(!CH)return;CH._rvStep=false;const b=$("#cRvBar");if(b)b.remove();CH.view=null;chDraw()};
+HOOKS.after.push(r=>{if(r==="chessgame"&&CH&&CH.mode!=="puzzle")rvKick()});
 /*}@js:51REV*/
 
 
