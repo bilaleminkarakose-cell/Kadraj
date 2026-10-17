@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
 <meta charset="utf-8">
-<meta name="kadraj-version" content="50111">
+<meta name="kadraj-version" content="50200">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,interactive-widget=resizes-content">
 <meta name="theme-color" content="#0A110F">
 <link rel="manifest" href="manifest.webmanifest">
@@ -2894,6 +2894,25 @@ html.reduce-motion .k51pt,html.reduce-motion .rzchip{transition:none!important}
 .reel .kemb .kemb-ic{position:absolute;left:50%;top:50%;z-index:2;transform:translate(-50%,-50%);width:64px;height:64px;border-radius:50%;background:rgba(0,0,0,.45);display:grid;place-items:center;opacity:0;transition:opacity .2s;pointer-events:none}
 .reel .kemb .kemb-ic.show{opacity:1}.reel .kemb .kemb-ic .i{width:30px;height:30px}
 /*}@css:511*/
+/*@css:520{*/
+#composer{position:relative}
+.mn-box{position:absolute;left:8px;right:8px;bottom:calc(100% + 6px);z-index:30;background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.22);padding:6px;display:grid;gap:2px;max-height:250px;overflow:auto;animation:fade .15s ease}
+.mn-box button{display:flex;align-items:center;gap:10px;padding:7px 10px;border:0;background:transparent;color:var(--fg);border-radius:12px;text-align:left;font:inherit;cursor:pointer;min-width:0}
+.mn-box button.on,.mn-box button:hover{background:var(--surface-2)}
+.mn-box .t{display:grid;min-width:0;line-height:1.25}.mn-box b{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.mn-box small{color:var(--muted);font-size:.78rem}
+.msg .mtag{color:var(--accent);font-weight:600;cursor:pointer}
+.mrow.me .msg .mtag{color:inherit;text-decoration:underline;text-underline-offset:2px}
+.mrow:not(.me) .msg.mme{box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 70%,transparent)}
+.mn-who{display:flex;align-items:center;gap:6px;font-size:.75rem;color:var(--muted);margin:0 0 3px 2px}
+.mn-ty{align-items:center}
+.mn-avs{display:flex;flex:none}.mn-avs>*{margin-left:-12px;box-shadow:0 0 0 2px var(--bg);border-radius:50%}.mn-avs>*:first-child{margin-left:0}
+.mn-ty small{color:var(--muted);font-size:.76rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+#msgs .mrow{touch-action:pan-y}
+#msgs .mrow.swp{position:relative}
+.swp-ic{position:absolute;top:50%;width:30px;height:30px;margin-top:-15px;border-radius:50%;display:grid;place-items:center;background:var(--surface-2);color:var(--fg);opacity:var(--swp,0);transform:scale(calc(.6 + var(--swp,0) * .4));pointer-events:none}
+.swp-ic .i{width:16px;height:16px}
+.mrow:not(.me)>.swp-ic{left:-38px}.mrow.me>.swp-ic{right:-38px}
+/*}@css:520*/
 
 
 </style>
@@ -2934,7 +2953,7 @@ const vib=ms=>{try{if(settings.haptics===false)return;navigator.vibrate&&navigat
 /* Sürüm: ana.ara.yama (4.1.0). Hata düzeltme ve küçük şeyler → yama artar (4.1.1); büyük güncelleme → ara artar (4.2.0).
    APP_V = ana*10000 + ara*100 + yama (4.1.0 → 40100). Başlıktaki <meta name="kadraj-version"> ile aynı tutulmalı.
    Eski biçim (4.0 → 40) verNorm ile çevrilir. "İki sürüm geride" ara sürüm sayısıyla ölçülür (yamalar engellemez). */
-const APP_V=50111,APP_VER="5.1.11";
+const APP_V=50200,APP_VER="5.2.0";
 const verNorm=x=>{x=Math.max(0,Math.floor(+x||0));return x<1000?Math.floor(x/10)*10000+(x%10)*100:x};
 const verLvl=x=>Math.floor(verNorm(x)/100);
 /* 4.9: fark sürüm adımıyla sayılır (4.9 → 5.0 bir adım); eskisi ana*100+ara farkıydı ve 5.0'ı 91 sürüm ileride sanıyordu */
@@ -5013,6 +5032,7 @@ const APP_GUIDE=`Kadraj bir sosyal uygulamadır (Firebase üzerinde çalışır,
 - 5.1 engelleme: bir profilin üç nokta menüsünden Engelle. Engellenen kişiyle birbirinizin paylaşımlarını, yorumlarını ve mesajlarını görmezsiniz, birbirinizi takip edemez ve arayamazsınız. Ayarlar › Engellenen hesaplar'dan engel kaldırılır. İnsan sohbetlerindeki hazır mesaj çipleri kaldırıldı.
 - 5.1 yönetim: duyurular her ekranın üstünde şerit olarak görünür. Profillerde rozetler: Kurucu, Onaylı, İlk kullanıcı, Destekleyen, Satranç ustası, Klaket yıldızı, Üretken. Kadraj, Claude Opus ve BiloloTR tarafından yapıldı (Ayarlar'daki Yapımcılar satırında yazar); sağ altta küçük saydam sürüm yazısı var.
 - 5.1.2 Rota internette arar: yönetici köprüye ücretsiz Tavily anahtarını eklediyse Rota genel bilgi sorularında (kim, ne zaman, hangi, bugün, haber...) internete bakar ve yanıtın sonunda kaynağın adını yazar; Kadraj ile ilgili sorularda aramaz. Rota'nın yanıtları harf harf gelir.
+- 5.2 sohbet: mesaj yazarken @ yazınca öneri listesi açılır. Birebir sohbette yalnızca Rota çıkar; @rota yazıp gönderince Rota o sohbete katılır ve ikinize de yanıt verir. Grupta grup üyeleri ve Rota, Meydan'da herkes ve Rota önerilir. Mesajlardaki @adlar renkli görünür, dokununca profil açılır; senden bahseden mesajın çerçevesi renklenir. Bir mesajı yanıtlamak için kaydır: kendi mesajını sola, karşı tarafınkini sağa. Grupta ve Meydan'da yazanlar fotoğraflarıyla görünür ("Ali ve Ayşe yazıyor"), birden fazla kişi yazıyorsa fotoğraflar üst üste biner.
 - 5.0 yenilikleri (Kadraj 5.0): Yeni görünüm "Vizör": alttaki yüzen çubukta etkin sekme odak köşeleriyle çerçevelenir, ortadaki deklanşör düğmesi paylaşım menüsünü açar; paylaşımlar numaralı "kare"lerdir; görülmemiş hikâyeler diyafram halkasıyla işaretlenir; eski görünüm Ayarlar > Görünüm > Arayüz'den "Klasik" seçilerek geri gelir.
 - 5.0 arama: sohbet başlığındaki telefon ya da kamera ile. Arama ekranında Mikrofon, Kamera (sesli aramada da açılır), Ekran (bilgisayarda ekran paylaşımı), Tepki ve Diğer (kamerayı çevir, ses çıkışı, gürültü engelleme, Küçült) var. Küçült aramayı yüzen pencereye alır. Gelen aramada "Kamerasız yanıtla" ve "Mesajla yanıtla" var. Ekran paylaşımı ve tepkiler için iki tarafın da 5.0 kullanması gerekir.
 - 5.0 Keşfet araması: ad, @kullanıcı adı, #etiket ya da kelime yazılır; ı/i, ş/s gibi harf farkları önemsizdir. Hepsi, Kişiler, Paylaşımlar, Klaket ve Etiketler süzgeçleri; En yeni / En çok beğenilen sıralaması; son aramalar ve yazarken öneriler. Uygulamadaki her #etikete dokununca o etiketin sayfası açılır.
@@ -5315,6 +5335,9 @@ setTimeout(verTidyCache,9000);
 
 /* ---- A · Neler yeni ---- */
 const WN_ITEMS=[
+ {ic:"chat",g:"linear-gradient(135deg,#0c7a63,#2f6bff)",t:"@ ile bahset",d:"Mesajda @ yazınca öneriler çıkar. Birebir sohbette @rota yaz, Rota ikinize de katılsın; grupta arkadaşlarından bahset",go:"chats"},
+ {ic:"reply",g:"linear-gradient(135deg,#5856d6,#0ea5e9)",t:"Kaydırarak yanıtla",d:"Kendi mesajını sola, karşı tarafınkini sağa kaydır; yanıt hazır",go:"chats"},
+ {ic:"users",g:"linear-gradient(135deg,#ff8a3d,#e23e57)",t:"Grupta kim yazıyor",d:"Yazanlar fotoğraflarıyla görünür; iki kişi aynı anda yazarsa fotoğraflar üst üste biner",go:"chats"},
  {ic:"clawd",g:"linear-gradient(135deg,#D97757,#BE684D)",t:"Clawd'ın odası",d:"Clawd artık Akış, Keşfet, Sohbet ve profildeki boş köşelerde kendi piksel odasında yaşıyor: yatak, çekmece, ampul. Gece 00:00'da yatar, sabahları gitar çalar, yorumlarda dans eder",go:"feed"},
  {ic:"knight",g:"linear-gradient(135deg,#1baca6,#0C7A63)",t:"Oyun incelemesi",d:"Hamlelerin Muhteşem, En iyi, Kitap, Hata gibi rozetler alır; oyun sonunda doğruluk, grafik ve hamle hamle açıklama",go:"chess"},
  {ic:"trophy",g:"linear-gradient(135deg,#D97757,#0C7A63)",t:"Clawd'la satranç",d:"Clawd'a karşı oyna (Çaylak'tan Usta'ya, ayrı puan), Clawd ile Rota'nın maçını izle, çevrim içi oyunda sohbet et. Seviyeler artık gerçekten farklı",go:"chess"},
@@ -10712,6 +10735,82 @@ document.addEventListener("click",async e=>{const b=e.target.closest&&e.target.c
 const KEMB_ADM=false;
 try{if(KEMB_ADM)ADM_EXTRA.push({id:"kemb",title:"Bağlantıyla Klaket",desc:"YouTube, Instagram ve TikTok videolarını indirmeden Klaket yap",icon:"link",order:56,count:()=>{const n=kembCount();return{t:String(n),c:n?"on":"dim"}},html:kembAdmHtml})}catch(e){console.warn(e)}
 /*}@js:511*/
+/*@js:520{*/
+/* ===== 5.2.0: Sohbette @bahsetme önerileri, DM'de @rota, kaydırarak yanıtla, grupta yazanlar =====
+   @ yazınca kutunun üstünde öneri listesi (mnBox): DM'de yalnızca Rota, grupta üyeler + Rota, Meydan'da herkes + Rota.
+   DM'de mesajda @rota geçerse Rota sohbete katılır (sendMessage sarıldı → sendMessageBase520, rotaJoin). Grup ve Meydan'da bu zaten vardı (rotaInRoom).
+   Mesajlardaki @kullanıcıadı renkli ve dokununca profil açar (mnTag); benden bahseden mesajın çerçevesi vurgulanır (.mme).
+   Kaydırarak yanıtla: kendi mesajını sola, karşı tarafın mesajını sağa kaydır (60 px). renderMsgs sarıldı (renderMsgsBase520):
+   grup ve Meydan'da yazanlar fotoğraflarıyla (birden fazlaysa üst üste) ve adlarıyla gösterilir. */
+const MN_ROTA={uid:"bot:rota",u:"rota",n:"Rota",sub:"Yapay zekâ rehberi"};
+function mnKey(){return S.route.name==="chat"?S.route.params.key:""}
+function mnCands(key){let k=null;try{k=keyInfo(key)}catch{}if(!k||k.type==="bot")return[];if(k.type==="dm")return[MN_ROTA];
+ let ids=k.type==="group"?((S.chats[k.cid]||{}).members||[]):(typeof humans==="function"?humans():Object.keys(S.profiles));
+ ids=ids.filter(u=>u&&u!==S.uid&&!String(u).startsWith("bot:")&&S.profiles[u]&&!(typeof isBlk==="function"&&isBlk(u)));
+ const recent=new Map();(S.msgs||[]).forEach((m,i)=>recent.set(m.from,i));ids.sort((a,b)=>(recent.get(b)??-1)-(recent.get(a)??-1));
+ return[MN_ROTA,...ids.map(u=>({uid:u,u:P(u).username,n:P(u).name,sub:"@"+P(u).username}))]}
+function mnTok(inp){const v=inp.value,c=inp.selectionStart??v.length;const m=v.slice(0,c).match(/(^|\s)@([^\s@]{0,30})$/);return m?{q:m[2],start:c-m[2].length-1,end:c}:null}
+function mnHide(){const b=$("#mnBox");if(b)b.remove()}
+function mnShow(inp){const t=mnTok(inp);const key=mnKey();if(!t||!key){mnHide();return}const q=kbFold(t.q);
+ const list=mnCands(key).filter(c=>!q||kbFold(c.u).startsWith(q)||kbFold(c.n).split(/\s+/).some(w=>w.startsWith(q))).slice(0,6);
+ if(!list.length){mnHide();return}const f=$("#composer");if(!f)return;let b=$("#mnBox");if(!b){b=document.createElement("div");b.id="mnBox";b.className="mn-box";b.setAttribute("role","listbox");f.appendChild(b)}
+ b._list=list;b._i=Math.min(b._i||0,list.length-1);
+ b.innerHTML=list.map((c,i)=>`<button type="button" role="option" class="${i===b._i?"on":""}" data-mn="${i}">${avatar(c.uid,32,{click:false,ring:false,online:false})}<span class="t"><b>${esc(c.n)}</b><small>${esc(c.sub)}</small></span></button>`).join("")}
+function mnPick(inp,i){const b=$("#mnBox");const c=b&&b._list&&b._list[i];const t=mnTok(inp);if(!c||!t)return mnHide();
+ const ins="@"+c.u+" ";inp.value=inp.value.slice(0,t.start)+ins+inp.value.slice(t.end);const pos=t.start+ins.length;try{inp.setSelectionRange(pos,pos)}catch{}
+ mnHide();inp.dispatchEvent(new Event("input",{bubbles:true}));try{inp.focus({preventScroll:true})}catch{inp.focus()}}
+document.addEventListener("input",e=>{if(e.target&&e.target.id==="msgIn")mnShow(e.target)});
+document.addEventListener("click",e=>{if(e.target&&e.target.id==="msgIn")mnShow(e.target)});
+document.addEventListener("keydown",e=>{if(!e.target||e.target.id!=="msgIn")return;const b=$("#mnBox");if(!b||!b._list)return;
+ if(e.key==="ArrowDown"||e.key==="ArrowUp"){e.preventDefault();b._i=(b._i+(e.key==="ArrowDown"?1:-1)+b._list.length)%b._list.length;mnShow(e.target)}
+ else if(e.key==="Enter"||e.key==="Tab"){e.preventDefault();e.stopImmediatePropagation();mnPick(e.target,b._i||0)}else if(e.key==="Escape"){e.preventDefault();mnHide()}},true);
+document.addEventListener("pointerdown",e=>{const btn=e.target.closest&&e.target.closest("#mnBox [data-mn]");if(btn){e.preventDefault();mnPick($("#msgIn"),+btn.dataset.mn);return}if(!(e.target.closest&&e.target.closest("#mnBox,#msgIn")))mnHide()},true);
+HOOKS.after.push(()=>mnHide());
+/* DM'de @rota: Rota iki kişinin sohbetine katılır */
+async function rotaJoin(key,k){S.botTyping="bot:rota@"+key;renderMsgs();let reply=null;
+ try{const sample=S.caps.sample;if(sample){const tr=(S.msgs||[]).slice(-14).map(m=>`${P(m.from).name}: ${m.text||"[paylaşım]"}`).join("\n");
+  const r=await sample(`${ROTA_SYS}\n\nŞu an iki arkadaşın (${me().name} ve ${P(k.uid).name}) özel sohbetindesin; ${me().name} seni @rota diye sohbete çağırdı. Konuşma:\n${tr}\n\nRota olarak ikisine de hitap eden kısa (1-4 cümle) bir yanıt ver. Sadece yanıt metnini yaz.`,{cache:false,modelTier:"quick"});reply=(r&&r.text||"").trim()}}catch(e){console.warn(e)}
+ if(!reply)reply=fallbackRota(((S.msgs||[]).slice(-1)[0]||{}).text||"");S.botTyping=null;
+ const at=now();const mid=at.toString(36)+"rota";const msg={from:"bot:rota",text:reply,at};if(chatKey===k.cid){S.msgs=[...S.msgs,{id:mid,...msg}];renderMsgs()}
+ await write(()=>DB.set(`chats/${k.cid}/msgs/${mid}`,msg),{quiet:true});
+ await write(()=>DB.update("chats/"+k.cid,{last:{text:reply.slice(0,80),from:"bot:rota",at},updatedAt:at}),{quiet:true})}
+const sendMessageBase520=sendMessage;
+sendMessage=async function(key,payload,...rest){const r=await sendMessageBase520.call(this,key,payload,...rest);
+ try{const k=keyInfo(key);if(r===true&&k&&k.type==="dm"&&payload&&/@rota\b/i.test(payload.text||""))rotaJoin(key,k)}catch(e){console.warn(e)}return r};
+/* mesajlardaki @etiketler, benden bahsedenler, DM'deki Rota etiketi, grupta yazanlar */
+function mnUserMap(){const m=new Map([["rota","bot:rota"],["rota.rehber","bot:rota"]]);for(const[u,p]of Object.entries(S.profiles||{}))if(p&&p.username)m.set(String(p.username).toLowerCase(),u);return m}
+function mnTag(el,map,myU){const re=/@([\w.ğüşıöçĞÜŞİÖÇ]{2,30})/g;let hit=false;const w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT);const nodes=[];while(w.nextNode())if(w.currentNode.nodeValue.includes("@")&&!w.currentNode.parentElement.closest(".mtag,.rq,.reply,button"))nodes.push(w.currentNode);
+ for(const n of nodes){const v=n.nodeValue;re.lastIndex=0;if(!re.test(v))continue;re.lastIndex=0;const fr=document.createDocumentFragment();let last=0,m;
+  while((m=re.exec(v))){const name=m[1].replace(/\.+$/,"");const uid=map.get(name.toLowerCase());if(!uid)continue;fr.append(v.slice(last,m.index));const b=document.createElement("span");b.className="mtag";b.dataset.prof=uid;b.textContent="@"+name;fr.append(b);last=m.index+1+name.length;if(name.toLowerCase()===myU)hit=true}
+  if(last){fr.append(v.slice(last));n.replaceWith(fr)}}return hit}
+function mnAfterRender(){const key=mnKey();const box=$("#msgs");if(!key||!box)return;let k;try{k=keyInfo(key)}catch{return}if(!k||k.type==="bot")return;
+ const byId=new Map((S.msgs||[]).map(m=>[m.id,m]));const map=mnUserMap();const myU=String(me().username||"").toLowerCase();
+ for(const el of box.querySelectorAll(".msg[data-mid]")){const m=byId.get(el.dataset.mid);if(!m||m.del)continue;
+  if(m.text&&m.text.includes("@")&&!el.dataset.mn){el.dataset.mn="1";if(mnTag(el,map,myU)&&m.from!==S.uid)el.classList.add("mme")}
+  if(k.type==="dm"&&m.from==="bot:rota"){const col=el.closest(".mcol");if(col&&!col.querySelector(".mn-who"))col.insertAdjacentHTML("afterbegin",`<span class="mn-who">${avatar("bot:rota",18,{click:false,ring:false,online:false})}Rota</span>`)}}
+ if(k.type==="group"||k.type==="meydan"){const pin=box.scrollHeight-box.scrollTop-box.clientHeight<90;
+  box.querySelectorAll(".typing").forEach(t=>{const row=t.closest(".mrow");(row&&row.parentElement===box?row:t).remove()});
+  const ty=Object.keys(S.typing||{}).filter(u=>S.typing[u]===k.cid&&u!==S.uid&&!(typeof isBlk==="function"&&isBlk(u)));if(S.botTyping==="bot:rota@"+key)ty.unshift("bot:rota");
+  if(ty.length){const nm=ty.map(u=>u==="bot:rota"?"Rota":P(u).name.split(" ")[0]);const lbl=nm.length===1?nm[0]+" yazıyor":nm.length===2?nm[0]+" ve "+nm[1]+" yazıyor":nm[0]+" ve "+(nm.length-1)+" kişi yazıyor";
+   box.insertAdjacentHTML("beforeend",`<div class="mrow mn-ty"><span class="mn-avs">${ty.slice(0,3).map(u=>avatar(u,30,{click:false,ring:false,online:false})).join("")}</span><div class="typing" aria-label="${esc(lbl)}"><i></i><i></i><i></i></div><small>${esc(lbl)}</small></div>`);if(pin)box.scrollTop=box.scrollHeight}}}
+const renderMsgsBase520=renderMsgs;
+renderMsgs=function(...a){const r=renderMsgsBase520.apply(this,a);try{mnAfterRender()}catch(e){console.warn(e)}return r};
+/* kaydırarak yanıtla */
+(()=>{let st=null;
+ document.addEventListener("pointerdown",e=>{st=null;if(S.route.name!=="chat"||e.button>0)return;const row=e.target.closest&&e.target.closest("#msgs .mrow");if(!row)return;const msg=row.querySelector(".msg[data-mid]");
+  if(!msg||e.target.closest("button,a,audio,video,input,textarea,.kvp,[data-rxl]"))return;st={row,msg,x:e.clientX,y:e.clientY,mine:row.classList.contains("me"),dx:0,on:false,id:e.pointerId}},true);
+ document.addEventListener("pointermove",e=>{if(!st||e.pointerId!==st.id)return;const dx=e.clientX-st.x,dy=e.clientY-st.y;
+  if(!st.on){if(Math.abs(dy)>12&&Math.abs(dy)>Math.abs(dx)){st=null;return}if(Math.abs(dx)<14)return;if((st.mine&&dx>0)||(!st.mine&&dx<0)){st=null;return}
+   st.on=true;st.row.classList.add("swp");st.ic=document.createElement("span");st.ic.className="swp-ic";st.ic.innerHTML=I("reply");st.row.appendChild(st.ic)}
+  const d=st.mine?Math.max(-90,Math.min(0,dx)):Math.min(90,Math.max(0,dx));st.dx=d;st.row.style.transform=`translateX(${d}px)`;st.row.style.setProperty("--swp",Math.min(1,Math.abs(d)/60).toFixed(2));
+  if(Math.abs(d)>=60&&!st.v){st.v=1;vib(10)}},{passive:true});
+ const end=()=>{if(!st)return;const s=st;st=null;if(!s.on)return;s.row.style.transition="transform .18s";s.row.style.transform="";
+  setTimeout(()=>{s.row.style.transition="";s.row.classList.remove("swp");s.row.style.removeProperty("--swp");if(s.ic)s.ic.remove()},200);
+  if(Math.abs(s.dx)>=60){s.row._swpAt=now();const mid=s.msg.dataset.mid;const m=(S.msgs||[]).find(x=>x.id===mid);
+   if(m&&!m.del){S.replyTo={mid,from:m.from,text:msgPreview(m).slice(0,80)};drawReply();const i=$("#msgIn");if(i)try{i.focus({preventScroll:true})}catch{i.focus()}}}};
+ document.addEventListener("pointerup",end,true);document.addEventListener("pointercancel",end,true);
+ document.addEventListener("click",e=>{const row=e.target.closest&&e.target.closest("#msgs .mrow");if(row&&row._swpAt&&now()-row._swpAt<400){e.stopPropagation();e.preventDefault()}},true)})();
+/*}@js:520*/
 
 
 boot();
