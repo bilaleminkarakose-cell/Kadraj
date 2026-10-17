@@ -7710,7 +7710,7 @@ function chwBar(side){const W=CH.wv,g=CH.g;const who=side===W.cw?"c":"r";const m
  const nm=who==="c"?`<b>Clawd</b><span class="tag cwtag">${I("clawd")}Piksel</span>`:`<b>Rota</b><span class="tag">${I("spark")}AI</span>`;
  const b=W.bub[who];const sh=!!(b&&b.until>Date.now());const top=side===(CH.flip?0:8);
  return`<div class="cpl-in ${turn?"turn":""}">${av}<div class="cwho"><div>${nm} <span class="crt">${L.n} · ${L.r}</span></div>${chTray(side,caps,adv)}</div>${think&&turn?'<span class="cdots"><i></i><i></i><i></i></span>':""}</div><div class="cbub chwb ${top?"":"up"} ${sh?"show":""}" data-wvb="${who}">${esc(sh?b.t:"")}</div>`}
-function chwUI(){const W=CH.wv;const mv=$("#cMoves");if(mv&&!CH.moves.length){const s=mv.querySelector(".muted");if(s)s.textContent=W.pre?"Clawd ile Rota hazırlanıyor…":"Maç birazdan başlıyor"}
+function chwUI(){const W=CH.wv;const mv=$("#cMoves");if(mv&&!CH.moves.length){const s=mv.querySelector(".muted");if(s)s.textContent="Clawd ile Rota ısınıyor, maç birazdan başlıyor"}
  const ev=$("#cEval");if(ev){const show=settings.evalBar!==false;ev.hidden=!show;if(show){const cp=CH.eval;const mate=Math.abs(cp)>CC.MATE-1000;const w=mate?(cp>0?100:0):50+50*(2/(1+Math.exp(-cp/350))-1);
   ev.classList.toggle("fl",CH.flip);ev.classList.toggle("bl",w<50);ev.querySelector("i").style.height=w+"%";ev.querySelector("span").textContent=mate?"M"+Math.ceil((CC.MATE-Math.abs(cp))/2):(Math.abs(cp)/100).toFixed(1)}}
  const n=CH.moves.length,v=CH.view==null?n:CH.view;const B=(a,ic,l,dis,pr)=>`<button data-chs="${a}" ${dis?"disabled":""}${pr!=null?` aria-pressed="${pr}"`:""}>${I(ic)}<span>${l}</span></button>`;
