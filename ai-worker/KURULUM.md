@@ -81,6 +81,7 @@ Bu adımdan sonra Kadraj kapalıyken de mesaj, beğeni, yorum, takip ve aramalar
 3. Firebase'de kuralları yeniden yayınla: Kadraj yönetici paneli > **Kurulum** bölümündeki kuralları kopyala, Firebase > Firestore > **Kurallar**'a yapıştır ve **Yayınla**'ya bas. (Yeni `push` koleksiyonu için kural eklendi.)
 4. Dene: tarayıcıda `https://kadraj-ai.<adın>.workers.dev/vapid` adresini aç. `{"key":"B..."}` görürsen köprü hazır.
 5. Herkes kendi telefonunda Kadraj > Ayarlar > Bildirimler > **Uygulama kapalıyken de bildir** anahtarını açar ve bildirim iznini verir.
+   - Denemek için: Kadraj > Yönetici paneli > **Yapay zekâ** > **Test bildirimi (5 sn sonra)**'ya bas ve 5 saniye içinde Kadraj'ı kapat. Bildirim, bu ayarı açtığın bütün cihazlarına gelir.
    - iPhone'da bu yalnızca Kadraj **Ana ekrana eklenip** oradan açıldığında çalışır (iOS 16.4 ve sonrası).
 
 **Notlar**

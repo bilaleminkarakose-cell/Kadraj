@@ -271,7 +271,7 @@ async function ask(env, body) {
 }
 
 export default {
-  async fetch(req, env) {
+  async fetch(req, env, ctx) {
     const origin = allowedOrigin(req, env);
     const url = new URL(req.url);
     if (req.method === "OPTIONS") return new Response(null, { status: origin ? 204 : 403, headers: cors(origin) });
@@ -305,6 +305,12 @@ export default {
         pb = await req.json();
       } catch {
         return json({ error: "bad_request", message: "İstek okunamadı." }, 400, origin);
+      }
+      // 5.1.5: "delay" (1-10 sn) verilirse yanıt hemen döner, gönderim beklenip arka planda yapılır (test bildirimi: uygulamayı kapatmaya zaman kalsın).
+      const delay = Math.min(10, Math.max(0, Math.floor(Number(pb && pb.delay) || 0)));
+      if (delay && ctx && typeof ctx.waitUntil === "function") {
+        ctx.waitUntil(new Promise((res) => setTimeout(res, delay * 1000)).then(() => handlePush(pb || {}, puid, env)).catch(() => {}));
+        return json({ ok: true, queued: true, delay }, 202, origin);
       }
       try {
         const r = await handlePush(pb || {}, puid, env);
