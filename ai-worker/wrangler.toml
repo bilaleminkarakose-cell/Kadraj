@@ -4,6 +4,8 @@ name = "kadraj-ai"
 main = "src/index.js"
 compatibility_date = "2026-09-01"
 compatibility_flags = ["nodejs_compat"]
+# Cloudflare panelinden eklenen düz değişkenler (VAPID_PUBLIC_KEY, VAPID_SUBJECT) GitHub'dan her kurulumda silinmesin.
+keep_vars = true
 
 # Ücretsiz yapay zekâ (Workers AI): Anthropic anahtarı eklenmezse bu kullanılır.
 [ai]
