@@ -2198,7 +2198,7 @@ html.reduce-motion .chess .cmk .chk::after{opacity:.8}
 :root[data-ui="vizor"] .kmp-t{border-color:var(--vz-hair);box-shadow:var(--vz-sh);border-radius:22px}
 :root[data-ui="vizor"] .kmp-t .ic{border-radius:50%;box-shadow:0 0 0 3px var(--surface),0 0 0 4.5px color-mix(in srgb,var(--c,var(--accent)) 45%,transparent)}
 :root[data-ui="vizor"] .kmp-drop{border-style:solid;border-color:var(--vz-hair);background:var(--vz-glass)}
-@media (min-width:700px){.kmp-tiles{grid-template-columns:repeat(auto-fit,minmax(8.5rem,1fr))}.kmp-r{width:5.4rem;height:5.4rem}}
+@media (min-width:700px){.kmp-t{min-height:7.2rem}.kmp-r{width:5.4rem;height:5.4rem}}
 @media (max-width:340px){.kmp-tiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
 /* oluştur ekranındaki video kaynakları */
 .kmp-cdrop{margin:8px 16px 0;width:calc(100% - 32px)}
@@ -2233,7 +2233,7 @@ html.reduce-motion .chess .cmk .chk::after{opacity:.8}
 .kvp-rt{width:auto;min-width:2.3rem;padding:0 6px;border-radius:999px;font:700 .72rem/1 var(--f-mono)}
 .kvp-rt.on{background:var(--accent);color:var(--accent-ink)}
 .kvp-t,.kvp-d{flex:none;font:600 .7rem/1 var(--f-mono);letter-spacing:.02em;font-variant-numeric:tabular-nums;text-shadow:0 1px 2px rgba(0,0,0,.5);padding:0 4px}
-.kvp-sc{position:relative;flex:1;min-width:2.5rem;height:2rem;display:flex;align-items:center;cursor:pointer;touch-action:none}
+.kvp-sc{position:relative;flex:1;min-width:2.5rem;height:2rem;margin:0 7px;display:flex;align-items:center;cursor:pointer;touch-action:none}
 .kvp-tr{position:relative;flex:1;height:4px;border-radius:2px;background:rgba(255,255,255,.28);overflow:hidden;transition:height .15s}
 .kvp-tr i{position:absolute;inset:0;transform-origin:0 50%;transform:scaleX(0)}
 .kvp-buf{background:rgba(255,255,255,.35)}
@@ -2252,7 +2252,7 @@ html.reduce-motion .chess .cmk .chk::after{opacity:.8}
 @keyframes kvpSk{0%{opacity:0;transform:scale(.8)}25%{opacity:1;transform:none}100%{opacity:0;transform:translateX(var(--kvx,0))}}
 .kvp-sk.l.go{--kvx:-10px}.kvp-sk.r.go{--kvx:10px}
 @container (max-width:300px){.kvp-t,.kvp .kvp-pp{display:none}.kvp-b{width:2.05rem;height:2.05rem}.kvp-big{width:3.4rem;height:3.4rem;margin:-1.7rem 0 0 -1.7rem}.kvp-big svg.i{width:1.4rem;height:1.4rem}.kvp-bar{padding:4px 4px 5px}}
-@container (max-width:220px){.kvp-rt{display:none}}
+@container (max-width:180px){.kvp-rt{display:none}}
 /* yerleşimler */
 .pv .kvp-cmp{--kvp-max:48vh;border-radius:0;width:100%}
 .pv:has(.kvp-cmp){display:block;background:#000}
@@ -2260,17 +2260,17 @@ html.reduce-motion .chess .cmk .chk::after{opacity:.8}
 .kvp-post .kvp{border-radius:0;--kvp-max:72vh}
 .kvp-to{position:absolute;top:10px;left:10px;z-index:5;display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;background:rgba(0,0,0,.45);color:#fff;font-size:.74rem;font-weight:700;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
 .kvp-to svg.i{width:1rem;height:1rem}
-.msg.has-kvp{padding:4px}
+#msgs .msg.has-kvp{padding:3px}
 .msg.has-kvp>.fwd,.msg.has-kvp>.quote{margin:4px 8px 6px}
 .msg.has-kvp>.edl{padding:0 8px 4px}
-.kvp-msg{--kvp-max:22rem;width:min(15rem,calc(var(--kvp-max) * var(--kvp-ar,.56)),62vw);border-radius:16px;margin:0}
+.kvp-msg{--kvp-max:22rem;width:min(max(13rem,min(15rem,calc(var(--kvp-max) * var(--kvp-ar,.56)))),64vw);border-radius:16px;margin:0}
 .mrow.me .msg .kvp-msg{border-radius:16px 16px 4px 16px}
-@media (min-width:700px){.kvp-msg{width:min(20rem,calc(var(--kvp-max) * var(--kvp-ar,.56)));--kvp-max:26rem}}
+@media (min-width:700px){.kvp-msg{width:max(15rem,min(20rem,calc(var(--kvp-max) * var(--kvp-ar,.56))));--kvp-max:26rem}}
 .kvfs{position:absolute;inset:0;pointer-events:auto;background:#000;display:grid;place-items:center}
 .kvfs .kvp{--kvp-max:100%;width:100%;height:100%;max-height:none;aspect-ratio:auto;border-radius:0;--kvp-sb:env(safe-area-inset-bottom,0px)}
 .kvfs .kvp-brk{inset:calc(14px + env(safe-area-inset-top,0px)) 14px calc(14px + env(safe-area-inset-bottom,0px))}
 /* --- sohbette yükleme balonu --- */
-.msg.kvu{padding:4px}
+#msgs .msg.kvu{padding:3px}
 .kvu-m{position:relative;width:min(13rem,calc(20rem * var(--kvp-ar,.56)),58vw);aspect-ratio:var(--kvp-ar,.56);max-height:20rem;border-radius:16px 16px 4px 16px;overflow:hidden;background:#101513;display:grid;place-items:center}
 .kvu-m img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.62) saturate(.9)}
 .kvu-m::before{content:"";position:absolute;inset:8px;background:var(--km-brk);background-repeat:no-repeat;color:rgba(255,255,255,.7);pointer-events:none}
