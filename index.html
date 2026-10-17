@@ -2781,7 +2781,7 @@ html.reduce-motion .k51pt,html.reduce-motion .rzchip{transition:none!important}
 .crvbar .t span{font-size:.8rem;color:var(--muted);line-height:1.3}
 .crvbar .rvbb{flex:none;width:36px;height:36px;border-radius:12px;display:grid;place-items:center;color:var(--muted);background:var(--surface-2)}
 .crvbar .rvbb svg.i{width:1.1rem;height:1.1rem}
-.rv{display:grid;gap:12px;padding:2px 0 14px}
+.rv{display:grid;gap:12px;padding:2px 14px 16px}
 .rv-acc{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .rv-acc>div{display:grid;justify-items:center;gap:2px;padding:12px 8px;border-radius:16px;background:var(--surface-2);text-align:center;min-width:0}
 .rv-acc .rv-who{display:flex;align-items:center;gap:6px;font-weight:700;font-size:.88rem;max-width:100%;min-width:0}
@@ -9880,7 +9880,7 @@ HOOKS.after.push(r=>{if(r!=="settings"||S.guest)return;const m=$("#main");if(!m|
    ChessCore, CLEVELS ve CHC_LV değişmedi. Her şey sarma ile (…Base51R).
    - Analiz: ayrı bir Web Worker (RVS.wk, ChessCore.toString()); botun motoruyla (CWK) aynı kuyruğu paylaşmaz, botu yavaşlatmaz.
      Her konum için search({all:true,depth:3}) (telefonda yavaşsa kendiliğinden 2). Sonuç konum anahtarına göre önbellekte (RVS.cache,
-     CC.toFen(g,true)); geri alma ve yeniden açmada aynı konum tekrar hesaplanmaz. Bot düşünürken en fazla 1,5 sn bekler.
+     CC.toFen(g,true)); geri alma ve yeniden açmada aynı konum tekrar hesaplanmaz. Rota/Clawd düşünürken en fazla 0,8 sn bekler.
      Sıra: en yeni hamle önce (canlı rozet), sonra geriye doğru; oyun bitince eksikler tamamlanır.
    - Sınıflar (RVC): br Muhteşem (!!), gr Harika (!), be En iyi, ex Mükemmel, go İyi, bk Kitap, in Hatalı (?!), mi Hata (?),
      ms Kaçırılan, bl Büyük hata (??), fo Zorunlu. Kayıp, kazanma olasılığı (rvWp, lojistik) farkıyla ölçülür: ≤.02 ex, ≤.05 go,
@@ -9914,7 +9914,7 @@ const RV_L={
   bl:["Eyvah, bu büyük bir hataydı.","Bunu gerçekten oynamak istedin mi? Geri almak serbest, söylemedim.","Hmm, sanırım bir taşı unuttun.","Teşekkürler, bu hamleyi hesaplarıma hediye olarak yazdım."]},
  c:{br:["Ne?! Bu hamleyi nasıl buldun? Kıskaçlarım titredi.","Muhteşem! Bütün piksellerim ayağa kalktı.","Taş feda mı? Ben olsam kabuğuma saklanırdım. Cesursun!","Bunu görünce yan yan yürümeyi unuttum. Harika!"],
   bl:["Oha! Bu taş bana hediye mi?","Hmm, bu hamleyi bir daha düşünmek ister misin? Ben istemem.","Teşekkürler! Kıskaçlarım zaten açtı.","Bunu gördüm ve dans etmeye başladım."]}};
-const RVS={cache:new Map(),wk:null,n:0,pend:{},busy:false,depth:3,timer:0,wait:0,say:false,popK:""};
+const RVS={cache:new Map(),deep:new Map(),wk:null,n:0,pend:{},busy:false,depth:3,timer:0,wait:0,say:false,popK:""};
 const RV_M=CC.MATE-1000;
 const RV_PV=[0,100,320,330,500,900,5000];
 const rvKey=f=>String(f).split(" ").slice(0,3).join(" ");
@@ -9944,19 +9944,21 @@ function rvMat(b,c){let s=0;for(let i=0;i<64;i++){const p=b[i];if(p&&(p&7)!==6)s
 
 /* --- analiz işçisi --- */
 function rvWorker(){if(RVS.wk!==null)return RVS.wk;
- try{const src=`const C=(${ChessCore.toString()})();onmessage=e=>{const{id,fen,depth}=e.data;let o;try{const g=C.fromFen(fen);const r=C.search(g,{all:true,depth});o={id,all:(r.all||[]).map(x=>({u:C.uci(x.m),s:x.s}))}}catch(err){o={id,err:String(err)}}postMessage(o)}`;
+ try{const src=`const C=(${ChessCore.toString()})();onmessage=e=>{const{id,fen,depth,time}=e.data;let o;try{const g=C.fromFen(fen);const r=C.search(g,time?{depth,time}:{all:true,depth});o=time?{id,d:{u:r.move?C.uci(r.move):null,s:r.score}}:{id,d:(r.all||[]).map(x=>({u:C.uci(x.m),s:x.s}))}}catch(err){o={id,err:String(err)}}postMessage(o)}`;
   const w=new Worker(URL.createObjectURL(new Blob([src],{type:"text/javascript"})));
-  w.onmessage=e=>{const p=RVS.pend[e.data.id];if(p){delete RVS.pend[e.data.id];p(e.data.err?null:e.data.all)}};
+  w.onmessage=e=>{const p=RVS.pend[e.data.id];if(p){delete RVS.pend[e.data.id];p(e.data.err?null:e.data.d)}};
   w.onerror=()=>{RVS.wk=false;for(const k of Object.keys(RVS.pend)){const p=RVS.pend[k];delete RVS.pend[k];p(undefined)}};RVS.wk=w}catch{RVS.wk=false}return RVS.wk}
-function rvLocal(fen){try{const g=CC.fromFen(fen);const r=CC.search(g,{all:true,depth:2});return(r.all||[]).map(x=>({u:CC.uci(x.m),s:x.s}))}catch{return null}}
-function rvEval(fen,key){if(RVS.cache.has(key))return Promise.resolve(RVS.cache.get(key));
+function rvLocal(fen,deep){try{const g=CC.fromFen(fen);if(deep){const r=CC.search(g,{depth:4,time:600});return{u:r.move?CC.uci(r.move):null,s:r.score}}
+ const r=CC.search(g,{all:true,depth:2});return(r.all||[]).map(x=>({u:CC.uci(x.m),s:x.s}))}catch{return null}}
+const rvPut=(M,k,v)=>{if(M.size>1500){let i=0;for(const x of M.keys()){M.delete(x);if(++i>=200)break}}M.set(k,v)};
+/* deep: false → tüm hamlelerin puanı (RVS.cache), true → derin arama, en iyi hamle (RVS.deep; fedaları ve büyük hataları doğrular) */
+function rvEval(fen,key,deep){const M=deep?RVS.deep:RVS.cache;if(M.has(key))return Promise.resolve(M.get(key));
  return new Promise(res=>{const t0=Date.now();
-  const done=all=>{if(all&&all.length){if(RVS.cache.size>1500){let i=0;for(const k of RVS.cache.keys()){RVS.cache.delete(k);if(++i>=200)break}}RVS.cache.set(key,all)}
-   if(Date.now()-t0>2600&&RVS.depth>2)RVS.depth=2;res(all||null)};
+  const done=d=>{if(d&&(deep?d.u:d.length))rvPut(M,key,d);else if(deep)rvPut(M,key,{u:null,s:0});if(!deep&&Date.now()-t0>2600&&RVS.depth>2)RVS.depth=2;res(d||null)};
   const w=rvWorker();
-  if(w){const id=++RVS.n;const to=setTimeout(()=>{if(RVS.pend[id]){delete RVS.pend[id];try{w.terminate()}catch{}RVS.wk=null;RVS.depth=2;res(null)}},20000);
-   RVS.pend[id]=all=>{clearTimeout(to);if(all===undefined)setTimeout(()=>done(rvLocal(fen)),20);else done(all)};w.postMessage({id,fen,depth:RVS.depth});return}
-  setTimeout(()=>done(rvLocal(fen)),30)})}
+  if(w){const id=++RVS.n;const to=setTimeout(()=>{if(RVS.pend[id]){delete RVS.pend[id];try{w.terminate()}catch{}RVS.wk=null;RVS.depth=2;done(null)}},20000);
+   RVS.pend[id]=d=>{clearTimeout(to);if(d===undefined)setTimeout(()=>done(rvLocal(fen,deep)),20);else done(d)};w.postMessage(deep?{id,fen,depth:5,time:1300}:{id,fen,depth:RVS.depth});return}
+  setTimeout(()=>done(rvLocal(fen,deep)),30)})}
 
 /* --- oyunun konumları ve sınıflar --- */
 function rvPos(){const n=CH.moves.length,st=CH.startFen||"";let P=CH._rvP;
@@ -9978,25 +9980,30 @@ function rvClassify(P,i){const u=CH.moves[i]&&CH.moves[i].u;if(!u)return null;
  CC.make(gB,mP);const th=rvThreat(gB);CC.unmake(gB);
  const sac=th[0]-capV-prV-pre;
  let c=cpl<=0||u===A[0].u?"be":loss<=.02?"ex":loss<=.05?"go":loss<=.10?"in":loss<=.20?"mi":"bl";
- if((c==="be"||(c==="ex"&&cpl<=15))&&sac>=200&&wP>=.45&&(sB>RV_M?mat<=200:sB<600&&mat<600)){c="br";o.st=th[2]}
+ /* sığ arama fedayı ya da büyük hatayı yanlış görebilir: derin aramayla doğrula */
+ let wQ=wP;if(c!=="be"&&c!=="ex"&&(sac>=200||c==="bl")){const D=RVS.deep.get(P.k[i]);if(!D){o.dp=1;o.fin=false;o.wait=1}else{o.dp=1;if(D.u===u){c="be";wQ=rvWp(D.s);o.l=0;o.sp=D.s;o.dv=1}}}
+ if((c==="be"||(c==="ex"&&cpl<=15))&&sac>=200&&wQ>=.45&&(sB>RV_M?mat<=200:sB<600&&mat<600)){c="br";o.st=th[2]}
  if(c==="be"&&A.length>=2){const o2=A.find(x=>x.u!==u);const w2=rvWp(o2.s);const pv=CH.moves[i-1];
   const recap=!!(pv&&pv.m&&pv.m.c&&pv.m.t===mP.t);const a=rvAtk(gB.b,mP.f,side^8);const flee=a>=0&&rvSee(gB.b,a,mP.f)>=100;
   const free=!!(mP.c&&rvSee(gB.b,mP.f,mP.t)>=200);const evade=CC.inCheck(gB)&&A.length<=3;
-  if(wB-w2>=.2&&w2<=.8&&wP>=.25&&!recap&&!flee&&!free&&!evade)c="gr"}
- if(["in","mi","bl"].includes(c)&&i>0){const pr=P.res[i-1];if(!pr)o.fin=false;
+  if(!o.dv&&!/#$/.test(CH.moves[i].san||"")&&wB-w2>=.2&&w2<=.8&&wP>=.25&&!recap&&!flee&&!free&&!evade)c="gr"}
+ if(["in","mi","bl"].includes(c)&&i>0){const pr=P.res[i-1];if(!pr||pr.wait)o.fin=false;
   else if(pr.c==="mi"||pr.c==="bl"){const Ap=RVS.cache.get(P.k[i-1]);if(Ap&&Ap.length&&wP>=1-rvWp(Ap[0].s)-.05)c="ms"}}
  o.om=sP<-RV_M&&sB>=-RV_M;o.mm=sB>RV_M&&sP<=RV_M;if(th[0]>=200&&th[0]-pre>=150)o.hg=th[2];o.mate=/#$/.test(CH.moves[i].san||"");
  o.c=c;return o}
+const rvR=(P,i)=>{const r=P.res[i];return r&&!r.wait?r:null};
 function rvClassAll(){const P=rvPos();for(let i=0;i<P.n;i++){const r=P.res[i];if(r&&r.fin&&r.u===CH.moves[i].u)continue;let x=null;try{x=rvClassify(P,i)}catch(e){console.warn("rv",e)}P.res[i]=x||undefined}return P}
 
 /* --- kuyruk --- */
-function rvActive(){return!!(CH&&CH.mode!=="puzzle"&&S.route&&S.route.name==="chessgame"&&(rvMode()!=="off"||CH._rvForce||(CH.over&&CH.mode!=="online")))}
+function rvActive(){return!!(CH&&CH.mode!=="puzzle"&&S.route&&S.route.name==="chessgame"&&(rvMode()!=="off"||CH._rvForce))}
 function rvKick(){clearTimeout(RVS.timer);RVS.timer=setTimeout(rvStep,40)}
 async function rvStep(){if(RVS.busy||!rvActive())return;let P;try{P=rvPos()}catch(e){console.warn("rv",e);return}
- let i=-1;for(let j=P.n-1;j>=0;j--){if(RVS.cache.has(P.k[j])||rvIsBook(P,j))continue;i=j;break}
+ let i=-1,deep=false;for(let j=P.n-1;j>=0;j--){if(RVS.cache.has(P.k[j])||rvIsBook(P,j))continue;i=j;break}
+ if(i<0){try{rvClassAll()}catch{}for(let j=P.n-1;j>=0;j--){const r=P.res[j];if(r&&r.dp&&!RVS.deep.has(P.k[j])){i=j;deep=true;break}}}
  if(i<0){RVS.wait=0;rvRefresh();return}
- if(CH.thinking){if(!RVS.wait)RVS.wait=Date.now();if(Date.now()-RVS.wait<1500){RVS.timer=setTimeout(rvStep,200);return}}
- RVS.wait=0;RVS.busy=true;const tok=CH;try{await rvEval(P.f[i],P.k[i])}catch(e){console.warn("rv",e)}finally{RVS.busy=false}
+ /* Rota/Clawd düşünürken (ayrı işçide) kısa bir süre bekle: telefonda işlemciyi paylaşmasınlar */
+ if(CH.thinking&&CH.mode==="bot"){if(!RVS.wait)RVS.wait=Date.now();if(Date.now()-RVS.wait<800){RVS.timer=setTimeout(rvStep,150);return}}
+ RVS.wait=0;RVS.busy=true;const tok=CH;try{await rvEval(P.f[i],P.k[i],deep)}catch(e){console.warn("rv",e)}finally{RVS.busy=false}
  if(CH===tok)rvRefresh();rvKick()}
 
 /* --- gösterim --- */
@@ -10004,15 +10011,15 @@ function rvShow(){if(!CH||CH.mode==="puzzle")return false;if(CH.mode==="online"&
 function rvRefresh(){if(!CH||!$("#cBoard"))return;try{rvClassAll();rvPaintUI();rvSheetPaint();rvReact()}catch(e){console.warn("rv",e)}}
 function rvPaintUI(){if(!CH||CH.mode==="puzzle")return;const P=rvClassAll();rvList(P);rvBadge(P);rvBar(P)}
 function rvList(P){const mv=$("#cMoves");if(!mv||!rvShow())return;
- for(const b of mv.querySelectorAll(".cmv[data-cply]")){const i=+b.dataset.cply-1;const r=P.res[i];const want=r?r.c:"";if((b.dataset.rv||"")===want&&b._rv)continue;b._rv=1;
+ for(const b of mv.querySelectorAll(".cmv[data-cply]")){const i=+b.dataset.cply-1;const r=rvR(P,i);const want=r?r.c:"";if((b.dataset.rv||"")===want&&b._rv)continue;b._rv=1;
   const em=b.querySelector("em");if(em)em.remove();b.dataset.rv=want;if(want)b.insertAdjacentHTML("beforeend",`<em class="rvq" title="${esc(RVC[want][0])}">${rvIcon(want)}</em>`)}}
 function rvBadge(P){const bd=$("#cBoard");if(!bd)return;let L=$("#cRv");if(!L){L=document.createElement("div");L.className="crv";L.id="cRv";L.setAttribute("aria-hidden","true");bd.insertBefore(L,$("#cOv")||null)}
- const idx=CH.view==null?CH.moves.length-1:CH.view-1;const r=idx>=0&&rvShow()?P.res[idx]:null;
+ const idx=CH.view==null?CH.moves.length-1:CH.view-1;const r=idx>=0&&rvShow()?rvR(P,idx):null;
  if(!r){if(L.innerHTML)L.innerHTML="";L.dataset.k="";return}
  const m=CH.moves[idx].m;const[x,y]=sqXY(m.t);const id=idx+":"+r.c+":"+CH.moves[idx].u;const k=id+":"+(CH.flip?1:0);if(L.dataset.k===k)return;L.dataset.k=k;
  const pop=RVS.popK!==id&&!kbReduce();RVS.popK=id;
  L.innerHTML=`<i class="rvsq${x===7?" ex":""}${y===0?" ey":""}" style="transform:${tf(m.t)}"><b class="rvbd${pop?" pop":""}">${rvIcon(r.c)}</b></i>`}
-function rvWhy(P,i){if(i<0)return"Başlangıç konumu. İleri giderek hamleleri tek tek incele.";const r=P.res[i];if(!r)return"Analiz ediliyor…";
+function rvWhy(P,i){if(i<0)return"Başlangıç konumu. İleri giderek hamleleri tek tek incele.";const r=rvR(P,i);if(!r)return"Analiz ediliyor…";
  if(r.c==="bk")return"Bilinen bir açılış hamlesi.";if(r.c==="fo")return"Tek yasal hamle buydu.";
  if(r.c==="br")return`${rvTn(r.st)} fedası! Rakip alırsa zor duruma düşüyor.`;
  if(r.c==="gr")return"Bu konumdaki tek iyi hamle. Başka hamleler durumu bozuyordu.";
@@ -10024,24 +10031,24 @@ function rvWhy(P,i){if(i<0)return"Başlangıç konumu. İleri giderek hamleleri 
  return w+`En iyi hamle ${r.bs} idi.`}
 function rvBar(P){let el=$("#cRvBar");if(!CH._rvStep||!rvShow()){if(el)el.remove();return}
  if(!el){const mv=$("#cMoves");if(!mv)return;mv.insertAdjacentHTML("afterend",`<div class="crvbar" id="cRvBar" aria-live="polite"></div>`);el=$("#cRvBar")}
- const idx=CH.view==null?CH.moves.length-1:CH.view-1;const r=idx>=0?P.res[idx]:null;const mv=CH.moves[idx];
+ const idx=CH.view==null?CH.moves.length-1:CH.view-1;const r=idx>=0?rvR(P,idx):null;const mv=CH.moves[idx];
  const head=idx<0?"Başlangıç":`${Math.floor(idx/2)+1}.${P.sd[idx]?"..":""} ${mv.san}${r?" · "+RVC[r.c][0]:""}`;
  const h=`${r?rvIcon(r.c):`<span class="rvph">${I("knight")}</span>`}<div class="t"><b>${esc(head)}</b><span>${esc(rvWhy(P,idx))}</span></div><button class="rvbb" data-act="rvopen" aria-label="Özet">${I("grid")}</button><button class="rvbb" data-act="rvstepx" aria-label="İncelemeyi kapat">${I("close")}</button>`;
  if(el._h!==h){el._h=h;el.innerHTML=h;if(r)el.style.setProperty("--rc",RVC[r.c][1]);else el.style.removeProperty("--rc")}}
 
 /* --- istatistik, grafik, inceleme penceresi --- */
 function rvStats(P){const st={0:{n:0,s:0,h:0,c:{}},8:{n:0,s:0,h:0,c:{}}};let done=0;
- for(let i=0;i<P.n;i++){const r=P.res[i];if(!r)continue;done++;const o=st[P.sd[i]];o.c[r.c]=(o.c[r.c]||0)+1;if(r.c==="fo")continue;
+ for(let i=0;i<P.n;i++){const r=rvR(P,i);if(!r)continue;done++;const o=st[P.sd[i]];o.c[r.c]=(o.c[r.c]||0)+1;if(r.c==="fo")continue;
   const a=r.c==="bk"?100:Math.max(0,Math.min(100,103.1668*Math.exp(-0.04354*r.l*100)-3.1669));o.n++;o.s+=a;o.h+=1/Math.max(a,5)}
  for(const c of[0,8]){const o=st[c];o.acc=o.n?Math.max(0,Math.min(100,(o.s/o.n+o.n/o.h)/2)):null}return{st,done}}
 function rvSeries(P){const n=P.n,out=[];for(let i=0;i<=n;i++){let s=0,c=0;
  const A=i<n?RVS.cache.get(P.k[i]):null;if(A&&A.length){const w=rvWp(A[0].s);s+=P.sd[i]===0?w:1-w;c++}
  if(i>0){const B=RVS.cache.get(P.k[i-1]);const e=B&&B.find(x=>x.u===CH.moves[i-1].u);if(e){const w=rvWp(e.s);s+=P.sd[i-1]===0?w:1-w;c++}}
- let v=c?s/c:null;if(i===n&&CH.over){const o=CH.over;if(o.reason==="mat")v=o.result==="1-0"?1:0;else if(o.result==="1/2"&&o.reason!=="iptal")v=.5}
+ let v=c?s/c:null;const pr=i>0?rvR(P,i-1):null;if(pr&&pr.dv){const w=rvWp(pr.sp);v=P.sd[i-1]===0?w:1-w}if(i===n&&CH.over){const o=CH.over;if(o.reason==="mat")v=o.result==="1-0"?1:0;else if(o.result==="1/2"&&o.reason!=="iptal")v=.5}
  out.push(v)}let last=.5;return out.map(v=>{if(v!=null)last=v;return last})}
 function rvGraph(P,W){const n=P.n,H=96;const ys=rvSeries(P);const X=i=>n?(i/n)*W:0,Y=v=>(1-v)*(H-8)+4;
  let d=`M0 ${H}`;ys.forEach((v,i)=>{d+=` L${X(i).toFixed(1)} ${Y(v).toFixed(1)}`});d+=` L${W} ${H}Z`;
- let dots="";for(let i=0;i<n;i++){const r=P.res[i];if(!r||!["br","gr","mi","bl","ms"].includes(r.c))continue;dots+=`<circle cx="${X(i+1).toFixed(1)}" cy="${Y(ys[i+1]).toFixed(1)}" r="4" fill="${RVC[r.c][1]}" stroke="#fff" stroke-width="1.5"/>`}
+ let dots="";for(let i=0;i<n;i++){const r=rvR(P,i);if(!r||!["br","gr","mi","bl","ms"].includes(r.c))continue;dots+=`<circle cx="${X(i+1).toFixed(1)}" cy="${Y(ys[i+1]).toFixed(1)}" r="4" fill="${RVC[r.c][1]}" stroke="#fff" stroke-width="1.5"/>`}
  const v=CH.view==null?n:CH.view;const cx=X(v).toFixed(1);
  return`<svg class="rv-gr" id="rvGr" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Değerlendirme grafiği. Bir noktaya dokununca o hamleye gider."><rect width="${W}" height="${H}" fill="#403f3c"/><path d="${d}" fill="#f2f1ec"/><line x1="0" y1="${H/2}" x2="${W}" y2="${H/2}" stroke="#8a8a85" stroke-width="1" stroke-dasharray="3 3"/><line x1="${cx}" y1="0" x2="${cx}" y2="${H}" stroke="var(--accent)" stroke-width="2"/>${dots}</svg>`}
 function rvNames(){if(chwOn()){const cw=CH.wv.cw;return{0:cw===0?"Clawd":"Rota",8:cw===8?"Clawd":"Rota"}}
