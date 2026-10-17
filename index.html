@@ -2760,6 +2760,9 @@ html.reduce-motion .k51pt,html.reduce-motion .rzchip{transition:none!important}
 .blk-row .t{flex:1;min-width:0}
 /*}@css:51BLOCK*/
 
+/*@css:51REV{*/
+/*}@css:51REV*/
+
 
 </style>
 </head>
@@ -9825,6 +9828,9 @@ function blkSheet(){const ids=Object.keys(blkOf(S.uid)).filter(u=>blkOf(S.uid)[u
 ACT.blklist=()=>blkSheet();
 HOOKS.after.push(r=>{if(r!=="settings"||S.guest)return;const m=$("#main");if(!m||m.querySelector("#blkEntry"))return;const n=Object.values(blkOf(S.uid)).filter(Boolean).length;const d=document.createElement("div");d.id="blkEntry";d.className="box";d.style.margin="12px 16px";d.innerHTML=`<button class="row" data-act="blklist" style="width:100%">${I("lock")}<div class="t"><b>Engellenen hesaplar</b><div class="s">${n?n+" hesap":"Kimse yok"}</div></div>${I("next")}</button>`;m.appendChild(d)});
 /*}@js:51BLOCK*/
+
+/*@js:51REV{*/
+/*}@js:51REV*/
 
 
 boot();
