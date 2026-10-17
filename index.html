@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
 <meta charset="utf-8">
-<meta name="kadraj-version" content="50201">
+<meta name="kadraj-version" content="50202">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,interactive-widget=resizes-content">
 <meta name="theme-color" content="#0A110F">
 <link rel="manifest" href="manifest.webmanifest">
@@ -2953,7 +2953,7 @@ const vib=ms=>{try{if(settings.haptics===false)return;navigator.vibrate&&navigat
 /* Sürüm: ana.ara.yama (4.1.0). Hata düzeltme ve küçük şeyler → yama artar (4.1.1); büyük güncelleme → ara artar (4.2.0).
    APP_V = ana*10000 + ara*100 + yama (4.1.0 → 40100). Başlıktaki <meta name="kadraj-version"> ile aynı tutulmalı.
    Eski biçim (4.0 → 40) verNorm ile çevrilir. "İki sürüm geride" ara sürüm sayısıyla ölçülür (yamalar engellemez). */
-const APP_V=50201,APP_VER="5.2.1";
+const APP_V=50202,APP_VER="5.2.2";
 const verNorm=x=>{x=Math.max(0,Math.floor(+x||0));return x<1000?Math.floor(x/10)*10000+(x%10)*100:x};
 const verLvl=x=>Math.floor(verNorm(x)/100);
 /* 4.9: fark sürüm adımıyla sayılır (4.9 → 5.0 bir adım); eskisi ana*100+ara farkıydı ve 5.0'ı 91 sürüm ileride sanıyordu */
@@ -10788,6 +10788,11 @@ function mnAfterRender(){const key=mnKey();const box=$("#msgs");if(!key||!box)re
  for(const el of box.querySelectorAll(".msg[data-mid]")){const m=byId.get(el.dataset.mid);if(!m||m.del)continue;
   if(m.text&&m.text.includes("@")&&!el.dataset.mn){el.dataset.mn="1";if(mnTag(el,map,myU)&&m.from!==S.uid)el.classList.add("mme")}
   if(k.type==="dm"&&m.from==="bot:rota"){const col=el.closest(".mcol");if(col&&!col.querySelector(".mn-who"))col.insertAdjacentHTML("afterbegin",`<span class="mn-who">${avatar("bot:rota",18,{click:false,ring:false,online:false})}Rota</span>`)}}
+ /* 5.2.2: DM'de yazıyor göstergesi karşı tarafın fotoğrafıyla */
+ if(k.type==="dm"){const t=[...box.children].find(x=>x.classList&&x.classList.contains("typing"));if(t)t.outerHTML=`<div class="mrow mn-ty">${avatar(k.uid,30,{click:false,ring:false,online:false})}<div class="typing" aria-label="${esc(P(k.uid).name)} yazıyor"><i></i><i></i><i></i></div></div>`}
+ /* 5.2.2: son mesaj benimse altında görüldü için yer ayrılır; görüldü gelince mesajlar bir satır kaymaz */
+ if(k.type==="dm"||k.type==="group"){const rows=[...box.children];let li=-1;for(let i=rows.length-1;i>=0;i--){const x=rows[i];if(x.classList.contains("mrow")&&!x.classList.contains("mn-ty")&&x.querySelector(".msg[data-mid]")){li=i;break}}
+  if(li>=0){const row=rows[li],nx=rows[li+1];if(row.classList.contains("me")&&!(nx&&nx.classList.contains("seenrow")))row.insertAdjacentHTML("afterend",'<div class="seenrow sr-ph" aria-hidden="true"><span class="seenav" style="visibility:hidden;box-shadow:none"></span></div>')}}
  if(k.type==="group"||k.type==="meydan"){const pin=box.scrollHeight-box.scrollTop-box.clientHeight<90;
   box.querySelectorAll(".typing").forEach(t=>{const row=t.closest(".mrow");(row&&row.parentElement===box?row:t).remove()});
   const ty=Object.keys(S.typing||{}).filter(u=>S.typing[u]===k.cid&&u!==S.uid&&!(typeof isBlk==="function"&&isBlk(u)));if(S.botTyping==="bot:rota@"+key)ty.unshift("bot:rota");
