@@ -2157,6 +2157,76 @@ html.reduce-motion .chess .cmk .chk::after{opacity:.8}
 /*}@css:51MEDIA*/
 
 /*@css:51STREAK{*/
+/* 5.1 Seri: sohbet arka planında kamp ateşi. Katman #msgs içinde ilk iki öğe: .stk-bg (mesajların arkası, z-index:-1) ve .stk-top (uyarı hapı).
+   İkisi de yapışkan ve sıfır yüksekliktedir; tuval mutlak konumla #msgs'in görünen alanını kaplar, kaydırmayla oynamaz. */
+.msgs.stk-on{isolation:isolate}
+.stk-bg,.stk-top{position:sticky;top:0;height:0;flex:none;margin-bottom:-6px;pointer-events:none;align-self:stretch}
+.stk-bg{z-index:-1}
+.stk-top{z-index:3}
+.stk-cv{position:absolute;left:var(--stk-l,0);top:var(--stk-t,0);width:var(--stk-w,0);height:var(--stk-h,0);image-rendering:pixelated;image-rendering:crisp-edges;opacity:var(--stk-o,.78);transition:opacity .6s}
+:root[data-mode="dark"] .stk-cv,.msgs[data-dk] .stk-cv{--stk-o:.9}
+.stk-glow{position:absolute;left:var(--stk-gx,0);top:var(--stk-gy,0);width:var(--stk-gw,0);height:var(--stk-gw,0);margin:calc(var(--stk-gw,0px) / -2) 0 0 calc(var(--stk-gw,0px) / -2);border-radius:50%;
+ background:radial-gradient(closest-side,rgba(255,150,50,.42),rgba(255,110,30,.16) 55%,transparent);opacity:var(--stk-go,0);transition:opacity 1.2s,width .8s,height .8s;animation:stkFlick 2.4s ease-in-out infinite alternate}
+.stk-glow.out{animation:none}
+@keyframes stkFlick{0%{transform:scale(1)}35%{transform:scale(1.06)}60%{transform:scale(.97)}100%{transform:scale(1.03)}}
+.stk-bg.still .stk-glow,.reduce-motion .stk-glow{animation:none}
+@media (prefers-reduced-motion:reduce){.stk-glow{animation:none}}
+/* uyarı hapı */
+.stk-pill{position:absolute;top:6px;left:50%;transform:translateX(-50%);width:max-content;max-width:min(92%,420px);box-sizing:border-box;pointer-events:auto;display:flex;align-items:center;gap:8px;padding:6px 6px 6px 10px;border-radius:16px;
+ background:color-mix(in srgb,var(--surface) 92%,transparent);border:1px solid var(--line);box-shadow:0 6px 22px rgba(0,0,0,.14);font:500 .8rem/1.25 var(--f-body);color:var(--fg);animation:stkIn .35s ease both}
+@supports (backdrop-filter:blur(8px)){.stk-pill{backdrop-filter:blur(10px) saturate(1.3);-webkit-backdrop-filter:blur(10px) saturate(1.3)}}
+.stk-pill .gl{flex:none;width:26px;height:26px}
+.stk-pill .tx{min-width:0}
+.stk-pill .tx b{display:block;font-weight:700}
+.stk-pill .tx span{color:var(--muted);font-size:.74rem}
+.stk-pill.rain{border-color:color-mix(in srgb,#3d8bfd 45%,var(--line))}
+.stk-pill.out .tx b{color:var(--muted)}
+.stk-pill .go{flex:none;display:inline-flex;align-items:center;gap:5px;padding:7px 11px;border-radius:12px;background:#3d8bfd;color:#fff;font:700 .78rem var(--f-body);white-space:nowrap}
+.stk-pill .go .i{width:16px;height:16px}
+.stk-pill .x{flex:none;width:28px;height:28px;display:grid;place-items:center;border-radius:50%;color:var(--muted)}
+.stk-pill .x .i{width:15px;height:15px}
+@keyframes stkIn{from{opacity:0;transform:translate(-50%,-8px)}}
+.reduce-motion .stk-pill{animation:none}
+@media (prefers-reduced-motion:reduce){.stk-pill{animation:none}}
+:root[data-ui="vizor"] .stk-pill{border-radius:20px;border-color:var(--vz-hair,var(--line))}
+/* üst çubuktaki seri çipi ve sohbet listesi rozeti */
+.stk-g{display:inline-block;vertical-align:-3px;width:16px;height:16px;flex:none;shape-rendering:crispEdges}
+.stk-chip{flex:none;display:inline-flex;align-items:center;gap:4px;height:32px;padding:0 10px 0 7px;border-radius:16px;background:var(--surface-2);color:var(--fg);font:700 .84rem/1 var(--f-mono);font-variant-numeric:tabular-nums}
+.stk-chip .stk-g{width:18px;height:18px}
+.stk-chip.wait,.stk-chip.out{color:var(--muted)}
+.stk-chip.rain{background:color-mix(in srgb,#3d8bfd 18%,var(--surface-2))}
+.stk-chip.pop{animation:stkPop .6s ease}
+@keyframes stkPop{30%{transform:scale(1.18)}}
+.stk-row{display:inline-flex;align-items:center;gap:2px;margin-left:6px;font:700 .74rem/1 var(--f-mono);color:#d9661a;vertical-align:1px;font-variant-numeric:tabular-nums}
+.stk-row .stk-g{width:14px;height:14px;vertical-align:0}
+.stk-row.wait{color:var(--muted)}
+.stk-row.rain{color:#3d8bfd}
+:root[data-mode="dark"] .stk-row:not(.wait):not(.rain){color:#ff9a4a}
+/* sohbetteki eşik notu */
+.stamp.sysn.stk-ms{display:flex;align-items:center;gap:6px;justify-content:center;color:var(--fg);font-weight:600}
+.stamp.sysn.stk-ms .stk-g{width:16px;height:16px}
+/* seri penceresi */
+.stk-sh{padding:0 0 6px}
+.stk-hero{display:flex;align-items:center;gap:14px;margin:0 16px 12px;padding:14px;border-radius:18px;background:linear-gradient(160deg,rgba(255,140,40,.16),rgba(255,80,40,.06));border:1px solid color-mix(in srgb,#ff8a1f 25%,var(--line))}
+.stk-hero.out,.stk-hero.none{background:var(--surface-2);border-color:var(--line)}
+.stk-hero.rain{background:linear-gradient(160deg,rgba(61,139,253,.16),rgba(61,139,253,.05));border-color:color-mix(in srgb,#3d8bfd 30%,var(--line))}
+.stk-hero .stk-g{width:52px;height:52px}
+.stk-hero b{display:block;font:700 1.25rem/1.15 var(--f-display)}
+.stk-hero span{display:block;color:var(--muted);font-size:.85rem;margin-top:3px}
+.stk-ppl{margin:0 16px 8px;border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.stk-p{display:flex;align-items:center;gap:10px;padding:10px 12px}
+.stk-p+.stk-p{border-top:1px solid var(--line)}
+.stk-p .t{flex:1;min-width:0;font-weight:600;font-size:.92rem}
+.stk-p .t small{display:block;font-weight:500;color:var(--muted);font-size:.76rem}
+.stk-p .t small.ok{color:var(--ok)}
+.stk-winds{display:flex;gap:3px;flex:none}
+.stk-winds .i{width:18px;height:18px;color:#3d8bfd}
+.stk-winds .i.off{color:var(--line)}
+.stk-sh .kv b{font-family:var(--f-mono)}
+.stk-act{padding:6px 16px 4px;display:grid;gap:6px}
+.stk-act .btn .i{width:18px;height:18px}
+.stk-act small{color:var(--muted);font-size:.78rem;text-align:center}
+.stk-help{margin:8px 18px 0;color:var(--muted);font-size:.8rem;line-height:1.45}
 /*}@css:51STREAK*/
 
 
@@ -7340,6 +7410,318 @@ try{if(S&&S.authed)HOOKS.enter.length&&setTimeout(()=>{if(!CW.root){cwMount();CW
 /*}@js:51MEDIA*/
 
 /*@js:51STREAK{*/
+/* ===== 5.1 Seri: birebir sohbette kamp ateşi =====
+ Kural: iki kişi de aynı yerel günde (gün 00:00'da biter) en az bir mesaj yazınca seri bir gün uzar. Bot, grup ve Meydan'da seri yok
+ (grupta üyelik değişir, herkesin her gün yazması gerçekçi değil; seri iki kişilik bir bağ).
+ Veri chats/{cid}.streak (DB.update ile kısmi yollar; herkes yalnızca kendi alanını yazar, aynı anda yazmalar çakışmaz):
+   u:{uid:["YYYY-MM-DD",…]}  kişinin mesaj yazdığı son 21 gün (dizi tek yaprak, yalnızca sahibi yazar)
+   w:{uid:["YYYY-MM-DD",…]}  Rüzgar kullandığı günler (kişi başı toplam 3, yalnızca sahibi yazar)
+   base:{n,day}              7 gün önceye kadarki zincirin özeti (21 günden uzun seriler için)
+   best                      en uzun seri
+ Sayı her seferinde bu veriden ve sohbet açıksa yüklü mesajlardan yeniden hesaplanır (stkCalc); eksik günler açılışta onarılır (stkRepair).
+ Gün her cihazın kendi yerel saatine göredir; ileri tarihli (saati bozuk cihaz) günler yok sayılır.
+ Test kancası: STK.fixed=<ms> (saati dondurur) ya da STK.off=<ms> (kaydırır), STK.dbg() hesaplanan durum, STK.fx("wind"|"burst"). */
+const STK={W:3,KEEP:21,MS:[3,7,30,100],DANGER:2*H,off:0,fixed:0};
+if(!IP.wind)IP.wind='<path d="M3 8h10.5a3 3 0 1 0-3-3"/><path d="M3 12h15.5a3 3 0 1 1-3 3"/><path d="M3 16h7"/>';
+const stkNow=()=>STK.fixed||Date.now()+STK.off;
+const stkP2=n=>String(n).padStart(2,"0");
+const stkDay=t=>{const d=new Date(t);return d.getFullYear()+"-"+stkP2(d.getMonth()+1)+"-"+stkP2(d.getDate())};
+const stkAdd=(s,n)=>{const[y,m,d]=s.split("-").map(Number);return stkDay(new Date(y,m-1,d+n,12).getTime())};
+const stkMid=t=>{const d=new Date(t);return new Date(d.getFullYear(),d.getMonth(),d.getDate()+1).getTime()};
+const stkOkDay=s=>typeof s==="string"&&/^\d{4}-\d\d-\d\d$/.test(s);
+function stkKey(key){let k=null;try{k=keyInfo(key)}catch{}return k&&k.type==="dm"&&k.uid&&!BOT[k.uid]&&k.uid!==S.uid&&S.uid?k:null}
+const stkMembers=k=>[S.uid,k.uid];
+function stkRemText(ms){const mins=Math.max(1,Math.ceil(ms/60e3));const h=Math.floor(mins/60),m=mins%60;return h?(m?`${h} saat ${m} dk`:`${h} saat`):`${m} dk`}
+
+/* açık sohbetin mesajlarından günler (onarım ve yakıt için); S.msgs her değişimde yeni dizi olduğu için ona göre önbelleklenir */
+let stkMC={ref:null,cid:"",td:"",v:null};
+function stkMsgDays(cid,members){if(chatKey!==cid||!Array.isArray(S.msgs))return null;const td=stkDay(stkNow());if(stkMC.ref===S.msgs&&stkMC.cid===cid&&stkMC.td===td)return stkMC.v;
+ const v={days:{},cnt:{},comp:{}};const lim=stkAdd(td,-90);const seen={};
+ for(const m of S.msgs){if(!m||m.sys||!m.at||!members.includes(m.from))continue;const d=stkDay(m.at);if(d<lim||d>td)continue;
+  (v.days[m.from]=v.days[m.from]||new Set()).add(d);if(d===td)v.cnt[m.from]=(v.cnt[m.from]||0)+1;
+  const s=seen[d]=seen[d]||new Set();if(!v.comp[d]){s.add(m.from);if(members.every(u=>s.has(u))&&m.id)v.comp[d]=m.id}}
+ stkMC={ref:S.msgs,cid,td,v};return v}
+
+/* serinin durumu: her şey veriden türetilir */
+function stkCalc(cid,members,md){const c=S.chats[cid]||{};const st=c.streak&&typeof c.streak==="object"?c.streak:{};const U=st.u||{},Wd=st.w||{};
+ const t0=stkNow();const today=stkDay(t0),yday=stkAdd(today,-1);
+ const arr=(o,u)=>Array.isArray(o[u])?o[u].filter(x=>stkOkDay(x)&&x<=today):[];
+ const sets={},wset={};let first=null;
+ for(const u of members){sets[u]=new Set(arr(U,u));if(md&&md.days[u])for(const d of md.days[u])sets[u].add(d);wset[u]=new Set(arr(Wd,u));
+  for(const d of sets[u])if(!first||d<first)first=d;for(const d of wset[u])if(!first||d<first)first=d}
+ const done=d=>members.every(u=>sets[u].has(d));const fro=d=>members.some(u=>wset[u].has(d));
+ const b=st.base&&stkOkDay(st.base.day)&&st.base.day<today?st.base:null;
+ let n=0,d=first,lost=null;const hist={};
+ if(b){n=Math.max(0,Math.floor(+b.n||0));d=stkAdd(b.day,1);hist[b.day]=n}
+ const cap=stkAdd(today,-400);if(d&&d<cap){if(n>0)lost={day:d,n};n=0;d=cap}
+ let g=0;while(d&&d<today&&g++<420){if(done(d))n++;else if(!(n>0&&fro(d))){if(n>0)lost={day:d,n};n=0}hist[d]=n;d=stkAdd(d,1)}
+ const alive=n;const by={};for(const u of members)by[u]=sets[u].has(today);
+ const todayDone=members.every(u=>by[u]),frozenToday=fro(today),frozenY=fro(yday);const cur=todayDone?alive+1:alive;hist[today]=cur;
+ let best=Math.max(+st.best||0,cur);for(const k in hist)if(hist[k]>best)best=hist[k];
+ const winds={};for(const u of members)winds[u]=Math.max(0,STK.W-wset[u].size);
+ const rem=stkMid(t0)-t0;const atRisk=alive>0&&!todayDone&&!frozenToday;const danger=atRisk&&rem<STK.DANGER;
+ const outRecent=!!(lost&&lost.day===yday&&alive===0);const any=members.some(u=>by[u]);
+ const mode=cur>0?"fire":any?"kindle":outRecent?"out":"none";
+ const tierOf=x=>x>=100?5:x>=30?4:x>=7?3:x>=3?2:x>=1?1:0;
+ const tier=mode==="out"?Math.max(1,tierOf(lost.n)):tierOf(cur);
+ const fuel=md?members.reduce((a,u)=>a+(md.cnt[u]||0),0):0;
+ const rain=danger?Math.min(1,.12+.88*(STK.DANGER-rem)/STK.DANGER):0;
+ return{cid,members,n:cur,alive,todayDone,by,frozenToday,frozenY,winds,best,lost,outRecent,rem,atRisk,danger,rain,mode,tier,fuel,hist,today,yday,st,md}}
+function stkCalcK(k){return stkCalc(k.cid,stkMembers(k),stkMsgDays(k.cid,stkMembers(k)))}
+const stkCls=c=>c.mode==="out"?"out":c.danger?"rain":c.mode==="fire"&&!c.todayDone?"wait":c.mode==="fire"?"lit":c.mode;
+
+/* --- yazma: yalnızca kendi alanım --- */
+const stkBusy={};
+async function stkWriteMine(k,add,oth){const cid=k.cid;if(!S.uid||S.guest||!S.canWrite||stkBusy[cid])return false;let c=S.chats[cid];
+ if(!c){try{c=await DB.get("chats/"+cid)}catch{c=null}if(!c)return false}
+ const st=c.streak&&typeof c.streak==="object"?c.streak:{};const today=stkDay(stkNow());const lim=stkAdd(today,-(STK.KEEP-1));
+ const cur=Array.isArray((st.u||{})[S.uid])?st.u[S.uid].filter(stkOkDay):[];
+ const nu=[...new Set([...cur,...add])].filter(d=>stkOkDay(d)&&d>=lim&&d<=today).sort();
+ const patch={};if(nu.join()!==cur.join())patch.u={[S.uid]:nu};
+ /* karşı taraf henüz bu sürümü kullanmadıysa (alanı hiç yok) onun eski günlerini mesajlardan bir kez ben yazarım; alanı varsa yalnızca kendisi yazar */
+ let ou=null;if(oth&&oth.length&&!Array.isArray((st.u||{})[k.uid])){ou=[...new Set(oth)].filter(d=>stkOkDay(d)&&d>=lim&&d<=today).sort();if(ou.length)patch.u={...(patch.u||{}),[k.uid]:ou};else ou=null}
+ const nst={...st,u:{...(st.u||{}),[S.uid]:nu,...(ou?{[k.uid]:ou}:{})}};const prev=S.chats[cid];if(prev)S.chats={...S.chats,[cid]:{...prev,streak:nst}};
+ const calc=stkCalc(cid,stkMembers(k),stkMsgDays(cid,stkMembers(k)));
+ if(calc.best>(+st.best||0))patch.best=calc.best;
+ const d0=stkAdd(today,-7);if((!st.base||!stkOkDay(st.base.day)||st.base.day<stkAdd(today,-10))&&calc.hist[d0]!==undefined)patch.base={n:calc.hist[d0],day:d0};
+ if(!Object.keys(patch).length)return true;
+ if(prev&&(patch.best||patch.base))S.chats={...S.chats,[cid]:{...S.chats[cid],streak:{...nst,...(patch.best?{best:patch.best}:{}),...(patch.base?{base:patch.base}:{})}}};
+ stkBusy[cid]=1;try{return await write(()=>DB.update("chats/"+cid,{streak:patch}),{quiet:true})}finally{delete stkBusy[cid]}}
+/* mesaj gönderilince: bugün işaretli değilse işaretle */
+function stkMark(key){const k=stkKey(key);if(!k)return;const c=S.chats[k.cid];const mine=c&&c.streak&&c.streak.u&&c.streak.u[S.uid];
+ if(Array.isArray(mine)&&mine.includes(stkDay(stkNow())))return;stkWriteMine(k,[stkDay(stkNow())]).then(()=>stkPaint()).catch(()=>{})}
+/* açılışta onarım: yüklü mesajlarımda olup kayıtta olmayan günler (eski sohbetler, yazılamamış işaretler) */
+const stkRep={};
+function stkRepair(k){const c=S.chats[k.cid];if(!c||S.guest||!S.canWrite)return;const md=stkMsgDays(k.cid,stkMembers(k));if(!md)return;
+ const today=stkDay(stkNow());const lim=stkAdd(today,-(STK.KEEP-1));const U=(c.streak||{}).u||{};const have=new Set(U[S.uid]||[]);
+ const miss=[...(md.days[S.uid]||[])].filter(d=>d>=lim&&d<=today&&!have.has(d)).sort();
+ const oth=Array.isArray(U[k.uid])?[]:[...(md.days[k.uid]||[])].filter(d=>d>=lim&&d<=today).sort();if(!miss.length&&!oth.length)return;
+ const sig=k.cid+"|"+today+"|"+miss.join()+"|"+oth.join();if(stkRep[k.cid]===sig)return;stkRep[k.cid]=sig;stkWriteMine(k,miss,oth).catch(()=>{})}
+
+/* --- Rüzgar (seri dondurma) --- */
+async function stkUseWind(key,day,{auto=false}={}){const k=stkKey(key);if(!k)return false;if(!auto&&!guard())return false;
+ let c=S.chats[k.cid];if(auto){try{const f=await DB.get("chats/"+k.cid);if(f){c=f;S.chats={...S.chats,[k.cid]:{...(S.chats[k.cid]||{}),...f}}}}catch{}}if(!c)return false;
+ const calc=stkCalcK(k);day=day||(calc.atRisk?calc.today:calc.yday);
+ if(calc.winds[S.uid]<=0){if(!auto)toast("Rüzgar hakkın kalmadı.");return false}
+ const ok=day===calc.today?calc.atRisk:day===calc.yday&&calc.lost&&calc.lost.day===calc.yday&&!calc.frozenY;
+ if(!ok){if(!auto)toast(calc.frozenToday?"Bugün zaten Rüzgarla korunuyor.":"Şu an Rüzgara gerek yok.");return false}
+ const st=c.streak||{};const cur=Array.isArray((st.w||{})[S.uid])?st.w[S.uid].filter(stkOkDay):[];if(cur.includes(day))return true;const nw=[...cur,day].sort();
+ const prev=S.chats[k.cid];S.chats={...S.chats,[k.cid]:{...prev,streak:{...st,w:{...(st.w||{}),[S.uid]:nw}}}};
+ if(!await write(()=>DB.update("chats/"+k.cid,{streak:{w:{[S.uid]:nw}}}),{quiet:auto})){S.chats={...S.chats,[k.cid]:prev};stkPaint();return false}
+ const open=S.route.name==="chat"&&stkKey(S.route.params.key)?.cid===k.cid;if(open)stkFx("wind");vib([12,40,12]);
+ const nm=P(k.uid).name||P(k.uid).username;const left=STK.W-nw.length;
+ toast(auto?`Rüzgar kendiliğinden esti: ${nm} ile serin korundu. (${left} Rüzgar kaldı)`:day===calc.today?`Rüzgar bulutları dağıttı. Bugün ateşiniz güvende. (${left} Rüzgar kaldı)`:`Rüzgar közleri yeniden harladı. Seri kurtuldu. (${left} Rüzgar kaldı)`);
+ scheduleRefresh();return true}
+/* kendiliğinden Rüzgar (Ayarlar: seri penceresi): gece yarısına 10 dk kala ya da ertesi gün açınca dün kaybolduysa. Yalnızca kendi Rüzgarım. */
+const stkAutoTried={};
+async function stkAutoTick(){if(settings.stkAuto!==true||!S.uid||!S.authed||S.guest||!S.canWrite)return;
+ for(const[cid,c]of Object.entries(S.chats||{})){if(!c||c.group||!c.streak||!Array.isArray(c.members))continue;const other=c.members.find(u=>u!==S.uid);if(!other||BOT[other]||!c.members.includes(S.uid))continue;
+  const k=stkKey("u:"+other);if(!k||k.cid!==cid)continue;const calc=stkCalcK(k);if(calc.winds[S.uid]<=0)continue;
+  let day=null;if(calc.lost&&calc.lost.day===calc.yday&&!calc.frozenY&&calc.lost.n>=2)day=calc.yday;else if(calc.atRisk&&calc.rem<10*60e3)day=calc.today;
+  if(!day||stkAutoTried[cid+day])continue;stkAutoTried[cid+day]=1;
+  await new Promise(r=>setTimeout(r,Math.random()*(STK.autoDelay??6000)));await stkUseWind("u:"+other,day,{auto:true}).catch(()=>{})}}
+
+/* --- küçük piksel simge: kütükler üstünde alev (klasik ateş simgesi değil) --- */
+const STK_GF=[".....r......",".....rr..r..","....ror..r..","....royr.rr.","...royyorro.","..rroywyoor.","..royywwyor.","..royywwyor.","...royyyor..","....rooor..."];
+const stkGC={};
+function stkGlyph(v){v=v||"lit";if(stkGC[v])return stkGC[v];const out=v==="out";const col=v==="wait"?{r:"#e0703a",o:"#f2a24a",y:"#f7cd72",w:"#fbe6b4"}:{r:"#e2401c",o:"#ff8a1f",y:"#ffd23f",w:"#fff3c4"};
+ let r="";if(out){for(const[x,y,a]of[[6,1,.35],[5,2,.45],[5,3,.55],[6,4,.6],[7,5,.65],[7,6,.7],[6,7,.75]])r+=`<rect x="${x}" y="${y}" width="1.02" height="1.02" fill="#9aa0a6" fill-opacity="${a}"/>`;r+=`<rect x="5" y="8.4" width="1" height="1" fill="#c0392b" fill-opacity=".8"/>`}
+ else STK_GF.forEach((row,y)=>{for(let x=0;x<row.length;x++){const ch=row[x];if(ch!==".")r+=`<rect x="${x}" y="${y}" width="1.02" height="1.02" fill="${col[ch]}"/>`}});
+ const lg=out?["#5b5f64","#73787e","#8d9298"]:["#6b4226","#8b5a33","#d4a46a"];
+ const logs=`<rect x=".4" y="9.3" width="11.2" height="1.9" rx=".95" fill="${lg[0]}" transform="rotate(14 6 10.25)"/><rect x=".4" y="9.3" width="11.2" height="1.9" rx=".95" fill="${lg[1]}" transform="rotate(-14 6 10.25)"/><circle cx="11.1" cy="8.95" r=".72" fill="${lg[2]}"/>`;
+ const drops=v==="rain"?`<rect x="1" y="1" width=".9" height="1.8" fill="#3d8bfd"/><rect x="2.6" y="3.6" width=".9" height="1.8" fill="#3d8bfd"/><rect x="10.4" y="0" width=".9" height="1.8" fill="#3d8bfd"/>`:"";
+ return stkGC[v]=`<svg class="stk-g" viewBox="0 0 12 12" aria-hidden="true">${out?logs+r:logs+r}${drops}</svg>`}
+function stkChip(key){const k=stkKey(key);if(!k)return"";const c=stkCalcK(k);if(c.mode==="none")return"";const cl=stkCls(c);
+ const lab=c.mode==="out"?`Seri söndü, ${c.lost.n} günlük seri dün bitti`:c.mode==="kindle"?"Seri: kıvılcım var, ikiniz de bugün yazınca başlar":`Seri: ${c.n} gün`+(c.todayDone?", bugün tamam":c.danger?", ateş sönmek üzere":", bugün henüz tamamlanmadı");
+ return`<button class="stk-chip ${cl}" data-act="stk" aria-label="${esc(lab)}">${stkGlyph(cl==="kindle"?"wait":cl)}<b>${c.n}</b></button>`.replace('class="stk-chip kindle"','class="stk-chip wait"')}
+
+/* --- tuval motoru (tek tuval, düşük çözünürlüklü piksel çizim; yalnızca sohbet görünürken çalışır) --- */
+const STK_T=[{fw:12,fh:14,lw:14},{fw:16,fh:22,lw:18},{fw:20,fh:30,lw:22},{fw:26,fh:40,lw:28},{fw:32,fh:50,lw:34},{fw:38,fh:60,lw:40}];
+const STK_FUEL=["match","stick","paper","pinecone","coal","log","match","stick","pinecone","paper","coal","log","stick","match"];
+const STKC={el:null,top:null,cv:null,ctx:null,box:null,ro:null,raf:0,last:0,W:0,H:0,P:3,st:null,f:null,fk:"",spr:null,sk:"",parts:[],drops:[],wind:null,still:false,frame:0,cel:null};
+let STK_PAL=null;
+function stkPal(){if(STK_PAL)return STK_PAL;const S0=[[0,60,0,0,0],[3,110,12,8,.18],[8,170,30,10,.6],[14,220,62,16,.88],[20,246,118,26,1],[26,255,168,42,1],[31,255,212,88,1],[34,255,238,165,1],[36,255,251,232,1]];
+ const pal=new Uint32Array(37);for(let i=0;i<37;i++){let a=S0[0],b=S0[S0.length-1];for(let j=0;j<S0.length-1;j++)if(i>=S0[j][0]&&i<=S0[j+1][0]){a=S0[j];b=S0[j+1];break}
+  const t=b[0]===a[0]?0:(i-a[0])/(b[0]-a[0]);const L=(x,y)=>Math.round(x+(y-x)*t);const al=i===0?0:Math.round((a[4]+(b[4]-a[4])*t)*255);pal[i]=((al<<24)|(L(a[3],b[3])<<16)|(L(a[2],b[2])<<8)|L(a[1],b[1]))>>>0}
+ return STK_PAL=pal}
+function stkField(fw,fh){const off=document.createElement("canvas");off.width=fw;off.height=fh;const c=off.getContext("2d");const img=c.createImageData(fw,fh);return{fw,fh,F:new Uint8Array(fw*fh),N:new Float32Array(fw),off,c,img,px:new Uint32Array(img.data.buffer)}}
+function stkStep(f,o){const{fw,fh,F}=f;const cx=(fw-1)/2,half=fw/2,base=(fh-1)*fw;
+ const N=f.N;for(let x=0;x<fw;x++){N[x]=Math.max(0,Math.min(14,N[x]+(Math.random()-.5)*5));const d=Math.abs(x-cx)/(o.span||1);F[base+x]=d<1&&o.heat>0?Math.max(0,Math.min(36,Math.round(36*o.heat+4-d*d*10-N[x]-Math.random()*3))):0}
+ const m=o.m,rain=o.rain||0,lean=o.lean||0,al=Math.abs(lean),ld=lean>0?1:-1;
+ for(let y=1;y<fh;y++){const row=y*fw;for(let x=0;x<fw;x++){const i=row+x,p=F[i];if(!p){F[i-fw]=0;continue}
+   let dx=(Math.random()*3|0)-1;if(al&&Math.random()<al)dx+=ld;const ed=Math.abs(x-cx)/half;
+   let dec=(m+Math.random())|0;if(Math.random()<ed*ed*1.7)dec++;if(Math.random()<ed*.35)dec++;if(rain&&Math.random()<rain*.22)dec++;
+   let nx=x+dx;if(nx<0)nx=0;else if(nx>=fw)nx=fw-1;const v=p-dec;F[row-fw+nx]=v>0?v:0}}}
+function stkFieldDraw(f){const pal=stkPal(),px=f.px,F=f.F;for(let i=0;i<F.length;i++)px[i]=pal[F[i]];f.c.putImageData(f.img,0,0)}
+/* kütükler ve taşlar (durum değişince bir kez çizilir) */
+function stkLog(c,x0,y0,x1,y1,cols,ring){const len=Math.max(Math.abs(x1-x0),1);for(let i=0;i<=len;i++){const x=Math.round(x0+(x1-x0)*i/len),y=Math.round(y0+(y1-y0)*i/len);
+  c.fillStyle=cols[0];c.fillRect(x,y-1,1,1);c.fillStyle=cols[1];c.fillRect(x,y,1,1);c.fillStyle=cols[2];c.fillRect(x,y+1,1,1);if(i%5===2){c.fillStyle=cols[2];c.fillRect(x,y,1,1)}}
+ const ex=Math.round(x1),ey=Math.round(y1);c.fillStyle=ring[0];c.fillRect(ex,ey-1,1,3);c.fillRect(ex+(x1>x0?1:-1),ey,1,1);c.fillStyle=ring[1];c.fillRect(ex,ey,1,1)}
+function stkSprite(T,out){const sw=T.lw+14,sh=13;const cv=document.createElement("canvas");cv.width=sw;cv.height=sh;const c=cv.getContext("2d");const gy=sh-3;
+ const bark=out?["#4b4d50","#3a3b3d","#26272a"]:["#93603a","#6b4226","#46291a"],bark2=out?["#434548","#323335","#202124"]:["#7d5030","#5a361f","#3b2214"],ring=out?["#6f7276","#56595c"]:["#dcae74","#a8743f"];
+ stkLog(c,7,gy-4,sw-7,gy-4,bark2,ring);stkLog(c,3,gy+1,sw-6,gy-4,bark,ring);stkLog(c,sw-4,gy+1,5,gy-4,bark2,ring);
+ const stone=(x,y,w)=>{c.fillStyle=out?"#55585c":"#7c8288";c.fillRect(x,y,w,2);c.fillStyle=out?"#6c7074":"#9aa1a7";c.fillRect(x+1,y,w-2,1);c.fillStyle=out?"#3e4144":"#5d6267";c.fillRect(x,y+1,w,1)};
+ stone(0,gy,3);stone(3,gy+1,3);stone(sw-3,gy,3);stone(sw-6,gy+1,3);
+ return{cv,sw,sh}}
+/* yakıt: bugün yazılan her mesaj ateşin çevresine bir parça ekler */
+function stkItem(c,type,x,y,t,i,out){const fl=((t/110+i*5)|0)%3;switch(type){
+ case"match":for(let j=0;j<5;j++){c.fillStyle=out?"#555":"#e6cc94";c.fillRect(x+(j>>1),y-j,1,1)}c.fillStyle=out?"#333":"#b3261e";c.fillRect(x+2,y-5,1,1);
+  if(!out){c.fillStyle="#ffcf3a";c.fillRect(x+2,y-6-(fl===0?1:0),1,1+(fl===2?1:0));c.fillStyle="#ff7a1a";c.fillRect(x+2-(fl===1?1:0),y-6,1,1)}break;
+ case"stick":c.fillStyle=out?"#3f3f3f":"#7a5230";for(let j=0;j<7;j++)c.fillRect(x-3+j,y-(j/3|0),1,1);c.fillRect(x,y-2,1,1);break;
+ case"paper":c.fillStyle=out?"#6a6a6a":"#efe6d2";c.fillRect(x-1,y-2,4,3);c.fillStyle=out?"#4e4e4e":"#cbbd9f";c.fillRect(x+2,y-2,1,1);c.fillRect(x-1,y,2,1);
+  if(!out){c.fillStyle=fl===0?"#ffb02e":"#ff7a1a";c.fillRect(x+2,y-3,1,1);c.fillStyle="#2a2a2a";c.fillRect(x+1,y-2,1,1)}break;
+ case"pinecone":c.fillStyle=out?"#3a3a3a":"#5c3a1e";c.fillRect(x,y-3,3,4);c.fillStyle=out?"#505050":"#9a6532";c.fillRect(x,y-3,1,1);c.fillRect(x+2,y-2,1,1);c.fillRect(x,y-1,1,1);c.fillRect(x+2,y,1,1);c.fillRect(x+1,y-4,1,1);break;
+ case"coal":{c.fillStyle="#262626";c.fillRect(x,y-1,3,2);const g=out?0:.5+.5*Math.sin(t/260+i*1.7);if(!out){c.fillStyle=`rgba(255,${80+Math.round(70*g)},40,${(.55+.45*g).toFixed(2)})`;c.fillRect(x+1,y-1,1,1)}break}
+ case"log":c.fillStyle=out?"#444":"#8b5a33";c.fillRect(x-3,y-1,6,1);c.fillStyle=out?"#333":"#5e3a20";c.fillRect(x-3,y,6,1);c.fillStyle=out?"#666":"#d4a46a";c.fillRect(x+3,y-1,1,2);break}}
+let stkCloudC={};
+function stkCloud(w){w=Math.max(12,Math.round(w/4)*4);if(stkCloudC[w])return stkCloudC[w];const h=Math.max(8,Math.min(18,Math.round(w*.3)));const cv=document.createElement("canvas");cv.width=w;cv.height=h;const c=cv.getContext("2d");
+ const bumps=[[.16,.72,.3],[.34,.5,.42],[.55,.42,.5],[.74,.58,.4],[.88,.74,.26]];
+ for(let y=0;y<h;y++)for(let x=0;x<w;x++){let inside=false;for(const[bx,by,br]of bumps){const dx=(x-bx*w)/(br*h*1.35),dy=(y-by*h)/(br*h);if(dx*dx+dy*dy<1){inside=true;break}}if(!inside&&!(y>h*.62&&y<h-1&&x>w*.12&&x<w*.9))continue;
+  c.fillStyle=y<h*.42?"#8a939c":y<h*.75?"#6c757e":"#555d66";c.fillRect(x,y,1,1)}
+ return stkCloudC[w]={cv,w,h}}
+
+function stkAlive(){const b=STKC.box;return!!(STKC.st&&b&&b.isConnected&&STKC.el&&STKC.el.isConnected&&document.visibilityState!=="hidden"&&S.route.name==="chat")}
+function stkStop(){if(STKC.raf)cancelAnimationFrame(STKC.raf);STKC.raf=0}
+function stkStart(){if(STKC.raf||STKC.still||!stkAlive())return;STKC.last=0;STKC.raf=requestAnimationFrame(stkFrame)}
+function stkFrame(ts){STKC.raf=0;if(!stkAlive())return;const iv=STKC.st.mode==="out"&&!STKC.wind?66:33;if(ts-STKC.last>=iv-2){STKC.last=ts;stkRender(ts)}if(!STKC.raf&&!STKC.still)STKC.raf=requestAnimationFrame(stkFrame)}
+function stkSize(){const b=STKC.box;if(!b||!b.isConnected||!STKC.el)return;const cs=getComputedStyle(b);const pt=parseFloat(cs.paddingTop)||0,pl=parseFloat(cs.paddingLeft)||0;const cw=b.clientWidth,ch=b.clientHeight;if(!cw||!ch)return;
+ const dpr=Math.max(1,Math.min(3,window.devicePixelRatio||1));const P=Math.max(2,Math.round((cw>=700?4:3)*dpr))/dpr;const W=Math.floor(cw/P),Hh=Math.floor(ch/P);const cv=STKC.cv;
+ if(cv.width!==W||cv.height!==Hh){cv.width=W;cv.height=Hh}STKC.ctx.imageSmoothingEnabled=false;STKC.W=W;STKC.H=Hh;STKC.P=P;
+ const l=-pl+(cw-W*P)/2,t=-pt+(ch-Hh*P);const s=STKC.el.style;s.setProperty("--stk-l",l+"px");s.setProperty("--stk-t",t+"px");s.setProperty("--stk-w",W*P+"px");s.setProperty("--stk-h",Hh*P+"px");
+ STKC.geo={l,t,P};stkGlow();if(STKC.still)stkRender(performance.now())}
+function stkGlow(){const st=STKC.st,g=STKC.geo;if(!st||!g||!STKC.el)return;const T=STK_T[st.tier];const s=STKC.el.style;const cx=STKC.W>>1,gy=STKC.H-3;
+ s.setProperty("--stk-gx",(g.l+cx*g.P)+"px");s.setProperty("--stk-gy",(g.t+(gy-T.fh*.35)*g.P)+"px");s.setProperty("--stk-gw",Math.round(T.fw*(st.mode==="kindle"?3.2:4.2)*g.P)+"px");
+ const o=st.mode==="out"||st.mode==="none"?0:st.mode==="kindle"?.45:(st.todayDone?1:.75)*(1-st.rain*.6);s.setProperty("--stk-go",o.toFixed(2));const gl=STKC.el.firstChild;if(gl)gl.classList.toggle("out",o===0)}
+/* çizim; anim=false iken (hareket azaltma) tek kare */
+function stkRender(ts){const ctx=STKC.ctx,st=STKC.st;if(!ctx||!st)return;const W=STKC.W,Hh=STKC.H;if(!W||!Hh)return;ctx.clearRect(0,0,W,Hh);if(st.mode==="none")return;
+ const T=STK_T[st.tier],out=st.mode==="out",cx=W>>1,gy=Hh-3;STKC.frame++;
+ let wp=0,lean=0;if(STKC.wind){wp=(ts-STKC.wind.t0)/STKC.wind.dur;if(wp>=1){STKC.wind=null;wp=0;setTimeout(stkPaint,0)}else lean=Math.sin(Math.PI*Math.min(1,wp*1.15))*.85}
+ const rain0=STKC.wind?Math.max(STKC.wind.rain,st.rain):st.rain;const rain=rain0*(STKC.wind?Math.max(0,1-wp*1.8):1);
+ /* kütükler */
+ const sk=st.tier+(out?"o":"l");if(STKC.sk!==sk){STKC.spr=stkSprite(T,out);STKC.sk=sk}const sp=STKC.spr;ctx.drawImage(sp.cv,cx-(sp.sw>>1),gy-sp.sh+3);
+ /* yakıt */
+ const nf=Math.min(STK_FUEL.length,st.fuel||0);for(let i=0;i<nf;i++){const side=i%2?1:-1,kk=i>>1;const x=Math.round(cx+side*(T.lw/2+4+kk*5))-(side<0?2:0);stkItem(ctx,STK_FUEL[i],x,gy+1-(kk%2),ts,i,out)}
+ /* ateş */
+ const fk=st.tier+":"+st.mode;if(STKC.fk!==fk||!STKC.f){const old=STKC.f;STKC.f=stkField(T.fw,T.fh);STKC.fk=fk;if(old&&old.fw===T.fw&&old.fh===T.fh)STKC.f.F.set(old.F);else STKC.pre=40}
+ const f=STKC.f;const kind=st.mode==="kindle";
+ const heat=out?0:kind?(Math.random()<.85?.42+Math.random()*.12:0):(st.todayDone?1:.86)+Math.min(.12,nf*.012);
+ const span=out?1:kind?T.lw*.18:T.lw*.34+Math.min(4,nf*.35);const m=Math.max(0,36/(T.fh*(kind?.6:.86)));
+ const o={heat,span,rain,lean,m};let steps=1;if(STKC.pre){steps=STKC.pre;STKC.pre=0}if(STKC.still)steps=Math.max(steps,50);for(let s=0;s<steps;s++)stkStep(f,o);stkFieldDraw(f);
+ const fx=cx-(f.fw>>1),fy=gy-3-f.fh+1;ctx.drawImage(f.off,fx,fy);
+ /* kor yatağı */
+ if(!out){const bw=Math.round(T.lw*.5);for(let i=0;i<bw;i++){const x=cx-(bw>>1)+i;const r=Math.random();ctx.fillStyle=r<.3?"#ffb000":r<.65?"#ff6a00":"#a01800";ctx.fillRect(x,gy-2+(r<.5?0:1),1,1)}}
+ else{for(let i=0;i<3;i++)if(Math.random()<.3){ctx.fillStyle="rgba(200,60,20,.7)";ctx.fillRect(cx-4+(Math.random()*8|0),gy-1,1,1)}}
+ const anim=!STKC.still;const P=STKC.parts;
+ /* parçacıklar: kıvılcım, duman, buhar, rüzgar çizgileri */
+ if(anim){const top=fy+f.fh*.45;
+  if(!out&&!kind&&Math.random()<.12+st.tier*.06&&P.length<70)P.push({k:0,x:cx+(Math.random()-.5)*T.lw*.4,y:top,vx:(Math.random()-.5)*.3,vy:-.35-Math.random()*.45,l:0,m:40+Math.random()*50});
+  if(kind&&Math.random()<.08)P.push({k:0,x:cx+(Math.random()-.5)*4,y:gy-5,vx:(Math.random()-.5)*.2,vy:-.3-Math.random()*.3,l:0,m:25+Math.random()*20});
+  if((out||rain>.15)&&Math.random()<(out?.35:rain*.5)&&P.length<90)P.push({k:1,x:cx+(Math.random()-.5)*(out?6:T.lw*.5),y:gy-4-(out?0:f.fh*.3),vx:(Math.random()-.5)*.12+lean*.6,vy:-.18-Math.random()*.12,l:0,m:90+Math.random()*60});
+  if(STKC.wind&&wp<.8&&Math.random()<.5)P.push({k:4,x:-20,y:Math.max(2,fy-20)+Math.random()*(gy-fy+16),vx:5+Math.random()*4,vy:0,l:0,m:60,len:8+Math.random()*14|0})}
+ const dk=isDark()||!!(STKC.box&&STKC.box.hasAttribute("data-dk"));
+ for(let i=P.length-1;i>=0;i--){const p=P[i];if(anim){p.l++;p.x+=p.vx+(p.k===0?Math.sin((p.l+i)*.2)*.15:0)+(p.k!==4?lean*.8:0);p.y+=p.vy;if(p.k===2)p.vy+=.06}
+  const a=1-p.l/p.m;if(a<=0||p.x>W+30||p.y<-10||p.y>Hh+4){P.splice(i,1);continue}
+  if(p.k===0){ctx.fillStyle=a>.6?"#ffd34d":a>.3?"#ff8a1f":"#c8401c";ctx.globalAlpha=Math.min(1,a*1.4);ctx.fillRect(p.x|0,p.y|0,1,1)}
+  else if(p.k===2){ctx.fillStyle=a>.5?"#fff6c8":"#ffb52e";ctx.globalAlpha=a;ctx.fillRect(p.x|0,p.y|0,1,1);if(a>.6)ctx.fillRect((p.x|0)+1,p.y|0,1,1)}
+  else if(p.k===1||p.k===3){const sz=1+Math.min(3,p.l/35|0);ctx.fillStyle=dk?"#b8bcc2":"#8e949a";ctx.globalAlpha=a*(p.k===3?.5:.6);ctx.fillRect((p.x|0)-(sz>>1),(p.y|0)-(sz>>1),sz,sz)}
+  else if(p.k===4){ctx.fillStyle=dk?"#dfe9ff":"#7d9cc4";ctx.globalAlpha=Math.min(.75,a);ctx.fillRect(p.x|0,p.y|0,p.len,1);ctx.globalAlpha=Math.min(.4,a);ctx.fillRect((p.x|0)+3,(p.y|0)+1,p.len>>1,1)}}
+ ctx.globalAlpha=1;
+ /* yağmur ve bulutlar */
+ const D=STKC.drops;if(rain<=0&&!STKC.wind&&STKC.still)D.length=0;
+ if(rain0>0||D.length){const cw=Math.min(W-4,T.lw*2.4+rain0*W*.8);const cl=stkCloud(cw);const drift=anim?Math.sin(ts/3800)*3:0;const push=STKC.wind?wp*wp*W*1.3:0;
+  const cyy=Math.max(2,fy-cl.h-14);const nC=rain0>.7?3:rain0>.35?2:1;const fade=STKC.wind?Math.max(0,1-wp*1.4):1;
+  for(let j=0;j<nC&&rain0>0&&fade>0;j++){const ox=j===0?0:j===1?-cw*.42:cw*.42;ctx.globalAlpha=Math.min(.95,.45+rain0*.6)*(j?.85:1)*fade;ctx.drawImage(cl.cv,Math.round(cx-cl.w/2+ox+drift+push),cyy+(j?4:0))}
+  ctx.globalAlpha=1;const want=Math.round(rain*(30+90*rain));const x0=cx-cw*(nC>1?.85:.5)+push,x1=cx+cw*(nC>1?.85:.5)+push;const ry=cyy+cl.h-2;
+  if(anim){while(D.length<want)D.push({x:x0+Math.random()*(x1-x0),y:ry+Math.random()*(gy-ry),v:2.2+Math.random()*1.4});if(D.length>want&&!STKC.wind)D.length=want}
+  else if(!D.length){for(let i=0;i<want;i++)D.push({x:x0+Math.random()*(x1-x0),y:ry+Math.random()*(gy-ry),v:0})}
+  ctx.fillStyle=dk?"rgba(170,205,255,.75)":"rgba(70,130,220,.62)";const slant=.35+lean*4;
+  for(let i=D.length-1;i>=0;i--){const d=D[i];if(anim){d.y+=d.v;d.x+=slant}const hit=d.y>=gy-1||(d.y>fy+f.fh*.5&&Math.abs(d.x-cx)<f.fw*.3&&Math.random()<.08);
+   if(hit&&anim){if(!out&&Math.abs(d.x-cx)<T.lw*.6&&Math.random()<.35&&P.length<100)P.push({k:3,x:d.x,y:d.y-1,vx:(Math.random()-.5)*.2,vy:-.25,l:0,m:30+Math.random()*25});
+    if(STKC.wind||rain<=0||D.length>want){D.splice(i,1);continue}d.x=x0+Math.random()*(x1-x0);d.y=ry;continue}
+   if(d.x>W+4){D.splice(i,1);continue}ctx.fillRect(d.x|0,d.y|0,1,anim?3:2)}}
+ /* kutlama kıvılcımları */
+ if(STKC.cel&&anim){const c=STKC.cel;STKC.cel=null;for(let i=0;i<c;i++)P.push({k:2,x:cx+(Math.random()-.5)*6,y:fy+f.fh*.4,vx:(Math.random()-.5)*2.2,vy:-1.4-Math.random()*1.8,l:0,m:45+Math.random()*35})}}
+
+/* katmanı sohbete yerleştir ve durumu güncelle (renderMsgs her çizimde çağırır; ucuz) */
+function stkEnsure(box){if(!STKC.el){const el=document.createElement("div");el.className="stk-bg";el.setAttribute("aria-hidden","true");el.innerHTML='<div class="stk-glow"></div><canvas class="stk-cv"></canvas>';
+  STKC.el=el;STKC.cv=el.querySelector("canvas");STKC.ctx=STKC.cv.getContext("2d");const t=document.createElement("div");t.className="stk-top";STKC.top=t}
+ if(STKC.box!==box){STKC.box=box;STKC.geo=null;STKC.parts.length=0;STKC.drops.length=0;STKC.f=null;STKC.fk="";if(STKC.ro)STKC.ro.disconnect();STKC.ro=window.ResizeObserver?new ResizeObserver(()=>stkSize()):null;if(STKC.ro)STKC.ro.observe(box)}
+ if(box.firstChild!==STKC.el)box.prepend(STKC.el);if(STKC.el.nextSibling!==STKC.top)STKC.el.after(STKC.top);box.classList.add("stk-on")}
+function stkDetach(){stkStop();if(STKC.el&&STKC.el.parentNode){STKC.el.parentNode.classList.remove("stk-on");STKC.el.remove()}if(STKC.top)STKC.top.remove();STKC.st=null}
+const stkX={};
+function stkPill(c,k){const nm=P(k.uid).name||P(k.uid).username||"";const mine=c.winds[S.uid];let h="";const sig=c.cid+":"+(c.danger?"r":c.mode)+":"+c.today;
+ if(stkX[sig])return"";
+ if(c.danger){const who=!c.by[S.uid]&&!c.by[k.uid]?"İkiniz de bugün henüz yazmadınız.":!c.by[S.uid]?"Sen yazınca ateş kurtulur.":`${nm} henüz yazmadı.`;
+  h=`<div class="stk-pill rain" role="status">${stkGlyph("rain").replace('class="stk-g"','class="stk-g gl"')}<div class="tx"><b>Ateş sönmek üzere!</b><span>${esc(`Gece yarısına ${stkRemText(c.rem)}. ${who}`)}</span></div>${mine>0?`<button class="go" data-act="stkwind" data-day="${c.today}">${I("wind")}Rüzgar</button>`:""}<button class="x" data-act="stkx" data-s="${esc(sig)}" aria-label="Uyarıyı gizle">${I("close")}</button></div>`}
+ else if(c.mode==="out"||(c.lost&&c.lost.day===c.yday&&!c.frozenY&&c.mode!=="none")){const can=mine>0&&c.lost&&c.lost.day===c.yday;
+  if(c.mode!=="out"&&!can)return"";
+  h=`<div class="stk-pill out" role="status">${stkGlyph("out").replace('class="stk-g"','class="stk-g gl"')}<div class="tx"><b>${c.mode==="out"?"Ateş söndü":"Dünkü seri söndü"}</b><span>${esc(`${c.lost.n} günlük seri dün gece bitti.`)}${can?" Rüzgar közleri yeniden harlayabilir.":""}</span></div>${can?`<button class="go" data-act="stkwind" data-day="${c.yday}">${I("wind")}Kurtar</button>`:""}<button class="x" data-act="stkx" data-s="${esc(sig)}" aria-label="Uyarıyı gizle">${I("close")}</button></div>`}
+ return h}
+function stkPaint(){const box=$("#msgs");const key=S.route.name==="chat"&&S.route.params&&S.route.params.key;const k=key&&stkKey(key);
+ if(!box||!k||settings.stkShow===false){if(STKC.st||(STKC.el&&STKC.el.isConnected))stkDetach();return}
+ const c=stkCalcK(k);
+ if(c.mode==="none"){if(STKC.el&&STKC.el.isConnected)stkDetach();return}
+ stkEnsure(box);const prev=STKC.st;STKC.st=c;STKC.still=kbReduce();STKC.el.classList.toggle("still",STKC.still);
+ const ph=stkPill(c,k);if(STKC.top._h!==ph){STKC.top._h=ph;STKC.top.innerHTML=ph}
+ if(!STKC.geo||STKC.cv.width!==STKC.W||!STKC.W)stkSize();else stkGlow();
+ /* kutlama: bugün tamamlandı ya da eşik */
+ const celKey="kadraj_stkcel_"+S.uid;if(c.todayDone&&prev&&prev.cid===c.cid&&!prev.todayDone){STKC.cel=STK.MS.includes(c.n)?60:24;vib(20);const ch=$("#top .stk-chip");if(ch)ch.classList.add("pop")}
+ if(c.todayDone&&STK.MS.includes(c.n)){const m=LS.get(celKey,{})||{};if(m[c.cid]!==c.today+":"+c.n){m[c.cid]=c.today+":"+c.n;for(const x of Object.keys(m))if(!String(m[x]).startsWith(c.today)&&!String(m[x]).startsWith(c.yday))delete m[x];LS.set(celKey,m);STKC.cel=60;vib([20,40,20])}}
+ stkNotes(box,c);
+ if(STKC.still){stkStop();stkRender(performance.now())}else stkStart()}
+/* eşik notları (3, 7, 30, 100): yalnızca bu cihazda, o günü tamamlayan mesajın altında; Firestore'a yazılmaz */
+const STK_MSG={3:"3 günlük seri! Ateş harlanıyor.",7:"Bir haftalık seri! Kamp ateşi büyüdü.",30:"30 günlük seri! Bu artık bir şenlik ateşi.",100:"100 günlük seri! Efsanevi ateş."};
+function stkNotes(box,c){box.querySelectorAll(".stk-ms").forEach(e=>e.remove());const md=c.md;if(!md)return;let added=0;
+ for(const[d,v]of Object.entries(c.hist)){if(!STK.MS.includes(v)||!md.comp[d])continue;const pv=c.hist[stkAdd(d,-1)]||0;if(pv>=v)continue;
+  const el=document.getElementById("m-"+md.comp[d]);const row=el&&el.closest(".mrow");if(!row)continue;let at=row;if(at.nextElementSibling&&at.nextElementSibling.classList.contains("seenrow"))at=at.nextElementSibling;
+  const n=document.createElement("div");n.className="stamp sysn stk-ms";n.innerHTML=stkGlyph("lit")+`<span>${esc(STK_MSG[v])}</span>`;at.after(n);added=1}
+ if(added&&box._pin!==false)box.scrollTop=box.scrollHeight}
+function stkFx(t){if(t==="wind"){STKC.wind={t0:performance.now(),dur:2800,rain:Math.max(.35,(STKC.st&&STKC.st.rain)||0)};if(STKC.still){STKC.wind=null;stkPaint()}else stkStart()}if(t==="burst"){STKC.cel=60;stkStart()}}
+
+/* --- seri penceresi (üst çubuktaki çip) --- */
+function stkSheet(key){const k=stkKey(key);if(!k)return;const c=stkCalcK(k);const nm=P(k.uid).name||P(k.uid).username||"";const cl=stkCls(c);
+ const status=c.mode==="out"?`Ateş söndü. ${c.lost.n} günlük seri dün gece bitti.`:c.mode==="none"?"Henüz seri yok. İkiniz de aynı gün yazınca ateş yanar.":c.mode==="kindle"?`Kıvılcım var! ${c.by[S.uid]?nm+" bugün yazınca":"Sen de bugün yazınca"} ateş yanar.`
+  :c.todayDone?"Bugün ikiniz de yazdınız. Ateş harlı.":c.frozenToday?"Bugün Rüzgarla korunuyor.":c.by[S.uid]?`Bugün sen yazdın. ${nm} yazınca seri ${c.n+1} olur.`:c.by[k.uid]?`${nm} bugün yazdı; sıra sende.`:`Bugün henüz kimse yazmadı. Gece yarısına ${stkRemText(c.rem)}.`;
+ const ppl=c.members.map(u=>{const w=c.winds[u];return`<div class="stk-p">${avatar(u,36,{click:false,ring:false,online:false})}<div class="t">${esc(u===S.uid?"Sen":P(u).name||P(u).username)}<small class="${c.by[u]?"ok":""}">${c.by[u]?"Bugün yazdı":"Bugün henüz yazmadı"}</small></div><div class="stk-winds" aria-label="${w} Rüzgar kaldı">${[0,1,2].map(i=>I("wind",i<w?"":"off")).join("")}</div></div>`}).join("");
+ const next=STK.MS.find(x=>x>c.n);const mine=c.winds[S.uid];
+ const canY=c.lost&&c.lost.day===c.yday&&!c.frozenY;const canT=c.atRisk;
+ const wbtn=mine<=0?`<button class="btn sec block" disabled>${I("wind")}Rüzgar hakkın kalmadı</button>`:canY?`<button class="btn block" data-act="stkwind" data-day="${c.yday}">${I("wind")}Rüzgarla kurtar (dünü korur)</button><small>${c.lost.n} günlük seri geri gelir. ${mine} Rüzgarın var.</small>`
+  :canT?`<button class="btn ${c.danger?"":"sec"} block" data-act="stkwind" data-day="${c.today}">${I("wind")}Rüzgar kullan (bugünü korur)</button><small>${c.danger?"Yağmur bulutlarını dağıtır.":"Yağmur gece yarısına iki saat kala başlar; acele etme."} ${mine} Rüzgarın var.</small>`
+  :`<button class="btn sec block" disabled>${I("wind")}Şu an Rüzgara gerek yok</button><small>${c.frozenToday?"Bugün zaten korunuyor.":"Seri tehlikeye girince kullanabilirsin."} ${mine} Rüzgarın var.</small>`;
+ const sw=(id,on,label,sub)=>`<label class="srow"><span class="t">${label}<small>${sub}</small></span><span class="sw"><input type="checkbox" id="${id}" ${on?"checked":""}><span></span></span></label>`;
+ const l=sheet("stk","Seri",`<div class="stk-sh"><div class="stk-hero ${cl}">${stkGlyph(cl==="none"||cl==="kindle"?"wait":cl)}<div><b>${c.mode==="out"?"Ateş söndü":c.mode==="kindle"?"Kıvılcım":c.mode==="none"?"Seri yok":c.n+" günlük seri"}</b><span>${esc(status)}</span></div></div>
+  <div class="stk-ppl">${ppl}</div>
+  <div class="kv"><span>En uzun seri</span><b>${c.best} gün</b></div>${next?`<div class="kv"><span>Sonraki eşik</span><b>${next} gün · ${next-c.n} gün kaldı</b></div>`:""}
+  <div class="stk-act">${wbtn}</div>
+  ${sw("stkAuto",settings.stkAuto===true,"Rüzgarı gerektiğinde kendiliğinden kullan","Gün kaybolacakken Rüzgarlarından biri kendiliğinden eser (gece yarısına 10 dakika kala uygulama açıksa ya da ertesi gün açınca).")}
+  ${sw("stkShow",settings.stkShow!==false,"Sohbette ateşi göster","Kapatırsan seri sayılmaya devam eder, yalnızca arka plandaki ateş gizlenir.")}
+  <p class="stk-help">İkiniz de aynı gün en az bir mesaj yazınca seri bir gün uzar; gün gece 00:00'da biter. Bugün tamamlanmadıysa gece yarısına iki saat kala ateşin üstüne yağmur yağar. Rüzgar bulutları dağıtıp o günü korur; bu sohbette herkesin toplam 3 Rüzgarı var. Gün içinde yazdığınız her mesaj ateşe biraz yakıt ekler; seri uzadıkça ateş büyür.</p></div>`,{tall:false});
+ const a=$("#stkAuto",l);if(a)a.onchange=()=>{settings.stkAuto=a.checked;saveSettings();vib(8);if(a.checked)setTimeout(stkAutoTick,500)};
+ const s=$("#stkShow",l);if(s)s.onchange=()=>{settings.stkShow=s.checked;saveSettings();vib(8);stkPaint()}}
+ACT.stk=()=>{const key=S.route.params&&S.route.params.key;if(key)stkSheet(key)};
+ACT.stkwind=async(t,d)=>{const key=S.route.params&&S.route.params.key;if(!key)return;t.disabled=true;const ok=await stkUseWind(key,d.day||null);t.disabled=false;if(ok&&$('[data-layer="stk"]'))closeLayer("stk")};
+ACT.stkx=(t,d)=>{if(d.s)stkX[d.s]=1;if(STKC.top){STKC.top._h="";STKC.top.innerHTML=""}};
+
+/* --- bağlantılar --- */
+const renderMsgsBase51S=renderMsgs;
+renderMsgs=function(...a){const r=renderMsgsBase51S.apply(this,a);try{stkPaint();const k=S.route.name==="chat"&&stkKey(S.route.params.key);if(k)stkRepair(k)}catch(e){console.warn("seri",e)}return r};
+const chatHeadBase51S=chatHead;
+chatHead=function(key){const h=chatHeadBase51S(key);try{return h+stkChip(key)}catch(e){console.warn("seri",e);return h}};
+const sendMessageBase51S=sendMessage;
+sendMessage=async function(key,payload){
+ /* düzeltme: sohbet listesi henüz gelmeden yazılan ilk mesaj sohbet belgesini DB.set ile baştan yazıp teması, okundu bilgisini ve seriyi siliyordu */
+ try{const k=stkKey(key);if(k&&!S.chats[k.cid]&&S.uid&&!S.guest){const d=await DB.get("chats/"+k.cid);if(d&&!S.chats[k.cid])S.chats={...S.chats,[k.cid]:d}}}catch{}
+ const r=await sendMessageBase51S(key,payload);if(r===true&&!(payload&&payload.sys))try{stkMark(key)}catch{}return r};
+/* sohbet listesi: birebir satırlara seri rozeti */
+HOOKS.after.push(r=>{if(r!=="chat")stkDetach();if(r!=="chats")return;try{$$('#main [data-chat^="u:"]').forEach(b=>{const k=stkKey(b.dataset.chat);if(!k||b.querySelector(".stk-row"))return;const c=stkCalc(k.cid,stkMembers(k),null);if(c.mode!=="fire")return;const cl=stkCls(c);
+  const t=b.querySelector(".t>div");if(t)t.insertAdjacentHTML("beforeend",`<span class="stk-row ${cl}" title="Seri: ${c.n} gün">${stkGlyph(cl==="rain"?"rain":cl==="wait"?"wait":"lit")}${c.n}</span>`)})}catch(e){console.warn("seri",e)}});
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")stkPaint();else stkStop()});
+/* dakikada bir: gece yarısı geçişi, yağmur yoğunluğu, uyarı metni; kendiliğinden Rüzgar */
+setInterval(()=>{if(document.visibilityState==="hidden")return;if(S.route.name==="chat"){const k=stkKey(S.route.params.key);if(k){stkPaint();const ch=$("#top .stk-chip"),nh=stkChip(S.route.params.key);if(ch&&nh&&ch.outerHTML!==nh)ch.outerHTML=nh;else if(!!ch!==!!nh)renderTop()}}},30e3);
+setInterval(()=>{stkAutoTick().catch(()=>{})},60e3);
+HOOKS.enter.push(()=>setTimeout(()=>stkAutoTick().catch(()=>{}),5000));
+STK.dbg=()=>{const key=S.route.params&&S.route.params.key;const k=key&&stkKey(key);if(!k)return null;const c=stkCalcK(k);return{n:c.n,mode:c.mode,tier:c.tier,todayDone:c.todayDone,by:c.by,winds:c.winds,best:c.best,lost:c.lost,danger:c.danger,rain:+c.rain.toFixed(2),fuel:c.fuel,frozenToday:c.frozenToday,running:!!STKC.raf,still:STKC.still,parts:STKC.parts.length,drops:STKC.drops.length,canvas:STKC.cv?[STKC.cv.width,STKC.cv.height]:null}};
+STK.fx=stkFx;STK.paint=stkPaint;
 /*}@js:51STREAK*/
 
 
