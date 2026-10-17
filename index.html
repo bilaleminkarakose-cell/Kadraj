@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
 <meta charset="utf-8">
-<meta name="kadraj-version" content="50203">
+<meta name="kadraj-version" content="50204">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,interactive-widget=resizes-content">
 <meta name="theme-color" content="#0A110F">
 <link rel="manifest" href="manifest.webmanifest">
@@ -2953,12 +2953,11 @@ const vib=ms=>{try{if(settings.haptics===false)return;navigator.vibrate&&navigat
 /* Sürüm: ana.ara.yama (4.1.0). Hata düzeltme ve küçük şeyler → yama artar (4.1.1); büyük güncelleme → ara artar (4.2.0).
    APP_V = ana*10000 + ara*100 + yama (4.1.0 → 40100). Başlıktaki <meta name="kadraj-version"> ile aynı tutulmalı.
    Eski biçim (4.0 → 40) verNorm ile çevrilir. "İki sürüm geride" ara sürüm sayısıyla ölçülür (yamalar engellemez). */
-const APP_V=50203,APP_VER="5.2.3";
+const APP_V=50204,APP_VER="5.2.4";
 const verNorm=x=>{x=Math.max(0,Math.floor(+x||0));return x<1000?Math.floor(x/10)*10000+(x%10)*100:x};
 const verLvl=x=>Math.floor(verNorm(x)/100);
 /* 4.9: fark sürüm adımıyla sayılır (4.9 → 5.0 bir adım); eskisi ana*100+ara farkıydı ve 5.0'ı 91 sürüm ileride sanıyordu */
 const verStep=x=>{const n=verNorm(x);return Math.floor(n/10000)*10+Math.floor(n/100)%100};
-const verGapOld=x=>verLvl(x)-verLvl(APP_V);
 const verGap=x=>verStep(x)-verStep(APP_V);
 /* data-act="x" olan düğmeler için ek eylemler: ACT.x=(t,d,e)=>{...} (tıklama dağıtıcısının sonunda çağrılır) */
 const ACT={};
@@ -3032,7 +3031,6 @@ trophy:'<path d="M8 21h8M12 16v5M7 4h10v5a5 5 0 0 1-10 0zM7 6H4a3 3 0 0 0 3 4.5M
 prev:'<path d="m15 6-6 6 6 6"/>',
 next:'<path d="m9 6 6 6-6 6"/>'};
 const I=(n,cls="")=>`<svg class="i ${cls}" viewBox="0 0 24 24" aria-hidden="true">${IP[n]||""}</svg>`;
-const VFOld=`<svg class="vfmark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M2.5 8V5a2.5 2.5 0 0 1 2.5-2.5h3M16 2.5h3A2.5 2.5 0 0 1 21.5 5v3M21.5 16v3a2.5 2.5 0 0 1-2.5 2.5h-3M8 21.5H5A2.5 2.5 0 0 1 2.5 19v-3"/><circle cx="12" cy="12" r="3.4" fill="currentColor" stroke="none"/></svg>`;
 /* 4.4.4: uygulama simgesiyle aynı: vizör köşeleri içinde K ve turuncu nokta */
 const VF=`<svg class="vfmark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 8V5a2.5 2.5 0 0 1 2.5-2.5h3M16 2.5h3A2.5 2.5 0 0 1 21.5 5v3M21.5 16v3a2.5 2.5 0 0 1-2.5 2.5h-3M8 21.5H5A2.5 2.5 0 0 1 2.5 19v-3"/><path d="M9.7 8.1v7.8M9.7 12.3l4-4.2M11.1 10.9l2.9 5" stroke-width="2.5"/><circle cx="15.5" cy="8.5" r="1.2" fill="#FF8A4C" stroke="none"/></svg>`;
 
@@ -3099,18 +3097,6 @@ const LocalDB=(()=>{
   watchDoc(path,cb){const fire=()=>cb(data[path]?clone(data[path]):null);const s={check:p=>{if(p===path)fire()},all:fire};subs.add(s);setTimeout(fire);return()=>subs.delete(s)}
  }})();
 /* ============ Veri: paylaşımlı ============ */
-function CloudDB(db){
- const err=e=>{console.warn("db",e)};
- const w=async f=>{try{return await f()}catch(e){if(e&&e.code==="unavailable"){await new Promise(r=>setTimeout(r,400+Math.random()*600));return f()}throw e}};
- return{
-  async get(p){const s=await db.doc(p).get();return s.exists?clone(s.data()):null},
-  set:(p,o)=>w(()=>db.doc(p).set(o)),
-  update:(p,o)=>w(()=>db.doc(p).update(o)),
-  del:p=>w(()=>db.doc(p).delete()),
-  watchCol(col,cb,opts={}){let q=db.collection(col);if(opts.where)q=q.where(...opts.where);if(opts.orderBy)q=q.orderBy(...opts.orderBy);q=q.limit(opts.limit||500);
-   return q.onSnapshot(s=>cb(s.docs.filter(d=>d.exists).map(d=>({id:d.id,...d.data()}))),err)},
-  watchDoc(p,cb){return db.doc(p).onSnapshot(s=>cb(s.exists?s.data():null),err)}
- }}
 
 /* ============ Firebase ============ */
 const EMBED_CFG={"apiKey": "AIzaSyA_VeF7m3WxigutKtM2lzQmdhIn4IgBjZI", "authDomain": "kadraj-6f1e0.firebaseapp.com", "projectId": "kadraj-6f1e0", "storageBucket": "kadraj-6f1e0.firebasestorage.app", "messagingSenderId": "575068718085", "appId": "1:575068718085:web:e05e02f00b5946d801c86c"};
@@ -3459,17 +3445,7 @@ function vActivity(){const list=activity();const seen=LS.get("kadraj_act_"+S.uid
 /* --- Sohbet --- */
 /* sohbet duvar kağıdı (3.9): yalnızca bu cihazda; settings.wp[key] ya da settings.wp["*"]. 4.0: ortak sohbet temaları, yeni applyWp ve wallpaperMenu B bloğunda; eskileri ...Old */
 const WP_HEART="data:image/svg+xml,"+encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 56 56"><g fill="#ff3b5c" fill-opacity=".16"><path transform="translate(4 4) scale(.75)" d="${IP.heart.match(/d="([^"]+)"/)[1]}"/><path transform="translate(32 30) scale(.6)" d="${IP.heart.match(/d="([^"]+)"/)[1]}"/></g></svg>`);
-const WALLS=[["none","Yok",""],["dusk","Gün batımı","linear-gradient(160deg,rgba(255,94,98,.32),rgba(255,153,102,.2) 50%,rgba(120,80,220,.3))"],["ocean","Okyanus","linear-gradient(180deg,rgba(0,150,255,.26),rgba(0,210,190,.22))"],["mint","Nane","radial-gradient(circle at 20% 10%,rgba(120,230,170,.42),transparent 60%),radial-gradient(circle at 90% 90%,rgba(80,170,255,.36),transparent 55%)"],["night","Gece","linear-gradient(180deg,#0f1530,#2a1b4a)"],["dots","Noktalı","radial-gradient(rgba(127,127,127,.32) 1.4px,transparent 1.7px) 0 0/18px 18px"],["grid","Kareli","linear-gradient(rgba(127,127,127,.16) 1px,transparent 1px) 0 0/22px 22px,linear-gradient(90deg,rgba(127,127,127,.16) 1px,transparent 1px) 0 0/22px 22px"],["hearts","Kalpler",`url("${WP_HEART}") 0 0/56px 56px`]];
 const wpLsKey=key=>"kadraj_wp_"+String(key).replace(/[^\w:-]/g,"_");
-function wpOf(key){const w=settings.wp||{};const id=w[key]||w["*"]||"none";if(id==="photo"){const src=LS.get(wpLsKey(w[key]==="photo"?key:"*"));return src?{id:"photo:"+src.length,bg:`linear-gradient(rgba(0,0,0,.12),rgba(0,0,0,.12)),url("${src}") center/cover no-repeat`}:{id:"none",bg:""}}const x=WALLS.find(a=>a[0]===id)||WALLS[0];return{id:x[0],bg:x[2]}}
-function applyWpOld(box,key){const w=wpOf(key);if(box.dataset.wp===w.id)return;box.dataset.wp=w.id;box.style.background=w.bg;box.classList.toggle("wp",!!w.bg)}
-function wallpaperMenuOld(){const key=S.route.params.key;const w=settings.wp||{};const cur=w[key]||w["*"]||"none";
- const l=sheet("wp","Sohbet duvar kağıdı",`<p class="muted" style="margin:0 18px 10px;font-size:.84rem">Yalnızca senin cihazında görünür.</p><div class="wpgrid">${WALLS.map(([id,lb,bg])=>`<button type="button" data-wpid="${id}" class="${cur===id?"on":""}" style="background:${esc(bg)}"><span>${esc(lb)}</span></button>`).join("")}</div>
- <button class="opt" id="wpPh">${I("image")}${cur==="photo"?"Başka fotoğraf seç":"Fotoğraftan seç"}</button><label class="opt" style="cursor:pointer"><input type="checkbox" id="wpAll" ${w["*"]&&!w[key]?"checked":""}> Bütün sohbetlerde kullan</label><button class="opt" data-act="close">${I("close")}Kapat</button>`);
- const save=id=>{const all=$("#wpAll",l).checked;const nw={...(settings.wp||{})};if(all){nw["*"]=id;delete nw[key]}else nw[key]=id;settings.wp=nw;saveSettings();const box=$("#msgs");if(box)applyWp(box,key);closeLayer("wp");toast(id==="none"?"Duvar kağıdı kaldırıldı":"Duvar kağıdı değişti")};
- $$("[data-wpid]",l).forEach(b=>b.onclick=()=>save(b.dataset.wpid));
- $("#wpPh",l).onclick=async()=>{const all=$("#wpAll",l).checked;const r=await pickImage({title:"Duvar kağıdı",draw:false});if(!r)return;const img=r.img;const ratio=(img.naturalWidth||img.width)/(img.naturalHeight||img.height)||.56;const W=720,H=Math.round(W/Math.min(Math.max(ratio,.4),1.2));
-  const data=encode(toCanvas(img,W,H),420000,.8);if(!LS.set(wpLsKey(all?"*":key),data))return toast("Fotoğraf çok büyük, kaydedilemedi.");$("#wpAll",l).checked=all;save("photo")}}
 function vChat(key){const k=keyInfo(key);const isRota=k.type==="bot"&&k.bot.ai;
  const chips=isRota?["Satranç oynayalım","Kadraj'ı nasıl kullanırım?","Arkadaşlarımla nasıl konuşurum?","Test bildirimleri oluştur","Fotoğraf yüklenmiyor","JavaScript'te debounce yaz"]:k.type==="bot"?["Merhaba!","Bugün ne paylaştın?","Bana bir öneri ver"]:[];/* 5.1: insan sohbetlerinde hazır mesaj çipleri kaldırıldı (eskiden Meydan "Selam herkese!", grup "Selam ekip!", birebir "Selam!/Nasılsın?") */
  if(S.replyKey!==key){S.replyTo=null;S.replyKey=key}
@@ -3493,15 +3469,6 @@ function vInvite(){const cloud=S.mode==="cloud";
  <div class="box">${[["globe","Meydan","Uygulamadaki herkesin canlı ortak sohbeti"],["chat","Birebir mesaj","Fotoğraf ve paylaşım gönder, çift dokunarak kalp bırak, uzun basarak geri al"],["users","Grup sohbeti","İstediğin arkadaşlarla grup kur, @rota'yı çağır"],["phone","Sesli ve görüntülü arama","Birebir sohbetin üstündeki telefon ve kamera düğmeleri"],["mic","Sesli mesaj","Mesaj kutusu boşken mikrofona dokun, konuş, gönder"],["hand","Dürt","Şu an açık olan arkadaşına titreşimli dürtme gönder"],["reply","Hikâye yanıtı","Bir hikâyeye yazdığın yanıt mesaj olarak gider"],["send","Paylaşım gönder","Her kartın altındaki uçak düğmesiyle"]].map(([ic,b,s])=>`<div class="srow">${I(ic)}<span class="t">${b}<small>${s}</small></span></div>`).join("")}</div>`}
 
 /* --- Ayarlar --- */
-function vSettingsOld(){const p=me();const sw=(id,on,label,sub)=>`<label class="srow"><span class="t">${label}${sub?`<small>${sub}</small>`:""}</span><span class="sw"><input type="checkbox" id="${id}" ${on?"checked":""}><span></span></span></label>`;
- const remembered=S.mode==="cloud"?LS.get("kadraj_fb_remember",true):LS.get("kadraj_session")===S.uid;
- return`<div class="set"><h3>Görünüm</h3><div class="seg" role="group" aria-label="Tema">${[["light","sun","Açık"],["dark","moon","Koyu"],["system","auto","Sistem"]].map(([v,ic,l])=>`<button data-theme-set="${v}" aria-pressed="${settings.theme===v}">${I(ic)}${l}</button>`).join("")}</div><h3>Yazı boyutu</h3><div class="seg" role="group" aria-label="Yazı boyutu">${[[1,"Normal"],[1.1,"Büyük"],[1.2,"Çok büyük"]].map(([v,l])=>`<button data-scale="${v}" aria-pressed="${(settings.scale||1)==v}">${l}</button>`).join("")}</div></div>
- <div class="set"><h3>Hesap</h3>${S.mode==="cloud"&&FB&&FB.auth&&FB.auth.currentUser&&FB.auth.currentUser.email?`<div class="kv"><span>Giriş e-postan</span><span class="mono" style="text-align:right;overflow-wrap:anywhere">${esc(FB.auth.currentUser.email)}</span></div>`:""}<button class="srow" data-go="edit">${I("edit")}<span class="t">Profili düzenle<small>Ad, kullanıcı adı, biyografi, fotoğraf</small></span></button><button class="srow" data-act="changepw">${I("key")}<span class="t">Şifreyi değiştir</span></button>${sw("setPrivate",p.private,"Gizli hesap","Paylaşımlarını yalnızca takipçilerin görür")}</div>
- <div class="set"><h3>Bildirim ve oynatma</h3>${sw("setNotify",settings.notify,"Uygulama içi bildirimler","Mesaj, beğeni ve dürtmelerde üstte uyarı")}${sw("setAutoplay",settings.autoplay,"Klaketleri otomatik oynat","Kapatırsan dokununca başlar")}</div>
- <div class="set"><h3>Oturum</h3>${sw("setRemember",remembered,"Beni hatırla","Açıkken bu cihazda şifre sorulmaz")}<button class="srow" data-act="logout">${I("logout")}<span class="t">Çıkış yap<small>@${esc(p.username)}</small></span></button></div>
- ${S.admin?`<div class="set"><h3>Yönetici</h3><button class="srow" data-go="admin">${I("key")}<span class="t">Yönetici paneli<small>Kullanıcılar, botlar, duyuru, temizlik</small></span></button></div>`:""}<div class="set"><h3>Uygulama</h3><button class="srow" data-act="install">${I("home")}<span class="t">${isStandalone()?"Ana ekranda açık":"Ana ekrana ekle"}<small>${isStandalone()?"Kadraj uygulama olarak çalışıyor":"Telefonunda simgesiyle dursun, tam ekran açılsın"}</small></span></button></div><div class="set"><h3>Yardım</h3><button class="srow" data-act="invite">${I("users")}<span class="t">Arkadaşlarını davet et<small>Birlikte kullanmanın yolu</small></span></button><button class="srow" data-msg="bot:rota">${I("spark")}<span class="t">Rota'ya sor<small>Yapay zekâ rehberi</small></span></button></div>
- <div class="set"><h3>Hakkında</h3><div class="kv"><span>Sürüm</span><span class="mono">Kadraj ${APP_VER} · Firebase</span></div><div class="kv"><span>Veri</span><span>${S.mode==="cloud"?"Firebase · arkadaşlarınla canlı":"Demo · yalnızca bu cihaz"}</span></div><div class="kv"><span>Şu an açık</span><span>${S.online.size+1} kişi</span></div><div class="kv"><span>Rota</span><span>${S.caps.sample?"Yapay zekâ bağlı":"Hazır yanıtlar"}</span></div></div>
- <div class="set"><button class="srow" data-act="resetcfg">${I("link")}<span class="t">${S.mode==="cloud"?"Firebase bağlantısını değiştir":"Firebase'i kur"}<small>${S.mode==="cloud"?"Kurulum ekranına döner":"Arkadaşlarınla konuşmak için gerekli"}</small></span></button><button class="srow" data-act="delacct">${I("trash")}<span class="t" style="color:var(--heart)">Hesabı sil<small>Profil, paylaşımlar ve hikâyeler kalıcı olarak silinir</small></span></button></div>`}
 function vEdit(){const p=me();const d=S.editDraft||{};return`<form class="form" id="editForm"><div class="avpick" style="justify-content:center;flex-direction:column"><span class="av" style="--s:96px"><img id="editAv" src="${esc(d.av||p.avatar)}" alt=""></span><button type="button" class="btn sec sm" id="editAvBtn">${I("image")}Fotoğrafı değiştir</button></div>
  <div class="field"><label for="eName">Ad</label><input class="in" id="eName" value="${esc(d.name??p.name)}" maxlength="40" required></div>
  <div class="field"><label for="eUser">Kullanıcı adı</label><input class="in" id="eUser" value="${esc(d.user??p.username)}" maxlength="24" required autocapitalize="off"></div>
@@ -3671,8 +3638,6 @@ function reactList(mid){const m=S.msgs.find(x=>x.id===mid);if(!m)return;const r=
  const me_=$("[data-rxme]",l);if(me_)me_.onclick=()=>{closeLayer("rxl");setReact(mid,me_.dataset.rxme)}}
 document.addEventListener("click",e=>{const r=e.target.closest("[data-rxl]");if(!r||S.route.name!=="chat")return;e.stopImmediatePropagation();reactList(r.dataset.rxl)},true);
 async function reactMsg(mid){return setReact(mid,"heart")}
-async function reactMsgOld(mid){const k=keyInfo(S.route.params.key);if(k.type==="bot"||!guard())return;const m=S.msgs.find(x=>x.id===mid);if(!m||m.del)return;const v=m.likes&&m.likes[S.uid]?0:now();vib(15);
- S.msgs=S.msgs.map(x=>x.id===mid?{...x,likes:{...(x.likes||{}),[S.uid]:v}}:x);renderMsgs();await write(()=>DB.update(`chats/${k.cid}/msgs/${mid}`,{likes:{[S.uid]:v}}),{quiet:true})}
 function openNewChat(){const people=[...humans(),...BOTS.map(b=>b.uid)];
  const l=sheet("newchat","Yeni mesaj",`<div style="padding:0 16px 10px"><input class="in" id="ncQ" placeholder="Kişi ara" aria-label="Kişi ara"></div><div class="box" id="ncList"></div>`,{tall:true});
  const draw=q=>{$("#ncList",l).innerHTML=people.filter(u=>(P(u).username+" "+P(u).name).toLocaleLowerCase("tr").includes(q)).map(u=>{const p=P(u);return`<button class="row" data-msg="${esc(u)}">${avatar(u,44,{click:false,ring:false})}<div class="t"><div><b>${esc(p.name)}</b>${badge(u)}</div><div class="s">@${esc(p.username)}${S.online.has(u)?" · çevrimiçi":""}</div></div></button>`}).join("")||`<div class="empty"><b>Kimse bulunamadı</b>Arkadaşın henüz hesap açmamış olabilir.</div>`};
@@ -3855,11 +3820,9 @@ function videoPoster(url){return new Promise(res=>{const v=document.createElemen
 const vcache={};
 const RB={};function RV(x){if(!x)return x;const d=ASSETS[x];if(!d)return x;if(RB[x])return RB[x];try{const i=d.indexOf(",");const mime=d.slice(5,d.indexOf(";"))||"video/mp4";const bin=atob(d.slice(i+1));const u=new Uint8Array(bin.length);for(let k=0;k<bin.length;k++)u[k]=bin.charCodeAt(k);return RB[x]=URL.createObjectURL(new Blob([u],{type:mime}))}catch{return d}}
 /* Cloudinary videoları akıcı oynasın: 720p, H.264 MP4, otomatik kalite (Cloudinary ilk izlemede dönüştürür ve önbellekler) */
-const cldPlayOld=u=>typeof u==="string"&&/^https:\/\/res\.cloudinary\.com\/[^/]+\/video\/upload\/v\d+\//.test(u)?u.replace("/video/upload/","/video/upload/f_mp4,vc_h264,q_auto,w_720,c_limit/").replace(/\.(webm|mov|mkv|3gp|m4v|avi)$/i,".mp4"):u;
 /* 4.5: daha net görüntü (1080p, q_auto:good) */
 const cldTx=()=>settings.dataSaver?"f_mp4,vc_h264,q_auto,w_720,c_limit":"f_mp4,vc_h264,q_auto:good,w_1080,c_limit";
 const cldPlay=u=>typeof u==="string"&&/^https:\/\/res\.cloudinary\.com\/[^/]+\/video\/upload\/v\d+\//.test(u)?u.replace("/video/upload/","/video/upload/"+cldTx()+"/").replace(/\.(webm|mov|mkv|3gp|m4v|avi)$/i,".mp4"):u;
-const vsrcOld=p=>!p.video?"":p.video.startsWith("chunk:")?(vcache[p.video]||""):cldPlay(RV(p.video));
 const vsrc=p=>!p.video?"":vcache[p.video]||(p.video.startsWith("chunk:")?"":cldPlay(RV(p.video)));
 const vref=p=>p.video&&p.video.startsWith("chunk:")?` data-vref="${esc(p.video)}"`:"";
 async function resolveVideo(ref){if(vcache[ref])return vcache[ref];const[,vid,n]=ref.split(":");const parts=await Promise.all([...Array(+n)].map((_,i)=>DB.get(`vchunks/${vid}-${i}`).catch(()=>null)));if(parts.some(x=>!x))return null;
@@ -3869,7 +3832,6 @@ async function resolveVideo(ref){if(vcache[ref])return vcache[ref];const[,vid,n]
 /* 4.8: Klakette parçalı videolar yalnızca açık, önceki ve sonraki için indirilir (eskisi hepsini birden indiriyordu) */
 function hydrateVideos(){const near=new Set();if(activeReel){near.add(activeReel);if(activeReel.nextElementSibling)near.add(activeReel.nextElementSibling);if(activeReel.previousElementSibling)near.add(activeReel.previousElementSibling)}
  for(const v of $$("video[data-vref]")){if(v.getAttribute("src")||v._hy)continue;const r=v.closest(".reel");if(r&&!near.has(r))continue;v._hy=true;resolveVideo(v.dataset.vref).then(u=>{v._hy=false;if(u&&v.isConnected){v.src=u;if(activeReel&&activeReel.contains(v)&&settings.autoplay)v.play().catch(()=>{if(!v.muted&&activeReel&&activeReel.contains(v)){v.muted=true;v.play().catch(()=>{});S.needUnmute=true;const h=activeReel.querySelector(".rhint");if(h)h.hidden=false}})}}).catch(()=>{v._hy=false})}}
-function hydrateVideosOld(){for(const v of $$("video[data-vref]")){if(v.getAttribute("src"))continue;v.removeAttribute("src");resolveVideo(v.dataset.vref).then(u=>{if(u&&v.isConnected){v.src=u;if(activeReel&&activeReel.contains(v)&&settings.autoplay)v.play().catch(()=>{})}})}}
 const VMAX=4*1024*1024;
 /* 4.0: video parçaları bulutta ham bayt olarak saklanır (base64'e göre ~%25 daha az yer); yükleme yarıda kalırsa yazılan parçalar silinir */
 function delChunks(ref){if(!ref||!String(ref).startsWith("chunk:"))return;const[,vid,n]=String(ref).split(":");for(let i=0;i<+n;i++)DB.del(`vchunks/${vid}-${i}`).catch(()=>{})}
@@ -3882,9 +3844,6 @@ function cldUpload(file,onProg){return new Promise((res,rej)=>{const fd=new Form
  x.onload=()=>{let j=null;try{j=JSON.parse(x.responseText)}catch{}if(x.status>=200&&x.status<300&&j&&j.secure_url){cldTrack(j.bytes||file.size);cldWarm(j.secure_url);res(j.secure_url)}else rej(new Error((j&&j.error&&j.error.message)||"Cloudinary yüklemesi başarısız"))};
  x.onerror=()=>rej(new Error("Bağlantı hatası"));x.ontimeout=()=>rej(new Error("Zaman aşımı"));x.timeout=10*60e3;x.send(fd)})}
 function vidDur(file){return new Promise(r=>{const v=document.createElement("video");const u=URL.createObjectURL(file);v.preload="metadata";v.muted=true;v.onloadedmetadata=()=>{const d=v.duration;URL.revokeObjectURL(u);r(isFinite(d)?d:0)};v.onerror=()=>{URL.revokeObjectURL(u);r(0)};setTimeout(()=>r(0),8000);v.src=u})}
-async function storeVideoV41(file,onProg){
- if(cldOn()){try{return await cldUpload(file,onProg)}catch(e){console.warn("cloudinary",e);if(file.size>VMAX)throw new Error("Video yüklenemedi. Bağlantını kontrol edip tekrar dene.")}}
- return storeVideoFs(file,onProg)}
 /* 4.4.1: bulut yüklemesi bağlantıdan düşerse bir kez daha dener; yine olmazsa büyük videoyu telefonda küçültüp yedek yola (Firestore parçaları) koyar.
    O da olmazsa Cloudinary'nin asıl hata sebebini gösterir (eskiden yalnızca "Video yüklenemedi" yazıyordu). */
 async function storeVideo(file,onProg){
@@ -3898,8 +3857,6 @@ async function storeVideoFs(file,onProg){const vid=rid();let done=0;
   const durl=await readFile(file);const CH=180000;const n=Math.ceil(durl.length/CH);
   for(let i=0;i<n;i++){onProg&&onProg(i,n);await DB.set(`vchunks/${vid}-${i}`,{d:durl.slice(i*CH,(i+1)*CH)});done++}return`chunk:${vid}:${n}`}
  catch(e){for(let i=0;i<done;i++)DB.del(`vchunks/${vid}-${i}`).catch(()=>{});throw e}}
-async function storeVideoOld(file,onProg){const durl=await readFile(file);const vid=rid();const CH=S.mode==="cloud"?700000:180000;const n=Math.ceil(durl.length/CH);
- for(let i=0;i<n;i++){onProg&&onProg(i,n);await DB.set(`vchunks/${vid}-${i}`,{d:durl.slice(i*CH,(i+1)*CH)})}return`chunk:${vid}:${n}`}
 
 /* ============ Müzik (cihazda üretilir) ============ */
 const MUSIC_NAMES={lofi:"Lo-fi",enerjik:"Enerjik",sakin:"Sakin",none:"Yok"};
@@ -3997,7 +3954,6 @@ let notifReady=false;setTimeout(()=>notifReady=true,4000);
 function notifPerm(){try{return typeof Notification!=="undefined"?Notification.permission:"unsupported"}catch{return"unsupported"}}
 async function askNotif(silent){if(typeof Notification==="undefined")return"unsupported";if(Notification.permission==="granted")return"granted";if(Notification.permission==="denied")return"denied";
  try{const r=await Notification.requestPermission();if(!silent)toast(r==="granted"?"Bildirimler açık":"Bildirime izin verilmedi");scheduleRefresh();return r}catch{return"default"}}
-let _lastNote=0;
 function sysNote(title,body,tag,o={}){try{if(typeof Notification==="undefined"||Notification.permission!=="granted")return;if(!settings.notify)return;if(document.visibilityState==="visible")return;
  const ic=typeof o.icon==="string"&&/^data:image\/(jpe?g|png|webp)/.test(o.icon)?o.icon:"icon-192.png";const key=o.key||"";
  const opts={body:body||"",tag:tag||"kadraj",icon:ic,badge:"icon-192.png",renotify:true,vibrate:[70,40,70],timestamp:now(),data:{key}};
@@ -4641,14 +4597,10 @@ function gameMsgHtml(m){const d=(S.games||{})[m.game];const st=!d?"Oyun kartı":
    çocuk kabul ederse kendi hesabına child:true yazılır. Kimse çocuğun özel mesajlarını okumaz.
    Modda: küfür süzgeci (giden metin maskelenir), Meydan kapalı, sadece karşılıklı takipleşilen
    arkadaşlarla mesajlaşma. */
-const isChildOld=uid=>!!(P(uid)||{}).child;
 const kidClean=t=>isChild(S.uid)?cleanText(t):t;
 /* 4.3.2: yönetici kapattıysa (admin/childinv.list[uid].off, açılıştan sonraysa) çocuk modu kapalı sayılır */
 const isChild=uid=>{const c=(P(uid)||{}).child;if(!c)return false;const o=(((S.adm&&S.adm.childinv&&S.adm.childinv.list)||{})[uid]||{}).off;return!(o&&o>=+c)};
 const childInvites=()=>(S.adm&&S.adm.childinv&&S.adm.childinv.list)||{};
-const BADWORDS=["amk","aq","amq","oç","oc.","piç","pic","yavşak","yavsak","orospu","oospu","kahpe","gavat","ibne","ipne","pezevenk","sikerim","sikeyim","siktir","sik","sikik","siksem","göt","got ver","gotunu","amcık","amcik","amına","amina","amına k","anan","ananı","ananin","anani","babanı","sülale","sulale","pusht","puşt","şerefsiz","serefsiz","dassak","taşak","tasak","yarrak","yarak","yarrağ","mal mısın","gerizekalı","gerizekali","salak","aptal","bok","boktan","kavat","kaltak","sürtük","surtuk","döl","dol.","meme","am ","amcıklar"];
-const BAD_RE=new RegExp("("+BADWORDS.map(w=>w.replace(/[.*+?^${}()|[\]\\]/g,"\\$&").replace(/\s+$/,"")).sort((a,b)=>b.length-a.length).join("|")+")","gi");
-function cleanTextOld(t){if(!t)return t;return String(t).replace(BAD_RE,m=>m[0]+"*".repeat(Math.max(1,m.trim().length-1)))}
 /* 4.3.2: kelimelerin içinde aramaz (selam, klasik, götür, koç, inanan, dolu bozulmaz). Kısa ve başka kelimelerin içinde geçenler
    yalnızca tam kelime olarak (BAD_EXACT), uzunlar kelime başında (BAD_STEM, ekleriyle) yakalanır. */
 const BAD_EXACT=new Set(["am","amk","aq","amq","oç","oc","pic","sik","siki","sikim","göt","got","götü","götün","götünü","götüne","gotu","gotun","gotunu","anan","ananı","anani","ananin","ananın","anana","babanı","banani","bok","boku","boka","boktan","döl","meme"].map(w=>w.toLocaleLowerCase("tr")));
@@ -4835,7 +4787,6 @@ HOOKS.enter.push(()=>setTimeout(()=>{try{if(!isStandalone()||LS.get("kadraj_icon
  dialog("Kadraj'ın yeni logosu",`Uygulamanın içindeki logo yenilendi. Ana ekrandaki simgeyi ise telefonun kendisi saklar ve kendiliğinden değiştirmez.<br><br>Yeni simge için:<br>1. Ana ekranda Kadraj simgesine basılı tut, <b>Kaldır</b>'a dokun.<br>2. Chrome'da <b>kadrajsosyalmedya.github.io/Kadraj</b> adresini aç.<br>3. Sağ üstteki ⋮ menüsünden <b>Ana ekrana ekle</b> ya da <b>Uygulamayı yükle</b>'ye dokun.<br><br>Hesabın ve mesajların silinmez.`,[{label:"Tamam"}])}catch(e){}},4000));
 /* ===== 4.5: sohbette arama, mesaj iletme, sohbet sabitleme, hikâyeye tepki, sesli mesaj hızı, Klaket süresi ===== */
 /* Klaket ilerleme çubuğu: bulut videoyu ilk açılışta parça parça hazırlarken süre yanlış (kısa) görünür; kayıtlı süre ya da sabitlenmiş süre kullanılır */
-function reelDurOld(v){const k=+v.dataset.dur||0;if(k>0)return k;const d=v.duration;if(!isFinite(d)||!d)return 0;if(d!==v._ld){v._ld=d;v._st=0;return 0}v._st=(v._st||0)+1;return v._st>=4?d:0}
 /* 4.5.1: kayıtlı süre yoksa süre 1,5 sn değişmeden kalınca kullanılır (her karede çağrılır) */
 function reelDur(v){const k=+v.dataset.dur||0;if(k>0)return k;const d=v.duration;if(!isFinite(d)||!d)return 0;const t=performance.now();if(d!==v._ld){v._ld=d;v._lt=t;return 0}return t-v._lt>1500?d:0}
 function chatList(){const pins=settings.pinChats||[];return chatListOld().map(c=>({...c,pinned:pins.includes(c.key)})).sort((a,b)=>(b.pinned-a.pinned)||(a.pinned&&b.pinned?pins.indexOf(a.key)-pins.indexOf(b.key):b.at-a.at))}
@@ -5140,14 +5091,6 @@ function completeProfile(o={}){let avData=o.avData||null;authShell(`<div>${brand
  $("#cpOut").onclick=()=>FB.A.signOut(FB.auth);
  $("#cpF").onsubmit=async e=>{e.preventDefault();const err=$("#rErr");const name=$("#rName").value.trim(),un=$("#rUser").value.trim().toLowerCase();if(!name)return err.textContent="Adını yaz.";if(!USER_RE.test(un))return err.textContent="Kullanıcı adı 3–24 karakter: küçük harf, rakam, nokta, alt çizgi.";if(BOTS.some(b=>b.username===un)||await usernameTaken(un))return err.textContent=`“${un}” kullanılıyor.`;
   try{await saveNewProfile(name,un,avData)}catch(ex){err.textContent=authErr(ex)}}}
-function fbLoginOld(prefill){authShell(`<div>${brandLine}<h2>Giriş yap</h2></div>${modeChip()}
- <form id="logF" novalidate><div class="field"><label for="lMail">E-posta</label><input class="in" id="lMail" type="email" autocomplete="email" autocapitalize="off" value="${esc(prefill||"")}"></div><div class="field"><label for="lPw">Şifre</label><input class="in" id="lPw" type="password" autocomplete="current-password"></div>
- <label class="check"><input type="checkbox" id="lRem" ${LS.get("kadraj_fb_remember",true)?"checked":""}>Beni hatırla</label><div class="err" id="lErr"></div><button class="btn block" type="submit">Giriş yap</button></form>
- <button class="btn ghost" id="forgot">Şifremi unuttum</button><div class="divider">ya da</div><button class="btn line block" id="toReg">Yeni hesap oluştur</button>`);
- $("#toReg").onclick=fbRegister;
- $("#forgot").onclick=async()=>{const mail=$("#lMail").value.trim();const err=$("#lErr");err.style.color="";if(!/^\S+@\S+\.\S+$/.test(mail))return err.textContent="Önce e-posta adresini yaz, sonra Şifremi unuttum'a dokun.";try{await FB.A.sendPasswordResetEmail(FB.auth,mail);err.style.color="var(--ok)";err.textContent="Şifre sıfırlama bağlantısı e-postana gönderildi. Gelmezse spam klasörüne bak."}catch(ex){err.textContent=authErr(ex)}};
- $("#logF").onsubmit=async e=>{e.preventDefault();const err=$("#lErr");err.style.color="";const btn=$("#logF button[type=submit]");btn.disabled=true;btn.textContent="Giriş yapılıyor…";
-  try{await setPersist($("#lRem").checked);await FB.A.signInWithEmailAndPassword(FB.auth,$("#lMail").value.trim(),$("#lPw").value)}catch(ex){err.textContent=authErr(ex);btn.disabled=false;btn.textContent="Giriş yap"}}}
 let sharedOn=false;
 async function startSession(fresh){if(!sharedOn){subscribeShared();sharedOn=true}const room=S.caps.room;if(room&&room.listen&&!S.roomListen)S.roomListen=room.listen();await enterApp(fresh)}
 function endSession(){repUnsub=null;S.reports=[];S.posta=null;S.editDraft=null;if(CALL)endCall(true);teardownUser();closeAll();if(S.roomListen){S.roomListen();S.roomListen=null}unsubAll();sharedOn=false;S.authed=false;S.profiles={};S.posts={};S.meta={};S.stories={};S.meydan=null}
@@ -5167,7 +5110,6 @@ async function enterApp(fresh){S.authed=true;S.guest=false;S.bootAt=now();S.admi
  if(fresh)setTimeout(()=>toast(`Hoş geldin @${me().username}! Arkadaşlarını Sohbet > Davet et'ten çağırabilirsin.`,"bot:rota"),400);
  setTimeout(()=>{if(settings.notify&&notifPerm()==='default')askNotif(true)},2500);
  setTimeout(checkChildInvite,1500);runHooks("enter",fresh)}
-function enterGuest(){S.authed=true;S.guest=true;S.canWrite=false;S.uid=S.uid||"guest";S.route={name:"feed",params:{}};render(true);introDone()}
 function withTimeout(p,ms){return Promise.race([p,new Promise(r=>setTimeout(()=>r(null),ms))])}
 function wireRoom(room){room.onPeers(({peers})=>{const on=new Set(),ty={};for(const p of peers){const pr=p.presence||{};if(!pr.uid||p.isMe)continue;on.add(pr.uid);if(pr.typing)ty[pr.uid]=pr.typing}S.online=on;S.typing=ty;scheduleRefresh()});
  room.on("nudge",msg=>{const d=msg.data||{};if(d.to===S.uid&&S.authed&&d.from){vib([80,60,80]);toast(`@${P(d.from).username} seni dürttü`,d.from,"u:"+d.from);sysNote("Dürtme",`@${P(d.from).username} seni dürttü`,"nudge",{key:"u:"+d.from,icon:P(d.from).avatar})}})}
@@ -5612,7 +5554,6 @@ function wallpaperMenu(key){key=typeof key==="string"&&key?key:(S.route.params&&
   settings.wp=w;settings.wpAt=wa;saveSettings();closeLayer("wp");vib(12);const box=$("#msgs");if(box&&!def)applyWp(box,key);if(S.route.name==="settings")render(false);
   toast(def?"Varsayılan sohbet teması kaydedildi":st.sel==="none"?"Sohbet teması kaldırıldı":canShare?"Tema yalnızca sende değişti":"Sohbet teması değişti")};
  draw()}
-function wallpaperMenuFor(key){return wallpaperMenu(key)}
 /* 4.4.1: sohbet teması yalnızca arka planı değil her yeri boyar (üst çubuk/grup adı, gelen-giden balonlar, yazma çubuğu, çipler).
    Renkler temanın tonundan üretilir ve sohbet açıkken #shell'e yazılır; sohbetten çıkınca silinir. Katmanlar (#overlay) uygulama temasında kalır. */
 const KB_HUE={ocean:[205,1],dusk:[340,.8],mint:[158,.9],night:[235,.9],lavender:[265,.9],hearts:[338,.85],forest:[135,.7],coffee:[28,.6],neon:[268,1],candy:[300,.7]};
@@ -5874,16 +5815,6 @@ async function kaUnlock(code,rk){const pt=await crypto.subtle.decrypt({name:"AES
 function postaAdd(po,t,b,ic){po.msgs=[{id:rid(),t,b,ic:ic||"mail",at:now(),r:0},...(po.msgs||[])].slice(0,50)}
 const postaUnread=()=>((S.posta&&S.posta.msgs)||[]).filter(m=>!m.r).length;
 /* 4.3.0 sürümü (yönetici kurtarması yok); kullanılmıyor */
-async function kasaSealOld(uid,pw,{create=true,note,rotate=false}={}){if(S.mode!=="cloud"||!uid||!pw||!(window.crypto&&crypto.subtle))return null;
- const prof=(S.profiles&&S.profiles[uid])||await DB.get("profiles/"+uid).catch(()=>null);const un=prof&&prof.username;if(!un)return null;
- const path=`data/users/${uid}/posta`;const po=(await DB.get(path).catch(()=>null))||{msgs:[]};po.msgs=po.msgs||[];let fresh=false;
- if(!po.code){if(!create)return null;po.code=kaNew();fresh=true}
- if(rotate){po.code=kaNew();postaAdd(po,"Yeni Kadraj Anahtarın",`Yeni anahtarın:\n${po.code}\n\nEski anahtarın artık çalışmaz. Yenisini bir yere yaz.`,"key")}
- const rk=await kaLock(po.code,pw);const cur=await DB.get("unames/"+un).catch(()=>null);
- const email=(FB&&FB.auth&&FB.auth.currentUser&&FB.auth.currentUser.email)||(cur&&cur.email)||"";
- await DB.set("unames/"+un,{...(cur&&cur.uid===uid?cur:{}),uid,email,rk,at:now()});
- if(fresh)postaAdd(po,"Kadraj Anahtarın hazır",`Kadraj Anahtarın:\n${po.code}\n\nŞifreni unutursan giriş ekranında Şifremi unuttum > Kadraj Anahtarı ile yenile'ye dokun; kullanıcı adını, bu anahtarı ve yeni şifreni yaz. E-posta gerekmez.\n\nAnahtarı bir yere yaz ya da ekran görüntüsünü al: şifreni unuttuğunda bu kutuyu açamazsın. Kimseyle paylaşma.`,"key");
- if(note)postaAdd(po,note.t,note.b,note.ic);po.at=now();await DB.set(path,po);if(uid===S.uid)S.posta=po;return po}
 /* şifre biliniyorken anahtarı oluştur ya da yenile (uid'nin kendi oturumunda çalışır) */
 async function kasaSeal(uid,pw,{create=true,note,rotate=false}={}){if(S.mode!=="cloud"||!uid||!pw||!(window.crypto&&crypto.subtle))return null;
  const prof=(S.profiles&&S.profiles[uid])||await DB.get("profiles/"+uid).catch(()=>null);const un=prof&&prof.username;if(!un)return null;
@@ -6493,7 +6424,6 @@ function srSaveQuery(raw){raw=String(raw??"").trim();if(!raw||raw.length>=16)ret
 
 /* --- parçalar --- */
 /* "Klaket" marka adı: Vizör büyük harf yazınca Türkçe kuralla "FLİCK" olmasın */
-const srFlOld=h=>String(h).replace(/Flick/g,'<span lang="en">Flick</span>');
 const srFl=h=>String(h);/* 5.1: ad Klaket oldu, Türkçe büyük harf sorunu yok */
 const SR_TABS=[["all","Hepsi"],["people","Kişiler"],["posts","Paylaşımlar"],["reels","Klaket"],["tags","Etiketler"]];
 const srTab=()=>SR_TABS.some(x=>x[0]===S.srTab)?S.srTab:"all";
@@ -6911,7 +6841,6 @@ const admActOld=admAct;
 admAct=async function(a,t){const d=(t&&t.dataset)||{};const f=Object.prototype.hasOwnProperty.call(ADM5_ACT,a)?ADM5_ACT[a]:null;
  try{if(f)return await f(t,d.u,d.v);return await admActOld(a,t)}catch(e){console.warn("adm",a,e);toast("İşlem tamamlanamadı. Tekrar dene.")}};
 /* silme hataları artık sayılır (eskisi her denemeyi başarılı sayıyordu) */
-const admWipeOld=admWipe;
 admWipe=async function(uid,{posts=true,stories=true}={}){let k=0,f=0;
  if(posts)for(const p of Object.values(S.posts).filter(p=>p.uid===uid)){try{await DB.del("posts/"+p.id)}catch(e){f++;continue}DB.del("meta/"+p.id).catch(()=>{});
   if(p.video&&String(p.video).startsWith("chunk:")){const[,vid,c]=p.video.split(":");for(let i=0;i<+c;i++)DB.del(`vchunks/${vid}-${i}`).catch(()=>{})}const ps={...S.posts};delete ps[p.id];S.posts=ps;k++}
@@ -7018,7 +6947,6 @@ function chCapFx(c,s,col,delay){if(kbReduce()||!c.animate){c.remove();return}con
 function chPromoFx(el,s){if(kbReduce())return;const im=el.firstElementChild;if(im&&im.animate)im.animate([{transform:"scale(1)"},{transform:"scale(1.3) rotate(-6deg)",offset:.35},{transform:"scale(1)"}],{duration:560,easing:"cubic-bezier(.3,1.4,.5,1)"});
  const fx=chFxLayer();if(fx){const r=document.createElement("i");r.className="cring";const[x,y]=sqXY(s);r.style.left=x*12.5+"%";r.style.top=y*12.5+"%";fx.appendChild(r);const a=r.animate([{transform:"scale(.3)",opacity:1},{transform:"scale(1.9)",opacity:0}],{duration:680,easing:"cubic-bezier(.2,.7,.3,1)",fill:"both"});a.onfinish=()=>r.remove();a.oncancel=()=>r.remove()}
  chBurst(s,["#ffcf4d","#ff8a4c","#3fd3ab","#ffffff"],14,60,true)}
-const chAnimBase50=chAnim;
 chAnim=function(m){if(!$("#cBoard")||!CH)return;const pcs=CHEL,mover=m.p&8,rm=kbReduce();
  const capSq=m.fl&1?m.t+(mover?-8:8):(pcs[m.t]?m.t:-1);const el=pcs[m.f];const drag=!!(el&&el.classList.contains("drag"));
  const[fx,fy]=sqXY(m.f),[tx,ty]=sqXY(m.t);const dist=Math.hypot(tx-fx,ty-fy);
@@ -7050,7 +6978,6 @@ function chTray(side,caps,adv){const grp={};for(const p of caps)(grp[p&7]=grp[p&
  const lm=CH.moves[CH.moves.length-1];const newT=grew&&lm&&lm.m.c?lm.m.c&7:-1;let h="";
  for(const t of[5,4,3,2,1]){const a=grp[t];if(!a)continue;h+=`<span class="ctg">${a.map((p,i)=>`<img src="${chPimg(p)}" alt="${PNAME[t]}"${t===newT&&i===a.length-1?' class="pop"':""}>`).join("")}</span>`}
  return`<span class="ccap ctray">${h}${adv>0?`<b class="cadv">+${adv}</b>`:""}</span>`}
-const chPlayerBarBase50=chPlayerBar;
 chPlayerBar=function(side){const g=CH.g;const mat=chMaterial(chViewGame());const caps=mat.capBy(side);const adv=side===0?mat.diff:-mat.diff;const turn=!CH.over&&g.turn===side&&CH.view==null;
  let who="",av="",extra="";
  if(CH.mode==="bot"&&side!==CH.my){const L=CLEVELS[CH.level];av=`<span class="cbotav ${CH.mood||""} ${CH.thinking?"thinking":""}">${botFace(46)}</span>`;who=`<b>Rota</b><span class="tag">${I("spark")}AI</span> <span class="crt">${L.n} · ${L.r}</span>`;extra=`<div class="cbub ${CH.bubble?"show":""}" id="cBub">${esc(CH.bubble||"")}</div>`}
@@ -7641,7 +7568,6 @@ function cwReduce(){try{return kbReduce()}catch{return false}}
 function cwHour(){return CW.hourOv!=null?CW.hourOv:new Date().getHours()}
 /* 5.1: gece yarısı (00:00) yatar, sabah 07:00'de kalkar. Kullanıcı geç saatte etkinse uyumaz (cwOwl*, 51CLAWD). */
 function cwNight(){const h=cwHour();return h<7}
-function cwNightOld(){const h=cwHour();return h>=22||h<5}
 function cwPeriod(){const h=cwHour();return h>=7&&h<11?"m":h>=11&&h<17?"a":h>=17?"e":"n"}
 function cwUn(){try{const u=(me().username||"").trim();return u&&u!=="kullanici"?"@"+u:"dostum"}catch{return"dostum"}}
 function cwFill(t){return String(t).replace(/@(?![\w])/g,cwUn())}
@@ -7663,9 +7589,6 @@ function cwPx(f){const d=window.devicePixelRatio||1;return Math.max(1.5,Math.rou
 function cwSize(){const U=CW.room?CW.room.u:cwPx(cwRoamU());CW.uRoam=cwPx(cwRoamU());CW.U=U;CW.W=CW_GW*U;CW.H=CW_GH*U;
  if(!CW.root)return;CW.root.style.setProperty("--cw-u",U+"px");if(CW.room)CW.room.el.style.setProperty("--cw-u",U+"px");CW.b.style.width=CW.W+"px";CW.b.style.height=CW.H+"px";
  if(!CW.room)for(const el of[CW.bedB,CW.bedF]){el.style.width=32*U+"px";el.style.height=16*U+"px"}}
-function cwSizeOld(){const d=window.devicePixelRatio||1;const U=Math.max(2,Math.round(2.5*d)/d);CW.U=U;CW.W=CW_GW*U;CW.H=CW_GH*U;
- if(!CW.root)return;CW.root.style.setProperty("--cw-u",U+"px");CW.b.style.width=CW.W+"px";CW.b.style.height=CW.H+"px";
- for(const el of[CW.bedB,CW.bedF]){el.style.width=32*U+"px";el.style.height=16*U+"px"}}
 
 /* --- dünya sınırları --- */
 function cwBoundsUpd(){const sh=$("#shell");if(!sh)return;const s=sh.getBoundingClientRect();const vv=window.visualViewport;
@@ -7948,7 +7871,6 @@ async function actWakeNap(){CW.zz=false;CW.pose="surprised";if(CW.inBed){CW.inBe
 async function actSleepIn(){CW.inBed=true;CW.surf="bed";CW.pose="sleep";CW.zz=true;CW.sleptAt=now();cwRoomLamp(false);
  try{for(;;){await cwWait(1000);if(!cwNight()&&!(CW.napUntil&&now()<CW.napUntil)){CW.napUntil=0;await actMorning();return}
   if(cwNight()&&!CW.napUntil&&cwOwlWake()){CW.zz=false;await actOwlUp();return}}}finally{CW.zz=false}}
-async function actSleepInOld(){CW.inBed=true;CW.surf="bed";CW.pose="sleep";CW.zz=true;try{for(;;){await cwWait(1000);if(!cwNight()&&!(CW.napUntil&&now()<CW.napUntil)){CW.napUntil=0;await actMorning();return}}}finally{CW.zz=false}}
 async function actBedtime(){if(!CW.bed){const x=cwBedSpot();if(!cwReduce()){await cwWalk(Math.max(cwB().L+CW.W,Math.min(cwB().R-CW.W,x+(x>CW.x?-1:1)*(16*CW.U+CW.W*.5))));await cwSay("bed.spawn()",{kind:"code",hold:200})}cwBedShow(x);cwBurst(x,cwB().B-20,12)}
  if(!CW.inBed){if(cwMaySay()&&cwNight())await cwSay(cwPick(["Saat geç oldu, yatma vakti. Pijamalarım nerede?","Uykum geldi. Yarın daha komik olacağım, söz."]),{hold:1400});await cwIntoBed()}
  return actSleepIn()}
@@ -8011,7 +7933,6 @@ async function actLeave(){CW.leaving=true;try{CW.zz=false;if(CW.inBed){CW.inBed=
 async function actRoute(r,p){const k=r==="profile"?(p&&p.uid===S.uid?"profile_me":"profile"):r;const l=CW_ROUTE[k];
  if(!l||!cwMaySay()){if(now()-CW.lastWave<15000)return;CW.lastWave=now();CW.pose="wave";await cwWait(1100);CW.pose="idle";return}
  CW.lastWave=now();CW.pose="wave";await cwWait(400);CW.pose="idle";await cwSay(cwPick(l))}
-async function actRouteOld(r,p){if(!cwMaySay())return;const k=r==="profile"?(p&&p.uid===S.uid?"profile_me":"profile"):r;const l=CW_ROUTE[k];if(!l)return;CW.pose="idle";await cwSay(cwPick(l))}
 async function actToast(){CW.pose="surprised";await cwHop(CW.x,cwB().B,16,300);CW.pose="idle";await cwWait(400)}
 async function actWin(){CW.pendWin=false;CW.pose="joy";await cwSay("Şah mat! Zafer dansı başlıyor!",{hold:400});await actDance();CW.pose="happy";await cwSay("Bu zaferi gitarla kutlamak lazım!",{hold:1400})}
 
@@ -8842,7 +8763,6 @@ ACT.chclvl=(t,d)=>{settings.chcLevel=chLvClamp(d.v);saveSettings();vib(6);$$('[d
 ACT.chwlvl=(t,d)=>{const who=d.who==="r"?"r":"c";const v=chLvClamp(d.v);if(who==="c")settings.chwC=v;else settings.chwR=v;saveSettings();vib(6);$$(`[data-act="chwlvl"][data-who="${who}"]`).forEach(b=>b.setAttribute("aria-pressed",b.dataset.v===String(v)))};
 ACT.chwcol=(t,d)=>{settings.chwSwap=d.v==="b";saveSettings();vib(6);$$('[data-act="chwcol"]').forEach(b=>b.setAttribute("aria-pressed",b.dataset.v===d.v))};
 /* 5.1 düzeltme: seviyeler gerçekten farklı olsun (Çaylak eskiden de neredeyse hiç taş kaptırmıyordu). Eski değerler CLEVELS_OLD / CHC_LV_OLD */
-const CLEVELS_OLD=CLEVELS.map(x=>({...x}));const CHC_LV_OLD=CHC_LV.map(x=>({...x}));
 (function(){const set=(L,i,o)=>{const keep={n:L[i].n,r:L[i].r};for(const k of Object.keys(L[i]))delete L[i][k];Object.assign(L[i],keep,o)};
  set(CLEVELS,0,{all:true,depth:1,sigma:650,bl:.45});set(CLEVELS,1,{all:true,depth:2,sigma:280,bl:.22});set(CLEVELS,2,{all:true,depth:2,sigma:110,bl:.08});
  set(CLEVELS,3,{all:true,depth:3,sigma:20,bl:.015});set(CLEVELS,4,{depth:8,time:2800});
@@ -8947,7 +8867,6 @@ function knKill(el,instant,toQueue){if(!el||el._gone)return;el._gone=true;clearT
  const fin=()=>{el.remove();if(!toQueue){const n=KN.queue.shift();if(n)knCard(n)}};
  if(instant||kbReduce()){el.remove();if(!toQueue){const n=KN.queue.shift();if(n)knCard(n)}return}
  el.classList.add("out");setTimeout(fin,260)}
-function knDismissKey(key){for(const c of[...KN.cards])if(c._o.key===key)knKill(c);KN.queue=KN.queue.filter(q=>q.key!==key)}
 function knWire(el){const o=()=>el._o;let sy=0,sx=0,dy=0,drag=false,pid=null,moved=false,inMain=false;
  const main=$(".kn-m",el);
  const open=()=>{const x=o();knKill(el,true);if(typeof x.open==="function")x.open();else if(x.key)openTarget(x.key)};
@@ -8972,7 +8891,6 @@ document.addEventListener("visibilitychange",()=>{if(document.visibilityState!==
 /* sohbet açılınca o sohbetin kartları kapanır */
 HOOKS.after.push(r=>{if(r==="chat"&&S.route.params&&S.route.params.key){const key=S.route.params.key;let cid="";try{cid=keyInfo(key).cid}catch{}for(const c of[...KN.cards])if(c._o.kind==="msg"&&!c._replying&&(c._o.key===key||(cid&&c._o.cid===cid)))knKill(c);KN.queue=KN.queue.filter(q=>!(q.kind==="msg"&&(q.key===key||(cid&&q.cid===cid))))}});
 /* ---- bildirim kaynakları (eskileri …Old) ---- */
-const notifyChatsOld=notifyChats;
 notifyChats=function(m){for(const[id,c]of Object.entries(m||{})){const o=S.chats[id];const l=c&&c.last;if(!l)continue;
   /* başka cihazda okundu: telefon bildirimi ve kart kapanır */
   const rd=((c.reads||{})[S.uid]||0),ord=o?((o.reads||{})[S.uid]||0):0;if(rd>ord&&rd>=l.at&&l.from!==S.uid){clearChatNotes(id);for(const k of[...KN.cards])if(k._o.cid===id&&!k._replying)knKill(k)}}
@@ -8987,14 +8905,11 @@ notifyChats=function(m){for(const[id,c]of Object.entries(m||{})){const o=S.chats
   knNotify({kind:"msg",uid:l.from,title:c.group?(c.name||"Grup"):P(l.from).name,sub:c.group?P(l.from).name:"",text:String(l.text||""),key:nk,cid:id,at:l.at,group:!!c.group,sys:true})}};
 function notifyMeydan(d){if(!d||!d.last)return;const l=d.last;
  knNotify({kind:"msg",uid:l.from,title:P(l.from).name,sub:"",text:String(l.text||""),key:"meydan",cid:"meydan",at:l.at,group:false,tag:"m-meydan"})}
-const notifyMetaOld=notifyMeta;
 notifyMeta=function(m){if(!notifReady||!settings.notify||!S.authed)return;for(const[id,d]of Object.entries(m||{})){const p=S.posts[id];if(!p||p.uid!==S.uid)continue;const old=S.meta[id]||{};
  for(const[u,at]of Object.entries(d.likes||{}))if(settings.nLike!==false&&at&&u!==S.uid&&!(old.likes||{})[u]&&at>S.bootAt)knNotify({kind:"like",uid:u,title:P(u).name,text:`@${P(u).username} paylaşımını beğendi`,key:"post:"+id,at,tag:"like-"+id});
  for(const[cid,c]of Object.entries(d.comments||{}))if(settings.nComment!==false&&c&&c.uid&&c.uid!==S.uid&&!(old.comments||{})[cid]&&c.at>S.bootAt)knNotify({kind:"comment",uid:c.uid,title:P(c.uid).name,text:String(c.text||"").slice(0,140),key:"post:"+id,at:c.at,tag:"cm-"+cid})}};
-const notifyNewPostsOld=notifyNewPosts;
 notifyNewPosts=function(m){if(!notifReady||!settings.notify||settings.nPost===false||!S.authed)return;for(const[id,p]of Object.entries(m||{}))if(!S.posts[id]&&p.uid!==S.uid&&p.at>S.bootAt&&isFollowing(S.uid,p.uid)&&!kidHid(p))
  knNotify({kind:"post",uid:p.uid,title:P(p.uid).name,text:`@${P(p.uid).username} yeni ${p.kind==="reel"?"bir Klaket":"bir paylaşım"} yaptı`+(p.caption?`: ${String(p.caption).slice(0,80)}`:""),key:"post:"+id,at:p.at,tag:"post-"+id})};
-const notifyGamesOld=notifyGames;
 notifyGames=function(m){if(!notifReady||!settings.notify||!S.authed)return;for(const[id,d]of Object.entries(m||{})){const o=(S.games||{})[id];const viewing=S.route.name==="chessgame"&&CH&&CH.gid===id;if(viewing||!o)continue;const ou=oppOf(d);const opp=P(ou).username;
  const n=t=>knNotify({kind:"game",uid:ou,title:P(ou).name,text:t,at:now(),tag:"game-"+id,open:()=>{closeAll();chOpenOnline(id)}});
  if((d.moves||[]).length>(o.moves||[]).length&&d.lastBy!==S.uid)n(`@${opp} hamlesini yaptı. Sıra sende!`);
@@ -9006,7 +8921,6 @@ HOOKS.profiles.push(m=>{if(!S.authed||!S.uid)return;const cur={};for(const[u,p]o
  if(!notifReady||!settings.notify||settings.nFollow===false)return;
  for(const[u,at]of Object.entries(cur))if(!prev[u]&&at>S.bootAt&&now()-at<10*60e3)knNotify({kind:"follow",uid:u,title:P(u).name,text:`@${P(u).username} seni takip etmeye başladı`,key:"prof:"+u,at,tag:"fl-"+u})});
 /* ---- telefon bildirimi ---- */
-const sysNoteOld=sysNote;
 sysNote=function(title,body,tag,o={}){try{o={...o};if(!o.kind&&/^call-/.test(String(tag||"")))o.kind="call";if(typeof Notification==="undefined"||Notification.permission!=="granted")return;if(!settings.notify)return;
  if(document.visibilityState==="visible"&&!o.force)return;
  const okIc=typeof o.icon==="string"&&/^data:image\/(jpe?g|png|webp);/.test(o.icon)&&o.icon.length<200000;const ic=okIc?o.icon:"icon-192.png";const key=o.key||"";
@@ -9329,7 +9243,6 @@ postMenu=function(id,...r){const out=postMenu51.call(this,id,...r);try{if(!S.adm
  $("#mK51H",l).onclick=()=>{closeLayer("menu");k51HideToggle(id).then(ok=>{if(ok)render(false)})}}catch(e){console.warn(e)}return out};
 
 /* ---------- 9 · İşlem kaydı: 100 kayıt, tür etiketi ---------- */
-const admLog51=admLog;
 admLog=function(text,kind){if(!S.admin)return;const items=[{t:now(),x:String(text||"").slice(0,220),by:S.uid,...(kind?{k:String(kind).slice(0,12)}:{})},...admLogItems()].slice(0,100);
  S.adm={...(S.adm||{}),log:{items}};DB.set("admin/log",{items,at:now(),by:S.uid}).catch(()=>{})};
 const K51_LK=[["all","Tümü"],["kullanici","Kullanıcı"],["icerik","İçerik"],["duyuru","Duyuru"],["sistem","Sistem"]];
@@ -9367,7 +9280,6 @@ function k51DuyuruWire(el){const ta=$("#admAnn",el),ti=$("#k51AnT",el),n=$("#adm
  $$("[data-k51ex]",el).forEach(b=>b.onclick=()=>{d.ex=+b.dataset.k51ex;$$("[data-k51ex]",el).forEach(x=>x.setAttribute("aria-pressed",x===b));paint()})}
 {const s=admSecById("duyuru");if(s){s.desc="Her ekranda şerit; seviye, süre, önizleme";s.html=k51DuyuruHtml;s.wire=k51DuyuruWire;
  s.count=()=>{const a=S.adm&&S.adm.duyuru;if(!(a&&a.text&&String(a.text).trim()))return{t:"Yok",c:"dim"};if(a.until&&a.until<=now())return{t:"Süresi doldu",c:"dim"};return{t:ANN_LV[annLv(a)].t,c:annLv(a)==="bilgi"?"on":"hot"}}}}
-const adm5AnnOld=ADM5_ACT.ann;
 /* İçerik: seçip toplu silme, Keşfet'ten gizleme, tür süzgeci */
 const K51_KF=[["all","Hepsi"],["photo","Fotoğraf"],["reel","Klaket"],["note","Not"],["poll","Anket"]];
 const k51Kind=p=>({reel:"Klaket",photo:"Fotoğraf",note:"Not",poll:"Anket"}[p.kind]||"Paylaşım");
@@ -9659,7 +9571,6 @@ function kmpOpen(opt={}){const o={title:"Fotoğraf ekle",accept:"image",multi:fa
   sh.addEventListener("dragleave",()=>{dc=Math.max(0,dc-1);if(!dc)k.classList.remove("over")});
   sh.addEventListener("drop",e=>{if(!kmHasFiles(e))return;e.preventDefault();e._km=1;dc=0;k.classList.remove("over");take([...e.dataTransfer.files])})})}
 /* pickImage artık Kadraj seçicisini açar; dönüş biçimi aynı: {img, src?} ya da {video} */
-const pickImageOld=pickImage;
 pickImage=function({title="Fotoğraf ekle",video=false,draw=true}={}){return kmpOpen({title,accept:video?"both":"image",draw,record:!!video}).then(a=>a&&a[0]||null)};
 
 /* --- Kadraj oynatıcı --- */
@@ -9973,12 +9884,10 @@ const verSafeBaseM51=verSafe;
 verSafe=function(){if(BQ.running||KVU.length)return false;return verSafeBaseM51()};
 /* düzeltme: vidDur/videoPoster zaman aşımında video yüklemeyi bırakmıyor, adresi serbest bırakmıyordu; MediaRecorder WebM'inde süre
    "Infinity" gelince 0 yazılıyordu (sona atlanıp gerçek süre okunur). Eskileri vidDurOld/videoPosterOld. */
-const vidDurOld=vidDur;
 vidDur=function(file){return new Promise(r=>{const v=document.createElement("video");let u="";try{u=URL.createObjectURL(file)}catch{return r(0)}let done=false,t=0;
  const fin=d=>{if(done)return;done=true;clearTimeout(t);v.onloadedmetadata=v.ontimeupdate=v.onerror=null;v.removeAttribute("src");try{v.load()}catch{}URL.revokeObjectURL(u);r(d>0&&isFinite(d)?d:0)};
  v.preload="metadata";v.muted=true;v.onloadedmetadata=()=>{const d=v.duration;if(isFinite(d))return fin(d);v.ontimeupdate=()=>{if(isFinite(v.duration))fin(v.duration)};try{v.currentTime=1e7}catch{fin(0)}};
  v.onerror=()=>fin(0);t=setTimeout(()=>fin(isFinite(v.duration)?v.duration:0),8000);v.src=u})};
-const videoPosterOld=videoPoster;
 videoPoster=function(url){return new Promise(res=>{const v=document.createElement("video");let done=false,t=0;
  const fin=x=>{if(done)return;done=true;clearTimeout(t);v.onloadeddata=v.onseeked=v.onerror=null;try{v.pause()}catch{}v.removeAttribute("src");try{v.load()}catch{}res(x)};
  v.muted=true;v.preload="auto";v.playsInline=true;v.src=url;try{const pp=v.play();if(pp&&pp.then)pp.then(()=>{try{v.pause()}catch{}}).catch(()=>{})}catch{}
@@ -10632,9 +10541,6 @@ function kapiH(t){const f=cwFold(String(t||"")).replace(/\s+/g,"");return String
 function kapiTarget(){const k=S.adm&&S.adm.kapi;return(k&&typeof k.h==="string"&&k.h)||KAPI_H0}
 async function kapiProve(){if(S.mode!=="cloud")return true;const k=(S.adm&&S.adm.kapi)||{};
  try{await DB.set("admin/kapi",{h:typeof k.h==="string"?k.h:"",at:now(),by:S.uid});return true}catch{return false}}
-function kapiAnimOld(){if(kbReduce())return Promise.resolve();const d=document.createElement("div");d.className="kapi";d.setAttribute("aria-hidden","true");
- d.innerHTML=`<i class="kq q1"></i><i class="kq q2"></i><i class="kq q3"></i><i class="kq q4"></i><div class="kc">${I("key")}<b>Yönetici</b><small>Kapı açıldı</small></div>`;
- document.body.appendChild(d);return new Promise(res=>setTimeout(()=>{res();setTimeout(()=>d.remove(),450)},850))}
 /* 5.1.4: animasyon her zaman çıkar; hareket azaltılmışsa köşeler yerinde, yalnızca solma (kapi-rm) */
 function kapiAnim(){const rm=kbReduce();const d=document.createElement("div");d.className="kapi"+(rm?" kapi-rm":"");d.setAttribute("aria-hidden","true");
  d.innerHTML=`<i class="kq q1"></i><i class="kq q2"></i><i class="kq q3"></i><i class="kq q4"></i><div class="kc">${I("key")}<b>Yönetici</b><small>Kapı açıldı</small></div>`;
@@ -10685,10 +10591,7 @@ function kmsNoCast(){for(const v of document.querySelectorAll("video:not([disabl
    uzaktakiler kaldırılır. YouTube: postMessage ile oynat/durdur/ses (iframe dokunuşa kapalı, kaydırma bozulmaz; dokununca durur/oynar).
    Instagram ve TikTok'ta denetim yok: ilk dokunuşta oynatıcı dokunuşa açılır (.kemb.on); kaydırmak için alttaki yazı ya da sağdaki düğmeler kullanılır.
    YouTube kapağı posts.poster'a yazılır (postThumb ızgarada kullanır). Yönetici › Bağlantıyla Klaket: toplu ekleme (ADM_EXTRA "kemb"). */
-const KEMB_RE=[["yt",/(?:youtube\.com\/(?:shorts\/|watch\?(?:[^#]*&)?v=|embed\/|live\/)|youtu\.be\/)([\w-]{11})/i],
- ["ig",/instagram\.com\/(?:[\w.]+\/)?(?:reels?|p|tv)\/([\w-]{5,40})/i],["tt",/tiktok\.com\/(?:@[\w.-]+\/video|embed(?:\/v2)?|player\/v1)\/(\d{8,25})/i]];
 const KEMB_NAME={yt:"YouTube",ig:"Instagram",tt:"TikTok"};
-function kembParse(u){u=String(u||"").trim();for(const[p,re]of KEMB_RE){const m=u.match(re);if(m)return{p,id:m[1]}}return null}
 function kembSrc(e,auto,mute){const id=encodeURIComponent(e.id);
  if(e.p==="yt")return`https://www.youtube-nocookie.com/embed/${id}?enablejsapi=1&playsinline=1&loop=1&playlist=${id}&rel=0&modestbranding=1&controls=0&autoplay=${auto?1:0}&mute=${mute?1:0}&origin=${encodeURIComponent(location.origin)}`;
  if(e.p==="ig")return`https://www.instagram.com/reel/${id}/embed/`;
@@ -10714,27 +10617,6 @@ document.addEventListener("click",e=>{const t=e.target;const k=t.closest&&t.clos
  if(t.closest(".kemb-tap")){e.preventDefault();e.stopPropagation();kembOn(k.closest(".reel"));k.classList.add("on")}},true);
 document.addEventListener("click",e=>{if(!(e.target.closest&&e.target.closest('[data-act="mute"]')))return;setTimeout(()=>{for(const f of $$('#main .reel .kemb[data-kemb="yt"] iframe'))kembCmd(f,S.muted?"mute":"unMute")},0)});
 document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="hidden"){for(const x of $$("#main .reel"))kembOff(x)}else if(S.route.name==="reels"&&activeReel&&!$$("#overlay .layer").length)kembOn(activeReel)});
-let KEMB_MSG="";
-function kembCount(){return allPosts().filter(p=>p.embed&&p.embed.id).length}
-function kembAdmHtml(){return`<p class="adm5-note" style="margin:0 0 10px">YouTube Shorts, Instagram Reels ya da TikTok bağlantılarını alt alta yapıştır. Videolar indirilmez; Klaket'te platformun kendi oynatıcısıyla oynar, cihazda yer kaplamaz. En iyi YouTube Shorts çalışır (kendiliğinden oynar, kaydırınca durur). Instagram ve TikTok'ta izlemek için bir kez dokunulur. Bazı videoların sahibi gömmeyi kapatmıştır, onlar oynamaz.</p>
- <div class="field"><label for="kembIn">Bağlantılar (her satıra bir tane, en fazla 100)</label><textarea class="in" id="kembIn" rows="6" spellcheck="false" autocapitalize="off" placeholder="https://youtube.com/shorts/...&#10;https://www.instagram.com/reel/...&#10;https://www.tiktok.com/@ad/video/..."></textarea></div>
- <div class="field"><label for="kembCap">Açıklama (isteğe bağlı, hepsine eklenir)</label><input class="in" id="kembCap" maxlength="200" placeholder="#komik"></div>
- <div class="ak5-row"><button class="btn sm" type="button" data-kembadm="add">${I("add")}Klaket olarak ekle</button></div><div class="ak5-st" id="kembSt" style="margin-top:8px">${KEMB_MSG}</div>`}
-document.addEventListener("click",async e=>{const b=e.target.closest&&e.target.closest('[data-kembadm="add"]');if(!b||!S.admin)return;e.preventDefault();if(!guard())return;
- const say=t=>{KEMB_MSG=t;const st=$("#kembSt");if(st)st.innerHTML=t};const raw=(($("#kembIn")||{}).value||"").split(/[\s,]+/).filter(Boolean);const cap=(($("#kembCap")||{}).value||"").trim().slice(0,200);
- if(!raw.length)return say("Önce bağlantı yapıştır.");
- const have=new Set(allPosts().filter(p=>p.embed).map(p=>p.embed.p+":"+p.embed.id));const add=[],bad=[];let dup=0;
- for(const u of raw.slice(0,100)){const e2=kembParse(u);if(!e2){bad.push(u);continue}const key=e2.p+":"+e2.id;if(have.has(key)){dup++;continue}have.add(key);add.push({...e2,u:u.slice(0,300)})}
- if(!add.length)return say(`Eklenecek yeni bağlantı yok.${dup?` ${dup} tanesi zaten var.`:""}${bad.length?` ${bad.length} bağlantı tanınmadı.`:""}`);
- b.disabled=true;let ok=0;const t0=now();
- for(let i=0;i<add.length;i++){const e2=add[i];const id=rid();say(`Ekleniyor… ${i+1}/${add.length}`);
-  const doc={uid:S.uid,at:t0-i*1000,kind:"reel",caption:cap,embed:e2,music:"none",fx:"none",noKids:0};if(e2.p==="yt")doc.poster=`https://i.ytimg.com/vi/${e2.id}/hqdefault.jpg`;
-  if(await write(()=>DB.set("posts/"+id,doc),{quiet:true})){S.posts={...S.posts,[id]:{id,...doc}};ok++}}
- b.disabled=false;const inp=$("#kembIn");if(inp&&ok)inp.value="";admLog(`Bağlantıyla ${ok} Klaket eklendi`);scheduleRefresh();
- say(`<b>${ok}</b> Klaket eklendi.${ok<add.length?` ${add.length-ok} tanesi kaydedilemedi.`:""}${dup?` ${dup} tanesi zaten vardı.`:""}${bad.length?`<br>Tanınmayan: ${bad.slice(0,5).map(x=>esc(x.slice(0,60))).join(", ")}${bad.length>5?"…":""}`:""}`)});
-/* 5.1.9: sahibinin isteğiyle Bağlantıyla Klaket kaldırıldı (yönetici bölümü gösterilmez); daha önce eklenenler oynamaya devam eder, ⋯ menüsünden silinebilir */
-const KEMB_ADM=false;
-try{if(KEMB_ADM)ADM_EXTRA.push({id:"kemb",title:"Bağlantıyla Klaket",desc:"YouTube, Instagram ve TikTok videolarını indirmeden Klaket yap",icon:"link",order:56,count:()=>{const n=kembCount();return{t:String(n),c:n?"on":"dim"}},html:kembAdmHtml})}catch(e){console.warn(e)}
 /*}@js:511*/
 /*@js:520{*/
 /* ===== 5.2.0: Sohbette @bahsetme önerileri, DM'de @rota, kaydırarak yanıtla, grupta yazanlar =====
@@ -10826,7 +10708,6 @@ renderMsgs=function(...a){const b0=$("#msgs");const was=!!b0&&(b0.scrollHeight-b
  document.addEventListener("click",e=>{const row=e.target.closest&&e.target.closest("#msgs .mrow");if(row&&row._swpAt&&now()-row._swpAt<400){e.stopPropagation();e.preventDefault()}},true)})();
 /* 5.2.3: @rota ile çağrılan Rota (DM, grup, Meydan) tek yerden: yazıyor göstergesi, harf harf yanıt (rtTypewrite),
    sorunun kendisiyle internet araması, anlaşılır hata yanıtı. Eskileri rotaJoinOld / rotaInRoomOld. */
-const rotaJoinOld=rotaJoin;
 rotaJoin=async function(key,k){S.botTyping="bot:rota@"+key;renderMsgs();let reply=null,err=null;
  const place=k.type==="dm"?`iki arkadaşın (${me().name} ve ${P(k.uid).name}) özel sohbeti`:k.type==="meydan"?"Meydan (herkese açık ortak sohbet)":"bir grup sohbeti";
  const mine=[...(S.msgs||[])].reverse().find(m=>m.from===S.uid);const rq=mine&&mine.reply&&mine.reply.from==="bot:rota"?`\n(${me().name}, senin "${String(mine.reply.text||"").slice(0,120)}" mesajına yanıt verdi.)`:"";const q=String((mine&&mine.text)||"").replace(/@rota(\.rehber)?\b/ig,"").trim().slice(0,400);
@@ -10838,7 +10719,6 @@ rotaJoin=async function(key,k){S.botTyping="bot:rota@"+key;renderMsgs();let repl
  await write(()=>DB.set(`chats/${k.cid}/msgs/${mid}`,msg),{quiet:true});
  const last={last:{text:reply.slice(0,80),from:"bot:rota",at},updatedAt:at};
  if(k.type==="meydan")await write(()=>DB.set("chats/meydan",last),{quiet:true});else await write(()=>DB.update("chats/"+k.cid,last),{quiet:true})};
-const rotaInRoomOld=rotaInRoom;
 rotaInRoom=function(key,k){return rotaJoin(key,k)};
 /*}@js:520*/
 
