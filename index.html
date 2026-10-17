@@ -7661,8 +7661,8 @@ function mdnSync(){let el=document.getElementById("k51Mdn");const r=S.route;cons
 function verTagSync(){let el=document.getElementById("k51Ver");if(!el){el=document.createElement("div");el.id="k51Ver";el.setAttribute("aria-hidden","true");el.textContent="Kadraj "+APP_VER;document.body.appendChild(el)}
  el.dataset.r=(S.authed&&S.route&&S.route.name)||"auth";verTagPlace(el)}
 /* dok sağ alt köşeyi kaplıyorsa (Klasik tablet) etiket dokun hemen üstüne çıkar; yoksa CSS'teki köşe */
-function verTagPlace(el){let b="";try{const d=$("#dock");const nav=d&&!d.hidden&&(d.querySelector("nav")||d);if(nav){const r=nav.getBoundingClientRect(),vw=innerWidth,vh=(window.visualViewport&&visualViewport.height)||innerHeight;
- if(r.height&&r.right>vw-96&&r.bottom>vh-13)b=Math.round(vh-r.top+5)+"px"}}catch{}if(el.style.bottom!==b)el.style.bottom=b}
+function verTagPlace(el){let b="";try{const d=$("#dock");const nav=S.authed&&d&&!d.hidden&&d.querySelector("nav");if(nav){const r=nav.getBoundingClientRect(),vw=innerWidth,vh=(window.visualViewport&&visualViewport.height)||innerHeight;
+ if(r.height&&r.right>vw-96&&r.bottom>vh-12)b=Math.round(vh-r.top+5)+"px"}}catch{}if(el.style.bottom!==b)el.style.bottom=b}
 const welScreen51=welScreen;
 welScreen=function(...a){const h=welScreen51.apply(this,a);try{return h.replace(/<\/div>\s*$/,`<p class="k51cred">${esc(K51_CRED)}</p></div>`)}catch{return h}};
 const vSettings51=vSettings;
