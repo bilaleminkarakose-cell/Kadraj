@@ -13,7 +13,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Kadraj">
 <title>Kadraj</title>
-<meta name="description" content="Kadraj: arkadaşlarla fotoğraf, Flick, not, anket ve sohbet">
+<meta name="description" content="Kadraj: arkadaşlarla fotoğraf, Klaket, not, anket ve sohbet">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;600;700&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
@@ -2951,18 +2951,18 @@ const BOTS_BASE=[
 let BOTS=[...BOTS_BASE];let BOT=Object.fromEntries(BOTS.map(b=>[b.uid,{...b,bot:true}]));
 const T0=now();
 const BOT_POSTS=[
- {id:"rv-kahve",uid:"bot:rota",kind:"reel",video:"reels/kahve.mp4",poster:"reels/kahve.jpg",music:"lofi",h:.6,baseLikes:1840,caption:"Güne yavaş başlamak da bir Flick konusu. Sesi aç, Lo-fi eşlik ediyor. #flick #kahve"},
+ {id:"rv-kahve",uid:"bot:rota",kind:"reel",video:"reels/kahve.mp4",poster:"reels/kahve.jpg",music:"lofi",h:.6,baseLikes:1840,caption:"Güne yavaş başlamak da bir Klaket konusu. Sesi aç, Lo-fi eşlik ediyor. #klaket #kahve"},
  {id:"bn-satranc",uid:"bot:rota",kind:"note",h:1.2,text:"Yeni: Kadraj'da satranç var! Keşfet'teki Satranç kartından bana karşı oyna ya da arkadaşını davet et.",bg:0,baseLikes:960},
- {id:"rv-iskele",uid:"bot:rota",kind:"reel",video:"reels/iskele.mp4",poster:"reels/iskele.jpg",music:"sakin",h:2.5,baseLikes:8410,caption:"İskelenin bir ucundan diğerine, tek çekim. #flick #sahil"},
+ {id:"rv-iskele",uid:"bot:rota",kind:"reel",video:"reels/iskele.mp4",poster:"reels/iskele.jpg",music:"sakin",h:2.5,baseLikes:8410,caption:"İskelenin bir ucundan diğerine, tek çekim. #klaket #sahil"},
  {id:"bq-satranc",uid:"bot:rota",kind:"poll",h:4,question:"Satrançta kendini nasıl tarif edersin?",options:["Yeni öğreniyorum","Arada oynarım","Kulüp oyuncusuyum","Rota'yı Usta'da yenerim"],baseVotes:[212,340,96,18],baseLikes:540,caption:"Seviyene göre sana uygun bir rakip olurum. #satranç"},
- {id:"rv-roket",uid:"bot:rota",kind:"reel",video:"reels/roket.mp4",poster:"reels/roket.jpg",music:"enerjik",h:6,baseLikes:5320,caption:"Fırlatmadan önceki son dakikalar. #flick #uzay"},
- {id:"rv-kedi",uid:"bot:rota",kind:"reel",video:"reels/kedi.mp4",poster:"reels/kedi.jpg",music:"lofi",h:8,baseLikes:21900,caption:"Bugünün baş rol oyuncusu. #flick #kedi"},
+ {id:"rv-roket",uid:"bot:rota",kind:"reel",video:"reels/roket.mp4",poster:"reels/roket.jpg",music:"enerjik",h:6,baseLikes:5320,caption:"Fırlatmadan önceki son dakikalar. #klaket #uzay"},
+ {id:"rv-kedi",uid:"bot:rota",kind:"reel",video:"reels/kedi.mp4",poster:"reels/kedi.jpg",music:"lofi",h:8,baseLikes:21900,caption:"Bugünün baş rol oyuncusu. #klaket #kedi"},
  {id:"bp-gunbatimi",uid:"bot:rota",kind:"photo",src:"img/gunbatimi.jpg",h:10,loc:"Kadraj galerisi",exif:"2160 × 2160",baseLikes:2240,caption:"Akşamın mor saati. Bu fotoğraf Kadraj galerisinde, sen de paylaşımlarında kullanabilirsin. #manzara"},
- {id:"rv-uzay",uid:"bot:rota",kind:"reel",video:"reels/uzay.mp4",poster:"reels/uzay.jpg",music:"sakin",h:12,baseLikes:12650,caption:"Derin alana yavaşça yakınlaşıyoruz. Her ışık bir galaksi. #flick #uzay"},
- {id:"rv-sisli",uid:"bot:rota",kind:"reel",video:"reels/sisli-dag.mp4",poster:"reels/sisli-dag.jpg",music:"sakin",h:15,baseLikes:3120,caption:"Sisli dağların arasından yavaş bir kaydırma. #flick #manzara"},
- {id:"rv-motor",uid:"bot:rota",kind:"reel",video:"reels/motor.mp4",poster:"reels/motor.jpg",music:"enerjik",h:18,baseLikes:2210,caption:"Yol çağırıyor. #flick #motor"},
+ {id:"rv-uzay",uid:"bot:rota",kind:"reel",video:"reels/uzay.mp4",poster:"reels/uzay.jpg",music:"sakin",h:12,baseLikes:12650,caption:"Derin alana yavaşça yakınlaşıyoruz. Her ışık bir galaksi. #klaket #uzay"},
+ {id:"rv-sisli",uid:"bot:rota",kind:"reel",video:"reels/sisli-dag.mp4",poster:"reels/sisli-dag.jpg",music:"sakin",h:15,baseLikes:3120,caption:"Sisli dağların arasından yavaş bir kaydırma. #klaket #manzara"},
+ {id:"rv-motor",uid:"bot:rota",kind:"reel",video:"reels/motor.mp4",poster:"reels/motor.jpg",music:"enerjik",h:18,baseLikes:2210,caption:"Yol çağırıyor. #klaket #motor"},
  {id:"bp-iskele",uid:"bot:rota",kind:"photo",src:"img/iskele.jpg",h:22,loc:"Kadraj galerisi",exif:"f/11 · 30 sn · ISO 100",baseLikes:1843,caption:"Uzun pozlama ipucu: tripod, ND filtre ve biraz sabır. #fotoğraf"},
- {id:"rv-gunbatimi",uid:"bot:rota",kind:"reel",video:"reels/gunbatimi.mp4",poster:"reels/gunbatimi.jpg",music:"lofi",h:26,baseLikes:4470,caption:"Çizimin canlandırılmış hâli. #flick #animasyon"}
+ {id:"rv-gunbatimi",uid:"bot:rota",kind:"reel",video:"reels/gunbatimi.mp4",poster:"reels/gunbatimi.jpg",music:"lofi",h:26,baseLikes:4470,caption:"Çizimin canlandırılmış hâli. #klaket #animasyon"}
 ].map(p=>({...p,at:T0-p.h*H,bot:true}));
 const BOT_STORIES=[{id:"bs-1",uid:"bot:rota",img:"img/sisli-dag.jpg",at:T0-1.5*H},{id:"bs-2",uid:"bot:rota",img:"img/kahve.jpg",at:T0-4*H}];
 
@@ -3263,7 +3263,7 @@ function renderDock(){if(!S.authed)return;const r=S.route.name;const isCur=n=>r=
 function vFeed(){const fol=followingOf(S.uid);
  const withStories=[...new Set([...fol,...BOTS.map(b=>b.uid),...Object.keys(S.profiles)])].filter(u=>u!==S.uid&&storiesOf(u).length&&canSeeUser(u));
  const seen=seenStories();withStories.sort((a,b)=>(storiesOf(a).every(s=>seen[s.id])?1:0)-(storiesOf(b).every(s=>seen[s.id])?1:0));
- let h=`<div class="chips" role="group" aria-label="Akış filtresi">${[["all","Herkes"],["following","Takip ettiklerim"]].map(([k,l])=>`<button class="chip" data-seg="${k}" aria-pressed="${S.feedSeg===k}">${l}</button>`).join("")}<button class="chip" data-go="reels">${I("reels")}Flick'ler</button></div>`;
+ let h=`<div class="chips" role="group" aria-label="Akış filtresi">${[["all","Herkes"],["following","Takip ettiklerim"]].map(([k,l])=>`<button class="chip" data-seg="${k}" aria-pressed="${S.feedSeg===k}">${l}</button>`).join("")}<button class="chip" data-go="reels">${I("reels")}Klaketler</button></div>`;
  h+=`<div class="stories"><div class="story"><span style="position:relative">${storiesOf(S.uid).length?avatar(S.uid,62):`<button class="av" style="--s:62px" data-act="addstory" aria-label="Hikâye ekle"><img src="${esc(me().avatar)}" alt=""></button>`}${S.guest?"":`<button class="plus" data-act="addstory" aria-label="Hikâye ekle">${I("add")}</button>`}</span><span class="n muted">Hikâyen</span></div>`+
   withStories.map(u=>`<div class="story">${avatar(u,62,{online:false})}<span class="n">${esc(P(u).username)}</span></div>`).join("")+`</div>`;
  h+=childBanner();if(S.guest)h+=`<div class="banner">${I("info")}<span>Misafir olarak geziniyorsun. Paylaşım ve mesaj için uygulamanın sahibi seni bu sayfaya <b>Düzenleyen</b> olarak davet etmeli.</span></div>`;
@@ -3281,11 +3281,11 @@ function suggBlock(list){return`<section class="sugg"><h3 class="sec-h"><span>Ta
 function mediaHtml(p){
  if(p.kind==="note")return`<div class="note" style="background:${NOTE_BG[p.bg||0]}" data-dbl="${esc(p.id)}">${esc(p.text)}</div>`;
  if(p.kind==="poll")return pollHtml(p);
- if(p.kind==="reel"){const th=postThumb(p);return`<button class="media" style="--ar:4/5;display:block;width:100%" data-reel="${esc(p.id)}" aria-label="Flick'i izle">${th?`<img src="${esc(th)}" alt="" loading="lazy">`:""}<span class="badge-k">${I("reels")}Flick${p.music&&p.music!=="none"?" · müzikli":""}</span><span class="playbig"><span>${I("play")}</span></span></button>`}
+ if(p.kind==="reel"){const th=postThumb(p);return`<button class="media" style="--ar:4/5;display:block;width:100%" data-reel="${esc(p.id)}" aria-label="Klaketi izle">${th?`<img src="${esc(th)}" alt="" loading="lazy">`:""}<span class="badge-k">${I("reels")}Klaket${p.music&&p.music!=="none"?" · müzikli":""}</span><span class="playbig"><span>${I("play")}</span></span></button>`}
  return`<div class="media" style="--ar:${esc(p.ar||"1/1")}" data-dbl="${esc(p.id)}"><img src="${esc(R(p.src||p.img))}" alt="${esc((p.caption||"").slice(0,80))}" loading="lazy" ${p.css?`style="filter:${esc(p.css)}"`:""}></div>`}
 function pollHtml(p){const votes=votesOf(p);const tot=votes.reduce((a,b)=>a+b,0);const mv=myVote(p.id);const shown=mv!=null||p.uid===S.uid;
  return`<div class="poll"><div class="q">${esc(p.question)}</div>${p.options.map((o,i)=>{const pc=tot?Math.round(votes[i]/tot*100):0;return`<button class="popt ${mv===i?"mine":""}" data-vote="${esc(p.id)}" data-i="${i}">${shown?`<i class="bar" style="width:${pc}%"></i>`:""}<span>${esc(o)}</span>${shown?`<span class="pc">%${pc}</span>`:""}${mv===i?`<span>${I("check")}</span>`:""}</button>`}).join("")}<div class="tot">${fmt(tot)} oy${mv==null&&p.uid!==S.uid?" · oy verince sonuçları görürsün":""}</div></div>`}
-function postCard(p,{full=false}={}){const u=P(p.uid);const followed=p.uid===S.uid||isFollowing(S.uid,p.uid);const liked=iLike(p.id);const cs=commentsOf(p);const kindLbl={note:"not",poll:"anket",reel:"Flick"}[p.kind]||"";
+function postCard(p,{full=false}={}){const u=P(p.uid);const followed=p.uid===S.uid||isFollowing(S.uid,p.uid);const liked=iLike(p.id);const cs=commentsOf(p);const kindLbl={note:"not",poll:"anket",reel:"Klaket"}[p.kind]||"";
  return`<article class="card" data-pid="${esc(p.id)}"><div class="card-h">${avatar(p.uid,40)}<div class="who"><div><button data-prof="${esc(p.uid)}"><span class="uname">${esc(u.name)}</span></button>${badge(p.uid)}${followed?"":` · <button class="follow-link" data-follow="${esc(p.uid)}">Takip et</button>`}</div><div class="sub">@${esc(u.username)} · ${ago(p.at)}${p.loc?" · "+esc(p.loc):""}${kindLbl?" · "+kindLbl:""}</div></div><button class="ib plain" data-act="postmenu" data-id="${esc(p.id)}" aria-label="Seçenekler">${I("more")}</button></div>
  ${mediaHtml(p)}
  <div class="pills"><button class="pill ${liked?"liked":""}" data-like="${esc(p.id)}" aria-pressed="${liked}" aria-label="Beğen">${I("heart")}<span>${settings.hideLikes&&p.uid!==S.uid?"":short(likeCount(p))}</span></button><button class="pill" data-comments="${esc(p.id)}" aria-label="Yorumlar">${I("comment")}${cs.length}</button><button class="pill" data-share="${esc(p.id)}" aria-label="Arkadaşına gönder">${I("send")}</button><span class="sp"></span><button class="pill ${isSaved(p.id)?"saved":""}" data-save="${esc(p.id)}" aria-label="Kaydet">${I("bookmark")}</button></div>
@@ -3320,8 +3320,8 @@ function grid(posts,pins){if(!posts.length)return"";return`<div class="grid">${p
 /* --- Reels --- */
 function reelList(){return allPosts().filter(p=>p.kind==="reel"&&canSee(p))}
 function slidesHtml(p){return(p.slides||[]).map((s,i)=>`<img class="slide ${i===0?"on":""}" src="${esc(R(s))}" alt="">`).join("")+(p.text?`<div class="rtext">${esc(p.text)}</div>`:"")}
-function vReels(){const list=reelList();const top=`<div class="reel-top"><div><button class="ib" data-act="back" aria-label="Geri">${I("back")}</button><b>Flick'ler</b><button class="ib" data-act="mute" aria-label="Sesi aç/kapat">${I(S.muted?"mute":"vol")}</button><button class="rnew" data-act="newreel" aria-label="Video ekle">${I("film")}<span>Video ekle</span></button></div></div>`;
- if(!list.length)return top+`<div class="empty" style="color:#fff;height:100%;align-content:center"><b style="color:#fff">Henüz Flick yok</b>İlk Flick'i sen oluştur.</div>`;
+function vReels(){const list=reelList();const top=`<div class="reel-top"><div><button class="ib" data-act="back" aria-label="Geri">${I("back")}</button><b>Klaketler</b><button class="ib" data-act="mute" aria-label="Sesi aç/kapat">${I(S.muted?"mute":"vol")}</button><button class="rnew" data-act="newreel" aria-label="Video ekle">${I("film")}<span>Video ekle</span></button></div></div>`;
+ if(!list.length)return top+`<div class="empty" style="color:#fff;height:100%;align-content:center"><b style="color:#fff">Henüz Klaket yok</b>İlk Klaketi sen oluştur.</div>`;
  return top+list.map((p,i)=>{const u=P(p.uid);const liked=iLike(p.id);const fol=p.uid===S.uid||isFollowing(S.uid,p.uid);
  const mus=p.music&&p.music!=="none";const media=p.video?`<div class="rblur"${p.poster?` data-p="${esc(R(p.poster))}"`:""}></div><video src="${esc(vsrc(p))}"${vref(p)}${p.dur?` data-dur="${+p.dur||0}"`:""} poster="${esc(R(p.poster||""))}" loop playsinline ${S.muted||mus?"muted":""} preload="${settings.dataSaver?(i<1?"metadata":"none"):i<1?"auto":i<3?"metadata":"none"}" disablepictureinpicture data-rv ${mus?'data-mus="1"':""}></video><div class="rprog"><i></i></div><span class="rpause">${I("play")}</span><button class="rhint" hidden>${I("vol")}Sesi açmak için dokun</button>`:`<div class="fx-${esc(p.fx||"zoom")}" style="position:absolute;inset:0">${slidesHtml(p)}</div>`;
  return`<section class="reel" data-pid="${esc(p.id)}">${media}<div class="shade"></div>
@@ -3335,11 +3335,11 @@ function vProfile(uid){const p=P(uid);const own=uid===S.uid;const posts=postsOf(
  <div><b style="font:600 1.05rem/1.3 var(--f-display)">${esc(p.name)}</b>${!own&&!BOT[uid]&&!p.missing?` <span class="tag ${S.online.has(uid)?"":"off"}">${esc(seenText(uid))}</span>`:""}${p.private?` <span class="tag">${I("lock")}gizli</span>`:""}${p.chess&&p.chess.g?` <span class="tag">${I("knight")}${p.chess.r}</span>`:""}</div>${noteOf(uid)?`<div class="pnote">${I("chat")}<span>${esc(noteOf(uid))}</span></div>`:""}${p.bio?`<div class="bio">${richText(p.bio)}</div>`:""}
  <div class="btns">${own?`<button class="btn sec" data-go="edit">${I("edit")}Düzenle</button><button class="btn sec" data-act="invite">${I("users")}Davet et</button>`:S.guest?"":`<button class="btn ${isFollowing(S.uid,uid)?"sec":""}" data-follow="${esc(uid)}">${isFollowing(S.uid,uid)?"Takiptesin":isFollowing(uid,S.uid)?"Sen de takip et":"Takip et"}</button><button class="btn sec" data-msg="${esc(uid)}">${I("chat")}Mesaj</button>${BOT[uid]?`<button class="btn sec" data-go="chess" aria-label="Satranç oyna" style="flex:0 0 auto">${I("knight")}</button>`:`<button class="btn sec" data-chinv="${esc(uid)}" aria-label="Satranca davet et" style="flex:0 0 auto">${I("knight")}</button>`}`}</div></div>`;
  if(locked)return h+`<div class="empty"><span class="ic">${I("lock")}</span><b>Bu hesap gizli</b>Paylaşımlarını görmek için takip et.</div>`;
- const tabs=own?[["posts","Paylaşımlar","grid"],["reels","Flick'ler","reels"],["saved","Kaydedilenler","bookmark"]]:[["posts","Paylaşımlar","grid"],["reels","Flick'ler","reels"]];
+ const tabs=own?[["posts","Paylaşımlar","grid"],["reels","Klaketler","reels"],["saved","Kaydedilenler","bookmark"]]:[["posts","Paylaşımlar","grid"],["reels","Klaketler","reels"]];
  if(!tabs.some(t=>t[0]===S.profTab))S.profTab="posts";
  h+=`<div class="ptabs" role="tablist">${tabs.map(([k,l,ic])=>`<button class="chip" role="tab" aria-pressed="${S.profTab===k}" data-ptab="${k}">${I(ic)}${l}</button>`).join("")}</div>`;
  const list=S.profTab==="posts"?posts.filter(x=>x.kind!=="reel"):S.profTab==="reels"?posts.filter(x=>x.kind==="reel"):Object.entries(S.saved).filter(([,v])=>v).map(([id])=>postById(id)).filter(Boolean).filter(canSee);
- if(!list.length)h+=`<div class="empty"><span class="ic">${I(S.profTab==="saved"?"bookmark":S.profTab==="reels"?"reels":"image")}</span><b>${S.profTab==="saved"?"Kaydedilen yok":own?"İlk paylaşımını yap":"Henüz paylaşım yok"}</b>${S.profTab==="saved"?"Paylaşımlardaki yer imi düğmesiyle kaydet.":own?`<button class="btn sm" data-act="${S.profTab==="reels"?"newreel":"create"}">${S.profTab==="reels"?"Flick oluştur":"Paylaşım oluştur"}</button>`:""}</div>`;
+ if(!list.length)h+=`<div class="empty"><span class="ic">${I(S.profTab==="saved"?"bookmark":S.profTab==="reels"?"reels":"image")}</span><b>${S.profTab==="saved"?"Kaydedilen yok":own?"İlk paylaşımını yap":"Henüz paylaşım yok"}</b>${S.profTab==="saved"?"Paylaşımlardaki yer imi düğmesiyle kaydet.":own?`<button class="btn sm" data-act="${S.profTab==="reels"?"newreel":"create"}">${S.profTab==="reels"?"Klaket oluştur":"Paylaşım oluştur"}</button>`:""}</div>`;
  else h+=S.profTab==="saved"?grid(list):grid(withPins(list,uid),pinsOf(uid));
  return h}
 function vPeople({uid,type}){const list=type==="followers"?followersOf(uid):followingOf(uid);
@@ -3396,7 +3396,7 @@ function vSettingsOld(){const p=me();const sw=(id,on,label,sub)=>`<label class="
  const remembered=S.mode==="cloud"?LS.get("kadraj_fb_remember",true):LS.get("kadraj_session")===S.uid;
  return`<div class="set"><h3>Görünüm</h3><div class="seg" role="group" aria-label="Tema">${[["light","sun","Açık"],["dark","moon","Koyu"],["system","auto","Sistem"]].map(([v,ic,l])=>`<button data-theme-set="${v}" aria-pressed="${settings.theme===v}">${I(ic)}${l}</button>`).join("")}</div><h3>Yazı boyutu</h3><div class="seg" role="group" aria-label="Yazı boyutu">${[[1,"Normal"],[1.1,"Büyük"],[1.2,"Çok büyük"]].map(([v,l])=>`<button data-scale="${v}" aria-pressed="${(settings.scale||1)==v}">${l}</button>`).join("")}</div></div>
  <div class="set"><h3>Hesap</h3>${S.mode==="cloud"&&FB&&FB.auth&&FB.auth.currentUser&&FB.auth.currentUser.email?`<div class="kv"><span>Giriş e-postan</span><span class="mono" style="text-align:right;overflow-wrap:anywhere">${esc(FB.auth.currentUser.email)}</span></div>`:""}<button class="srow" data-go="edit">${I("edit")}<span class="t">Profili düzenle<small>Ad, kullanıcı adı, biyografi, fotoğraf</small></span></button><button class="srow" data-act="changepw">${I("key")}<span class="t">Şifreyi değiştir</span></button>${sw("setPrivate",p.private,"Gizli hesap","Paylaşımlarını yalnızca takipçilerin görür")}</div>
- <div class="set"><h3>Bildirim ve oynatma</h3>${sw("setNotify",settings.notify,"Uygulama içi bildirimler","Mesaj, beğeni ve dürtmelerde üstte uyarı")}${sw("setAutoplay",settings.autoplay,"Flick'leri otomatik oynat","Kapatırsan dokununca başlar")}</div>
+ <div class="set"><h3>Bildirim ve oynatma</h3>${sw("setNotify",settings.notify,"Uygulama içi bildirimler","Mesaj, beğeni ve dürtmelerde üstte uyarı")}${sw("setAutoplay",settings.autoplay,"Klaketleri otomatik oynat","Kapatırsan dokununca başlar")}</div>
  <div class="set"><h3>Oturum</h3>${sw("setRemember",remembered,"Beni hatırla","Açıkken bu cihazda şifre sorulmaz")}<button class="srow" data-act="logout">${I("logout")}<span class="t">Çıkış yap<small>@${esc(p.username)}</small></span></button></div>
  ${S.admin?`<div class="set"><h3>Yönetici</h3><button class="srow" data-go="admin">${I("key")}<span class="t">Yönetici paneli<small>Kullanıcılar, botlar, duyuru, temizlik</small></span></button></div>`:""}<div class="set"><h3>Uygulama</h3><button class="srow" data-act="install">${I("home")}<span class="t">${isStandalone()?"Ana ekranda açık":"Ana ekrana ekle"}<small>${isStandalone()?"Kadraj uygulama olarak çalışıyor":"Telefonunda simgesiyle dursun, tam ekran açılsın"}</small></span></button></div><div class="set"><h3>Yardım</h3><button class="srow" data-act="invite">${I("users")}<span class="t">Arkadaşlarını davet et<small>Birlikte kullanmanın yolu</small></span></button><button class="srow" data-msg="bot:rota">${I("spark")}<span class="t">Rota'ya sor<small>Yapay zekâ rehberi</small></span></button></div>
  <div class="set"><h3>Hakkında</h3><div class="kv"><span>Sürüm</span><span class="mono">Kadraj ${APP_VER} · Firebase</span></div><div class="kv"><span>Veri</span><span>${S.mode==="cloud"?"Firebase · arkadaşlarınla canlı":"Demo · yalnızca bu cihaz"}</span></div><div class="kv"><span>Şu an açık</span><span>${S.online.size+1} kişi</span></div><div class="kv"><span>Rota</span><span>${S.caps.sample?"Yapay zekâ bağlı":"Hazır yanıtlar"}</span></div></div>
@@ -3649,7 +3649,7 @@ function toCanvas(img,w,h,filter){const c=document.createElement("canvas");c.wid
 /* ============ Oluştur ============ */
 const FILTERS=[["Normal",""],["Sıcak","sepia(.25) saturate(1.3) hue-rotate(-8deg) brightness(1.04)"],["Soğuk","saturate(.95) hue-rotate(12deg) brightness(1.03) contrast(1.05)"],["Siyah-Beyaz","grayscale(1) contrast(1.15)"],["Vintage","sepia(.45) contrast(.92) brightness(1.06) saturate(.85)"],["Canlı","saturate(1.6) contrast(1.1)"],["Gece","brightness(.85) contrast(1.25) saturate(.8) hue-rotate(200deg)"]];
 function openCreate(){if(!guard())return;
- const tiles=[["photo","image","Fotoğraf","Telefon, kamera, galeri ya da çizim","#0C7A63"],["reel","reels","Flick","Video çek, galeriden video ekle","#DB2777"],["story","eye","Hikâye","24 saat görünür","#D97706"],["note","type","Not","Renkli zeminde kısa yazı","#1D4ED8"],["poll","poll","Anket","Arkadaşlarına soru sor","#7C3AED"],["draw","pen","Çizim","Parmağınla çiz, paylaş","#0E7490"],["group","users","Grup","Arkadaşlarınla grup sohbeti","#0F766E"],["chess","knight","Satranç","Rota'ya ya da arkadaşına karşı","#1F2937"]];
+ const tiles=[["photo","image","Fotoğraf","Telefon, kamera, galeri ya da çizim","#0C7A63"],["reel","reels","Klaket","Video çek, galeriden video ekle","#DB2777"],["story","eye","Hikâye","24 saat görünür","#D97706"],["note","type","Not","Renkli zeminde kısa yazı","#1D4ED8"],["poll","poll","Anket","Arkadaşlarına soru sor","#7C3AED"],["draw","pen","Çizim","Parmağınla çiz, paylaş","#0E7490"],["group","users","Grup","Arkadaşlarınla grup sohbeti","#0F766E"],["chess","knight","Satranç","Rota'ya ya da arkadaşına karşı","#1F2937"]];
  const l=sheet("create","Ne paylaşmak istersin?",`<div class="ctiles">${tiles.map(([k,ic,b,s,c])=>`<button class="ctile" data-ck="${k}" style="--c:${c}"><span class="ic">${I(ic)}</span><b>${b}</b><small>${s}</small></button>`).join("")}</div>`);
  $$("[data-ck]",l).forEach(b=>b.onclick=()=>{closeLayer("create");const k=b.dataset.ck;if(k==="group")return openNewGroup();if(k==="chess")return go("chess");openComposer(k)})}
 async function openComposer(kind){if(!guard())return;
@@ -3659,7 +3659,7 @@ async function openComposer(kind){if(!guard())return;
  drawComposer()}
 const arSize=ar=>ar==="4/5"?[1080,1350]:ar==="16/9"?[1080,608]:[1080,1080];
 function thumbOf(c){if(c._thumb&&c._thumbFor===c.img)return c._thumb;c._thumb=toCanvas(c.img,120,120).toDataURL("image/jpeg",.7);c._thumbFor=c.img;return c._thumb}
-function drawComposer(){const c=S.cmp;const titles={photo:"Yeni fotoğraf",reel:"Yeni Flick",story:"Yeni hikâye",note:"Yeni not",poll:"Yeni anket"};
+function drawComposer(){const c=S.cmp;const titles={photo:"Yeni fotoğraf",reel:"Yeni Klaket",story:"Yeni hikâye",note:"Yeni not",poll:"Yeni anket"};
  let l=$('#overlay [data-layer="composer"]');
  if(!l)l=openLayer("composer",`<div class="full" role="dialog" aria-label="Oluştur"><div class="hd"><button class="ib plain" data-act="close" aria-label="Kapat">${I("close")}</button><h1 id="cmpT"></h1><button class="btn sm" id="cmpGo">Paylaş</button></div><div class="body" id="cmpB"></div></div>`,{noScrim:true,onClose:()=>{Music.stop();if(S.cmp&&S.cmp._t){clearInterval(S.cmp._t);S.cmp._t=null}}});
  $("#cmpT",l).textContent=titles[c.kind];const b=$("#cmpB",l);const go=$("#cmpGo",l);go.onclick=publishComposer;go.disabled=false;go.textContent="Paylaş";
@@ -3685,12 +3685,12 @@ function drawComposer(){const c=S.cmp;const titles={photo:"Yeni fotoğraf",reel:
   const rb=$("#rBody",l);
   if(c.mode==="video"){const lim=S.mode==="local"?8:cldOn()?60:20;rb.innerHTML=(c.video?`<div class="pv"><video id="vPrev" src="${c.videoUrl}" controls playsinline ${c.vmusic&&c.vmusic!=="none"?"muted":""} loop autoplay></video></div><div style="padding:0 16px;display:flex;gap:6px;flex-wrap:wrap"><button class="btn ghost" id="vRec" type="button">${I("camera")}Yeniden çek</button><button class="btn ghost" id="vPick" type="button">${I("film")}Başka video seç</button></div>
     <div class="form" style="padding-bottom:0"><span class="lbl">Ses</span><div class="seg">${[["none","Orijinal"],["lofi","Lo-fi"],["enerjik","Enerjik"],["sakin","Sakin"]].map(([v,lb])=>`<button data-vmu="${v}" aria-pressed="${(c.vmusic||"none")===v}" type="button">${lb}</button>`).join("")}</div><p class="muted" style="margin:0;font-size:.82rem">Müzik seçersen videonun kendi sesi kapanır, müzik cihazda çalınır.</p></div>`
-    :`<div class="srcs" style="padding-top:8px"><button class="src" id="vRec" type="button"><span class="ic">${I("camera")}</span><span><b>Kamerayla çek</b><small>Uygulamanın içinde kaydet, en fazla ${lim} saniye</small></span></button><button class="src" id="vPick" type="button"><span class="ic">${I("film")}</span><span><b>Galeriden video seç</b><small>${cldOn()?"En fazla 2 dakika; büyük videolar otomatik küçültülür":"Büyük videolar otomatik küçültülür (en fazla 30 sn)"}</small></span></button><button class="src" id="vSl" type="button"><span class="ic">${I("image")}</span><span><b>Fotoğraflardan Flick yap</b><small>1-3 fotoğraf, yazı ve müzikle</small></span></button></div>`)+`<div class="hint" id="vHint" hidden>Dosya seçici açılmadı. Tarayıcın izin vermiyor olabilir. <b>Kamerayla çek</b> ya da <b>Fotoğraflardan</b> sekmesini deneyebilir, uygulamayı Chrome veya Safari\'de açabilirsin.</div>`;
+    :`<div class="srcs" style="padding-top:8px"><button class="src" id="vRec" type="button"><span class="ic">${I("camera")}</span><span><b>Kamerayla çek</b><small>Uygulamanın içinde kaydet, en fazla ${lim} saniye</small></span></button><button class="src" id="vPick" type="button"><span class="ic">${I("film")}</span><span><b>Galeriden video seç</b><small>${cldOn()?"En fazla 2 dakika; büyük videolar otomatik küçültülür":"Büyük videolar otomatik küçültülür (en fazla 30 sn)"}</small></span></button><button class="src" id="vSl" type="button"><span class="ic">${I("image")}</span><span><b>Fotoğraflardan Klaket yap</b><small>1-3 fotoğraf, yazı ve müzikle</small></span></button></div>`)+`<div class="hint" id="vHint" hidden>Dosya seçici açılmadı. Tarayıcın izin vermiyor olabilir. <b>Kamerayla çek</b> ya da <b>Fotoğraflardan</b> sekmesini deneyebilir, uygulamayı Chrome veya Safari\'de açabilirsin.</div>`;
    const useFile=async f=>{if(!(f.type||"").startsWith("video/")&&!/\.(mp4|mov|m4v|webm|3gp|mkv)$/i.test(f.name||""))return toast("Bir video dosyası seç.");
    /* 4.4.5: Android, galeriden seçilen dosyayı okuma iznini bir süre sonra geri alıyor (NotReadableError). Video seçildiği anda belleğe kopyalanır. */
    if(!f._mem){if(f.size>300*1048576)return toast("Video çok büyük (300 MB üstü). Daha kısa bir video seç.");try{const buf=await f.arrayBuffer();const nf=new File([buf],f.name||"flick.mp4",{type:f.type||"video/mp4"});nf._mem=1;f=nf}catch(e){console.warn(e);return toast("Video okunamadı. Videoyu Galeri'den tekrar seç; bulutta duruyorsa önce telefona indir.")}}const lim2=S.mode==="local"?1.5*1048576:cldOn()?CLD.maxMB*1048576:VMAX;
    const tgt=S.mode==="local"?lim2:cldOn()?lim2:3*1048576;const longV=cldOn()&&(await vidDur(f))>CLD.maxS+3;
-   if(f.size>tgt||longV){const big=f.size>lim2;const go=$("#cmpGo",l);go.disabled=true;$("#rBody",l).innerHTML=`<div class="vbusy"><span class="spin"></span><b>Flick hazırlanıyor</b><span class="pct" id="vbP">%0</span><small>Video telefonunda küçültülüyor, en fazla ${cldOn()?"2 dakikası":"30 saniyesi"} alınır. Bu ekrandan çıkma.</small></div>`;
+   if(f.size>tgt||longV){const big=f.size>lim2;const go=$("#cmpGo",l);go.disabled=true;$("#rBody",l).innerHTML=`<div class="vbusy"><span class="spin"></span><b>Klaket hazırlanıyor</b><span class="pct" id="vbP">%0</span><small>Video telefonunda küçültülüyor, en fazla ${cldOn()?"2 dakikası":"30 saniyesi"} alınır. Bu ekrandan çıkma.</small></div>`;
     let shrunk=false;const alive=()=>S.cmp===c&&!!$('#overlay [data-layer="composer"]');try{const g=await compressVideo(f,{maxSide:cldOn()?1280:854,maxS:cldOn()?CLD.maxS:30,limit:cldOn()?25*1048576:tgt,onProg:p=>{const e=$("#vbP",l);if(e)e.textContent="%"+Math.round(p*100)}});if(g.size<f.size){f=g;shrunk=true}}catch(e){if(!alive())return;if(big){go.disabled=false;toast(e.message||"Video hazırlanamadı.");return drawComposer()}if(longV){go.disabled=false;toast("Video 2 dakikadan uzun ve kısaltılamadı. Daha kısa bir video seç.");return drawComposer()}}if(!alive())return;go.disabled=false;
     if(f.size>lim2){toast("Video hâlâ çok büyük. Daha kısa bir video seç.");return drawComposer()}toast(shrunk?"Video küçültüldü, hazır":"Video hazır")}if(c.videoUrl&&!Object.values(vcache).includes(c.videoUrl))try{URL.revokeObjectURL(c.videoUrl)}catch{}c.video=f;c.videoUrl=URL.createObjectURL(f);drawComposer()};
    $("#vPick",l).onclick=async()=>{S.onPickSlow=()=>{const h=$("#vHint",l);if(h)h.hidden=false};const f=await nativePick("video/*,.mp4,.mov,.m4v,.webm,.3gp,.mkv");if(f===undefined){$("#vHint",l).hidden=false;return}if(!f)return;useFile(f)};
@@ -3720,13 +3720,13 @@ async function publishComposer(){const c=S.cmp;const l=$('#overlay [data-layer="
   else if(c.kind==="story"){path="stories/"+id;doc={uid:S.uid,at,img:encode($("#cCv",l),170000)}}
   else if(c.kind==="note"){if(!(c.text||"").trim())return toast("Notuna bir şey yaz.");doc={...base,kind:"note",text:kidClean(c.text.trim()),bg:c.bg}}
   else if(c.kind==="poll"){const opts=c.options.map(o=>o.trim()).filter(Boolean);if(!(c.question||"").trim())return toast("Bir soru yaz.");if(opts.length<2)return toast("En az iki seçenek yaz.");doc={...base,kind:"poll",question:kidClean(c.question.trim()),options:opts.map(kidClean)}}
-  else if(c.kind==="reel"){if(c.mode==="video"){if(!c.video)return toast("Önce bir video seç.");go.disabled=true;go.textContent="Hazırlanıyor…";const poster=await videoPoster(c.videoUrl);const vdur=await vidDur(c.video).catch(()=>0);const ref=await storeVideo(c.video,(i,n)=>go.textContent=`Yükleniyor %${Math.round(i/Math.max(1,n)*100)}`);if(!l.isConnected){delChunks(ref);return toast("Flick paylaşılmadı: pencere kapatıldı.")}vcache[ref]=c.videoUrl;doc={...base,kind:"reel",video:ref,poster,...(vdur>0?{dur:Math.round(vdur*10)/10}:{}),exif:"Video · "+(c.video.size/1048576).toFixed(1).replace(".",",")+" MB",...(c.vmusic&&c.vmusic!=="none"?{music:c.vmusic}:{})}}
+  else if(c.kind==="reel"){if(c.mode==="video"){if(!c.video)return toast("Önce bir video seç.");go.disabled=true;go.textContent="Hazırlanıyor…";const poster=await videoPoster(c.videoUrl);const vdur=await vidDur(c.video).catch(()=>0);const ref=await storeVideo(c.video,(i,n)=>go.textContent=`Yükleniyor %${Math.round(i/Math.max(1,n)*100)}`);if(!l.isConnected){delChunks(ref);return toast("Klaket paylaşılmadı: pencere kapatıldı.")}vcache[ref]=c.videoUrl;doc={...base,kind:"reel",video:ref,poster,...(vdur>0?{dur:Math.round(vdur*10)/10}:{}),exif:"Video · "+(c.video.size/1048576).toFixed(1).replace(".",",")+" MB",...(c.vmusic&&c.vmusic!=="none"?{music:c.vmusic}:{})}}
    else{if(!c.slides.length)return toast("En az bir kare ekle.");doc={...base,kind:"reel",slides:c.slides.slice(),fx:c.fx,music:c.music,text:kidClean((c.text||"").trim())}}}
   go.disabled=true;go.textContent="Paylaşılıyor…";
   const ok=await write(()=>DB.set(path,doc));
   if(!ok){if(doc&&doc.video)delChunks(doc.video);go.disabled=false;go.textContent="Paylaş";return}
   if(c.kind==="story"){S.stories={...S.stories,[id]:{id,...doc}};closeLayer("composer");toast("Hikâyen paylaşıldı");return tab("feed")}
-  S.posts={...S.posts,[id]:{id,...doc}};closeLayer("composer");toast({photo:"Fotoğraf paylaşıldı",note:"Not paylaşıldı",poll:"Anket yayında",reel:"Flick paylaşıldı"}[c.kind]);
+  S.posts={...S.posts,[id]:{id,...doc}};closeLayer("composer");toast({photo:"Fotoğraf paylaşıldı",note:"Not paylaşıldı",poll:"Anket yayında",reel:"Klaket paylaşıldı"}[c.kind]);
   if(c.kind==="reel"){S.stack=[{name:"feed",params:{}}];S.route={name:"reels",params:{start:id}};render(true)}else tab("feed")}
  catch(e){console.warn(e);toast(e&&e.code==="quota_exceeded"?"Cihaz depolaması doldu. Daha kısa bir video seç ya da eski paylaşımları sil.":e&&e.name==="NotReadableError"?"Video dosyası okunamadı. “Başka video seç” ile videoyu yeniden seç ve hemen paylaş.":"Paylaşılamadı: "+(e&&e.message?e.message:"bilinmeyen hata"));go.disabled=false;go.textContent="Paylaş"}}
 /* uygulama içi video kaydı (çekim) */
@@ -3765,7 +3765,7 @@ async function resolveVideo(ref){if(vcache[ref])return vcache[ref];const[,vid,n]
  if(parts[0].b&&parts[0].b.toUint8Array)return vcache[ref]=URL.createObjectURL(new Blob(parts.map(x=>x.b.toUint8Array()),{type:parts[0].m||"video/mp4"}));
  const durl=parts.map(x=>x.d).join("");const comma=durl.indexOf(",");const mime=(durl.slice(5,comma).split(";")[0])||"video/mp4";const bin=atob(durl.slice(comma+1));const u8=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u8[i]=bin.charCodeAt(i);
  return vcache[ref]=URL.createObjectURL(new Blob([u8],{type:mime}))}
-/* 4.8: Flick'te parçalı videolar yalnızca açık, önceki ve sonraki için indirilir (eskisi hepsini birden indiriyordu) */
+/* 4.8: Klakette parçalı videolar yalnızca açık, önceki ve sonraki için indirilir (eskisi hepsini birden indiriyordu) */
 function hydrateVideos(){const near=new Set();if(activeReel){near.add(activeReel);if(activeReel.nextElementSibling)near.add(activeReel.nextElementSibling);if(activeReel.previousElementSibling)near.add(activeReel.previousElementSibling)}
  for(const v of $$("video[data-vref]")){if(v.getAttribute("src")||v._hy)continue;const r=v.closest(".reel");if(r&&!near.has(r))continue;v._hy=true;resolveVideo(v.dataset.vref).then(u=>{v._hy=false;if(u&&v.isConnected){v.src=u;if(activeReel&&activeReel.contains(v)&&settings.autoplay)v.play().catch(()=>{if(!v.muted&&activeReel&&activeReel.contains(v)){v.muted=true;v.play().catch(()=>{});S.needUnmute=true;const h=activeReel.querySelector(".rhint");if(h)h.hidden=false}})}}).catch(()=>{v._hy=false})}}
 function hydrateVideosOld(){for(const v of $$("video[data-vref]")){if(v.getAttribute("src"))continue;v.removeAttribute("src");resolveVideo(v.dataset.vref).then(u=>{if(u&&v.isConnected){v.src=u;if(activeReel&&activeReel.contains(v)&&settings.autoplay)v.play().catch(()=>{})}})}}
@@ -4633,7 +4633,7 @@ function vAdmin(){if(!S.admin)return`<div class="empty"><span class="ic">${I("lo
  let h=`<div class="adm-hero"><span class="ic">${I("key")}</span><div><b>Yönetici paneli</b><small>@${esc(me().username)} olarak yönetiyorsun</small></div></div>`;
  if(bakimOn())h+=`<div class="banner" style="background:#fff1d6;color:#3d2c00">${I("gear")}<span><b>Bakım modu açık.</b> Kullanıcılar şu an uygulamayı göremiyor.</span></div>`;
  if(S.mode==="cloud"&&S.admRulesOk===false)h+=`<div class="banner" style="border:1.5px solid var(--heart)">${I("info")}<span><b>Bir kez kurulum gerekiyor.</b> Paneldeki işlemlerin çalışması için en alttaki <b>Kurulum</b> bölümündeki kuralları Firebase'e yapıştırıp Yayınla'ya bas.</span></div>`;
- h+=`<div class="adm-stats">${stat(users.length,"kullanıcı")}${stat(S.online.size+1,"şu an açık")}${stat(posts.filter(p=>p.kind!=="reel").length,"paylaşım")}${stat(posts.filter(p=>p.kind==="reel").length,"Flick")}${stat(Object.values(S.stories).filter(s=>s.at>lim).length,"hikâye")}${stat(BOTS.length,"bot")}</div>`;
+ h+=`<div class="adm-stats">${stat(users.length,"kullanıcı")}${stat(S.online.size+1,"şu an açık")}${stat(posts.filter(p=>p.kind!=="reel").length,"paylaşım")}${stat(posts.filter(p=>p.kind==="reel").length,"Klaket")}${stat(Object.values(S.stories).filter(s=>s.at>lim).length,"hikâye")}${stat(BOTS.length,"bot")}</div>`;
  h+=cldUseBox();h+=archBox();
  const an=S.adm&&S.adm.duyuru;
  h+=`<h3 class="sec-h"><span>Duyuru</span></h3><div class="box adm-box">${an&&an.text?`<div class="adm-cur">${I("bell")}<span>${esc(an.text)}<small>${ago(an.at)}</small></span></div>`:""}<textarea class="in" id="admAnn" maxlength="300" placeholder="Herkesin Akış'ında üstte görünecek duyuru…"></textarea><div class="adm-row"><button class="btn sm" data-adm="ann">${I("send")}Yayınla</button>${an&&an.text?`<button class="btn sm sec" data-adm="annx">Kaldır</button>`:""}</div></div>`;
@@ -4647,7 +4647,7 @@ function vAdmin(){if(!S.admin)return`<div class="empty"><span class="ic">${I("lo
  const cb=BOTS.filter(b=>b.custom);
  h+=`<h3 class="sec-h"><span>Botlar</span><button class="btn sm" data-adm="botnew">${I("add")}Bot ekle</button></h3><div class="box"><div class="row">${avatar("bot:rota",44,{click:false,ring:false})}<div class="t"><div><b>Rota</b>${badge("bot:rota")}</div><div class="s">Yerleşik rehber ve satranç rakibi</div></div></div>${cb.map(b=>`<div class="row">${avatar(b.uid,44,{click:false,ring:false})}<div class="t"><div><b>${esc(b.name)}</b>${badge(b.uid)}</div><div class="s">@${esc(b.username)} · ${b.replies.length} hazır yanıt</div></div><button class="ib" data-adm="botsay" data-u="${esc(b.uid)}" aria-label="Bot olarak Meydan'a yaz">${I("globe")}</button><button class="ib" data-adm="botedit" data-u="${esc(b.uid)}" aria-label="Botu düzenle">${I("edit")}</button><button class="ib" data-adm="botdel" data-u="${esc(b.uid)}" aria-label="Botu sil">${I("trash")}</button></div>`).join("")}</div>`;
  const recent=posts.filter(p=>S.profiles[p.uid]).sort((a,b)=>b.at-a.at).slice(0,15);const pin=pinnedId();
- h+=`<h3 class="sec-h"><span>Son paylaşımlar</span></h3>${recent.length?`<div class="box">${recent.map(p=>{const th=postThumb(p);return`<div class="row"><button class="adm-th" data-open="${esc(p.id)}">${th?`<img src="${esc(th)}" alt="">`:I(p.kind==="poll"?"poll":"type")}</button><div class="t"><div><b>@${esc(P(p.uid).username)}</b>${pin===p.id?' <span class="tag">öne çıkan</span>':""}</div><div class="s">${esc((p.caption||p.text||p.question||"").slice(0,60)||({reel:"Flick",photo:"fotoğraf"}[p.kind]||p.kind))} · ${ago(p.at)}</div></div><button class="ib" data-adm="pin" data-u="${esc(p.id)}" aria-label="Öne çıkar">${I("spark")}</button><button class="ib" data-adm="postdel" data-u="${esc(p.id)}" aria-label="Paylaşımı kaldır">${I("trash")}</button></div>`}).join("")}</div>`:`<div class="empty" style="padding:16px">Henüz paylaşım yok.</div>`}`;
+ h+=`<h3 class="sec-h"><span>Son paylaşımlar</span></h3>${recent.length?`<div class="box">${recent.map(p=>{const th=postThumb(p);return`<div class="row"><button class="adm-th" data-open="${esc(p.id)}">${th?`<img src="${esc(th)}" alt="">`:I(p.kind==="poll"?"poll":"type")}</button><div class="t"><div><b>@${esc(P(p.uid).username)}</b>${pin===p.id?' <span class="tag">öne çıkan</span>':""}</div><div class="s">${esc((p.caption||p.text||p.question||"").slice(0,60)||({reel:"Klaket",photo:"fotoğraf"}[p.kind]||p.kind))} · ${ago(p.at)}</div></div><button class="ib" data-adm="pin" data-u="${esc(p.id)}" aria-label="Öne çıkar">${I("spark")}</button><button class="ib" data-adm="postdel" data-u="${esc(p.id)}" aria-label="Paylaşımı kaldır">${I("trash")}</button></div>`}).join("")}</div>`:`<div class="empty" style="padding:16px">Henüz paylaşım yok.</div>`}`;
  h+=`<h3 class="sec-h"><span>Araçlar</span></h3><div class="set">${admTemaRow()}<button class="srow" data-adm="meydanclr">${I("globe")}<span class="t">Meydan'ı temizle<small>Ortak sohbetteki tüm mesajlar silinir</small></span></button><button class="srow" data-adm="storyclr">${I("eye")}<span class="t">Eski hikâyeleri temizle<small>24 saati geçmiş hikâyeleri veritabanından siler</small></span></button><label class="srow"><span class="t">Bakım modu<small>Açıkken yönetici dışında kimse uygulamayı kullanamaz</small></span><span class="sw"><input type="checkbox" id="admBk" ${bakimOn()?"checked":""}><span></span></span></label><button class="srow" data-adm="childmode">${I("lock")}<span class="t">Çocuk modu<small>Bir hesaba küfür süzgeci ve güvenli sohbet öner</small></span></button>${pin?`<button class="srow" data-adm="unpin">${I("spark")}<span class="t">Öne çıkanı kaldır</span></button>`:""}</div>`;
  const lg=(S.adm&&S.adm.log&&S.adm.log.items)||[];
  if(lg.length)h+=`<h3 class="sec-h"><span>Son işlemler</span></h3><div class="box adm-log">${lg.slice(0,12).map(x=>`<div class="row"><span class="dotx"></span><div class="t"><div>${esc(x.x)}</div><div class="s">${ago(x.t)}${x.by&&x.by!==S.uid?" · @"+esc(P(x.by).username):""}</div></div></div>`).join("")}</div>`;
@@ -4730,8 +4730,8 @@ HOOKS.after.push(r=>{if(r!=="admin")return;archWire();if(S.archTried)return;S.ar
 /* 4.4.6: ana ekrandaki simgeyi telefon tutar ve kendisi yenilemez. Uygulamadan (ana ekrandan) girenlere yeni logo için bir kez yol gösterilir. */
 HOOKS.enter.push(()=>setTimeout(()=>{try{if(!isStandalone()||LS.get("kadraj_icon_tip_442"))return;if($("#overlay")&&$("#overlay").children.length)return;LS.set("kadraj_icon_tip_442",now());
  dialog("Kadraj'ın yeni logosu",`Uygulamanın içindeki logo yenilendi. Ana ekrandaki simgeyi ise telefonun kendisi saklar ve kendiliğinden değiştirmez.<br><br>Yeni simge için:<br>1. Ana ekranda Kadraj simgesine basılı tut, <b>Kaldır</b>'a dokun.<br>2. Chrome'da <b>kadrajsosyalmedya.github.io/Kadraj</b> adresini aç.<br>3. Sağ üstteki ⋮ menüsünden <b>Ana ekrana ekle</b> ya da <b>Uygulamayı yükle</b>'ye dokun.<br><br>Hesabın ve mesajların silinmez.`,[{label:"Tamam"}])}catch(e){}},4000));
-/* ===== 4.5: sohbette arama, mesaj iletme, sohbet sabitleme, hikâyeye tepki, sesli mesaj hızı, Flick süresi ===== */
-/* Flick ilerleme çubuğu: bulut videoyu ilk açılışta parça parça hazırlarken süre yanlış (kısa) görünür; kayıtlı süre ya da sabitlenmiş süre kullanılır */
+/* ===== 4.5: sohbette arama, mesaj iletme, sohbet sabitleme, hikâyeye tepki, sesli mesaj hızı, Klaket süresi ===== */
+/* Klaket ilerleme çubuğu: bulut videoyu ilk açılışta parça parça hazırlarken süre yanlış (kısa) görünür; kayıtlı süre ya da sabitlenmiş süre kullanılır */
 function reelDurOld(v){const k=+v.dataset.dur||0;if(k>0)return k;const d=v.duration;if(!isFinite(d)||!d)return 0;if(d!==v._ld){v._ld=d;v._st=0;return 0}v._st=(v._st||0)+1;return v._st>=4?d:0}
 /* 4.5.1: kayıtlı süre yoksa süre 1,5 sn değişmeden kalınca kullanılır (her karede çağrılır) */
 function reelDur(v){const k=+v.dataset.dur||0;if(k>0)return k;const d=v.duration;if(!isFinite(d)||!d)return 0;const t=performance.now();if(d!==v._ld){v._ld=d;v._lt=t;return 0}return t-v._lt>1500?d:0}
@@ -4758,7 +4758,7 @@ const rateTxt=r=>String(r).replace(".",",")+"x";
 function audHtml(m){const h=audHtmlOld(m);const i=h.lastIndexOf("</span>");return h.slice(0,i)+`<button type="button" class="arate" data-arate="1" aria-label="Oynatma hızı">${rateTxt(audRate())}</button>`+h.slice(i)}
 function playAudio(mid){playAudioOld(mid);if(AUD){AUD.defaultPlaybackRate=AUD.playbackRate=audRate()}}
 document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-arate]");if(!b)return;e.preventDefault();e.stopPropagation();const r=audRate();const n=r===1?1.5:r===1.5?2:1;settings.audRate=n;saveSettings();if(AUD){AUD.defaultPlaybackRate=AUD.playbackRate=n}$$("[data-arate]").forEach(x=>x.textContent=rateTxt(n));vib(8)},true);
-/* ===== 4.5.1: Flick çubuğu, sarma, hafif arka plan, bulut ön hazırlığı ===== */
+/* ===== 4.5.1: Klaket çubuğu, sarma, hafif arka plan, bulut ön hazırlığı ===== */
 /* bulut 1080p kopyayı ilk izleyen için o an üretir (kasma ve düşük kalite); yükleyen kişi yükleme biter bitmez üretimi başlatır */
 function cldWarm(u){try{const w=cldPlay(u);if(w===u)return;const hit=()=>{const ac=new AbortController();fetch(w,{mode:"no-cors",signal:ac.signal}).then(()=>ac.abort(),()=>{})};hit();setTimeout(hit,20000)}catch{}}
 /* ilerleme çubuğu: her karede, kayarak */
@@ -4778,7 +4778,7 @@ document.addEventListener("pointerdown",e=>{const pr=e.target.closest&&e.target.
 /* bulanık arka plan: kapak 12x20'ye küçültülüp büyütülür (canlı filtre yok) */
 function rblurFill(){for(const d of $$(".rblur[data-p]")){const src=d.dataset.p;d.removeAttribute("data-p");const im=new Image();im.onload=()=>{try{const c=document.createElement("canvas");c.width=12;c.height=20;c.getContext("2d").drawImage(im,0,0,12,20);d.style.backgroundImage=`url(${c.toDataURL("image/jpeg",.7)})`}catch{}};im.src=src}}
 HOOKS.after.push(r=>{if(r==="reels")setTimeout(rblurFill,60)});
-/* ===== 4.6: Flick'te basılı tutunca 2x hız ===== */
+/* ===== 4.6: Klakette basılı tutunca 2x hız ===== */
 document.addEventListener("pointerdown",e=>{const r=e.target.closest&&e.target.closest(".reel");if(!r||e.target.closest("button,.rprog,a"))return;const v=r.querySelector("video");if(!v)return;
  /* 4.7: yalnızca sağ ve sol kenarda */const rc=r.getBoundingClientRect(),rx=rc.width?(e.clientX-rc.left)/rc.width:.5;if(rx>.3&&rx<.7)return;
  const x0=e.clientX,y0=e.clientY;let t=setTimeout(()=>{t=0;if(v.paused)return;r._fast=true;v.playbackRate=2;let f=r.querySelector(".rfast");if(!f){f=document.createElement("span");f.className="rfast";f.innerHTML=`${I("play")}${I("play")}2x`;r.appendChild(f)}f.hidden=false;vib(10)},450);
@@ -4794,10 +4794,10 @@ HOOKS.enter.push(()=>{if(!S.uid)return;let ch=false;settings.pinBy=settings.pinB
  if(ch)saveSettings()});
 /* bakım modunda Keşfet görünmez: yönetici girişi Ayarlar aramasından da yapılır */
 document.addEventListener("input",e=>{const q=e.target;if(!q||q.id!=="setQ"||S.admin)return;clearTimeout(S._admT2);if(q.value.length<16)return;const v=q.value;S._admT2=setTimeout(async()=>{if(await admTry(v)&&q.isConnected){q.value=""}},450)});
-/* Flick: başka Flick'ten dönünce baştan başlar; yarım kalan kaydırmada kaldığı yerden devam eder */
+/* Klaket: başka Klaketten dönünce baştan başlar; yarım kalan kaydırmada kaldığı yerden devam eder */
 function reelReset(el){if(!el||activeReel===el)return;if(S._lr&&S._lr!==el){const v=el.querySelector("video");if(v&&v.currentTime)try{v.currentTime=0}catch{}}S._lr=el}
 HOOKS.after.push(r=>{if(r==="reels")S._lr=null});
-/* oluştur, kamera ya da arama açıkken Flick susar; kapanınca devam eder */
+/* oluştur, kamera ya da arama açıkken Klaket susar; kapanınca devam eder */
 function reelOverlayPause(){const busy=!!$('#overlay [data-layer="composer"],#overlay [data-layer="rec"],#overlay [data-layer="call"]');const el=activeReel,v=el&&el.querySelector("video");
  if(busy){if(v&&!v.paused){v.pause();el._ovp=true}Music.stop()}else if(el&&el._ovp){el._ovp=false;if(S.route.name==="reels"&&v)v.play().catch(()=>{})}}
 try{new MutationObserver(()=>reelOverlayPause()).observe($("#overlay"),{childList:true})}catch{}
@@ -4812,18 +4812,18 @@ function chRateMissed(m){if(S.guest||!S.canWrite||!S.uid)return;const done=LS.ge
   chRate(chessStats(oppOf(d)).r,score);write(()=>DB.update("games/"+d.id,{rated:{[S.uid]:1}}),{quiet:true})}
  if(ch)LS.set("kadraj_cg_rated",done)}
 /* ===== 4.8 ===== */
-/* açık Flick değişince yakındaki parçalı videolar indirilir; "bitince sonrakine geç" */
+/* açık Klaket değişince yakındaki parçalı videolar indirilir; "bitince sonrakine geç" */
 const activateReel47=activateReel;
 activateReel=function(el){reelReset(el);activateReel47(el);hydrateVideos();const v=el.querySelector("video");if(!v||v._nx)return;v._nx=1;let lt=0;
  v.addEventListener("timeupdate",()=>{const t=v.currentTime,d=reelDur(v)||(isFinite(v.duration)?v.duration:0);const wrap=d>1.5&&lt>d-.8&&t<.8&&!v.paused;lt=t;
   if(!wrap||settings.reelNext!==true||activeReel!==el||el._scrub||now()-(el._sk||0)<1500||S.route.name!=="reels")return;const nx=el.nextElementSibling;if(nx&&nx.classList.contains("reel")){v.pause();nx.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches||settings.reduceMotion?"auto":"smooth"})}})};
 document.addEventListener("pointerdown",e=>{const pr=e.target.closest&&e.target.closest(".reel .rprog");if(pr)pr.closest(".reel")._sk=now()},true);
-/* tam çizimde Flick yeniden başlangıç paylaşımına kaydırılır, kısmi çizimde yerinde kalır */
+/* tam çizimde Klaket yeniden başlangıç paylaşımına kaydırılır, kısmi çizimde yerinde kalır */
 const renderBase48=render;render=function(full){if(full)S._rsR=null;return renderBase48(full)};
 /* çocuk modu: grup kurarken/üye eklerken yalnızca karşılıklı takipleşilen kişiler */
 function kidPair(u){if(S.admin||(!isChild(u)&&!isChild(S.uid)))return true;return isFollowing(S.uid,u)&&isFollowing(u,S.uid)}
 /* ===== 4.7 ===== */
-/* Flick'ten çıkınca video başa sarılır; geri dönünce baştan başlar */
+/* Klaketten çıkınca video başa sarılır; geri dönünce baştan başlar */
 const deactivateReelBase=deactivateReel;
 deactivateReel=function(el){deactivateReelBase(el);const v=el.querySelector("video");if(v){v.playbackRate=1}const b=el.querySelector(".rprog i");if(b)b.style.transform="scaleX(0)";el._fast=false;const f=el.querySelector(".rfast");if(f)f.hidden=true};
 /* arka plandayken çıkan uygulama içi uyarılar dönüşte ekranda kalmasın (telefon zamanlayıcıları durdurur) */
@@ -4903,34 +4903,34 @@ async function admAct(a,t){const u=t.dataset.u;
 const RULES=rulesText([]);
 /* ============ Botlar & Rota ============ */
 const APP_GUIDE=`Kadraj bir sosyal uygulamadır (Firebase üzerinde çalışır, herkes kendi e-postasıyla hesap açar). Alt dok: Akış, Keşfet, ortada + (Oluştur), Sohbet, Ben.
-- Oluştur (+): Fotoğraf, Flick (kısa video, Kadraj'da Reels'in adı), Hikâye, Not (renkli zeminde yazı), Anket (2-4 seçenek), Çizim (parmakla).
+- Oluştur (+): Fotoğraf, Klaket (kısa video, Kadraj'da Reels'in adı), Hikâye, Not (renkli zeminde yazı), Anket (2-4 seçenek), Çizim (parmakla).
 - Fotoğraf kaynakları: telefondan seç, kamera, Kadraj galerisi (hazır 10 fotoğraf), parmakla çizim, panodan yapıştırma. Dosya seçici açılmazsa galeri, çizim ya da yapıştırma kullanılır.
 - Fotoğraf: Kare/Dikey/Yatay kırpma, 7 filtre, açıklama, konum; "Rota açıklama yazsın" düğmesi.
-- Flick: "Fotoğraflardan" (1-3 kare, ekrandaki yazı, hareket: Yakınlaş/Kaydır/Nabız, müzik: Lo-fi/Enerjik/Sakin; müzik cihazda üretilir) ya da "Video yükle" (en fazla 2 dakika, 40 MB; büyükler otomatik küçültülür). Flick'ler ekranında sesi sağ üstteki hoparlör açar, çift dokunuş beğenir.
+- Klaket: "Fotoğraflardan" (1-3 kare, ekrandaki yazı, hareket: Yakınlaş/Kaydır/Nabız, müzik: Lo-fi/Enerjik/Sakin; müzik cihazda üretilir) ya da "Video yükle" (en fazla 2 dakika, 40 MB; büyükler otomatik küçültülür). Klaketler ekranında sesi sağ üstteki hoparlör açar, çift dokunuş beğenir.
 - Hikâye: 24 saat görünür, üstüne yazı eklenebilir; yanıtlar mesaj olarak gelir.
 - Etkileşim: beğeni (çift dokunuş da olur), yorum, kaydet, arkadaşına gönder, anket oyu.
 - Sohbet sekmesi: Sesli mesaj (mesaj kutusu boşken mikrofon düğmesine dokun, konuş, gönder), sesli ve görüntülü arama (birebir sohbetin üstündeki telefon ve kamera düğmeleri; arkadaş uygulamayı açıkken çalar), mesaja uzun basıp Yanıtla, Meydan (sayfadaki herkesin ortak canlı sohbeti), Şu an burada listesi (çevrimiçi kişiler; Dürt düğmesi titreşimli dürtme gönderir), Yeni mesaj, Grup kur, Davet et, Rota, test botları. Mesajlarda fotoğraf ve paylaşım gönderilir; mesaja çift dokununca kalp, uzun basınca menü (kopyala, geri al). Birebir sohbette "Görüldü" ve "yazıyor…" görünür. Meydan'da ya da grupta mesaja @rota yazınca Rota yanıt verir.
 - Arkadaşlarla kullanmak: Sohbet > Davet et (ya da Ben > Davet et) ekranındaki davet bağlantısı WhatsApp gibi bir uygulamayla gönderilir. Arkadaş bağlantıyı açar, e-posta ve şifreyle hesap oluşturur, seni Keşfet'te bulup takip eder ve yazar. Giriş kullanıcı adıyla ya da e-postayla yapılır. Şifre unutulursa giriş ekranında Şifremi unuttum > Kadraj Anahtarı ile yenile (anahtar Ben > zarf simgesi, Kadraj Posta'da durur). Anahtar da kaybolduysa kişi yöneticiye kullanıcı adını ve kayıt e-postasını söyler; e-posta doğruysa yönetici anahtarı panelden görüp iletir, kişinin anahtarı sonra kendiliğinden yenilenir.
-- Ben (profil) > dişli: tema (Açık/Koyu/Sistem; Akış'taki ay/güneş düğmesi de değiştirir), yazı boyutu (Normal/Büyük/Çok büyük), gizli hesap, bildirimler, Flick'leri otomatik oynatma, Beni hatırla, şifre değiştir, çıkış, hesabı sil.
+- Ben (profil) > dişli: tema (Açık/Koyu/Sistem; Akış'taki ay/güneş düğmesi de değiştirir), yazı boyutu (Normal/Büyük/Çok büyük), gizli hesap, bildirimler, Klaketleri otomatik oynatma, Beni hatırla, şifre değiştir, çıkış, hesabı sil.
 - Satranç: Keşfet'teki Satranç kartı ya da Akış'ın üstündeki at simgesi. Rota'ya karşı 5 seviye (Çaylak 400, Acemi 800, Orta 1200, Zor 1600, Usta 2000), renk seçimi, taşı sürükle ya da dokun-dokun oyna, Geri al, İpucu (ok çizer), tahtayı çevir, hamleler arasında ileri-geri gez, değerlendirme çubuğu, tahta temaları (Kadraj, Klasik, Ahşap, Gece), ses. Kazanınca puanın artar, Kadraj sıralamasında görünür. Arkadaşınla oynamak için Arkadaşını davet et ya da birebir sohbetin üstündeki at düğmesi; davet sohbete kart olarak düşer. Aynı telefonda iki kişi de oynanabilir. Oyun bitince sonucu tahtanın resmiyle Akış'ta paylaşabilirsin.
-- Flick kaynakları: Fotoğraflardan (müzikli), Video yükle ya da Kamerayla çek (uygulama içinde 60 saniyeye kadar kayıt; demo modunda daha kısa). Videoya da müzik eklenebilir.
+- Klaket kaynakları: Fotoğraflardan (müzikli), Video yükle ya da Kamerayla çek (uygulama içinde 60 saniyeye kadar kayıt; demo modunda daha kısa). Videoya da müzik eklenebilir.
 - Rota yapay zekâlı asistandır; yanında hazır yanıtlı deneme botları ve yöneticinin eklediği botlar da olabilir. "Test bildirimleri oluştur" komutu (çipe dokun ya da yaz) Rota'nın son paylaşımını beğenmesini, yorum yapmasını ve seni takip etmesini sağlar.
 - 4.0 yenilikleri: animasyonlu açılış; Ayarlar yenilendi (arama kutusu, Görünüm'de Açık/Koyu/Sistem tema ve 7 vurgu rengi, tema tüm cihazlarda aynı kalabilir, animasyonları azalt; Gizlilik'te aktiflik durumu, okundu bilgisi, beğeni sayılarını gizleme; bildirim türleri; Enter ile gönder; veri tasarrufu; önbelleği temizle; Neler yeni; Güncellemeleri denetle).
 - Aktiflik: yeşil nokta şu an açık olanı gösterir. Ayarlar > Gizlilik > Aktiflik durumu kapatılırsa kimse seni aktif göremez, sen de başkalarını göremezsin.
 - Ortak sohbet temaları: sohbetin üstündeki resim simgesinden tema seçilir; birebir ve grup sohbetlerinde "Herkes için" seçilen tema sohbetteki herkeste aynı anda değişir ve kendi balonlarının rengini de değiştirir. "Yalnızca bende" sadece senin cihazını etkiler. Fotoğraftan tema da yapılabilir.
 - Mesajlar: mesaja uzun basınca 6 resimli tepki (kalp, gülme, şaşırma, üzülme, ateş, alkış), yanıtla, kopyala, düzenle, sil; çift dokunuş kalp bırakır. Profilde en fazla 3 paylaşım sabitlenebilir.
-- 4.4: Sahne'nin yeni adı Flick (kısa video). Paylaşırken "Çocuk modundakiler göremez" açılırsa o paylaşım Çocuk Modu'ndaki kişilere hiç görünmez; sonradan paylaşımın ... menüsünden değiştirilebilir.
-- Clawd (5.1): Kadraj'da yaşayan oyuncu piksel yaratık. Akış'ta hikâyelerin yanında, Keşfet'te Satranç kartının altında, Sohbet'te notların yanında, profilde adın yanında küçük bir odası var (yatak, çekmece, ışık düğmesi); sığmazsa ekranda gezer. Klaket'te raf köşesinde patlamış mısırla izler, yorumlar açıkken dans eder. Gece 00:00-07:00 uyur, sen uyumazsan o da uyumaz; sabah elektro gitar çalar. Dokununca menü: Soğuk espri, Bir ipucu, Clawd'a sor, Gitar çal/Dans et, Işık, Biraz uyu, Clawd'ı gizle. Bilmediğini söyler ve soğuk espri yapar. Satrançta rakip olarak da seçilebilir. Ayarlar › Görünüm › Clawd / Clawd sesleri.
+- 4.4: Sahne'nin adı Flick oldu; 5.1'den beri adı Klaket (kısa video). Paylaşırken "Çocuk modundakiler göremez" açılırsa o paylaşım Çocuk Modu'ndaki kişilere hiç görünmez; sonradan paylaşımın ... menüsünden değiştirilebilir.
+- Clawd (5.1): Kadraj'da yaşayan oyuncu piksel yaratık. Akış'ta hikâyelerin yanında, Keşfet'te Satranç kartının altında, Sohbet'te notların yanında, profilde adın yanında küçük bir odası var (yatak, çekmece, ışık düğmesi); sığmazsa ekranda gezer. Klakette raf köşesinde patlamış mısırla izler, yorumlar açıkken dans eder. Gece 00:00-07:00 uyur, sen uyumazsan o da uyumaz; sabah elektro gitar çalar. Dokununca menü: Soğuk espri, Bir ipucu, Clawd'a sor, Gitar çal/Dans et, Işık, Biraz uyu, Clawd'ı gizle. Bilmediğini söyler ve soğuk espri yapar. Satrançta rakip olarak da seçilebilir. Ayarlar › Görünüm › Clawd / Clawd sesleri.
 - 5.0 yenilikleri (Kadraj 5.0): Yeni görünüm "Vizör": alttaki yüzen çubukta etkin sekme odak köşeleriyle çerçevelenir, ortadaki deklanşör düğmesi paylaşım menüsünü açar; paylaşımlar numaralı "kare"lerdir; görülmemiş hikâyeler diyafram halkasıyla işaretlenir; eski görünüm Ayarlar > Görünüm > Arayüz'den "Klasik" seçilerek geri gelir.
 - 5.0 arama: sohbet başlığındaki telefon ya da kamera ile. Arama ekranında Mikrofon, Kamera (sesli aramada da açılır), Ekran (bilgisayarda ekran paylaşımı), Tepki ve Diğer (kamerayı çevir, ses çıkışı, gürültü engelleme, Küçült) var. Küçült aramayı yüzen pencereye alır. Gelen aramada "Kamerasız yanıtla" ve "Mesajla yanıtla" var. Ekran paylaşımı ve tepkiler için iki tarafın da 5.0 kullanması gerekir.
-- 5.0 Keşfet araması: ad, @kullanıcı adı, #etiket ya da kelime yazılır; ı/i, ş/s gibi harf farkları önemsizdir. Hepsi, Kişiler, Paylaşımlar, Flick ve Etiketler süzgeçleri; En yeni / En çok beğenilen sıralaması; son aramalar ve yazarken öneriler. Uygulamadaki her #etikete dokununca o etiketin sayfası açılır.
+- 5.0 Keşfet araması: ad, @kullanıcı adı, #etiket ya da kelime yazılır; ı/i, ş/s gibi harf farkları önemsizdir. Hepsi, Kişiler, Paylaşımlar, Klaket ve Etiketler süzgeçleri; En yeni / En çok beğenilen sıralaması; son aramalar ve yazarken öneriler. Uygulamadaki her #etikete dokununca o etiketin sayfası açılır.
 - 5.0 satranç: lobideki Görünüm kartından taş seti (Kadraj ya da Klasik) ve tahta teması (Zümrüt, Gün batımı, Vizör dahil) seçilir. Süre: Süresiz, 3+2, 5+0, 10+0 (Rota'ya karşı ve aynı telefonda; süresi biten kaybeder). 24 mat bulmacası: yanlış hamle geri döner, İpucu önce taşı sonra hamleyi gösterir, Çözüm oynatır. Tahtanın üstünde alınan taşlar ve malzeme farkı görünür.
 - 5.0 yönetici paneli: bölümler başlığa dokununca açılıp kapanır; Sürüm arşivi kapalı durur, dokununca açılır; kullanıcılarda arama, sıralama ve süzgeçler var.
-- 4.9 (hata temizliği): Rota'ya "Test bildirimleri oluştur" ya da "Satranç oynayalım" yazmak da çalışır; video eklerken, kamera ya da arama açıkken Flick susar; yarım kalan kaydırmada Flick kaldığı yerden devam eder, başka Flick'ten dönünce baştan başlar; gönderilemeyen mesaj kutuda kalır; gizli hesabın paylaşımı takip etmeyene açılmaz; çevrim içi satranç oyun ekranı açılmasa da puanlanır; gruptan çıkarılan kişi mesaj yazamaz.
-- 4.8 yenilikleri: Ayarlar > Medya ve dokunuş > "Flick bitince sonrakine geç" açılırsa video bitince sonraki Flick'e kendiliğinden kayar; Flick'te videolar yalnızca izlenen ve yanındakiler için indirilir (daha az internet).
-- 4.7 yenilikleri: sohbette yazıp çıktığın mesaj taslak olarak saklanır (listede "Taslak:"); Flick'te 2x için ekranın sağ ya da sol kenarına basılı tut; başka Flick'e geçip dönünce video baştan başlar; açtığın sohbetin telefon bildirimi kapanır.
-- 4.6 yenilikleri: Flick'te videoya (4.7'den beri sağ ya da sol kenara) basılı tutunca 2x hızlı oynar; Flick'teki üç nokta menüsünden sil, sabitle, açıklamayı düzenle, şikayet et.
-- 4.5 yenilikleri: Sohbette ara (sohbette + menüsü › Sohbette ara), mesaj ilet (mesaja basılı tut › İlet), sohbet sabitle (Sohbet listesinde sohbete basılı tut, en fazla 3), hikâyeye hızlı tepki (hikâye izlerken kalp/ateş/gülme/şaşırma), sesli mesajı 1x/1,5x/2x dinleme, Flick videoları kırpılmadan sığar ve 1080p oynar (veri tasarrufu açıksa 720p); alttaki süre çubuğu sürüklenerek ileri-geri sarılır.
+- 4.9 (hata temizliği): Rota'ya "Test bildirimleri oluştur" ya da "Satranç oynayalım" yazmak da çalışır; video eklerken, kamera ya da arama açıkken Klaket susar; yarım kalan kaydırmada Klaket kaldığı yerden devam eder, başka Klaketten dönünce baştan başlar; gönderilemeyen mesaj kutuda kalır; gizli hesabın paylaşımı takip etmeyene açılmaz; çevrim içi satranç oyun ekranı açılmasa da puanlanır; gruptan çıkarılan kişi mesaj yazamaz.
+- 4.8 yenilikleri: Ayarlar > Medya ve dokunuş > "Klaket bitince sonrakine geç" açılırsa video bitince sonraki Klakete kendiliğinden kayar; Klakette videolar yalnızca izlenen ve yanındakiler için indirilir (daha az internet).
+- 4.7 yenilikleri: sohbette yazıp çıktığın mesaj taslak olarak saklanır (listede "Taslak:"); Klakette 2x için ekranın sağ ya da sol kenarına basılı tut; başka Klakete geçip dönünce video baştan başlar; açtığın sohbetin telefon bildirimi kapanır.
+- 4.6 yenilikleri: Klakette videoya (4.7'den beri sağ ya da sol kenara) basılı tutunca 2x hızlı oynar; Klaketteki üç nokta menüsünden sil, sabitle, açıklamayı düzenle, şikayet et.
+- 4.5 yenilikleri: Sohbette ara (sohbette + menüsü › Sohbette ara), mesaj ilet (mesaja basılı tut › İlet), sohbet sabitle (Sohbet listesinde sohbete basılı tut, en fazla 3), hikâyeye hızlı tepki (hikâye izlerken kalp/ateş/gülme/şaşırma), sesli mesajı 1x/1,5x/2x dinleme, Klaket videoları kırpılmadan sığar ve 1080p oynar (veri tasarrufu açıksa 720p); alttaki süre çubuğu sürüklenerek ileri-geri sarılır.
 - Güncelleme: 4.4.3'ten beri yeni sürüm çıkınca Kadraj uygun anda kendiliğinden güncellenir (açık bir pencere ya da yazı yazılırken bekler). Yöneticinin panelinde Sürüm arşivi var; eski sürümler deneme modunda açılır.
 - Sürüm: yeni sürüm çıkınca "Yeni sürüm hazır" yazar; iki sürüm geride kalan eski sürüm kapanır ve güncellemen istenir.
 - Mesajlar uygulamanın Firebase veritabanında durur, uygulamaya giren herkes teknik olarak erişebilir; şifre ya da kişisel bilgi paylaşılmamalı.`;
@@ -4941,12 +4941,12 @@ const FAQ=[[/sohbette ara|mesaj(ı|ları)? ara|eski mesaj|mesaj(ı)? ilet|iletme
  [/sürüm|güncelle|yeni sürüm/i,"Kadraj kendini güncel tutar: yeni sürüm çıkınca uygun bir anda (yazı yazmıyorken, aramada değilken) kendiliğinden yenilenir; olmazsa üstte **Yeni sürüm hazır** yazar, **Yenile**'ye dokunman yeter. İki sürüm geride kalan eski sürüm kapanır ve **Şimdi güncelle** düğmesi çıkar. Elle denetlemek için **Ayarlar > Hakkında > Güncellemeleri denetle**."],
  [/satran|chess|oyun/i,"Satranç için Keşfet'teki **Satranç** kartına ya da Akış'ın üstündeki **at** simgesine dokun.\n- Bana karşı 5 seviyede oynayabilirsin: Çaylak'tan Usta'ya.\n- Arkadaşını davet edersen davet sohbete kart olarak düşer.\n- Aynı telefonda iki kişi de oynanabilir.\n\nTaşı sürükle ya da önce taşa sonra kareye dokun."],[/ara(ma|yabil|nır|rım)|telefon|görüntülü/i,"Arama için arkadaşınla birebir sohbeti aç, üstteki **telefon** (sesli) ya da **kamera** (görüntülü) düğmesine dokun. Arkadaşının uygulaması o an açık olmalı; şu an burada listesinde yeşil noktayla görünür. Mikrofon ve kamera iznini ilk aramada tarayıcı sorar."],[/sesli mesaj|ses kayd|mikrofon/i,"Sesli mesaj için sohbette mesaj kutusu boşken sağdaki **mikrofon** düğmesine dokun, konuş ve **gönder**'e bas. Vazgeçersen çöp kutusuna dokun. En fazla 2 dakika."],[/arkada|konuş|davet|birlikte/i,"Arkadaşını getirmek için **Sohbet > Davet et**'e dokun ve davet mesajını WhatsApp ile gönder. Arkadaşın bağlantıyı açıp e-postasıyla hesap oluşturur, seni Keşfet'te bulur.\n\nİçeride konuşmanın yolları:\n- **Meydan**: herkesin ortak sohbeti\n- **Birebir mesaj** ve **grup**\n- **Dürt**: şu an açık olan arkadaşına"],
  [/yükle|yüklen|fotoğraf ekle|seçici|olmuyor/i,"Fotoğraf eklemek için **+ > Fotoğraf > Telefondan fotoğraf seç**. Seçici açılmazsa:\n- **Kadraj galerisi**\n- **Parmağınla çiz**\n- Fotoğrafı kopyalayıp **yapıştır**\n\nUygulamayı Chrome ya da Safari'de açmak da işe yarar."],
- [/nasıl kullan|ne yapabil|özellik|başla/i,"Kısa tur:\n- Ortadaki **+** ile fotoğraf, Flick, hikâye, not, anket ya da çizim paylaş.\n- Fotoğrafa çift dokun, beğen.\n- **Sohbet** sekmesinde Meydan, mesajlar ve gruplar var.\n- Ben > dişli: tema, yazı boyutu, Beni hatırla.\n- Bildirimleri denemek için bana “Test bildirimleri oluştur” de."],
- [/reels|çekim|sahne|flick|video/i,"Flick (kısa video) için + > Flick. İki yol var:\n- **Fotoğraflardan**: 1-3 kare seç, yazı ekle, hareket ve müzik seç.\n- **Video yükle**: en fazla 2 dakika (40 MB), büyük videolar otomatik küçültülür.\n\nFlick'ler ekranında sesi sağ üstteki hoparlörden açarsın."],
+ [/nasıl kullan|ne yapabil|özellik|başla/i,"Kısa tur:\n- Ortadaki **+** ile fotoğraf, Klaket, hikâye, not, anket ya da çizim paylaş.\n- Fotoğrafa çift dokun, beğen.\n- **Sohbet** sekmesinde Meydan, mesajlar ve gruplar var.\n- Ben > dişli: tema, yazı boyutu, Beni hatırla.\n- Bildirimleri denemek için bana “Test bildirimleri oluştur” de."],
+ [/reels|çekim|sahne|flick|klaket|video/i,"Klaket (kısa video) için + > Klaket. İki yol var:\n- **Fotoğraflardan**: 1-3 kare seç, yazı ekle, hareket ve müzik seç.\n- **Video yükle**: en fazla 2 dakika (40 MB), büyük videolar otomatik küçültülür.\n\nKlaketler ekranında sesi sağ üstteki hoparlörden açarsın."],
  [/hikaye|hikâye|story/i,"Akışın üstündeki **Hikâyen** balonundaki + ile hikâye eklersin. Üstüne yazı koyabilirsin; 24 saat görünür."],
  [/tema|karanlık|koyu|açık mod|dark|yazı boyu/i,"Akış'taki ay/güneş düğmesi temayı anında değiştirir. Ben > dişli > Görünüm'den Sistem temasını ve yazı boyutunu da seçebilirsin."],
  [/şifre|unuttum|giriş|anahtar|posta/i,"Girişte **kullanıcı adını** ya da e-postanı yazabilirsin.\n- Şifreni unuttuysan **Şifremi unuttum** > **Kadraj Anahtarı ile yenile**: kullanıcı adını, Kadraj Anahtarını (XXXX-XXXX-XXXX) ve yeni şifreni yaz. Anahtarın **Ben > zarf simgesi (Kadraj Posta)**'da durur; şifreni unutmadan önce bir yere yaz.\n- Anahtarını da kaybettiysen yöneticiye kullanıcı adını ve kayıt e-postanı söyle; e-posta doğruysa anahtarını sana iletir. Sonra anahtarın kendiliğinden yenilenir.\n- Gerçek e-postayla kayıt olduysan e-postana bağlantı da isteyebilirsin.\n- E-postanı da unuttuysan **E-postamı unuttum** hangi adresle kayıt olduğunu (gizlenmiş olarak) gösterir.\n- Şifreyi değiştirmek için: Ben > dişli > Şifreyi değiştir."],
- [/ipucu|etkinlik|paylaşayım/i,"Birkaç fikir:\n1. Sabah ışığında bir fotoğraf çek ve Sıcak filtresiyle paylaş.\n2. Arkadaşlarına bir anket aç: “Bu hafta sonu ne yapalım?”\n3. Üç fotoğraftan Lo-fi müzikli bir Flick hazırla."],
+ [/ipucu|etkinlik|paylaşayım/i,"Birkaç fikir:\n1. Sabah ışığında bir fotoğraf çek ve Sıcak filtresiyle paylaş.\n2. Arkadaşlarına bir anket aç: “Bu hafta sonu ne yapalım?”\n3. Üç fotoğraftan Lo-fi müzikli bir Klaket hazırla."],
  [/debounce/i,"Basit bir debounce:\n```js\nfunction debounce(fn, ms = 300) {\n  let t;\n  return (...args) => {\n    clearTimeout(t);\n    t = setTimeout(() => fn(...args), ms);\n  };\n}\n```\nArama kutusu gibi sık tetiklenen olaylarda gereksiz çağrıları önler."]];
 const BOT_CANNED={deniz:["Selam! Bu sabah yine iskeledeydim, ışık harikaydı.","Uzun pozlama için tripod şart, gerisi sabır.","Gün doğumunu yakalamak için 05.30'da çıkıyorum, gelmek ister misin?"],mira:["Chelsea şu an uyuyor, uyanınca ileteceğim.","Miyav. (Chelsea mama saatinin geçtiğini söylüyor.)","Kutu buldum, mutluyum. — Chelsea"],kahve:["Selam! Bugün Kolombiya demledim, çok yumuşak.","Espresso mu filtre mi? Ben bugün filtre modundayım.","Moda'ya yolun düşerse kahve benden."],roket:["Bu hafta iki fırlatma var, takvime ekle!","Hubble'ın derin alan görüntüsü hâlâ en sevdiğim kare.","Bu akşam gökyüzü açıksa Jüpiter'i çıplak gözle görebilirsin."],garaj:["Ellerim yağlı, kısa yazıyorum: selam!","Karbüratör ayarı bitti, şimdi elektrik tesisatı.","Motor işinden anlıyor musun? Bir yardım lazım olabilir."],arsiv:["Merhaba! Bu ay kataloğa yeni parçalar girdi.","Sikkelerin üstündeki her figürün bir hikâyesi var.","En sevdiğin tarih dönemi hangisi?"],dag:["Selam! Yeni bir manzara üstünde çalışıyorum.","Bu sefer sadece dört renk kullanacağım, bakalım.","Hangi renk paleti seni sakinleştiriyor?"]};
 async function sendToBot(uid,payload){const b=BOT[uid];const k=b.key;const path=`data/users/${S.uid}/bot-${k}`;if(S.guest&&!b.ai)return guard();if(isChild(S.uid)&&payload&&payload.text)payload={...payload,text:cleanText(payload.text)};
@@ -4960,7 +4960,7 @@ async function sendToBot(uid,payload){const b=BOT[uid];const k=b.key;const path=
  msgs=[...(S.botchats[k]?.msgs||msgs),{from:uid,text:reply,at:now()}];const onScreen=S.route.name==="chat"&&S.route.params.key==="u:"+uid;S.botchats={...S.botchats,[k]:{msgs,readAt:onScreen?now():0}};
  if(!S.guest)DB.set(path,{msgs:msgs.slice(-80),readAt:onScreen?now():0}).catch(()=>{});
  if(onScreen)renderMsgs();else if(settings.notify)toast(`${b.name}: ${String(reply).replace(/\*\*|__|`/g,"").replace(/\s+/g," ").slice(0,70)}`,uid);scheduleRefresh()}
-function fallbackRota(q){for(const[re,a]of FAQ)if(re.test(q))return a;return"Şu an yapay zekâ bağlantım yok, hazır yanıtlarla çalışıyorum. Şunları sorabilirsin: nasıl kullanırım, arkadaşlarımla nasıl konuşurum, fotoğraf yüklenmiyor, Flick, sesli mesaj, arama, hikâye, tema, şifre. Ya da “Test bildirimleri oluştur” de."}
+function fallbackRota(q){for(const[re,a]of FAQ)if(re.test(q))return a;return"Şu an yapay zekâ bağlantım yok, hazır yanıtlarla çalışıyorum. Şunları sorabilirsin: nasıl kullanırım, arkadaşlarımla nasıl konuşurum, fotoğraf yüklenmiyor, Klaket, sesli mesaj, arama, hikâye, tema, şifre. Ya da “Test bildirimleri oluştur” de."}
 async function botReply(b,msgs){const sample=S.caps.sample;if(!sample)return null;const meName=me().name||"kullanıcı";
  const transcript=msgs.slice(-14).map(m=>`${m.from===S.uid?meName:b.name}: ${m.text||(m.post?"[bir paylaşım gönderdi: "+(postById(m.post)?.caption||postById(m.post)?.text||"")+"]":"")}`).join("\n");
  const prompt=b.ai?`${ROTA_SYS}\n\nKonuşma:\n${transcript}\n\nRota olarak son mesaja yanıt ver. Sadece yanıt metnini yaz.`:`Kadraj adlı sosyal uygulamada test amaçlı bir bot hesabısın. Karakterin: ${b.persona} Kullanıcı adın @${b.username}. Türkçe, doğal ve samimi bir mesaj yanıtı yaz: 1-2 kısa cümle, emoji yok, karakterden çıkma.\n\nKonuşma:\n${transcript}\n\n${b.name} olarak yanıtın:`;
@@ -5119,7 +5119,7 @@ const WEL_TILES=[
  {src:"img/kahve.jpg",x:4,y:56,w:30,h:40,r:6,z:2,d:6,dl:.32,kb:17},
  {src:"img/uzay.jpg",x:35,y:62,w:30,h:37,r:-4,z:5,d:13,dl:.4,kb:23},
  {src:"img/sisli-dag.jpg",x:67,y:53,w:30,h:42,r:-7,z:2,d:7,dl:.48,kb:18}];
-const WEL_FEATS=[["image","Fotoğraf ve Flick paylaş"],["chat","Arkadaşlarınla sohbet et, kim aktif gör"],["knight","Rota'ya karşı satranç oyna"],["poll","Hikâye, not ve anket"]];
+const WEL_FEATS=[["image","Fotoğraf ve Klaket paylaş"],["chat","Arkadaşlarınla sohbet et, kim aktif gör"],["knight","Rota'ya karşı satranç oyna"],["poll","Hikâye, not ve anket"]];
 function welArt(){
  return`<div class="wel-art" aria-hidden="true"><div class="wel-glow"></div>${WEL_TILES.map(t=>`<div class="wt" style="--x:${t.x}%;--y:${t.y}%;--w:${t.w}%;--h:${t.h}%;--r:${t.r}deg;--z:${t.z};--d:${t.d}px;--dl:${t.dl}s;--kb:${t.kb}s;--fl:${(5+t.d/3).toFixed(1)}s"><i><img src="${R(t.src)}" alt="" decoding="async" draggable="false"></i></div>`).join("")}
  <div class="wel-chip wc1" style="--dl:.95s"><span class="wh">${I("heart")}</span><span>2.418<small>beğeni</small></span></div>
@@ -5227,27 +5227,27 @@ const WN_ITEMS=[
  {ic:"aperture",g:"linear-gradient(135deg,#0c7a63,#ff8a4c)",t:"Kadraj 5.0: Vizör",d:"Yepyeni arayüz: yüzen alt çubuk, deklanşör düğmesi, odak köşeleri ve kare numaraları. İstersen Ayarlar › Görünüm'den Klasik'e dön",go:"feed"},
  {ic:"knight",g:"#0C7A63",t:"Kadraj Satrancı",d:"Yeni taşlar, kayan hamleler, kıvılcımlar, satranç saati ve 24 mat bulmacası",go:"chess"},
  {ic:"phone",g:"linear-gradient(135deg,#2f6bff,#6a4cff)",t:"Yeni arama ekranı",d:"Ekran paylaşımı (bilgisayarda), sesli aramada kamera, tepkiler, küçültüp gezinme ve bağlantı kalitesi",go:"chats"},
- {ic:"search",g:"#0C7A63",t:"Keşfet'te daha iyi arama",d:"Kişiler, Paylaşımlar, Flick ve Etiketler süzgeçleri; harf farkı gözetmez, son aramaların burada. Her #etikete dokunabilirsin",go:"explore"},
+ {ic:"search",g:"#0C7A63",t:"Keşfet'te daha iyi arama",d:"Kişiler, Paylaşımlar, Klaket ve Etiketler süzgeçleri; harf farkı gözetmez, son aramaların burada. Her #etikete dokunabilirsin",go:"explore"},
  {ic:"grid",g:"linear-gradient(135deg,#1f2937,#0c7a63)",t:"Kontak baskı profil",d:"Paylaşımların numaralı karelerle bir kontak baskı gibi dizilir",go:"profile"},
- {ic:"check",g:"linear-gradient(135deg,#0c7a63,#34c759)",t:"Büyük hata temizliği",d:"Sohbet, Flick, satranç ve hesaplarda 30'dan fazla hata düzeltildi",go:"feed"},
- {ic:"reels",g:"linear-gradient(135deg,#ff4f7b,#ff8a3d)",t:"Daha sağlam Flick",d:"Video eklerken ya da aramadayken Flick susar; yarım kaydırmada kaldığı yerden devam eder",go:"reels"},
- {ic:"next",g:"linear-gradient(135deg,#5856d6,#0ea5e9)",t:"Flick bitince sonrakine geç",d:"Ayarlar › Medya: video bitince kendiliğinden sonraki Flick'e kayar",go:"settings"},
+ {ic:"check",g:"linear-gradient(135deg,#0c7a63,#34c759)",t:"Büyük hata temizliği",d:"Sohbet, Klaket, satranç ve hesaplarda 30'dan fazla hata düzeltildi",go:"feed"},
+ {ic:"reels",g:"linear-gradient(135deg,#ff4f7b,#ff8a3d)",t:"Daha sağlam Klaket",d:"Video eklerken ya da aramadayken Klaket susar; yarım kaydırmada kaldığı yerden devam eder",go:"reels"},
+ {ic:"next",g:"linear-gradient(135deg,#5856d6,#0ea5e9)",t:"Klaket bitince sonrakine geç",d:"Ayarlar › Medya: video bitince kendiliğinden sonraki Klakete kayar",go:"settings"},
  {ic:"edit",g:"linear-gradient(135deg,#ff8a3d,#ff4f7b)",t:"Sohbet taslağı",d:"Yazıp çıktığın mesaj kaybolmaz; listede \"Taslak\" olarak görünür",go:"chats"},
- {ic:"play",g:"linear-gradient(135deg,#ff4f7b,#6a4cff)",t:"Kenarda 2x hız",d:"Flick'te ekranın sağ ya da sol kenarına basılı tut; dönünce video baştan başlar",go:"reels"},
- {ic:"more",g:"linear-gradient(135deg,#0c7a63,#0ea5e9)",t:"Flick seçenekleri",d:"Flick'teki üç nokta: sil, sabitle, düzenle, şikayet et",go:"reels"},
+ {ic:"play",g:"linear-gradient(135deg,#ff4f7b,#6a4cff)",t:"Kenarda 2x hız",d:"Klakette ekranın sağ ya da sol kenarına basılı tut; dönünce video baştan başlar",go:"reels"},
+ {ic:"more",g:"linear-gradient(135deg,#0c7a63,#0ea5e9)",t:"Klaket seçenekleri",d:"Klaketteki üç nokta: sil, sabitle, düzenle, şikayet et",go:"reels"},
  {ic:"search",g:"linear-gradient(135deg,#0c7a63,#19c79a)",t:"Sohbette ara",d:"+ menüsünden bir sohbetteki eski mesajları bul",go:"chats"},
  {ic:"send",g:"linear-gradient(135deg,#2f6bff,#6a4cff)",t:"Mesaj ilet",d:"Mesaja basılı tut › İlet: başka sohbete ya da Meydan'a gönder",go:"chats"},
  {ic:"pin",g:"linear-gradient(135deg,#f97316,#ffb25b)",t:"Sohbet sabitle",d:"Sohbete basılı tut; en fazla 3 sohbet en üstte durur",go:"chats"},
  {ic:"heart",g:"linear-gradient(135deg,#ff4f7b,#c2185b)",t:"Hikâyeye tepki",d:"Hikâye izlerken kalp, ateş, gülme ya da şaşırma gönder",go:"feed"},
- {ic:"reels",g:"linear-gradient(135deg,#6a4cff,#ff4f7b)",t:"Daha net Flick",d:"Videolar kırpılmadan sığar, 1080p oynar; süre çubuğunu sürükleyerek ileri-geri sar",go:"reels"},
+ {ic:"reels",g:"linear-gradient(135deg,#6a4cff,#ff4f7b)",t:"Daha net Klaket",d:"Videolar kırpılmadan sığar, 1080p oynar; süre çubuğunu sürükleyerek ileri-geri sar",go:"reels"},
  {ic:"mic",g:"linear-gradient(135deg,#0ea5e9,#0c7a63)",t:"Sesli mesaj hızı",d:"Sesli mesajda 1x, 1,5x ya da 2x dinle",go:"chats"},
- {ic:"reels",g:"linear-gradient(135deg,#f97316,#db2777)",t:"Sahne'nin yeni adı: Flick",d:"Kısa videoların adı artık Flick; + > Flick ile paylaş",go:"reels"},
+ {ic:"reels",g:"linear-gradient(135deg,#f97316,#db2777)",t:"Sahne'nin yeni adı: Flick",d:"Kısa videoların adı Flick oldu (5.1'den beri Klaket); + > Klaket ile paylaş",go:"reels"},
  {ic:"lock",g:"linear-gradient(135deg,#0ea5e9,#6366f1)",t:"Çocuk modundakiler göremez",d:"Paylaşırken aç; Çocuk Modu'ndaki kişiler o paylaşımı görmez",go:"profile"},
  {ic:"mail",g:"linear-gradient(135deg,#0c7a63,#14a06b)",t:"Kadraj Posta ve Kadraj Anahtarı",d:"Şifreni unutursan e-posta gerekmeden, anahtarınla Kadraj'da yenile",go:"profile"},
  {ic:"key",g:"linear-gradient(135deg,#0c7a63,#0ea5e9)",t:"Kullanıcı adıyla giriş",d:"E-posta yerine kullanıcı adınla gir; şifreni Kadraj'da yenile",go:"settings"},
  {ic:"bell",g:"linear-gradient(135deg,#7c3aed,#ec4899)",t:"Yeni bildirimler",d:"Fotoğraflı bildirim; dokununca doğrudan o sohbete ya da paylaşıma gider",go:"activity"},
- {ic:"music",g:"linear-gradient(135deg,#f97316,#e23e57)",t:"Flick'lerde ses düzeldi",d:"Duraklatınca müzik de durur, uygulamadan çıkınca susar",go:"reels"},
- {ic:"reels",g:"linear-gradient(135deg,#f97316,#db2777)",t:"Flick'ler 2 dakikaya kadar",d:"Galeriden 2 dakikalık video, kamerayla 60 saniye çekim",go:"reels"},
+ {ic:"music",g:"linear-gradient(135deg,#f97316,#e23e57)",t:"Klaketlerde ses düzeldi",d:"Duraklatınca müzik de durur, uygulamadan çıkınca susar",go:"reels"},
+ {ic:"reels",g:"linear-gradient(135deg,#f97316,#db2777)",t:"Klaketler 2 dakikaya kadar",d:"Galeriden 2 dakikalık video, kamerayla 60 saniye çekim",go:"reels"},
  {ic:"grid",g:"linear-gradient(135deg,#0ea5e9,#6366f1)",t:"Tablette tam ekran",d:"Tablet ve bilgisayarda yanlarda boşluk kalmıyor",go:"feed"},
  {ic:"spark",g:"linear-gradient(135deg,#0c7a63,#18b38e)",t:"Yeni açılış ve görünüm",d:"Animasyonlu giriş, 7 vurgu rengi, yumuşak tema geçişi",go:"settings"},
  {ic:"k4pal",g:"linear-gradient(135deg,#7c3aed,#ec4899)",t:"Ortak sohbet temaları",d:"Seçtiğin tema sohbetteki herkes için aynı anda değişir",go:"chats"},
@@ -5554,9 +5554,9 @@ function vSettings(){const p=me();const pal=accentPal();const dark=isDark();cons
   tog({f:"enterSend",on:on("enterSend"),ic:"enterk",c:"#0A84FF",t:"Enter ile gönder",s:"Kapalıysa Enter yeni satıra geçer",k:"klavye gönder satır"})+
   btn({a:'data-act="wpdefault"',ic:"palette",c:"#AF52DE",t:"Varsayılan sohbet teması",s:"Ortak teması olmayan sohbetlerde",v:esc(defTh.label||"Yok"),k:"duvar kağıdı arka plan tema balon"}));
  h+=sec("medya","Medya ve dokunuş",
-  tog({id:"setAutoplay",on:!!settings.autoplay,ic:"play",c:"#FF2D55",t:"Flick'leri otomatik oynat",s:"Kapatırsan dokununca başlar",k:"video reels oynatma"})+
-  tog({f:"dataSaver",on:settings.dataSaver===true,ic:"leaf",c:"#34C759",t:"Veri tasarrufu",s:"Flick'ler önceden yüklenmez, daha az internet harcar",k:"mobil veri internet kota"})+
-  tog({f:"reelNext",on:settings.reelNext===true,ic:"next",c:"#5856D6",t:"Flick bitince sonrakine geç",s:"Video bitince kendiliğinden bir sonraki Flick'e kayar",k:"otomatik kaydır sonraki video reels"})+
+  tog({id:"setAutoplay",on:!!settings.autoplay,ic:"play",c:"#FF2D55",t:"Klaketleri otomatik oynat",s:"Kapatırsan dokununca başlar",k:"video reels oynatma"})+
+  tog({f:"dataSaver",on:settings.dataSaver===true,ic:"leaf",c:"#34C759",t:"Veri tasarrufu",s:"Klaketler önceden yüklenmez, daha az internet harcar",k:"mobil veri internet kota"})+
+  tog({f:"reelNext",on:settings.reelNext===true,ic:"next",c:"#5856D6",t:"Klaket bitince sonrakine geç",s:"Video bitince kendiliğinden bir sonraki Klakete kayar",k:"otomatik kaydır sonraki video reels"})+
   tog({f:"haptics",on:on("haptics"),ic:"vibrate",c:"#FF9F0A",t:"Titreşim",s:"Beğeni, dürtme ve bildirimlerde hafif titreşim",k:"haptik titreşim"}));
  h+=sec("satranc","Satranç",
   tog({f:"chessSound",on:on("chessSound"),ic:"vol",c:"#A2845E",t:"Satranç sesleri",s:"Hamle, taş alma ve şah sesleri",k:"satranç ses"})+
@@ -5619,7 +5619,7 @@ ACT.clearcache=()=>dialog("Önbellek temizlensin mi?","Uygulama dosyaları ve so
 try{FAQ.unshift(
  [/sohbet tema|duvar ka[gğ]ı?d|sohbet(in)? arka ?plan|balon reng/i,"Sohbetin sağ üstündeki **resim** düğmesine dokun, bir tema seç ve önizlemeye bak.\n- **Herkes için uygula**: birebir ve grup sohbetlerinde tema herkeste aynı anda değişir, sohbete küçük bir not düşer.\n- **Yalnızca bende**: tema sadece senin cihazında değişir.\n- **Fotoğraf**: kendi fotoğrafını tema yapabilirsin; balon rengi fotoğrafa göre seçilir.\nBütün sohbetler için varsayılan temayı **Ayarlar > Sohbet**'ten seçebilirsin."],
  [/vurgu reng|koyu tema|karanl[ıi]k mod|gece modu|a[cç][ıi]k tema|temay[ıi] (de[gğ]i[sş]|nas[ıi]l)|uygulaman[ıi]n reng/i,"Görünümü **Ayarlar > Görünüm**'den değiştirebilirsin:\n- **Tema**: Açık, Koyu ya da Sistem\n- **Vurgu rengi**: Kadraj, Okyanus, Gün batımı, Mor, Pembe, Kiraz, Grafit ya da **Otomatik** (yönetici ortak bir tema seçerse herkesle aynı anda değişir)\n- **Tema tüm cihazlarımda aynı olsun** açıksa seçimin hesabınla eşitlenir.\nAkış'ın üstündeki güneş/ay düğmesi de temayı tek dokunuşla değiştirir."],
- [/ayarlar|aktiflik|okundu bilgisi|bildirim t[üu]r|veri tasarruf|titre[sş]im/i,"**Ayarlar**'a profilindeki dişli simgesinden girersin. En üstteki arama kutusuna yazarak istediğin ayarı hemen bulursun:\n- **Gizlilik**: gizli hesap, aktiflik durumu, okundu bilgisi, beğeni sayılarını gizleme\n- **Bildirimler**: mesaj, beğeni, yorum, takip ve paylaşım bildirimlerini ayrı ayrı aç ya da kapat\n- **Medya ve dokunuş**: Flick'leri otomatik oynatma, veri tasarrufu, titreşim"])}catch(e){}
+ [/ayarlar|aktiflik|okundu bilgisi|bildirim t[üu]r|veri tasarruf|titre[sş]im/i,"**Ayarlar**'a profilindeki dişli simgesinden girersin. En üstteki arama kutusuna yazarak istediğin ayarı hemen bulursun:\n- **Gizlilik**: gizli hesap, aktiflik durumu, okundu bilgisi, beğeni sayılarını gizleme\n- **Bildirimler**: mesaj, beğeni, yorum, takip ve paylaşım bildirimlerini ayrı ayrı aç ya da kapat\n- **Medya ve dokunuş**: Klaketleri otomatik oynatma, veri tasarrufu, titreşim"])}catch(e){}
 /*}@js:B*/
 
 /*@js:C{*/
@@ -5640,7 +5640,7 @@ HOOKS.enter.push(()=>setTimeout(cleanOldStories,8000));
 function cldTrack(bytes){if(!bytes||!S.authed||S.guest)return;DB.get("meta/_cld").then(d=>DB.set("meta/_cld",{bytes:((d&&d.bytes)||0)+bytes,count:((d&&d.count)||0)+1,at:now()})).catch(()=>{})}
 const fmtMB=b=>b>=1073741824?(b/1073741824).toFixed(2).replace(".",",")+" GB":(b/1048576).toFixed(1).replace(".",",")+" MB";
 function cldUseBox(){const d=S.cldUse;const b=(d&&d.bytes)||0,n=(d&&d.count)||0;const pct=Math.min(100,b/(25*1073741824)*100);
- return`<div id="cldUse"><h3 class="sec-h"><span>Cloudinary (Flick videoları)</span></h3><div class="box adm-box"><div class="kv" style="padding:0"><span>Kullanılan depolama</span><span><b>${d?fmtMB(b):"…"}</b> · ${fmt(n)} video</span></div>
+ return`<div id="cldUse"><h3 class="sec-h"><span>Cloudinary (Klaket videoları)</span></h3><div class="box adm-box"><div class="kv" style="padding:0"><span>Kullanılan depolama</span><span><b>${d?fmtMB(b):"…"}</b> · ${fmt(n)} video</span></div>
  <div style="height:8px;border-radius:4px;background:var(--surface-2);overflow:hidden"><i style="display:block;height:100%;width:${Math.max(pct,b?1:0)}%;background:var(--accent)"></i></div>
  <p class="muted" style="margin:0;font-size:.8rem">Ücretsiz plan: ayda 25 kredi (1 kredi = 1 GB depolama ya da 1 GB izlenme). Bu sayaç uygulamadan yüklenen videoları sayar; izlenme trafiği ve panelden silinenler için gerçek rakam Cloudinary panelindedir.</p>
  <a class="btn sec sm" href="https://console.cloudinary.com/" target="_blank" rel="noopener" style="text-decoration:none">${I("link")}Cloudinary panelini aç</a></div></div>`}
@@ -5658,7 +5658,7 @@ function openTarget(key){if(!key)return;if(!S.authed){S.pendingOpen=key;return}c
  if(key.startsWith("post:")){const p=postById(key.slice(5));if(p&&p.kind==="reel")return go("reels",{start:p.id});return go("post",{id:key.slice(5)})}
  if(key.startsWith("prof:"))return go("profile",{uid:key.slice(5)});if(key==="activity")return go("activity");
  if(key==="meydan"||key.startsWith("u:")||key.startsWith("g:"))return openChat(key)}
-/* 4.4.4: Flick ekranı yeniden çizilmediği için takip, kaydet ve yorum sayısı da burada güncellenir */
+/* 4.4.4: Klaket ekranı yeniden çizilmediği için takip, kaydet ve yorum sayısı da burada güncellenir */
 function updateReelCounts(){updateReelCountsOld();for(const r of $$(".reel[data-pid]")){const p=postById(r.dataset.pid);if(!p)continue;
  const fb=r.querySelector(".fbtn");if(fb&&(p.uid===S.uid||isFollowing(S.uid,p.uid)))fb.remove();
  const sv=r.querySelector("[data-save]");if(sv)sv.classList.toggle("saved",isSaved(p.id));
@@ -6369,9 +6369,10 @@ function srRecentAdd(r){if(!r||typeof r.v!=="string")return;const v=r.k==="q"?r.
 function srSaveQuery(raw){raw=String(raw??"").trim();if(!raw||raw.length>=16)return;if(SR_TAGONLY.test(raw))srRecentAdd({k:"t",v:srLow(raw.slice(1))});else srRecentAdd({k:"q",v:raw})}
 
 /* --- parçalar --- */
-/* "Flick" marka adı: Vizör büyük harf yazınca Türkçe kuralla "FLİCK" olmasın */
-const srFl=h=>String(h).replace(/Flick/g,'<span lang="en">Flick</span>');
-const SR_TABS=[["all","Hepsi"],["people","Kişiler"],["posts","Paylaşımlar"],["reels","Flick"],["tags","Etiketler"]];
+/* "Klaket" marka adı: Vizör büyük harf yazınca Türkçe kuralla "FLİCK" olmasın */
+const srFlOld=h=>String(h).replace(/Flick/g,'<span lang="en">Flick</span>');
+const srFl=h=>String(h);/* 5.1: ad Klaket oldu, Türkçe büyük harf sorunu yok */
+const SR_TABS=[["all","Hepsi"],["people","Kişiler"],["posts","Paylaşımlar"],["reels","Klaket"],["tags","Etiketler"]];
 const srTab=()=>SR_TABS.some(x=>x[0]===S.srTab)?S.srTab:"all";
 function srChips(cnt){const cur=srTab();return`<div class="chips sr-tabs" role="group" aria-label="Arama süzgeci">${SR_TABS.map(([k,l])=>`<button class="chip" data-act="srtab" data-v="${k}" aria-pressed="${cur===k}">${srFl(l)}${cnt&&k!=="all"&&cnt[k]!=null?`<small class="sr-cn">${cnt[k]>99?"99+":cnt[k]}</small>`:""}</button>`).join("")}</div>`}
 function srSec(title,n,tab,shown){return`<h3 class="sec-h"><span>${srFl(esc(title))}${n?` <small class="sr-n">${fmt(n)}</small>`:""}</span>${tab&&n>shown?`<button class="btn ghost sm" data-act="srtab" data-v="${tab}">Tümünü gör</button>`:""}</h3>`}
@@ -6382,7 +6383,7 @@ function srPersonRow(u,ts){const p=P(u);const fol=isFollowing(S.uid,u);const sub
 function srTagRow(e,ts){const th=e.ps.map(postThumb).filter(Boolean).slice(0,3);
  return`<button class="row sr-tg" data-htag="${esc(e.t)}"><span class="sr-hb">${I("hash")}</span><span class="t"><div><b>#${srHi(e.t,ts)}</b></div><div class="s">${fmt(e.n)} paylaşım</div></span>${th.length?`<span class="sr-ths" aria-hidden="true">${th.map(s=>`<img src="${esc(s)}" alt="" loading="lazy">`).join("")}</span>`:""}</button>`}
 function srTagChips(list,ts,one){return`<div class="sr-tch${one?" one":""}">${list.map(e=>`<button class="chip" data-htag="${esc(e.t)}"><span>#${srHi(e.t,ts)}</span><small>${fmt(e.n)}</small></button>`).join("")}</div>`}
-const SR_KIND={reel:"Flick",note:"Not",poll:"Anket",photo:"Fotoğraf"};
+const SR_KIND={reel:"Klaket",note:"Not",poll:"Anket",photo:"Fotoğraf"};
 /* satırda gösterilecek metin: eşleşme hangi alandaysa o (anket seçeneği, konum dahil) */
 function srPostText(p,ts){const main=p.caption||p.text||p.question||"";const opts=Array.isArray(p.options)?p.options.filter(x=>typeof x==="string"):[];
  const cands=[p.caption,p.text,p.question,opts.length?"Seçenekler: "+opts.join(" · "):"",p.loc?"Konum: "+p.loc:""].filter(x=>typeof x==="string"&&x);
@@ -6392,8 +6393,8 @@ function srPostRow(p,ts){const u=P(p.uid);const th=postThumb(p);const txt=srPost
  const lk=settings.hideLikes&&p.uid!==S.uid?"":`<span>${I("heart")}${esc(short(likeCount(p)))}</span>`;const cm=commentsOf(p).length;
  return`<button class="row sr-po" data-open="${esc(p.id)}"><span class="sr-th">${thumb}${p.kind==="reel"?`<i>${I("reels")}</i>`:""}</span><span class="t"><div class="sr-pu"><b>${esc(u.username)}</b><span class="muted"> · ${esc(SR_KIND[p.kind]||"Paylaşım")} · ${esc(ago(p.at))}</span></div><div class="sr-pc">${txt?srSnip(txt,ts):`<span class="muted">Açıklama yok</span>`}</div>${lk||cm?`<div class="sr-pm">${lk}${cm?`<span>${I("comment")}${esc(short(cm))}</span>`:""}</div>`:""}</span></button>`}
 function srFlTile(p,ts){const th=postThumb(p);const cap=srPostText(p,ts);
- return`<button class="sr-fl" data-open="${esc(p.id)}" aria-label="Flick'i aç">${th?`<img src="${esc(th)}" alt="" loading="lazy">`:`<span class="sr-fe">${I("play")}</span>`}<span class="sr-flb"><b>@${esc(P(p.uid).username)}</b>${cap?`<span>${srSnip(cap,ts,48,6)}</span>`:""}</span>${settings.hideLikes&&p.uid!==S.uid?"":`<span class="c">${I("heart")}${esc(short(likeCount(p)))}</span>`}</button>`}
-function srEmpty(qq,tab){const what={people:"kişi",posts:"paylaşım",reels:"Flick",tags:"etiket"}[tab]||"bir şey";
+ return`<button class="sr-fl" data-open="${esc(p.id)}" aria-label="Klaketi aç">${th?`<img src="${esc(th)}" alt="" loading="lazy">`:`<span class="sr-fe">${I("play")}</span>`}<span class="sr-flb"><b>@${esc(P(p.uid).username)}</b>${cap?`<span>${srSnip(cap,ts,48,6)}</span>`:""}</span>${settings.hideLikes&&p.uid!==S.uid?"":`<span class="c">${I("heart")}${esc(short(likeCount(p)))}</span>`}</button>`}
+function srEmpty(qq,tab){const what={people:"kişi",posts:"paylaşım",reels:"Klaket",tags:"etiket"}[tab]||"bir şey";
  const tip=qq.tagMode?"Etiketi kısaltmayı ya da başka bir etiket aramayı dene.":tab==="people"?"Kullanıcı adının bir kısmını dene.":tab==="all"?"Kullanıcı adının bir kısmını ya da bir #etiket dene.":"Başka bir kelime dene ya da Hepsi sekmesine bak.";
  return`<div class="empty sr-empty"><span class="ic">${I(tab==="tags"||qq.tagMode?"hash":"search")}</span><b>Sonuç yok</b><span>“${esc(qq.raw)}” için ${what} bulamadık. ${tip}</span></div>`}
 const srBox=rows=>`<div class="box">${rows}</div>`;
@@ -6410,7 +6411,7 @@ function srResults(qq,tab,ctx){
  if(tab==="reels")return h+(reels.length?srSortHtml(reels.length)+`<div class="sr-flg">${srSorted(reels).slice(0,90).map(p=>srFlTile(p,hpo)).join("")}</div>`:srEmpty(qq,tab));
  /* Hepsi: tam etiket varsa etiket sayfası */
  const ex=srExact(qq,ctx.idx);
- if(ex.length){const sub=`${fmt(hits.length)} paylaşım`+(reels.length?` · ${fmt(reels.length)} Flick`:"");
+ if(ex.length){const sub=`${fmt(hits.length)} paylaşım`+(reels.length?` · ${fmt(reels.length)} Klaket`:"");
   h+=`<div class="sr-hero"><span class="sr-big" aria-hidden="true"><i>#</i></span><div class="t"><b>#${esc(ex[0].t)}</b><small>${srFl(sub)}</small></div></div>`;
   h+=srSortHtml(hits.length)+grid(srSorted(hits));
   const sim=tags.filter(e=>!ex.includes(e)).slice(0,10);if(sim.length)h+=srSec("Benzer etiketler")+srTagChips(sim,ht);
@@ -6420,7 +6421,7 @@ function srResults(qq,tab,ctx){
  if(ppl.length&&!qq.tagMode){any=true;h+=srSec("Kişiler",ppl.length,"people",np)+srBox(ppl.slice(0,np).map(u=>srPersonRow(u,hp)).join(""))}
  if(tags.length&&!qq.atMode){any=true;h+=srSec("Etiketler",tags.length,"tags",8)+srTagChips(tags.slice(0,8),ht)}
  if(posts.length){any=true;h+=srSec("Paylaşımlar",posts.length,"posts",3)+srBox(srSorted(posts).slice(0,3).map(p=>srPostRow(p,hpo)).join(""))}
- if(reels.length){any=true;h+=srSec("Flick",reels.length,"reels",6)+`<div class="sr-flr">${srSorted(reels).slice(0,6).map(p=>srFlTile(p,hpo)).join("")}</div>`}
+ if(reels.length){any=true;h+=srSec("Klaket",reels.length,"reels",6)+`<div class="sr-flr">${srSorted(reels).slice(0,6).map(p=>srFlTile(p,hpo)).join("")}</div>`}
  if(!any){h+=srEmpty(qq,"all");const pop=srTags({raw:""},ctx.idx).slice(0,8);if(pop.length)h+=srSec("Popüler etiketler")+srTagChips(pop,[])}
  return h}
 
@@ -6436,7 +6437,7 @@ function srBrowse(tab,ctx){
  if(tab==="tags"){const tags=srTags({raw:""},ctx.idx);
   return tags.length?srSec("Popüler etiketler",tags.length)+srBox(tags.slice(0,60).map(e=>srTagRow(e,[])).join("")):`<div class="empty"><span class="ic">${I("hash")}</span><b>Henüz etiket yok</b>Paylaşım açıklamasına #etiket yazınca burada görünür.</div>`}
  const list=ctx.posts.filter(p=>tab==="reels"?p.kind==="reel":p.kind!=="reel");
- if(!list.length)return`<div class="empty"><span class="ic">${I(tab==="reels"?"reels":"image")}</span><b>${tab==="reels"?"Henüz Flick yok":"Henüz paylaşım yok"}</b>İlk paylaşımı sen yap: alttaki + düğmesine dokun.</div>`;
+ if(!list.length)return`<div class="empty"><span class="ic">${I(tab==="reels"?"reels":"image")}</span><b>${tab==="reels"?"Henüz Klaket yok":"Henüz paylaşım yok"}</b>İlk paylaşımı sen yap: alttaki + düğmesine dokun.</div>`;
  return srSortHtml(list.length)+(tab==="reels"?`<div class="sr-flg">${srSorted(list).slice(0,90).map(p=>srFlTile(p,[])).join("")}</div>`:grid(srSorted(list)))}
 
 /* --- son aramalar paneli (kutu odakta ve boşken) --- */
@@ -6633,11 +6634,11 @@ HOOKS.after.push(r=>{if(r!=="admin"||!S.admin)return;
 function admOzetHtml(){const users=admUsers();const posts=Object.values(S.posts);const lim=now()-24*H;const reels=posts.filter(p=>p.kind==="reel").length;const reps=(S.reports||[]).length;
  const st=(n,l)=>`<div class="adm5-st"><b>${fmt(n)}</b><span>${l}</span></div>`;
  const nu=users.filter(p=>(p.createdAt||0)>lim).length,np=posts.filter(p=>(p.at||0)>lim).length;
- return`<div class="adm5-stats">${st(users.length,"üye")}${st(S.online.size+1,"şu an açık")}${st(posts.length-reels,"paylaşım")}${st(reels,"Flick")}${st(Object.values(S.stories).filter(s=>s.at>lim).length,"hikâye · 24 sa")}<button type="button" class="adm5-st${reps?" warn":""}" data-adm="accgo" data-v="sikayet"><b>${fmt(reps)}</b><span>açık şikayet</span></button></div>
+ return`<div class="adm5-stats">${st(users.length,"üye")}${st(S.online.size+1,"şu an açık")}${st(posts.length-reels,"paylaşım")}${st(reels,"Klaket")}${st(Object.values(S.stories).filter(s=>s.at>lim).length,"hikâye · 24 sa")}<button type="button" class="adm5-st${reps?" warn":""}" data-adm="accgo" data-v="sikayet"><b>${fmt(reps)}</b><span>açık şikayet</span></button></div>
  <p class="adm5-note">Son 24 saatte <b>${fmt(nu)}</b> yeni üye ve <b>${fmt(np)}</b> yeni paylaşım.</p>${admCldHtml()}`}
 function admCldHtml(){const d=S.cldUse;const b=(d&&d.bytes)||0,n=(d&&d.count)||0;const pct=Math.min(100,b/(25*1073741824)*100);
  const val=d?`${fmtMB(b)} · ${fmt(n)} video`:S._cldErr?"Okunamadı":"…";
- return`<div class="adm5-cld" id="adm5Cld"><div class="adm5-kv"><span>${I("film")}Cloudinary</span><b>${esc(val)}</b></div><div class="adm5-bar" role="img" aria-label="Aylık kotanın yüzde ${pct.toFixed(1).replace(".",",")} kadarı"><i style="width:${Math.max(pct,b?1:0).toFixed(2)}%"></i></div><small>Flick videoları burada durur. Ücretsiz plan: ayda 25 kredi (1 kredi = 1 GB depolama ya da 1 GB izlenme). Sayaç uygulamadan yüklenen videoları sayar; izlenme ve panelden silinenler için gerçek rakam Cloudinary panelindedir.</small><a class="btn sec sm" href="https://console.cloudinary.com/" target="_blank" rel="noopener">${I("link")}Cloudinary panelini aç</a></div>`}
+ return`<div class="adm5-cld" id="adm5Cld"><div class="adm5-kv"><span>${I("film")}Cloudinary</span><b>${esc(val)}</b></div><div class="adm5-bar" role="img" aria-label="Aylık kotanın yüzde ${pct.toFixed(1).replace(".",",")} kadarı"><i style="width:${Math.max(pct,b?1:0).toFixed(2)}%"></i></div><small>Klaket videoları burada durur. Ücretsiz plan: ayda 25 kredi (1 kredi = 1 GB depolama ya da 1 GB izlenme). Sayaç uygulamadan yüklenen videoları sayar; izlenme ve panelden silinenler için gerçek rakam Cloudinary panelindedir.</small><a class="btn sec sm" href="https://console.cloudinary.com/" target="_blank" rel="noopener">${I("link")}Cloudinary panelini aç</a></div>`}
 function admOzetWire(){if(now()-(S._cldAt||0)<60e3)return;S._cldAt=now();const put=()=>{const x=$("#adm5Cld");if(x)x.outerHTML=admCldHtml()};
  DB.get("meta/_cld").then(d=>{S._cldErr=false;const old=JSON.stringify(S.cldUse||null);S.cldUse=d||{bytes:0,count:0};if(JSON.stringify(S.cldUse)!==old)put()}).catch(e=>{console.warn("cld",e);S._cldErr=true;S._cldAt=0;put()})}
 
@@ -6690,7 +6691,7 @@ function admKullaniciWire(el){const q=$("#adm5Q",el);if(!q)return;q.oninput=()=>
 
 /* --- İçerik --- */
 function admIcerikHtml(){const pin=pinnedId();const pp=pin&&postById(pin);const posts=Object.values(S.posts).filter(p=>S.profiles[p.uid]).sort((a,b)=>(b.at||0)-(a.at||0));
- const row=p=>{const th=postThumb(p);const on=pin===p.id;const cap=String(p.caption||p.text||p.question||"").replace(/\s+/g," ").slice(0,70)||({reel:"Flick",photo:"Fotoğraf",note:"Not",poll:"Anket"}[p.kind]||"Paylaşım");
+ const row=p=>{const th=postThumb(p);const on=pin===p.id;const cap=String(p.caption||p.text||p.question||"").replace(/\s+/g," ").slice(0,70)||({reel:"Klaket",photo:"Fotoğraf",note:"Not",poll:"Anket"}[p.kind]||"Paylaşım");
   return`<div class="adm5-pr"><button type="button" class="adm-th" data-open="${esc(p.id)}" aria-label="Paylaşımı aç">${th?`<img src="${esc(th)}" alt="">`:I(p.kind==="poll"?"poll":"type")}</button><div class="t"><div><b>@${esc(P(p.uid).username)}</b>${on?'<span class="tag">öne çıkan</span>':""}</div><div class="s">${esc(cap)} · ${admAgo(p.at)}</div></div><button type="button" class="ib${on?" on":""}" data-adm="pin" data-u="${esc(p.id)}" aria-pressed="${on}" aria-label="${on?"Öne çıkarmayı kaldır":"Akış'ta öne çıkar"}">${I("spark")}</button><button type="button" class="ib" data-adm="postdel" data-u="${esc(p.id)}" aria-label="Paylaşımı kaldır">${I("trash")}</button></div>`};
  let h=`<div class="adm5-sub">Öne çıkan</div>`;
  if(pp)h+=`<div class="adm5-list">${row(pp)}</div>`;
@@ -7194,7 +7195,7 @@ try{if(typeof ADM_EXTRA!=="undefined"&&Array.isArray(ADM_EXTRA))ADM_EXTRA.push({
      Yükseğe çıkmak için kod bloklarından merdiven/basamak yazar (cwStairs, cwLadder), tavanda baş aşağı yürür, aşağı zıplar.
    - Döngü: tek requestAnimationFrame (cwTick); bekleme ve hareketler CW.clock'a bağlı tween'ler (cwTween). Görünmüyorken
      400 ms'de bir yavaş denetim, sekme gizliyken hiç çalışmaz. Etkinlikler async (cwRun); yenisi başlayınca eskisi CW_STOP ile kesilir.
-   - Saklanır: chat, chessgame, edit, admin (Klaket'te yalnızca köşesinde görünür); arama/mini arama; #overlay'de katman; yazı kutusu odaktayken ya da klavye açıkken.
+   - Saklanır: chat, chessgame, edit, admin (Klakette yalnızca köşesinde görünür); arama/mini arama; #overlay'de katman; yazı kutusu odaktayken ya da klavye açıkken.
      Uygulamanın tıklanabilir öğesinin üstündeyse kendisi de tıklanmaz (cwPass, .pt).
    - Gece (5.1: 00-07) yatağında uyur; açılışta/dönüşte irkilir, yataktan düşer, başını vurur. Yatak sürüklenirse geri ışınlar.
    - 3+ hızlı dokunuş ya da sert savurma: kod kalkanı. Menü: Soğuk espri, Bir ipucu, Clawd'a sor, Gitar çal/Dans et, Işık, Biraz uyu, Clawd'ı gizle.
@@ -7346,7 +7347,7 @@ const CW_JOKE_TAIL=["Ba-dum-tıss!","Soğuk oldu, biliyorum. Hırkanı al.","Gü
 const CW_TIPS=[
  "Ortadaki + ile fotoğraf, Klaket, hikâye, not, anket ya da çizim paylaşabilirsin.",
  "Mesaja basılı tut: 6 tepki, yanıtla, ilet, düzenle, sil. Hepsi orada.",
- "Klaket'te ekranın sağ ya da sol kenarına basılı tutarsan video 2x hızlanır. Ben de koşarken öyle yaparım.",
+ "Klakette ekranın sağ ya da sol kenarına basılı tutarsan video 2x hızlanır. Ben de koşarken öyle yaparım.",
  "Sohbet listesinde bir sohbete basılı tut, en fazla 3 sohbet en üstte sabit durur.",
  "Ayarlar › Görünüm'den vurgu rengini değiştirebilirsin. Turuncuyu öneririm ama tarafsız değilim.",
  "Profilinde en fazla 3 paylaşımı sabitleyebilirsin. En iyilerin en üstte dursun.",
@@ -7409,8 +7410,8 @@ const CW_KB=[
  {t:"me",k:["sikildim","canim sikiliyor"],a:"Sıkıldın mı? Hemen bir soğuk espri geliyor. Ya da bir Klaket çek, ben patlamış mısırla izlerim!"},
  {t:"app",k:["fotograf paylas","paylasim yap","gonderi","fotograf ekle","resim paylas","foto"],a:"Ortadaki + › Fotoğraf: kırp, 7 filtreden birini seç, açıklama ve konum ekle. Seçici açılmazsa Kadraj galerisi, çizim ya da yapıştırma var."},
  {t:"app",k:["klaket","flick","reels","kisa video","video paylas","video yukle"],a:"+ › Klaket. Fotoğraflardan (1-3 kare, yazı, hareket ve müzik) ya da video yükleyerek (en fazla 2 dakika, 40 MB). Kamerayla da çekebilirsin."},
- {t:"app",k:["2x","hizlandir","hizli oynat","flick hiz","klaket hiz"],a:"Klaket'te ekranın sağ ya da sol kenarına basılı tut: video 2x oynar. Bırakınca normale döner."},
- {t:"app",k:["sure cubugu","ileri sar","geri sar","sarma"],a:"Klaket'in altındaki süre çubuğunu sürükleyerek ileri-geri sarabilirsin."},
+ {t:"app",k:["2x","hizlandir","hizli oynat","flick hiz","klaket hiz"],a:"Klakette ekranın sağ ya da sol kenarına basılı tut: video 2x oynar. Bırakınca normale döner."},
+ {t:"app",k:["sure cubugu","ileri sar","geri sar","sarma"],a:"Klaketin altındaki süre çubuğunu sürükleyerek ileri-geri sarabilirsin."},
  {t:"app",k:["sonrakine gec","otomatik kaydir","sonraki flick","sonraki klaket"],a:"Ayarlar › Medya ve dokunuş › \"Klaket bitince sonrakine geç\". Video bitince kendiliğinden kayar."},
  {t:"app",k:["hikaye","story","hikayem"],a:"Akış'ın üstündeki Hikâyen balonundaki + ile eklersin. Üstüne yazı koyabilirsin, 24 saat görünür. Yanıtlar mesaj olarak gelir."},
  {t:"app",k:["hikaye tepki","hikayeye tepki"],a:"Hikâye izlerken alttaki kalp, ateş, gülme ya da şaşırma tepkilerinden birine dokun; sahibine mesaj olarak gider."},
@@ -9065,7 +9066,7 @@ const RZ=[
  {id:"ilk",t:"İlk kullanıcı",d:()=>`Kadraj'a katılan ilk ${rzIlkN()} kişiden biri.`,ic:"rzseed",c:"#0C7A63",man:1,auto:1},
  {id:"destek",t:"Destekleyen",d:"Kadraj'a destek olan, büyümesine katkı veren kişi. Yönetici verir.",ic:"heart",c:"#E11D48",man:1},
  {id:"satranc",t:"Satranç ustası",d:"Kadraj Satrancı'nda 1500 puanı geçen oyuncu (en az 10 oyun).",ic:"knight",c:"#475569",man:1,auto:1},
- {id:"klaket",t:"Klaket yıldızı",d:"Klaket'leri toplamda 25'ten fazla beğeni alan kişi.",ic:"rzclap",c:"#DB2777",man:1,auto:1},
+ {id:"klaket",t:"Klaket yıldızı",d:"Klaketleri toplamda 25'ten fazla beğeni alan kişi.",ic:"rzclap",c:"#DB2777",man:1,auto:1},
  {id:"uretken",t:"Üretken",d:"20 ya da daha fazla paylaşım yapan kişi.",ic:"spark",c:"#7C3AED",man:1,auto:1}];
 const RZM=Object.fromEntries(RZ.map(b=>[b.id,b]));
 const rzDesc=b=>typeof b.d==="function"?b.d():b.d;
@@ -9424,7 +9425,7 @@ Object.assign(ADM5_ACT,{
       tam ekran (ayrı katman: kvpFs), dokunmatikte çift dokunma ±5 sn, kapak, yükleniyor halkası, tarayıcı denetimleri yok.
       Olaylar document'ta yakalama aşamasında dinlenir; yeniden çizimde oynayan video korunur (kvpKeep/kvpPut; render ve renderMsgs sarıldı).
       Kullanıldığı yerler: oluştur ekranındaki video önizlemesi (#vPrev), paylaşım sayfasındaki Klaket (vPost sarıldı → vPostOld), sohbet videoları.
-   3) Sohbette video: msg {video, poster, dur, ar}. Yükleme Klaket'le aynı yoldan (kmMem → kvPrep → kvStore: Cloudinary, olmazsa Firestore
+   3) Sohbette video: msg {video, poster, dur, ar}. Yükleme Klaketle aynı yoldan (kmMem → kvPrep → kvStore: Cloudinary, olmazsa Firestore
       parçaları) ama iptal edilebilir; balonda ilerleme halkası (KVU sırası, tek tek). attachPhoto sarıldı (attachPhotoOld): çoklu fotoğraf ve video.
    4) Yönetici > Toplu Klaket yükle (BQ, ADM_EXTRA "toplu"): çok sayıda video/fotoğraf sırayla paylaşılır; duraklat, durdur, yeniden dene;
       panel yeniden çizilse de sıra sürer (durum BQ'da, ilerleme doğrudan DOM'a yazılır). Yükleme sürerken otomatik güncelleme beklenir (verSafe sarıldı). */
