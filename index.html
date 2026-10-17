@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
 <meta charset="utf-8">
-<meta name="kadraj-version" content="50101">
+<meta name="kadraj-version" content="50102">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,interactive-widget=resizes-content">
 <meta name="theme-color" content="#0C7A63">
 <link rel="manifest" href="manifest.webmanifest">
@@ -2858,6 +2858,17 @@ html.reduce-motion .k51pt,html.reduce-motion .rzchip{transition:none!important}
 :root[data-ui="vizor"] .rv-acc>div{border:1px solid var(--vz-hair,var(--line))}
 @media (prefers-reduced-motion:reduce){.crv .rvbd.pop{animation:none}.rv-pg i{transition:none}}
 /*}@css:51REV*/
+/*@css:511{*/
+.ak5{margin-top:14px;display:grid;gap:10px}
+.ak5 .ak5-st{font-size:.86rem;line-height:1.5;color:var(--muted)}
+.ak5 .ak5-st b{color:var(--fg);font-weight:600}
+.ak5 .ak5-k{display:grid;gap:4px}
+.ak5 .ak5-k label{font-size:.8rem;color:var(--muted)}
+.ak5 .ak5-k label b{color:var(--fg)}
+.ak5 .ak5-kr{display:flex;gap:6px;align-items:center}
+.ak5 .ak5-kr .in{flex:1;min-width:0;font:500 .78rem/1.3 var(--f-mono)}
+.ak5 .ak5-row{display:flex;gap:8px;flex-wrap:wrap}
+/*}@css:511*/
 
 
 </style>
@@ -2898,7 +2909,7 @@ const vib=ms=>{try{if(settings.haptics===false)return;navigator.vibrate&&navigat
 /* Sürüm: ana.ara.yama (4.1.0). Hata düzeltme ve küçük şeyler → yama artar (4.1.1); büyük güncelleme → ara artar (4.2.0).
    APP_V = ana*10000 + ara*100 + yama (4.1.0 → 40100). Başlıktaki <meta name="kadraj-version"> ile aynı tutulmalı.
    Eski biçim (4.0 → 40) verNorm ile çevrilir. "İki sürüm geride" ara sürüm sayısıyla ölçülür (yamalar engellemez). */
-const APP_V=50101,APP_VER="5.1.1";
+const APP_V=50102,APP_VER="5.1.2";
 const verNorm=x=>{x=Math.max(0,Math.floor(+x||0));return x<1000?Math.floor(x/10)*10000+(x%10)*100:x};
 const verLvl=x=>Math.floor(verNorm(x)/100);
 /* 4.9: fark sürüm adımıyla sayılır (4.9 → 5.0 bir adım); eskisi ana*100+ara farkıydı ve 5.0'ı 91 sürüm ileride sanıyordu */
@@ -4974,6 +4985,7 @@ const APP_GUIDE=`Kadraj bir sosyal uygulamadır (Firebase üzerinde çalışır,
 - 5.1 bildirimler: uygulama içindeyken üstten Kadraj kartı gelir (gönderen, saat, önizleme; mesajlarda Görüldü, Kalp at, Yanıtla). Ayarlar › Bildirimler'den bildirim sesi açılır kapanır; "Uygulama kapalıyken de bildir" kurulduysa telefon bildirimi uygulama kapalıyken de gelir (iPhone'da Kadraj ana ekrana eklenmiş olmalı).
 - 5.1 engelleme: bir profilin üç nokta menüsünden Engelle. Engellenen kişiyle birbirinizin paylaşımlarını, yorumlarını ve mesajlarını görmezsiniz, birbirinizi takip edemez ve arayamazsınız. Ayarlar › Engellenen hesaplar'dan engel kaldırılır. İnsan sohbetlerindeki hazır mesaj çipleri kaldırıldı.
 - 5.1 yönetim: duyurular her ekranın üstünde şerit olarak görünür. Profillerde rozetler: Kurucu, Onaylı, İlk kullanıcı, Destekleyen, Satranç ustası, Klaket yıldızı, Üretken. Kadraj, Claude Opus ve BiloloTR tarafından yapıldı (Ayarlar'daki Yapımcılar satırında yazar); sağ altta küçük saydam sürüm yazısı var.
+- 5.1.2 Rota internette arar: yönetici köprüye ücretsiz Tavily anahtarını eklediyse Rota genel bilgi sorularında (kim, ne zaman, hangi, bugün, haber...) internete bakar ve yanıtın sonunda kaynağın adını yazar; Kadraj ile ilgili sorularda aramaz. Rota'nın yanıtları harf harf gelir.
 - 5.0 yenilikleri (Kadraj 5.0): Yeni görünüm "Vizör": alttaki yüzen çubukta etkin sekme odak köşeleriyle çerçevelenir, ortadaki deklanşör düğmesi paylaşım menüsünü açar; paylaşımlar numaralı "kare"lerdir; görülmemiş hikâyeler diyafram halkasıyla işaretlenir; eski görünüm Ayarlar > Görünüm > Arayüz'den "Klasik" seçilerek geri gelir.
 - 5.0 arama: sohbet başlığındaki telefon ya da kamera ile. Arama ekranında Mikrofon, Kamera (sesli aramada da açılır), Ekran (bilgisayarda ekran paylaşımı), Tepki ve Diğer (kamerayı çevir, ses çıkışı, gürültü engelleme, Küçült) var. Küçült aramayı yüzen pencereye alır. Gelen aramada "Kamerasız yanıtla" ve "Mesajla yanıtla" var. Ekran paylaşımı ve tepkiler için iki tarafın da 5.0 kullanması gerekir.
 - 5.0 Keşfet araması: ad, @kullanıcı adı, #etiket ya da kelime yazılır; ı/i, ş/s gibi harf farkları önemsizdir. Hepsi, Kişiler, Paylaşımlar, Klaket ve Etiketler süzgeçleri; En yeni / En çok beğenilen sıralaması; son aramalar ve yazarken öneriler. Uygulamadaki her #etikete dokununca o etiketin sayfası açılır.
@@ -7202,7 +7214,7 @@ const kAI={
   if(!this.ready())throw this.err("off","Yapay zekâ bağlantısı kurulmamış.");
   let tok="";try{tok=await FB.auth.currentUser.getIdToken()}catch{throw this.err("auth","Oturum doğrulanamadı, yeniden giriş yap.")}
   const ac=new AbortController();const t=setTimeout(()=>ac.abort(),timeout);let r;
-  try{r=await fetch(this.url()+"/ask",{method:"POST",headers:{"Content-Type":"application/json",Authorization:"Bearer "+tok},body:JSON.stringify({system,messages,search:!!search}),signal:ac.signal})}
+  try{r=await fetch(this.url()+"/ask",{method:"POST",headers:{"Content-Type":"application/json",Authorization:"Bearer "+tok},body:JSON.stringify({system,messages,search:typeof search==="string"?search.slice(0,400):!!search}),signal:ac.signal})}
   catch(e){throw this.err(e&&e.name==="AbortError"?"timeout":"network",e&&e.name==="AbortError"?"Yanıt çok uzun sürdü.":"Yapay zekâ köprüsüne ulaşılamadı.")}
   finally{clearTimeout(t)}
   let d=null;try{d=await r.json()}catch{}
@@ -7219,7 +7231,7 @@ async function kaiBlobB64(b){const buf=new Uint8Array(await b.arrayBuffer());let
 function kaiSample(){const f=async(prompt,opts={})=>{const content=[];
   for(const b of(opts.images||[]).slice(0,2)){try{if(b&&b.size<=1100000)content.push({type:"image",source:{type:"base64",media_type:/^image\/(jpeg|png|webp|gif)$/.test(b.type)?b.type:"image/jpeg",data:await kaiBlobB64(b)}})}catch{}}
   content.push({type:"text",text:String(prompt||"")});
-  const r=await kAI.ask({messages:[{role:"user",content}],search:!!opts.search});
+  const r=await kAI.ask({messages:[{role:"user",content}],search:typeof opts.search==="string"?opts.search:!!opts.search});
   const text=r.refusal?"Bu konuda yardımcı olamıyorum.":r.text;
   if(typeof opts.onText==="function"){try{opts.onText({text})}catch{}}
   return{text}};
@@ -7232,7 +7244,7 @@ HOOKS.after.push(()=>{if(S.authed)kaiSync()});
 setInterval(()=>{if(S.authed)kaiSync()},15000);
 /* yönetici: köprü adresini gir, sına */
 function aiSetupHtml(){const u=(S.adm&&S.adm.ai&&S.adm.ai.url)||"";const st=kAI.last;
- return`<div class="kai-box"><p class="muted" style="margin:0 0 10px">Rota ve Clawd gerçek yapay zekâyla konuşsun diye Cloudflare'deki köprünün adresini buraya yapıştır. Köprü ücretsiz modelle de (Cloudflare Workers AI) çalışır; Claude için API anahtarı yalnızca Cloudflare'de gizli tutulur.</p>
+ return`<div class="kai-box"><p class="muted" style="margin:0 0 10px">Rota gerçek yapay zekâyla konuşsun diye Cloudflare'deki köprünün adresini buraya yapıştır. Köprü ücretsiz modelle de (Cloudflare Workers AI) çalışır; Claude için API anahtarı yalnızca Cloudflare'de gizli tutulur.</p>
  <div class="field"><label for="kaiUrl">Köprü adresi</label><input class="in" id="kaiUrl" inputmode="url" autocapitalize="off" spellcheck="false" placeholder="https://kadraj-ai.adın.workers.dev" value="${esc(u)}"></div>
  <div class="kai-row"><button class="btn sm" type="button" data-kai="save">${I("check")}Kaydet</button><button class="btn sec sm" type="button" data-kai="test">Sına</button>${u?`<button class="btn ghost sm" type="button" data-kai="off">Kapat</button>`:""}</div>
  <div class="kai-st" id="kaiSt">${u?(kAI.ready()?"Bağlantı açık.":"Adres kayıtlı."):"Henüz bağlı değil."}${st&&!st.ok?` Son hata: ${esc(st.code)}`:""}</div>
@@ -10518,10 +10530,36 @@ async function rtTypewrite(key,text){const box=$("#msgs");if(!box||!rtTypeOk(key
 const botReplyBase511=botReply;
 botReply=async function(b,msgs){const key="u:"+b.uid;const smp=S.caps.sample;let calls=0;
  /* köprü yanıtı tek seferde onText ile verir: ilk çağrı tutulur (yazıyor noktaları kalır); ikinci çağrı gelirse gerçek akıştır, iletilir */
- const wrap=smp&&b.ai?Object.assign((p,o)=>smp(p,o&&typeof o.onText==="function"?{...o,onText:x=>{calls++;if(calls>1)o.onText(x)}}:o),smp):null;if(wrap)S.caps.sample=wrap;
+ const lastQ=b.ai?String(([...msgs].reverse().find(m=>m.from===S.uid)||{}).text||"").slice(0,400):"";/* köprü genel sorularda internette arar (Tavily) */
+ const wrap=smp&&b.ai?Object.assign((p,o)=>smp(p,{...(o||{}),...(lastQ?{search:lastQ}:{}),...(o&&typeof o.onText==="function"?{onText:x=>{calls++;if(calls>1)o.onText(x)}}:{})}),smp):null;if(wrap)S.caps.sample=wrap;
  let r;try{r=await botReplyBase511(b,msgs)}finally{if(wrap&&S.caps.sample===wrap)S.caps.sample=smp}
  if(r&&b.ai&&calls<=1)try{await rtTypewrite(key,r)}catch(e){console.warn(e)}
  return r};
+/* Yönetici › Yapay zekâ bölümüne ek: köprünün durumu, bildirim (VAPID) anahtarlarını tarayıcıda üretme, Tavily açıklaması.
+   Anahtarlar crypto.subtle ile bu cihazda üretilir, hiçbir yere gönderilmez, kaydedilmez (sayfa kapanınca kaybolur). */
+const AK5={st:null,at:0,busy:false,keys:null};
+async function ak5Status(force){const u=kAI.url();if(!u){AK5.st=null;return ak5Paint()}if(AK5.busy||(!force&&AK5.st&&now()-AK5.at<30000))return ak5Paint();
+ AK5.busy=true;ak5Paint();try{const r=await fetch(u.replace(/\/+$/,"")+"/health",{cache:"no-store"});AK5.st=r.ok?await r.json():{err:"Köprü yanıt vermedi ("+r.status+")."}}catch{AK5.st={err:"Köprüye ulaşılamadı."}}AK5.busy=false;AK5.at=now();ak5Paint()}
+function ak5StHtml(){const d=AK5.st;if(!kAI.url())return"Önce köprü adresini kaydet.";if(AK5.busy&&!d)return"Köprü soruluyor…";if(!d)return"";if(d.err)return esc(d.err);
+ const on=v=>v?"<b>açık</b>":"kapalı";return`Yapay zekâ: <b>${d.provider==="claude"?"Claude":d.provider==="free"?"ücretsiz model":"yok"}</b>${d.model?` (${esc(String(d.model).replace(/^@cf\//,""))})`:""}<br>İnternet araması: ${on(d.search)}${d.search?"":" (Tavily anahtarı yok)"}<br>Uygulama kapalıyken bildirim: ${on(d.push)}${d.push?"":" (anahtarlar eklenmemiş)"}`}
+function ak5KeysHtml(){const k=AK5.keys;if(!k)return"";const row=(n,t,v,id)=>`<div class="ak5-k"><label for="${id}"><b>${n}</b> · Type: ${t}</label><div class="ak5-kr"><input class="in" id="${id}" ${id==="ak5Sub"?'spellcheck="false" autocapitalize="off"':"readonly"} value="${esc(v)}"><button class="btn sec sm" type="button" data-ak5="cp" data-id="${id}">${I("copy")}Kopyala</button></div></div>`;
+ return row("VAPID_PUBLIC_KEY","Text",k.pub,"ak5Pub")+row("VAPID_PRIVATE_KEY","Secret (kimseye gösterme)",k.priv,"ak5Priv")+row("VAPID_SUBJECT","Text",k.sub,"ak5Sub")+`<p class="adm5-note" style="margin:0">Üçünü Cloudflare'de kadraj-ai › Settings › Variables and Secrets › Add ile ekle, sonra Deploy'a bas. Bu sayfayı kapatınca anahtarlar kaybolur; eklemeden kapatma.</p>`}
+function ak5Html(){setTimeout(()=>ak5Status(false),0);
+ return`<div class="ak5" id="ak5"><div class="adm5-sub">Köprünün durumu</div><div class="ak5-st" id="ak5St">${ak5StHtml()}</div><div class="ak5-row"><button class="btn ghost sm" type="button" data-ak5="st">${I("rotate")}Durumu yenile</button></div>
+ <div class="adm5-sub">Uygulama kapalıyken bildirim</div><p class="adm5-note" style="margin:0">Bildirim anahtarları bu cihazda üretilir ve hiçbir yere gönderilmez. Bir kez kur, sonra değiştirme: değişirse herkesin "Uygulama kapalıyken de bildir" ayarını yeniden açması gerekir.</p>
+ <div class="ak5-row"><button class="btn sm" type="button" data-ak5="gen">${I("key")}Anahtar üret</button></div><div id="ak5Out" style="display:grid;gap:10px">${ak5KeysHtml()}</div>
+ <div class="adm5-sub">İnternet araması (Tavily, ücretsiz)</div><p class="adm5-note" style="margin:0">tavily.com'da ücretsiz hesap aç (ayda 1000 arama, kart istemez) ve API anahtarını kopyala (tvly- ile başlar). Cloudflare'de kadraj-ai › Settings › Variables and Secrets › Add: Type <b>Secret</b>, Name <b>TAVILY_API_KEY</b>. Deploy'dan sonra Rota genel bilgi sorularında internete bakar; Kadraj sorularında aramaz.</p></div>`}
+function ak5Paint(){const st=$("#ak5St");if(st)st.innerHTML=ak5StHtml();const o=$("#ak5Out");if(o)o.innerHTML=ak5KeysHtml()}
+async function ak5Gen(){const b64u=a=>btoa(String.fromCharCode(...a)).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
+ const kp=await crypto.subtle.generateKey({name:"ECDSA",namedCurve:"P-256"},true,["sign","verify"]);const pub=new Uint8Array(await crypto.subtle.exportKey("raw",kp.publicKey));const jwk=await crypto.subtle.exportKey("jwk",kp.privateKey);
+ let mail="";try{mail=(FB&&FB.auth&&FB.auth.currentUser&&FB.auth.currentUser.email)||""}catch{}return{pub:b64u(pub),priv:jwk.d,sub:"mailto:"+(mail||"adresin@ornek.com")}}
+document.addEventListener("click",async e=>{const b=e.target.closest&&e.target.closest("[data-ak5]");if(!b||!S.admin)return;e.preventDefault();const k=b.dataset.ak5;
+ if(k==="st")return ak5Status(true);
+ if(k==="cp"){const inp=$("#"+b.dataset.id);if(!inp)return;try{await navigator.clipboard.writeText(inp.value);toast("Kopyalandı.")}catch{inp.select();toast("Seçildi, Ctrl+C ile kopyala.")}return}
+ if(k==="gen"){if(!(window.crypto&&crypto.subtle))return toast("Bu tarayıcı anahtar üretemiyor.");
+  const go=async()=>{b.disabled=true;try{AK5.keys=await ak5Gen();ak5Paint()}catch(x){toast("Anahtar üretilemedi.")}b.disabled=false};
+  if(AK5.st&&AK5.st.push)return dialog("Anahtarlar zaten kurulu","Köprüde bildirim anahtarları var. Yenisini kurarsan herkesin bildirim ayarını yeniden açması gerekir.",[{label:"Vazgeç"},{label:"Yine de üret",cls:"danger",fn:go}]);go()}});
+try{const ae=ADM_EXTRA.find(x=>x.id==="ai");if(ae){const base=ae.html;ae.html=()=>base()+ak5Html();ae.desc="Rota'nın yapay zekâsı, internet araması ve bildirim anahtarları"}}catch(e){console.warn(e)}
 /*}@js:511*/
 
 
