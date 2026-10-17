@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
 <meta charset="utf-8">
-<meta name="kadraj-version" content="50202">
+<meta name="kadraj-version" content="50203">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,interactive-widget=resizes-content">
 <meta name="theme-color" content="#0A110F">
 <link rel="manifest" href="manifest.webmanifest">
@@ -2953,7 +2953,7 @@ const vib=ms=>{try{if(settings.haptics===false)return;navigator.vibrate&&navigat
 /* Sürüm: ana.ara.yama (4.1.0). Hata düzeltme ve küçük şeyler → yama artar (4.1.1); büyük güncelleme → ara artar (4.2.0).
    APP_V = ana*10000 + ara*100 + yama (4.1.0 → 40100). Başlıktaki <meta name="kadraj-version"> ile aynı tutulmalı.
    Eski biçim (4.0 → 40) verNorm ile çevrilir. "İki sürüm geride" ara sürüm sayısıyla ölçülür (yamalar engellemez). */
-const APP_V=50202,APP_VER="5.2.2";
+const APP_V=50203,APP_VER="5.2.3";
 const verNorm=x=>{x=Math.max(0,Math.floor(+x||0));return x<1000?Math.floor(x/10)*10000+(x%10)*100:x};
 const verLvl=x=>Math.floor(verNorm(x)/100);
 /* 4.9: fark sürüm adımıyla sayılır (4.9 → 5.0 bir adım); eskisi ana*100+ara farkıydı ve 5.0'ı 91 sürüm ileride sanıyordu */
@@ -5032,7 +5032,7 @@ const APP_GUIDE=`Kadraj bir sosyal uygulamadır (Firebase üzerinde çalışır,
 - 5.1 engelleme: bir profilin üç nokta menüsünden Engelle. Engellenen kişiyle birbirinizin paylaşımlarını, yorumlarını ve mesajlarını görmezsiniz, birbirinizi takip edemez ve arayamazsınız. Ayarlar › Engellenen hesaplar'dan engel kaldırılır. İnsan sohbetlerindeki hazır mesaj çipleri kaldırıldı.
 - 5.1 yönetim: duyurular her ekranın üstünde şerit olarak görünür. Profillerde rozetler: Kurucu, Onaylı, İlk kullanıcı, Destekleyen, Satranç ustası, Klaket yıldızı, Üretken. Kadraj, Claude Opus ve BiloloTR tarafından yapıldı (Ayarlar'daki Yapımcılar satırında yazar); sağ altta küçük saydam sürüm yazısı var.
 - 5.1.2 Rota internette arar: yönetici köprüye ücretsiz Tavily anahtarını eklediyse Rota genel bilgi sorularında (kim, ne zaman, hangi, bugün, haber...) internete bakar ve yanıtın sonunda kaynağın adını yazar; Kadraj ile ilgili sorularda aramaz. Rota'nın yanıtları harf harf gelir.
-- 5.2 sohbet: mesaj yazarken @ yazınca öneri listesi açılır. Birebir sohbette yalnızca Rota çıkar; @rota yazıp gönderince Rota o sohbete katılır ve ikinize de yanıt verir. Grupta grup üyeleri ve Rota, Meydan'da herkes ve Rota önerilir. Mesajlardaki @adlar renkli görünür, dokununca profil açılır; senden bahseden mesajın çerçevesi renklenir. Bir mesajı yanıtlamak için kaydır: kendi mesajını sola, karşı tarafınkini sağa. Grupta ve Meydan'da yazanlar fotoğraflarıyla görünür ("Ali ve Ayşe yazıyor"), birden fazla kişi yazıyorsa fotoğraflar üst üste biner.
+- 5.2 sohbet: mesaj yazarken @ yazınca öneri listesi açılır. Birebir sohbette yalnızca Rota çıkar; @rota yazıp gönderince Rota o sohbete katılır ve ikinize de yanıt verir; Rota'nın bir mesajına kaydırıp yanıt verirsen (her sohbette) Rota da cevap verir. Rota'nın cevabı harf harf yazılır. Grupta grup üyeleri ve Rota, Meydan'da herkes ve Rota önerilir. Mesajlardaki @adlar renkli görünür, dokununca profil açılır; senden bahseden mesajın çerçevesi renklenir. Bir mesajı yanıtlamak için kaydır: kendi mesajını sola, karşı tarafınkini sağa. Grupta ve Meydan'da yazanlar fotoğraflarıyla görünür ("Ali ve Ayşe yazıyor"), birden fazla kişi yazıyorsa fotoğraflar üst üste biner.
 - 5.0 yenilikleri (Kadraj 5.0): Yeni görünüm "Vizör": alttaki yüzen çubukta etkin sekme odak köşeleriyle çerçevelenir, ortadaki deklanşör düğmesi paylaşım menüsünü açar; paylaşımlar numaralı "kare"lerdir; görülmemiş hikâyeler diyafram halkasıyla işaretlenir; eski görünüm Ayarlar > Görünüm > Arayüz'den "Klasik" seçilerek geri gelir.
 - 5.0 arama: sohbet başlığındaki telefon ya da kamera ile. Arama ekranında Mikrofon, Kamera (sesli aramada da açılır), Ekran (bilgisayarda ekran paylaşımı), Tepki ve Diğer (kamerayı çevir, ses çıkışı, gürültü engelleme, Küçült) var. Küçült aramayı yüzen pencereye alır. Gelen aramada "Kamerasız yanıtla" ve "Mesajla yanıtla" var. Ekran paylaşımı ve tepkiler için iki tarafın da 5.0 kullanması gerekir.
 - 5.0 Keşfet araması: ad, @kullanıcı adı, #etiket ya da kelime yazılır; ı/i, ş/s gibi harf farkları önemsizdir. Hepsi, Kişiler, Paylaşımlar, Klaket ve Etiketler süzgeçleri; En yeni / En çok beğenilen sıralaması; son aramalar ve yazarken öneriler. Uygulamadaki her #etikete dokununca o etiketin sayfası açılır.
@@ -10572,9 +10572,10 @@ function rtTypeOk(key){return S.route.name==="chat"&&S.route.params.key===key&&d
 async function rtTypewrite(key,text){const box=$("#msgs");if(!box||!rtTypeOk(key))return;
  const step=Math.max(2,Math.ceil(text.length/80));let n=Math.min(step,text.length);
  S.botTyping=null;S.stream={key,text:text.slice(0,n)};renderMsgs();
- const bubs=box.querySelectorAll(".msg.ai");const bub=bubs[bubs.length-1];if(!bub)return;
+ const bubs=box.querySelectorAll(".msg.ai");let bub=bubs[bubs.length-1];if(!bub)return;
  while(n<text.length){await new Promise(res=>setTimeout(res,30));
-  if(!rtTypeOk(key)||!bub.isConnected||!S.stream||S.stream.key!==key)return;
+  if(!rtTypeOk(key)||!S.stream||S.stream.key!==key)return;
+  if(!bub.isConnected){const bs=box.querySelectorAll(".msg.ai");bub=bs[bs.length-1];if(!bub)return}/* 5.2.3: yazarken sohbet yeniden çizilirse yeni baloncuktan devam */
   n=Math.min(text.length,n+step);const sp=text.indexOf(" ",n);if(sp>n&&sp-n<6)n=sp;
   S.stream.text=text.slice(0,n);const pin=box.scrollHeight-box.scrollTop-box.clientHeight<80;bub.innerHTML=md(S.stream.text);if(pin)box.scrollTop=box.scrollHeight}}
 const botReplyBase511=botReply;
@@ -10776,7 +10777,9 @@ async function rotaJoin(key,k){S.botTyping="bot:rota@"+key;renderMsgs();let repl
  await write(()=>DB.update("chats/"+k.cid,{last:{text:reply.slice(0,80),from:"bot:rota",at},updatedAt:at}),{quiet:true})}
 const sendMessageBase520=sendMessage;
 sendMessage=async function(key,payload,...rest){const r=await sendMessageBase520.call(this,key,payload,...rest);
- try{const k=keyInfo(key);if(r===true&&k&&k.type==="dm"&&payload&&/@rota\b/i.test(payload.text||""))rotaJoin(key,k)}catch(e){console.warn(e)}return r};
+ try{const k=keyInfo(key);const men=/@rota\b/i.test((payload&&payload.text)||"");const rep=!!(payload&&payload.reply&&payload.reply.from==="bot:rota");
+  /* DM'de @rota; 5.2.3: her sohbette Rota'nın mesajına kaydırıp yanıt verince de Rota konuşur (grup/Meydan'daki @rota'yı eski kod zaten çağırıyor) */
+  if(r===true&&k&&(k.type==="dm"||k.type==="group"||k.type==="meydan")&&((k.type==="dm"&&men)||(rep&&!(men&&k.type!=="dm"))))rotaJoin(key,k)}catch(e){console.warn(e)}return r};
 /* mesajlardaki @etiketler, benden bahsedenler, DM'deki Rota etiketi, grupta yazanlar */
 function mnUserMap(){const m=new Map([["rota","bot:rota"],["rota.rehber","bot:rota"]]);for(const[u,p]of Object.entries(S.profiles||{}))if(p&&p.username)m.set(String(p.username).toLowerCase(),u);return m}
 function mnTag(el,map,myU){const re=/@([\w.ğüşıöçĞÜŞİÖÇ]{2,30})/g;let hit=false;const w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT);const nodes=[];while(w.nextNode())if(w.currentNode.nodeValue.includes("@")&&!w.currentNode.parentElement.closest(".mtag,.rq,.reply,button"))nodes.push(w.currentNode);
@@ -10789,6 +10792,7 @@ function mnAfterRender(){const key=mnKey();const box=$("#msgs");if(!key||!box)re
   if(m.text&&m.text.includes("@")&&!el.dataset.mn){el.dataset.mn="1";if(mnTag(el,map,myU)&&m.from!==S.uid)el.classList.add("mme")}
   if(k.type==="dm"&&m.from==="bot:rota"){const col=el.closest(".mcol");if(col&&!col.querySelector(".mn-who"))col.insertAdjacentHTML("afterbegin",`<span class="mn-who">${avatar("bot:rota",18,{click:false,ring:false,online:false})}Rota</span>`)}}
  /* 5.2.2: DM'de yazıyor göstergesi karşı tarafın fotoğrafıyla */
+ if(k.type==="dm"&&S.botTyping==="bot:rota@"+key&&!box.querySelector(".mn-rt"))box.insertAdjacentHTML("beforeend",`<div class="mrow mn-ty mn-rt">${avatar("bot:rota",30,{click:false,ring:false,online:false})}<div class="typing" aria-label="Rota yazıyor"><i></i><i></i><i></i></div><small>Rota yazıyor</small></div>`);
  if(k.type==="dm"){const t=[...box.children].find(x=>x.classList&&x.classList.contains("typing"));if(t)t.outerHTML=`<div class="mrow mn-ty">${avatar(k.uid,30,{click:false,ring:false,online:false})}<div class="typing" aria-label="${esc(P(k.uid).name)} yazıyor"><i></i><i></i><i></i></div></div>`}
  /* 5.2.2: son mesaj benimse altında görüldü için yer ayrılır; görüldü gelince mesajlar bir satır kaymaz */
  if(k.type==="dm"||k.type==="group"){const rows=[...box.children];let li=-1;for(let i=rows.length-1;i>=0;i--){const x=rows[i];if(x.classList.contains("mrow")&&!x.classList.contains("mn-ty")&&x.querySelector(".msg[data-mid]")){li=i;break}}
@@ -10820,6 +10824,22 @@ renderMsgs=function(...a){const b0=$("#msgs");const was=!!b0&&(b0.scrollHeight-b
    if(m&&!m.del){S.replyTo={mid,from:m.from,text:msgPreview(m).slice(0,80)};drawReply();const i=$("#msgIn");if(i)try{i.focus({preventScroll:true})}catch{i.focus()}}}};
  document.addEventListener("pointerup",end,true);document.addEventListener("pointercancel",end,true);
  document.addEventListener("click",e=>{const row=e.target.closest&&e.target.closest("#msgs .mrow");if(row&&row._swpAt&&now()-row._swpAt<400){e.stopPropagation();e.preventDefault()}},true)})();
+/* 5.2.3: @rota ile çağrılan Rota (DM, grup, Meydan) tek yerden: yazıyor göstergesi, harf harf yanıt (rtTypewrite),
+   sorunun kendisiyle internet araması, anlaşılır hata yanıtı. Eskileri rotaJoinOld / rotaInRoomOld. */
+const rotaJoinOld=rotaJoin;
+rotaJoin=async function(key,k){S.botTyping="bot:rota@"+key;renderMsgs();let reply=null,err=null;
+ const place=k.type==="dm"?`iki arkadaşın (${me().name} ve ${P(k.uid).name}) özel sohbeti`:k.type==="meydan"?"Meydan (herkese açık ortak sohbet)":"bir grup sohbeti";
+ const mine=[...(S.msgs||[])].reverse().find(m=>m.from===S.uid);const rq=mine&&mine.reply&&mine.reply.from==="bot:rota"?`\n(${me().name}, senin "${String(mine.reply.text||"").slice(0,120)}" mesajına yanıt verdi.)`:"";const q=String((mine&&mine.text)||"").replace(/@rota(\.rehber)?\b/ig,"").trim().slice(0,400);
+ try{const sample=S.caps.sample;if(sample){const tr=(S.msgs||[]).slice(-14).map(m=>`${P(m.from).name}: ${m.text||"[paylaşım]"}`).join("\n");
+  const r=await sample(`${ROTA_SYS}\n\nŞu an ${place} içindesin; ${me().name} ${rq?"senin mesajına yanıt verdi":"seni @rota diye sohbete çağırdı"}. Konuşma:\n${tr}${rq}\n\nRota olarak konuşmaya uygun, kısa (1-4 cümle) bir yanıt ver. Sadece yanıt metnini yaz.`,{cache:false,modelTier:"quick",...(q?{search:q}:{})});reply=(r&&r.text||"").trim()}}catch(e){err=e;console.warn(e)}
+ if(!reply)reply=err&&err.code==="rate_limited"?"Bugün çok konuştuk, biraz dinleneyim. Birazdan yine çağır.":err?"Şu an bağlanamadım, birazdan yine dene.":fallbackRota(q);
+ S.botTyping=null;try{if(chatKey===k.cid)await rtTypewrite(key,reply)}catch(e){console.warn(e)}S.stream=null;
+ const at=now();const mid=at.toString(36)+"rota";const msg={from:"bot:rota",text:reply,at};if(chatKey===k.cid){S.msgs=[...S.msgs,{id:mid,...msg}]}renderMsgs();
+ await write(()=>DB.set(`chats/${k.cid}/msgs/${mid}`,msg),{quiet:true});
+ const last={last:{text:reply.slice(0,80),from:"bot:rota",at},updatedAt:at};
+ if(k.type==="meydan")await write(()=>DB.set("chats/meydan",last),{quiet:true});else await write(()=>DB.update("chats/"+k.cid,last),{quiet:true})};
+const rotaInRoomOld=rotaInRoom;
+rotaInRoom=function(key,k){return rotaJoin(key,k)};
 /*}@js:520*/
 
 
