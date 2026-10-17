@@ -7949,6 +7949,19 @@ try{ADM_EXTRA.push({id:"toplu",title:"Toplu Klaket yükle",desc:"Birçok video v
 addEventListener("beforeunload",e=>{if(BQ.running||KVU.length){e.preventDefault();e.returnValue=""}});
 const verSafeBaseM51=verSafe;
 verSafe=function(){if(BQ.running||KVU.length)return false;return verSafeBaseM51()};
+/* düzeltme: vidDur/videoPoster zaman aşımında video yüklemeyi bırakmıyor, adresi serbest bırakmıyordu; MediaRecorder WebM'inde süre
+   "Infinity" gelince 0 yazılıyordu (sona atlanıp gerçek süre okunur). Eskileri vidDurOld/videoPosterOld. */
+const vidDurOld=vidDur;
+vidDur=function(file){return new Promise(r=>{const v=document.createElement("video");let u="";try{u=URL.createObjectURL(file)}catch{return r(0)}let done=false,t=0;
+ const fin=d=>{if(done)return;done=true;clearTimeout(t);v.onloadedmetadata=v.ontimeupdate=v.onerror=null;v.removeAttribute("src");try{v.load()}catch{}URL.revokeObjectURL(u);r(d>0&&isFinite(d)?d:0)};
+ v.preload="metadata";v.muted=true;v.onloadedmetadata=()=>{const d=v.duration;if(isFinite(d))return fin(d);v.ontimeupdate=()=>{if(isFinite(v.duration))fin(v.duration)};try{v.currentTime=1e7}catch{fin(0)}};
+ v.onerror=()=>fin(0);t=setTimeout(()=>fin(isFinite(v.duration)?v.duration:0),8000);v.src=u})};
+const videoPosterOld=videoPoster;
+videoPoster=function(url){return new Promise(res=>{const v=document.createElement("video");let done=false,t=0;
+ const fin=x=>{if(done)return;done=true;clearTimeout(t);v.onloadeddata=v.onseeked=v.onerror=null;try{v.pause()}catch{}v.removeAttribute("src");try{v.load()}catch{}res(x)};
+ v.muted=true;v.preload="auto";v.playsInline=true;v.src=url;try{const pp=v.play();if(pp&&pp.then)pp.then(()=>{try{v.pause()}catch{}}).catch(()=>{})}catch{}
+ v.onloadeddata=()=>{try{v.currentTime=Math.min(1,(isFinite(v.duration)&&v.duration>0?v.duration:2)/2)}catch{fin("")}};
+ v.onseeked=()=>{try{fin(toCanvas(v,360,640).toDataURL("image/jpeg",.7))}catch{fin("")}};v.onerror=()=>fin("");t=setTimeout(()=>fin(""),6000)})};
 /*}@js:51MEDIA*/
 
 /*@js:51STREAK{*/
