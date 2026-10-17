@@ -2495,6 +2495,187 @@ html.reduce-motion .k51pt,html.reduce-motion .rzchip{transition:none!important}
 /*}@css:51ADM*/
 
 /*@css:51MEDIA{*/
+/* ===== 5.1 · Kadraj'a özel medya: seçici (kmp), oynatıcı (kvp), sohbet yüklemesi (kvu), toplu yükleme (bq) ===== */
+:root{--km-brk:linear-gradient(currentColor 0 0) 0 0/14px 2px,linear-gradient(currentColor 0 0) 0 0/2px 14px,linear-gradient(currentColor 0 0) 100% 0/14px 2px,linear-gradient(currentColor 0 0) 100% 0/2px 14px,linear-gradient(currentColor 0 0) 0 100%/14px 2px,linear-gradient(currentColor 0 0) 0 100%/2px 14px,linear-gradient(currentColor 0 0) 100% 100%/14px 2px,linear-gradient(currentColor 0 0) 100% 100%/2px 14px}
+/* --- seçici --- */
+.kmp{display:grid;gap:12px;padding:2px 16px 14px;position:relative}
+.kmp-drop{position:relative;display:none;justify-items:center;gap:4px;width:100%;padding:20px 16px;border-radius:20px;text-align:center;color:var(--muted);background:color-mix(in srgb,var(--accent) 6%,var(--surface));border:1.5px dashed color-mix(in srgb,var(--accent) 34%,var(--line));transition:background-color .2s,border-color .2s,transform .2s}
+.kmp-drop::before{content:"";position:absolute;inset:7px;background:var(--km-brk);background-repeat:no-repeat;color:color-mix(in srgb,var(--accent) 60%,transparent);pointer-events:none}
+.kmp-drop b{color:var(--fg);font:600 .95rem/1.25 var(--f-display)}
+.kmp-drop small{font-size:.8rem;line-height:1.35;max-width:26rem}
+.kmp-dic{width:2.8rem;height:2.8rem;border-radius:50%;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent);margin-bottom:4px}
+@media (hover:hover) and (pointer:fine),(min-width:700px){.kmp-drop{display:grid}}
+.bq .kmp-drop{display:grid}
+.kmp.over .kmp-drop,.bq.over .kmp-drop,.kmdrag .kmp-cdrop{background:color-mix(in srgb,var(--accent) 14%,var(--surface));border-color:var(--accent);transform:scale(1.01)}
+.kmp-tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.kmp-t{display:grid;justify-items:center;align-content:center;gap:6px;min-height:6.6rem;padding:14px 8px 12px;border-radius:20px;background:var(--surface);border:1px solid var(--line);text-align:center;min-width:0}
+.kmp-t .ic{width:2.9rem;height:2.9rem;border-radius:16px;display:grid;place-items:center;color:#fff;background:var(--c,var(--accent));box-shadow:0 8px 16px -10px var(--c,var(--accent))}
+.kmp-t b{font:600 .86rem/1.15 var(--f-display);overflow-wrap:anywhere}
+.kmp-t small{color:var(--muted);font-size:.72rem;line-height:1.25}
+.kmp-t:active{transform:scale(.95)}
+.kmp-rh{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.kmp-rx{font-size:.78rem;font-weight:700;color:var(--muted);padding:4px 2px}
+.kmp-rr{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:0 -16px;padding:2px 16px 4px;scroll-snap-type:x proximity}
+.kmp-rr::-webkit-scrollbar{display:none}
+.kmp-r,.kmp-gal button{position:relative;flex:none;border-radius:14px;overflow:hidden;background:var(--surface-2)}
+.kmp-r{width:4.6rem;height:4.6rem;scroll-snap-align:start}
+.kmp-r img{width:100%;height:100%;object-fit:cover;display:block}
+.kmp-ck{position:absolute;top:5px;right:5px;width:1.35rem;height:1.35rem;border-radius:50%;display:grid;place-items:center;background:rgba(0,0,0,.35);border:1.5px solid #fff;color:transparent;transition:background-color .15s}
+.kmp-ck svg.i{width:.9rem;height:.9rem;stroke-width:3}
+.kmp:not(.multi) .kmp-ck,.kmp-gal:not(.multi) .kmp-ck{display:none}
+.kmp-r[aria-pressed="true"] .kmp-ck,.kmp-gal button[aria-pressed="true"] .kmp-ck{background:var(--accent);border-color:var(--accent);color:#fff}
+.kmp-r[aria-pressed="true"],.kmp-gal button[aria-pressed="true"]{box-shadow:inset 0 0 0 3px var(--accent)}
+.kmp-r[aria-pressed="true"] img,.kmp-gal button[aria-pressed="true"] img{transform:scale(.9);border-radius:10px}
+.kmp-r img,.kmp-gal img{transition:transform .18s}
+.kmp-gal button[aria-pressed="false"] .kmp-ck{opacity:.9}
+.sheet .kmp-gal{padding-bottom:4px}
+.kmp .hint,.kmp .pastebox{margin:0}
+.kmp-busy{display:flex;align-items:center;justify-content:center;gap:10px;font-weight:700;color:var(--muted);font-size:.86rem}
+.kmp-busy .spin{width:20px;height:20px;border-width:2.5px}
+.kmp.busy .kmp-tiles,.kmp.busy .kmp-drop{opacity:.5;pointer-events:none}
+.kmp-foot{position:sticky;bottom:0;padding:8px 0 2px;background:linear-gradient(transparent,var(--bg) 30%)}
+.sheet .kmp-foot{padding-inline:16px}
+.kmp .kmp-foot{padding-inline:0}
+:root[data-ui="vizor"] .kmp-t{border-color:var(--vz-hair);box-shadow:var(--vz-sh);border-radius:22px}
+:root[data-ui="vizor"] .kmp-t .ic{border-radius:50%;box-shadow:0 0 0 3px var(--surface),0 0 0 4.5px color-mix(in srgb,var(--c,var(--accent)) 45%,transparent)}
+:root[data-ui="vizor"] .kmp-drop{border-style:solid;border-color:var(--vz-hair);background:var(--vz-glass)}
+@media (min-width:700px){.kmp-t{min-height:7.2rem}.kmp-r{width:5.4rem;height:5.4rem}}
+@media (max-width:340px){.kmp-tiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* oluştur ekranındaki video kaynakları */
+.kmp-cdrop{margin:8px 16px 0;width:calc(100% - 32px)}
+.srcs.kmp-vsrc{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;padding:10px 16px 4px}
+.kmp-vsrc .src{flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:8px;padding:14px 8px;min-height:7.4rem;border-radius:20px}
+.kmp-vsrc .src .ic{width:2.9rem;height:2.9rem;color:#fff;background:var(--c,#DB2777);box-shadow:0 8px 16px -10px var(--c,#DB2777)}
+.kmp-vsrc .src:nth-child(1){--c:#DB2777}.kmp-vsrc .src:nth-child(2){--c:#0C7A63}.kmp-vsrc .src:nth-child(3){--c:#D97706}
+.kmp-vsrc .src b{font:600 .86rem/1.15 var(--f-display)}
+.kmp-vsrc .src small{font-size:.72rem;line-height:1.25;display:block}
+@media (max-width:360px){.srcs.kmp-vsrc{grid-template-columns:minmax(0,1fr)}.kmp-vsrc .src{flex-direction:row;justify-content:flex-start;text-align:left;min-height:0}}
+/* --- oynatıcı --- */
+.kvp{--kvp-max:70vh;position:relative;display:block;width:min(100%,calc(var(--kvp-max) * var(--kvp-ar,1.78)));aspect-ratio:var(--kvp-ar,1.78);max-height:var(--kvp-max);margin-inline:auto;background:#000;border-radius:18px;overflow:hidden;color:#fff;isolation:isolate;container-type:inline-size;-webkit-tap-highlight-color:transparent;touch-action:manipulation;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;outline:none;white-space:normal;font-size:.9rem}
+.kvp:focus-visible{box-shadow:0 0 0 3px var(--accent)}
+.kvp video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block;background:#000}
+.kvp video::-webkit-media-controls{display:none!important}
+.kvp-brk{position:absolute;inset:10px;z-index:2;background:var(--km-brk);background-repeat:no-repeat;color:color-mix(in srgb,var(--accent) 40%,#fff);opacity:0;transform:scale(1.04);transition:opacity .25s,transform .35s cubic-bezier(.2,.8,.2,1);pointer-events:none}
+.kvp:not(.on) .kvp-brk,.kvp.ui .kvp-brk{opacity:.9;transform:none}
+.kvp::after{content:"";position:absolute;inset:auto 0 0;height:4.6rem;z-index:1;background:linear-gradient(transparent,rgba(0,0,0,.62));opacity:0;transition:opacity .25s;pointer-events:none}
+.kvp:not(.on)::after,.kvp.ui::after{opacity:1}
+.kvp-big{position:absolute;left:50%;top:50%;z-index:3;width:4.2rem;height:4.2rem;margin:-2.1rem 0 0 -2.1rem;border-radius:50%;display:grid;place-items:center;color:#fff;background:rgba(10,14,12,.5);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:0 0 0 1.5px rgba(255,255,255,.55),0 10px 24px rgba(0,0,0,.35);transition:opacity .2s,transform .25s cubic-bezier(.34,1.42,.55,1)}
+.kvp-big svg.i{width:1.7rem;height:1.7rem;stroke-width:2.2}
+.kvp [data-ic="play"] svg.i,.kvp-big svg.i{fill:currentColor}
+.kvp [data-ic="play"] svg.i{transform:translateX(1.5px)}
+.kvp.on:not(.ui) .kvp-big,.kvp.wait .kvp-big,.kvp.err .kvp-big{opacity:0;transform:scale(.8);pointer-events:none}
+.kvp-big:active{transform:scale(.9)}
+.kvp-bar{position:absolute;left:0;right:0;bottom:0;z-index:4;display:flex;align-items:center;gap:2px;padding:6px 8px calc(6px + var(--kvp-sb,0px));transition:opacity .22s,transform .25s}
+.kvp.on:not(.ui):not(.scrub) .kvp-bar{opacity:0;transform:translateY(8px);pointer-events:none}
+.kvp-b{flex:none;width:2.3rem;height:2.3rem;border-radius:50%;display:grid;place-items:center;color:#fff}
+.kvp-b svg.i{width:1.25rem;height:1.25rem;stroke-width:2}
+.kvp-b:active{background:rgba(255,255,255,.18)}
+.kvp-b:focus-visible,.kvp-big:focus-visible,.kvp-sc:focus-visible{outline:2px solid #fff;outline-offset:1px}
+.kvp-rt{width:auto;min-width:2.3rem;padding:0 6px;border-radius:999px;font:700 .72rem/1 var(--f-mono)}
+.kvp-rt.on{background:var(--accent);color:var(--accent-ink)}
+.kvp-t,.kvp-d{flex:none;font:600 .7rem/1 var(--f-mono);letter-spacing:.02em;font-variant-numeric:tabular-nums;text-shadow:0 1px 2px rgba(0,0,0,.5);padding:0 4px}
+.kvp-sc{position:relative;flex:1;min-width:2.5rem;height:2rem;margin:0 7px;display:flex;align-items:center;cursor:pointer;touch-action:none}
+.kvp-tr{position:relative;flex:1;height:4px;border-radius:2px;background:rgba(255,255,255,.28);overflow:hidden;transition:height .15s}
+.kvp-tr i{position:absolute;inset:0;transform-origin:0 50%;transform:scaleX(0)}
+.kvp-buf{background:rgba(255,255,255,.35)}
+.kvp-fill{background:var(--accent)}
+.kvp-th{position:absolute;left:0;top:50%;width:13px;height:13px;margin:-6.5px 0 0 -6.5px;border-radius:50%;background:#fff;box-shadow:0 0 0 3px var(--accent),0 1px 4px rgba(0,0,0,.4);transform:scale(.7);transition:transform .15s}
+.kvp.scrub .kvp-th,.kvp-sc:hover .kvp-th{transform:scale(1)}
+.kvp.scrub .kvp-tr{height:6px}
+.kvp-spin{position:absolute;left:50%;top:50%;z-index:3;width:2.6rem;height:2.6rem;margin:-1.3rem 0 0 -1.3rem;border-radius:50%;border:3px solid rgba(255,255,255,.25);border-top-color:#fff;opacity:0;pointer-events:none;animation:sp .8s linear infinite;transition:opacity .2s}
+.kvp.wait .kvp-spin{opacity:1}
+.kvp-err{position:absolute;inset:0;z-index:3;display:none;place-content:center;justify-items:center;gap:6px;padding:12px;text-align:center;background:rgba(0,0,0,.55);font-size:.82rem}
+.kvp.err .kvp-err{display:grid}
+.kvp-sk{position:absolute;top:50%;z-index:3;display:flex;align-items:center;gap:4px;padding:8px 12px;margin-top:-1.2rem;border-radius:999px;background:rgba(0,0,0,.45);font:700 .78rem/1 var(--f-mono);opacity:0;pointer-events:none}
+.kvp-sk svg.i{width:1.1rem;height:1.1rem;stroke-width:2.4}
+.kvp-sk.l{left:12%}.kvp-sk.r{right:12%}
+.kvp-sk.go{animation:kvpSk .6s ease-out}
+@keyframes kvpSk{0%{opacity:0;transform:scale(.8)}25%{opacity:1;transform:none}100%{opacity:0;transform:translateX(var(--kvx,0))}}
+.kvp-sk.l.go{--kvx:-10px}.kvp-sk.r.go{--kvx:10px}
+@container (max-width:300px){.kvp-t,.kvp .kvp-pp{display:none}.kvp-b{width:2.05rem;height:2.05rem}.kvp-big{width:3.4rem;height:3.4rem;margin:-1.7rem 0 0 -1.7rem}.kvp-big svg.i{width:1.4rem;height:1.4rem}.kvp-bar{padding:4px 4px 5px}}
+@container (max-width:180px){.kvp-rt{display:none}}
+/* yerleşimler */
+.pv .kvp-cmp{--kvp-max:48vh;border-radius:0;width:100%}
+.pv:has(.kvp-cmp){display:block;background:#000}
+.kvp-post{margin:0 0 4px;background:#000;display:grid;justify-items:center;position:relative}
+.kvp-post .kvp{border-radius:0;--kvp-max:72vh}
+.kvp-to{position:absolute;top:10px;left:10px;z-index:5;display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;background:rgba(0,0,0,.45);color:#fff;font-size:.74rem;font-weight:700;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.kvp-to svg.i{width:1rem;height:1rem}
+#msgs .msg.has-kvp{padding:3px}
+.msg.has-kvp>.fwd,.msg.has-kvp>.quote{margin:4px 8px 6px}
+.msg.has-kvp>.edl{padding:0 8px 4px}
+.kvp-msg{--kvp-max:22rem;width:min(max(13rem,min(15rem,calc(var(--kvp-max) * var(--kvp-ar,.56)))),64vw);border-radius:16px;margin:0}
+.mrow.me .msg .kvp-msg{border-radius:16px 16px 4px 16px}
+@media (min-width:700px){.kvp-msg{width:max(15rem,min(20rem,calc(var(--kvp-max) * var(--kvp-ar,.56))));--kvp-max:26rem}}
+.kvfs{position:absolute;inset:0;pointer-events:auto;background:#000;display:grid;place-items:center}
+.kvfs .kvp{--kvp-max:100%;width:100%;height:100%;max-height:none;aspect-ratio:auto;border-radius:0;--kvp-sb:env(safe-area-inset-bottom,0px)}
+.kvfs .kvp-brk{inset:calc(14px + env(safe-area-inset-top,0px)) 14px calc(14px + env(safe-area-inset-bottom,0px))}
+/* --- sohbette yükleme balonu --- */
+#msgs .msg.kvu{padding:3px}
+.kvu-m{position:relative;width:min(13rem,calc(20rem * var(--kvp-ar,.56)),58vw);aspect-ratio:var(--kvp-ar,.56);max-height:20rem;border-radius:16px 16px 4px 16px;overflow:hidden;background:#101513;display:grid;place-items:center}
+.kvu-m img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.62) saturate(.9)}
+.kvu-m::before{content:"";position:absolute;inset:8px;background:var(--km-brk);background-repeat:no-repeat;color:rgba(255,255,255,.7);pointer-events:none}
+.kvu-ring{position:relative;width:3.6rem;height:3.6rem;display:grid;place-items:center}
+.kvu-ring svg{position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg)}
+.kvu-ring circle{fill:rgba(0,0,0,.35);stroke:rgba(255,255,255,.25);stroke-width:3}
+.kvu-ring .kvu-pr{fill:none;stroke:#fff;stroke-linecap:round;stroke-dasharray:100;stroke-dashoffset:calc(100 - var(--p,0));transition:stroke-dashoffset .3s}
+.kvu-row.spinning .kvu-ring svg{animation:sp 1.1s linear infinite}
+.kvu-row.spinning .kvu-pr{stroke-dashoffset:72}
+.kvu-x{position:relative;width:2.2rem;height:2.2rem;border-radius:50%;display:grid;place-items:center;color:#fff}
+.kvu-x svg.i{width:1.1rem;height:1.1rem;stroke-width:2.4}
+.kvu-st{position:absolute;left:0;right:0;bottom:8px;text-align:center;color:#fff;font:700 .7rem/1.2 var(--f-mono);text-shadow:0 1px 3px rgba(0,0,0,.6)}
+.kmdrag #msgs{outline:2px dashed var(--accent);outline-offset:-8px;border-radius:18px}
+/* --- toplu yükleme --- */
+.bq{display:grid;gap:12px;min-width:0;border-radius:18px}
+.bq-more{border:1px solid var(--line);border-radius:16px;padding:10px 14px;background:var(--surface);display:grid;gap:8px}
+.bq-more summary{display:flex;align-items:center;gap:8px;cursor:pointer;font-weight:700;font-size:.86rem;color:var(--fg);list-style:none}
+.bq-more summary::-webkit-details-marker{display:none}
+.bq-more summary svg.i{width:1.1rem;height:1.1rem;color:var(--accent)}
+.bq-more[open] summary{margin-bottom:4px}
+.bq-more .adm5-set{margin:0 -14px}
+.bq-note{display:flex;gap:8px;align-items:flex-start;margin:0;font-size:.82rem;color:var(--muted)}
+.bq-note svg.i{width:1.1rem;height:1.1rem;flex:none;color:var(--accent)}
+.bq-sum{display:grid;gap:8px}
+.bq-sl{display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.bq-sl b{font:600 .95rem/1.2 var(--f-display)}
+.bq-sl small{color:var(--muted);font-size:.78rem}
+.bq-pr{height:5px;border-radius:3px;background:var(--surface-2);overflow:hidden}
+.bq-pr.big{height:8px;border-radius:4px}
+.bq-pr i{display:block;height:100%;background:var(--accent);transform-origin:0 50%;transform:scaleX(0);transition:transform .3s}
+.bq-ctl{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.bq-wait{display:inline-flex;align-items:center;gap:6px;font-size:.8rem;font-weight:700;color:var(--muted)}
+.bq-wait svg.i{width:1rem;height:1rem}
+.bq-list{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.bq-it{display:grid;grid-template-columns:4.4rem minmax(0,1fr) auto;gap:10px;align-items:start;padding:10px;border-radius:16px;background:var(--surface);border:1px solid var(--line)}
+.bq-th{position:relative;width:4.4rem;height:5.6rem;border-radius:12px;overflow:hidden;background:var(--surface-2);display:grid;place-items:center}
+.bq-th img{width:100%;height:100%;object-fit:cover;display:block}
+.bq-th .spin{width:20px;height:20px;border-width:2.5px}
+.bq-k{position:absolute;left:4px;bottom:4px;display:inline-flex;align-items:center;gap:3px;padding:2px 6px 2px 4px;border-radius:999px;background:rgba(0,0,0,.55);color:#fff;font:700 .62rem/1.3 var(--f-mono)}
+.bq-k svg.i{width:.8rem;height:.8rem;stroke-width:2.2}
+.bq-m{display:grid;gap:6px;min-width:0}
+.bq-n{display:flex;gap:8px;align-items:baseline;min-width:0}
+.bq-n b{font-size:.84rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.bq-n small{flex:none;color:var(--muted);font-size:.72rem}
+.bq-cap{padding:8px 10px;font-size:.84rem;min-height:0}
+.bq-mu{display:flex;align-items:center;gap:6px;color:var(--muted)}
+.bq-mu svg.i{width:1rem;height:1rem;flex:none}
+.bq-mu select{padding:6px 8px;font-size:.8rem;min-height:0;width:auto;flex:1;min-width:0}
+.bq-st{font-size:.74rem;font-weight:700;color:var(--muted);overflow-wrap:anywhere}
+.bq-act{display:grid;gap:6px;justify-items:end}
+.bq-act .ib{width:2.2rem;height:2.2rem}
+.bq-it.st-done{border-color:color-mix(in srgb,var(--accent) 40%,var(--line))}
+.bq-it.st-done .bq-st{color:var(--accent)}
+.bq-it.st-err{border-color:color-mix(in srgb,var(--heart) 45%,var(--line))}
+.bq-it.st-err .bq-st{color:var(--heart)}
+.bq-it.st-err .bq-pr i{background:var(--heart)}
+.bq-it.st-prep,.bq-it.st-up,.bq-it.st-post{box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 45%,transparent)}
+.bq-it.st-prep .bq-pr i,.bq-it.st-up .bq-pr i{background:linear-gradient(90deg,var(--accent),color-mix(in srgb,var(--accent) 55%,#fff))}
+.bq-it input:disabled,.bq-it select:disabled{opacity:.6}
+:root[data-ui="vizor"] .bq-it,:root[data-ui="vizor"] .bq-more{border-color:var(--vz-hair);box-shadow:var(--vz-sh)}
+@media (max-width:380px){.bq-it{grid-template-columns:3.6rem minmax(0,1fr)}.bq-th{width:3.6rem;height:4.6rem}.bq-act{grid-column:1/-1;display:flex;justify-content:flex-end}}
+@media (prefers-reduced-motion:reduce){.kvp-sk.go,.kvu-row.spinning .kvu-ring svg{animation:none}.kvp-brk,.kvp-big,.kvp-bar,.kvp-th,.kvp-tr,.kmp-drop,.bq-pr i,.kvu-pr{transition:none}}
+:root.reduce-motion .kvp-sk.go,:root.reduce-motion .kvu-row.spinning .kvu-ring svg{animation:none}
+:root.reduce-motion :is(.kvp-brk,.kvp-big,.kvp-bar,.kvp-th,.kvp-tr,.kmp-drop,.bq-pr i,.kvu-pr){transition:none}
 /*}@css:51MEDIA*/
 
 /*@css:51STREAK{*/
@@ -2815,7 +2996,7 @@ const isActive=uid=>settings.showActive!==false&&!!uid&&!BOT[uid]&&S.online.has(
 function activeLabel(uid){if(settings.showActive===false||!uid||BOT[uid])return"";if(S.online.has(uid))return"Şu an aktif";const t=lastSeenAt(uid);if(!t)return"";const m=(now()-t)/60e3;if(m<1)return"Az önce aktifti";if(m<60)return`${Math.round(m)} dk önce aktifti`;if(m<1440)return`${Math.round(m/60)} sa önce aktifti`;if(m<10080)return`${Math.round(m/1440)} gün önce aktifti`;return""}
 const activeUsers=()=>humans().filter(isActive);
 function seenText(uid){if(settings.showActive===false)return"";if(S.online.has(uid))return"Çevrimiçi";const t=(S.lastSeen||{})[uid];if(!t)return"Çevrimdışı";const a=ago(t);return"Son görülme "+(a==="şimdi"?"az önce":a+" önce")}
-const msgPreview=m=>m?(m.text||(m.post?"Bir paylaşım gönderdi":m.img?"Fotoğraf":m.audio?"Sesli mesaj":m.call?"Arama":m.game?"Satranç daveti":"")):"";
+const msgPreview=m=>m?(m.text||(m.post?"Bir paylaşım gönderdi":m.img?"Fotoğraf":m.video?"Video":m.audio?"Sesli mesaj":m.call?"Arama":m.game?"Satranç daveti":"")):"";
 const noteOf=u=>{const n=S.profiles[u]&&S.profiles[u].note;return n&&n.text&&n.at>now()-24*H?n.text:""};
 function saveHidden(){const h=S.hidden||{};return write(()=>DB.set(`data/users/${S.uid}/hidden`,{msgs:h.msgs||{},chats:h.chats||{}}),{quiet:true})}
 function chatHead(key){const k=keyInfo(key);
@@ -3735,7 +3916,7 @@ async function sendMessage(key,payload){const k=keyInfo(key);if(k.type==="dm"&&!
  const at=now();const mid=at.toString(36)+Math.random().toString(36).slice(2,6);const msg={from:S.uid,at,...payload};if(!msg.text)delete msg.text;
  if(S.route.name==="chat"&&chatKey===k.cid){S.msgs=[...S.msgs,{id:mid,...msg}];renderMsgs()}
  if(!await write(()=>DB.set(`chats/${k.cid}/msgs/${mid}`,msg))){if(S.msgs.some(x=>x.id===mid)){S.msgs=S.msgs.filter(x=>x.id!==mid);renderMsgs()}return false}
- const preview=payload.text||(payload.post?"Bir paylaşım gönderdi":payload.img?"Fotoğraf":payload.audio?"Sesli mesaj":payload.call?callLabel(payload.call,false):"");
+ const preview=payload.text||(payload.post?"Bir paylaşım gönderdi":payload.img?"Fotoğraf":payload.video?"Video":payload.audio?"Sesli mesaj":payload.call?callLabel(payload.call,false):"");
  if(k.type==="meydan")await write(()=>DB.set("chats/meydan",{last:{text:preview,from:S.uid,at},updatedAt:at}),{quiet:true});
  else if(k.type==="group")await write(()=>DB.update("chats/"+k.cid,{last:{text:preview,from:S.uid,at},updatedAt:at,reads:{[S.uid]:at}}),{quiet:true});
  else{const meta={members:[S.uid,k.uid].sort(),last:{text:preview,from:S.uid,at},updatedAt:at,reads:{[S.uid]:at}};await write(()=>S.chats[k.cid]?DB.update("chats/"+k.cid,meta):DB.set("chats/"+k.cid,meta),{quiet:true})}
@@ -8766,6 +8947,450 @@ Object.assign(ADM5_ACT,{
 /*}@js:51ADM*/
 
 /*@js:51MEDIA{*/
+/* ===== 5.1 · Kadraj'a özel medya =====
+   1) Medya seçici (kmpOpen): pickImage'in yerini alır (eskisi pickImageOld). Büyük karolar (Galeri, Kamera, Video çek, Kadraj galerisi,
+      Çizim, Yapıştır), "Son seçtiklerin" şeridi (IndexedDB kadraj_media/recent, kişiye özel, en çok 12), çoklu seçim, tablet ve
+      bilgisayarda sürükle-bırak. Altta yine <input type=file> çalışır ama hiç görünmez (kmNative).
+   2) Kadraj oynatıcı (kvpHtml, kvpAdopt): vizör köşeli çerçeve, büyük oynat/duraklat, mm:ss süre çubuğu (sürükle), ses, 1x/1,5x/2x,
+      tam ekran (ayrı katman: kvpFs), dokunmatikte çift dokunma ±5 sn, kapak, yükleniyor halkası, tarayıcı denetimleri yok.
+      Olaylar document'ta yakalama aşamasında dinlenir; yeniden çizimde oynayan video korunur (kvpKeep/kvpPut; render ve renderMsgs sarıldı).
+      Kullanıldığı yerler: oluştur ekranındaki video önizlemesi (#vPrev), paylaşım sayfasındaki Klaket (vPost sarıldı → vPostOld), sohbet videoları.
+   3) Sohbette video: msg {video, poster, dur, ar}. Yükleme Klaket'le aynı yoldan (kmMem → kvPrep → kvStore: Cloudinary, olmazsa Firestore
+      parçaları) ama iptal edilebilir; balonda ilerleme halkası (KVU sırası, tek tek). attachPhoto sarıldı (attachPhotoOld): çoklu fotoğraf ve video.
+   4) Yönetici > Toplu Klaket yükle (BQ, ADM_EXTRA "toplu"): çok sayıda video/fotoğraf sırayla paylaşılır; duraklat, durdur, yeniden dene;
+      panel yeniden çizilse de sıra sürer (durum BQ'da, ilerleme doğrudan DOM'a yazılır). Yükleme sürerken otomatik güncelleme beklenir (verSafe sarıldı). */
+Object.assign(IP,{
+ kvexp:'<path d="M4 9V5.5A1.5 1.5 0 0 1 5.5 4H9M15 4h3.5A1.5 1.5 0 0 1 20 5.5V9M20 15v3.5a1.5 1.5 0 0 1-1.5 1.5H15M9 20H5.5A1.5 1.5 0 0 1 4 18.5V15"/>',
+ kvshr:'<path d="M9 4v3.5A1.5 1.5 0 0 1 7.5 9H4M20 9h-3.5A1.5 1.5 0 0 1 15 7.5V4M15 20v-3.5a1.5 1.5 0 0 1 1.5-1.5H20M4 15h3.5A1.5 1.5 0 0 1 9 16.5V20"/>',
+ kvback:'<path d="M11.5 6 5.5 12l6 6M18.5 6l-6 6 6 6"/>',
+ kvfwd:'<path d="m12.5 6 6 6-6 6M5.5 6l6 6-6 6"/>',
+ kvup:'<path d="M12 15V4.5M7.5 9 12 4.5 16.5 9"/><path d="M4 14.5V18a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3.5"/>',
+ kvretry:'<path d="M19.5 12a7.5 7.5 0 1 1-2.2-5.3"/><path d="M19.5 4.5v4.2h-4.2"/>'});
+
+/* --- ortak yardımcılar --- */
+const KM_VEXT=/\.(mp4|mov|m4v|webm|3gp|mkv)$/i;
+const kmIsVid=f=>!!f&&(String(f.type||"").startsWith("video/")||KM_VEXT.test(f.name||""));
+const kmIsImg=f=>!!f&&(String(f.type||"").startsWith("image/")||/\.(jpe?g|png|gif|webp|heic|heif|avif|bmp)$/i.test(f.name||""));
+const kmMB=b=>((b||0)/1048576).toFixed(1).replace(".",",")+" MB";
+const kmHasFiles=e=>{const t=e&&e.dataTransfer&&e.dataTransfer.types;return!!t&&[...t].includes("Files")};
+function kmAbort(){const e=new Error("İptal edildi");e.kvAbort=true;return e}
+/* 4.4.5'teki önlem herkes için: seçilen dosya hemen belleğe kopyalanır (Android okuma iznini sonradan geri alıyor) */
+async function kmMem(f){if(!f||f._mem)return f;const vid=kmIsVid(f);if(vid&&f.size>300*1048576)throw new Error("Video çok büyük (300 MB üstü). Daha kısa bir video seç.");
+ let buf;try{buf=await f.arrayBuffer()}catch(e){console.warn(e);throw new Error(vid?"Video okunamadı. Videoyu Galeri'den tekrar seç; bulutta duruyorsa önce telefona indir.":"Dosya okunamadı. Yeniden seç.")}
+ const nf=new File([buf],f.name||(vid?"klaket.mp4":"foto.jpg"),{type:f.type||(vid?"video/mp4":"image/jpeg")});nf._mem=1;return nf}
+function kvErrText(e){return e&&e.code==="quota_exceeded"?"Cihaz depolaması doldu. Daha kısa bir video seç ya da eski paylaşımları sil.":e&&e.name==="NotReadableError"?"Video dosyası okunamadı. Videoyu yeniden seç.":(e&&e.message)||"Bilinmeyen hata"}
+/* dosya seçici: görünmeyen <input type=file>; dizi | null (vazgeçildi) | undefined (seçici açılmadı) */
+function kmNative(accept,{capture,multi}={}){return new Promise(resolve=>{const inp=document.createElement("input");inp.type="file";inp.accept=accept;if(multi)inp.multiple=true;if(capture)inp.setAttribute("capture",capture);
+ inp.className="hidden-input";inp.tabIndex=-1;inp.setAttribute("aria-hidden","true");document.body.appendChild(inp);
+ let settled=false;const done=v=>{if(settled)return;settled=true;setTimeout(()=>inp.remove(),2000);resolve(v)};
+ inp.addEventListener("change",()=>done(inp.files&&inp.files.length?[...inp.files]:null));inp.addEventListener("cancel",()=>done(null));
+ try{inp.click()}catch{done(undefined);return}
+ const slow=S.onPickSlow;S.onPickSlow=null;setTimeout(()=>{if(!settled&&!document.hidden&&document.hasFocus()&&slow)slow()},4000)})}
+
+/* --- son seçilenler (IndexedDB; yalnızca bu cihazda, hesaba özel) --- */
+const KMR={p:null,
+ db(){if(this.p)return this.p;this.p=new Promise((res,rej)=>{try{const r=indexedDB.open("kadraj_media",1);r.onupgradeneeded=()=>{try{r.result.createObjectStore("recent",{keyPath:"id"})}catch{}};r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error);r.onblocked=()=>rej(new Error("blocked"))}catch(e){rej(e)}});this.p.catch(()=>{this.p=null});return this.p},
+ async all(){try{const db=await this.db();return await new Promise(res=>{const out=[];try{const q=db.transaction("recent","readonly").objectStore("recent").openCursor();q.onsuccess=()=>{const c=q.result;if(c){out.push(c.value);c.continue()}else res(out)};q.onerror=()=>res(out)}catch{res(out)}})}catch{return[]}},
+ async tx(fn){try{const db=await this.db();await new Promise(res=>{try{const t=db.transaction("recent","readwrite");fn(t.objectStore("recent"));t.oncomplete=res;t.onerror=res;t.onabort=res}catch{res()}})}catch{}},
+ async list(){if(!S.uid||S.guest)return[];return(await this.all()).filter(r=>r&&r.uid===S.uid&&(r.src||r.blob)).sort((a,b)=>b.at-a.at).slice(0,12)},
+ put(rec){return this.tx(st=>st.put(rec))},
+ del(ids){return ids.length?this.tx(st=>ids.forEach(id=>st.delete(id))):Promise.resolve()},
+ async add({img,src}){const u=S.uid;if(!u||S.guest||!window.indexedDB)return;try{let rec;
+  if(src)rec={id:u+"|g|"+src,uid:u,at:now(),src};
+  else{const iw=img.naturalWidth||img.videoWidth||img.width,ih=img.naturalHeight||img.videoHeight||img.height;if(!iw||!ih)return;const s=Math.min(1,1280/Math.max(iw,ih));const c=document.createElement("canvas");c.width=Math.round(iw*s);c.height=Math.round(ih*s);c.getContext("2d").drawImage(img,0,0,c.width,c.height);
+   const blob=await new Promise(r=>{try{c.toBlob(r,"image/jpeg",.86)}catch{r(null)}});if(!blob)return;rec={id:u+"|"+rid(),uid:u,at:now(),blob}}
+  await this.put(rec);const mine=(await this.all()).filter(r=>r&&r.uid===u).sort((a,b)=>b.at-a.at);await this.del(mine.slice(12).map(r=>r.id))}catch(e){console.warn("kmr",e)}},
+ async clear(){const u=S.uid;await this.del((await this.all()).filter(r=>r&&r.uid===u).map(r=>r.id))}};
+
+/* --- Kadraj medya seçici --- */
+/* kmpOpen({title, accept:"image"|"video"|"both", multi, max, draw, camera, gallery, paste, record, recS}) → [{img,src?} | {video:File}] | null */
+function kmpOpen(opt={}){const o={title:"Fotoğraf ekle",accept:"image",multi:false,max:10,draw:true,camera:true,gallery:true,paste:true,record:true,...opt};
+ const vOk=o.accept!=="image",iOk=o.accept!=="video";const max=o.multi?Math.max(1,o.max|0):1;const recS=o.recS||(S.mode==="local"?8:cldOn()?60:20);
+ return new Promise(resolve=>{let done=false;const urls=[];const picked=new Map();
+  const sel=()=>[...picked.values()];
+  const finish=v=>{if(done)return;done=true;document.removeEventListener("paste",onPaste,true);setTimeout(()=>urls.forEach(u=>{try{URL.revokeObjectURL(u)}catch{}}),30000);closeLayer("gal");closeLayer("pick");resolve(v&&v.length?v:null)};
+  const T=[["file",vOk&&!iOk?"film":"image",vOk&&!iOk?"Videolar":"Galeri",(vOk&&iOk?"Fotoğraf ve video":vOk?"Telefondaki videolar":"Telefondaki fotoğraflar")+(max>1?", çoklu":""),"#0C7A63"]];
+  if(o.camera&&iOk)T.push(["camera","camera","Kamera","Fotoğraf çek","#D97706"]);
+  if(o.record&&vOk)T.push(["rec","video","Video çek",`En fazla ${recS} sn`,"#DB2777"]);
+  if(o.gallery&&iOk)T.push(["gallery","grid","Kadraj galerisi","Hazır fotoğraflar","#1D4ED8"]);
+  if(o.draw&&iOk)T.push(["draw","pen","Çizim","Parmağınla çiz","#0E7490"]);
+  if(o.paste&&iOk)T.push(["paste","paste","Yapıştır","Kopyaladığın fotoğraf","#7C3AED"]);
+  const what=vOk&&iOk?"Fotoğraf ya da videoyu":vOk?"Videoyu":"Fotoğrafı";
+  const l=sheet("pick",o.title,`<div class="kmp${max>1?" multi":""}" id="kmp"><button type="button" class="kmp-drop" data-src="file"><span class="kmp-dic">${I("kvup")}</span><b>${what} buraya sürükle</b><small>ya da dokun, dosyalarından seç${max>1?` · en fazla ${max}`:""}</small></button><div class="kmp-tiles">${T.map(([k,ic,b,s,c])=>`<button type="button" class="kmp-t" data-src="${k}" style="--c:${c}"><span class="ic">${I(ic)}</span><b>${b}</b><small>${esc(s)}</small></button>`).join("")}</div><div class="kmp-rc" id="kmpRc" hidden><div class="kmp-rh"><span class="lbl">Son seçtiklerin</span><button type="button" class="kmp-rx" id="kmpRx">Temizle</button></div><div class="kmp-rr" id="kmpRr"></div></div><div class="hint" id="pickHint" hidden></div><div class="pastebox kmp-pb" contenteditable="true" id="pasteBox" hidden aria-label="Fotoğraf yapıştırma alanı">${I("paste")}<br>Kopyaladığın fotoğrafı buraya yapıştır<br><small>(uzun bas, sonra Yapıştır)</small></div><div class="kmp-busy" id="kmpBusy" hidden><span class="spin"></span><span>Hazırlanıyor…</span></div><div class="kmp-foot" id="kmpFoot" hidden><button type="button" class="btn block" id="kmpGo">Ekle</button></div></div>`,{onClose:()=>finish(null)});
+  const k=$("#kmp",l);const hint=$("#pickHint",l);
+  const showHint=()=>{if(done)return;hint.hidden=false;hint.innerHTML=`<b>Galerin açılmadı mı?</b> Tarayıcı izin vermiyor olabilir. ${iOk?"<b>Kadraj galerisi</b> ya da <b>Çizim</b> her zaman çalışır; fotoğrafı kopyalayıp <b>Yapıştır</b>'a da basabilirsin. ":""}${vOk?"Videoyu <b>Video çek</b> ile Kadraj'ın içinde çekebilirsin. ":""}Uygulamayı Chrome ya da Safari'de açmayı da dene.`;hint.scrollIntoView({block:"nearest"})};
+  let busyN=0;const busy=on=>{busyN=Math.max(0,busyN+(on?1:-1));const b=$("#kmpBusy",l);if(b)b.hidden=!busyN;k.classList.toggle("busy",!!busyN)};
+  const foot=()=>{const f=$("#kmpFoot",l);if(!f)return;f.hidden=!picked.size;$("#kmpGo",l).textContent=`Ekle (${picked.size})`};
+  const take=async files=>{files=[...(files||[])].filter(Boolean);if(!files.length||done)return;busy(true);const out=[];let bad=0,over=0;
+   try{for(const f of files){if(out.length+picked.size>=max){over++;continue}
+     if(kmIsVid(f)){if(!vOk){bad++;continue}try{out.push({video:await kmMem(f)})}catch(e){toast(e.message)}continue}
+     if(!iOk||(f.type&&!f.type.startsWith("image/"))){bad++;continue}
+     try{const img=await loadImg(await readFile(f));out.push({img});KMR.add({img})}catch{toast("Fotoğraf açılamadı. HEIC ise önce JPEG olarak kaydet ya da başka bir dosya dene.")}}}
+   finally{busy(false)}
+   if(bad)toast(!vOk?"Burada sadece fotoğraf ekleyebilirsin.":!iOk?"Burada sadece video ekleyebilirsin.":"Bu dosya türü desteklenmiyor.");
+   else if(over)toast(max>1?`En fazla ${max} dosya seçebilirsin; fazlası alınmadı.`:"Burada tek dosya seçebilirsin; ilki alındı.");
+   if(!done&&out.length)finish([...sel(),...out])};
+  const fromNative=async p=>{const r=await p;if(r===undefined){showHint();return}if(r)take(r)};
+  const acc=vOk&&iOk?"image/*,video/*,.mp4,.mov,.m4v,.webm,.3gp,.mkv":vOk?"video/*,.mp4,.mov,.m4v,.webm,.3gp,.mkv":"image/*";
+  $$('[data-src="file"]',l).forEach(b=>b.onclick=()=>{S.onPickSlow=showHint;fromNative(kmNative(acc,{multi:max>1}))});
+  const cam=$('[data-src="camera"]',l);if(cam)cam.onclick=()=>{S.onPickSlow=showHint;fromNative(kmNative("image/*",{capture:"environment"}))};
+  const rc=$('[data-src="rec"]',l);if(rc)rc.onclick=async()=>{Music.stop();const f=await openRecorder(recS);if(f)take([f])};
+  const gal=$('[data-src="gallery"]',l);if(gal)gal.onclick=()=>{const gs=new Set();
+   const g=sheet("gal","Kadraj galerisi",`<div class="gal kmp-gal${max>1?" multi":""}">${GALLERY.map(s=>`<button type="button" data-g="${s}" aria-label="Fotoğrafı seç" aria-pressed="false"><img src="${R(s)}" alt="" loading="lazy"><span class="kmp-ck">${I("check")}</span></button>`).join("")}</div>${max>1?`<div class="kmp-foot"><button type="button" class="btn block" id="galGo" disabled>Seç</button></div>`:""}`);
+   const one=async s=>{try{const img=await loadImg(R(s));KMR.add({src:s});return{img,src:s}}catch{toast("Fotoğraf yüklenemedi.");return null}};
+   $$("[data-g]",g).forEach(b=>b.onclick=async()=>{const s=b.dataset.g;if(max<=1){const it=await one(s);if(it)finish([it]);return}
+    if(gs.has(s))gs.delete(s);else{if(gs.size+picked.size>=max)return toast(`En fazla ${max} fotoğraf seçebilirsin.`);gs.add(s)}
+    b.setAttribute("aria-pressed",gs.has(s));const go=$("#galGo",g);go.disabled=!gs.size;go.textContent=gs.size?`Seç (${gs.size})`:"Seç"});
+   const go=$("#galGo",g);if(go)go.onclick=async()=>{const out=[];for(const s of gs){const it=await one(s);if(it)out.push(it)}if(out.length)finish([...sel(),...out]);else closeLayer("gal")}};
+  const dr=$('[data-src="draw"]',l);if(dr)dr.onclick=()=>openDraw().then(c=>{if(c){KMR.add({img:c});finish([...sel(),{img:c}])}});
+  const pb=$("#pasteBox",l);pb.addEventListener("input",()=>{pb.innerHTML=`${I("paste")}<br>Kopyaladığın fotoğrafı buraya yapıştır`});
+  const ps=$('[data-src="paste"]',l);if(ps)ps.onclick=async()=>{if(navigator.clipboard&&navigator.clipboard.read){try{const items=await navigator.clipboard.read();const fs=[];for(const it of items){const t=it.types.find(x=>x.startsWith("image/"));if(t)fs.push(new File([await it.getType(t)],"yapistir."+(t.split("/")[1]||"png"),{type:t}))}if(fs.length)return take(fs);toast("Panoda fotoğraf yok. Önce bir fotoğrafı kopyala.");return}catch(e){console.warn("pano",e&&e.name)}}
+   pb.hidden=false;pb.focus();pb.scrollIntoView({block:"nearest"})};
+  function onPaste(e){if(done||!iOk)return;const cd=e.clipboardData;const fs=[...(cd&&cd.files||[])].filter(kmIsImg);const its=fs.length?fs:[...(cd&&cd.items||[])].filter(x=>x.kind==="file"&&x.type.startsWith("image/")).map(x=>x.getAsFile()).filter(Boolean);
+   if(!its.length){if(e.target===pb){e.preventDefault();toast("Panoda fotoğraf yok. Önce bir fotoğrafı kopyala.")}return}e.preventDefault();take(its)}
+  if(o.paste)document.addEventListener("paste",onPaste,true);
+  const drawRecent=async()=>{const list=await KMR.list();if(done||!list.length)return;const rr=$("#kmpRr",l);if(!rr)return;
+   for(const r of list){r._u=r.src?R(r.src):URL.createObjectURL(r.blob);if(!r.src)urls.push(r._u)}
+   rr.innerHTML=list.map((r,i)=>`<button type="button" class="kmp-r" data-rc="${i}" aria-pressed="false" aria-label="Son seçilen fotoğraf ${i+1}"><img src="${esc(r._u)}" alt=""><span class="kmp-ck">${I("check")}</span></button>`).join("");$("#kmpRc",l).hidden=false;
+   const load=async r=>{try{const img=await loadImg(r._u);const{_u,...rest}=r;KMR.put({...rest,at:now()});return r.src?{img,src:r.src}:{img}}catch{toast("Fotoğraf açılamadı.");return null}};
+   $$("[data-rc]",rr).forEach(b=>b.onclick=async()=>{const r=list[+b.dataset.rc];if(!r)return;
+    if(max<=1){const it=await load(r);if(it)finish([it]);return}
+    if(picked.has(r.id)){picked.delete(r.id);b.setAttribute("aria-pressed","false")}else{if(picked.size>=max)return toast(`En fazla ${max} dosya seçebilirsin.`);const it=await load(r);if(!it)return;picked.set(r.id,it);b.setAttribute("aria-pressed","true")}foot()});
+   $("#kmpRx",l).onclick=async()=>{await KMR.clear();picked.clear();foot();$("#kmpRc",l).hidden=true;toast("Son seçilenler temizlendi")}};
+  $("#kmpGo",l).onclick=()=>finish(sel());
+  if(iOk)drawRecent();
+  /* sürükle-bırak: pencerenin tamamı */
+  const sh=l.querySelector(".sheet");let dc=0;
+  sh.addEventListener("dragenter",e=>{if(!kmHasFiles(e))return;e.preventDefault();dc++;k.classList.add("over")});
+  sh.addEventListener("dragover",e=>{if(!kmHasFiles(e))return;e.preventDefault();try{e.dataTransfer.dropEffect="copy"}catch{}});
+  sh.addEventListener("dragleave",()=>{dc=Math.max(0,dc-1);if(!dc)k.classList.remove("over")});
+  sh.addEventListener("drop",e=>{if(!kmHasFiles(e))return;e.preventDefault();e._km=1;dc=0;k.classList.remove("over");take([...e.dataTransfer.files])})})}
+/* pickImage artık Kadraj seçicisini açar; dönüş biçimi aynı: {img, src?} ya da {video} */
+const pickImageOld=pickImage;
+pickImage=function({title="Fotoğraf ekle",video=false,draw=true}={}){return kmpOpen({title,accept:video?"both":"image",draw,record:!!video}).then(a=>a&&a[0]||null)};
+
+/* --- Kadraj oynatıcı --- */
+const KVP_ON=new Set();let kvpRafId=0,kvpMusV=null;
+const KVP_RATES=[1,1.5,2];
+const kvpRateTxt=r=>String(r).replace(".",",")+"x";
+function kvpArN(ar){const m=String(ar||"").match(/^\s*([\d.]+)\s*\/\s*([\d.]+)\s*$/);if(!m)return 0;const a=+m[1],b=+m[2];return a>0&&b>0?Math.max(.3,Math.min(3,a/b)):0}
+const kvpOkSrc=u=>typeof u==="string"&&(/^(blob:|data:video\/)/.test(u)||/^https:\/\/res\.cloudinary\.com\//.test(u));
+function kvpHtml({src="",ref="",poster="",dur=0,ar="",cls="",mus="",muted=false,loop=false,label="Video",id="",fix=false}={}){const n=kvpArN(ar)||16/9;dur=+dur||0;
+ return`<div class="kvp${cls?" "+cls:""}" data-kvp tabindex="0" role="group" aria-label="${esc(label)}" style="--kvp-ar:${n}"${dur?` data-dur="${dur}"`:""}${mus?` data-mus="${esc(mus)}"`:""}${id?` data-kvid="${esc(id)}"`:""}${fix?' data-fixar="1"':""}><video playsinline webkit-playsinline preload="${src&&!settings.dataSaver?"metadata":"none"}"${src?` src="${esc(src)}"`:""}${ref?` data-kvref="${esc(ref)}"`:""}${poster?` poster="${esc(poster)}"`:""}${muted?" muted":""}${loop?" loop":""} disablepictureinpicture disableremoteplayback controlslist="nodownload noplaybackrate noremoteplayback nofullscreen"></video><span class="kvp-brk" aria-hidden="true"></span><span class="kvp-spin" aria-hidden="true"></span><span class="kvp-sk l" aria-hidden="true">${I("kvback")}<b>5 sn</b></span><span class="kvp-sk r" aria-hidden="true"><b>5 sn</b>${I("kvfwd")}</span><span class="kvp-err">${I("info")}<b>Video açılamadı</b></span><button type="button" class="kvp-big" data-kv="pp" aria-label="Oynat">${I("play")}</button><div class="kvp-bar"><button type="button" class="kvp-b kvp-pp" data-kv="pp" aria-label="Oynat">${I("play")}</button><span class="kvp-t" data-kvt>0:00</span><div class="kvp-sc" data-kv="sc" role="slider" tabindex="0" aria-label="Videoda konum" aria-valuemin="0" aria-valuemax="${Math.round(dur)}" aria-valuenow="0" aria-valuetext="0:00"><span class="kvp-tr"><i class="kvp-buf"></i><i class="kvp-fill"></i></span><b class="kvp-th"></b></div><span class="kvp-d" data-kvd>${mmss(dur)}</span><button type="button" class="kvp-b kvp-rt" data-kv="rate" aria-label="Oynatma hızı: 1x">1x</button><button type="button" class="kvp-b" data-kv="mute" aria-label="${muted?"Sesi aç":"Sesi kapat"}">${I(muted?"mute":"vol")}</button><button type="button" class="kvp-b" data-kv="fs" aria-label="Tam ekran">${I("kvexp")}</button></div></div>`}
+/* var olan bir <video>yu Kadraj oynatıcısına sarar (yerinden oynamaz, id'si ve dinleyicileri korunur) */
+function kvpAdopt(v,o={}){if(!v)return null;const had=v.closest(".kvp");if(had)return had;const w=document.createElement("div");w.innerHTML=kvpHtml({poster:v.getAttribute("poster")||"",muted:v.muted,loop:v.loop,...o});const box=w.firstElementChild;
+ v.removeAttribute("controls");v.controls=false;v.setAttribute("disablepictureinpicture","");v.setAttribute("controlslist","nodownload noplaybackrate noremoteplayback nofullscreen");v.playsInline=true;
+ v.parentNode.insertBefore(box,v);box.replaceChild(v,box.querySelector("video"));if(!v.paused){KVP_ON.add(box);kvpKick()}kvpSync(box);return box}
+const kvpV=b=>b&&b.querySelector("video");
+const kvpDur=b=>{const v=kvpV(b);const d=v&&v.duration;return isFinite(d)&&d>0?d:(+b.dataset.dur||0)};
+const kvpMuted=b=>{const v=kvpV(b);return b.dataset.mus?b.classList.contains("mm"):!!(v&&v.muted)};
+function kvpIc(x,want){if(x&&x.dataset.ic!==want){x.dataset.ic=want;x.innerHTML=I(want)}}
+function kvpIcons(b){const v=kvpV(b);if(!v)return;const on=!v.paused&&!v.ended;b.classList.toggle("on",on);
+ for(const x of b.querySelectorAll('[data-kv="pp"]')){kvpIc(x,on?"pause":"play");x.setAttribute("aria-label",on?"Duraklat":"Oynat")}
+ const mu=b.querySelector('[data-kv="mute"]');if(mu){const m=kvpMuted(b);kvpIc(mu,m?"mute":"vol");mu.setAttribute("aria-label",m?"Sesi aç":"Sesi kapat")}
+ const rt=b.querySelector('[data-kv="rate"]');if(rt){const t=kvpRateTxt(v.playbackRate||1);if(rt.textContent!==t)rt.textContent=t;rt.setAttribute("aria-label","Oynatma hızı: "+t);rt.classList.toggle("on",(v.playbackRate||1)!==1)}
+ const fs=b.querySelector('[data-kv="fs"]');if(fs){const inFs=!!b.closest(".kvfs");kvpIc(fs,inFs?"kvshr":"kvexp");fs.setAttribute("aria-label",inFs?"Tam ekrandan çık":"Tam ekran")}}
+function kvpTime(b,tt){const v=kvpV(b);if(!v)return;const d=kvpDur(b);const t=Math.max(0,Math.min(d||Infinity,tt!=null?tt:v.currentTime||0));const f=d?Math.min(1,t/d):0;
+ const fill=b.querySelector(".kvp-fill"),th=b.querySelector(".kvp-th"),te=b.querySelector("[data-kvt]"),sc=b.querySelector('[data-kv="sc"]');
+ if(fill)fill.style.transform=`scaleX(${f})`;if(th)th.style.left=(f*100)+"%";const s=mmss(t);if(te&&te.textContent!==s)te.textContent=s;
+ if(sc){sc.setAttribute("aria-valuenow",String(Math.round(t)));sc.setAttribute("aria-valuetext",s+" / "+mmss(d))}}
+function kvpDurUi(b){const d=kvpDur(b);const e=b.querySelector("[data-kvd]");if(e){const s=mmss(d);if(e.textContent!==s)e.textContent=s}const sc=b.querySelector('[data-kv="sc"]');if(sc)sc.setAttribute("aria-valuemax",String(Math.round(d)))}
+function kvpBuf(b){const v=kvpV(b);const d=kvpDur(b);const e=b.querySelector(".kvp-buf");if(!v||!e||!d)return;let end=0;try{const r=v.buffered;for(let i=0;i<r.length;i++)if(r.start(i)<=v.currentTime+.5)end=Math.max(end,r.end(i))}catch{}e.style.transform=`scaleX(${Math.min(1,end/d)})`}
+function kvpSync(b){if(!b)return;kvpIcons(b);kvpTime(b);kvpDurUi(b)}
+function kvpLoop(){kvpRafId=0;for(const b of KVP_ON){if(!b.isConnected){KVP_ON.delete(b);continue}if(!b._scrub)kvpTime(b)}if(KVP_ON.size)kvpRafId=requestAnimationFrame(kvpLoop)}
+function kvpKick(){if(!kvpRafId&&KVP_ON.size)kvpRafId=requestAnimationFrame(kvpLoop)}
+/* denetimler: duraklatınca hep görünür; oynarken dokununca 2,6 sn görünür */
+function kvpUi(b,show=true){clearTimeout(b._ht);if(!show){b.classList.remove("ui");return}b.classList.add("ui");const v=kvpV(b);
+ if(v&&!v.paused)b._ht=setTimeout(()=>{if(b._scrub||b.querySelector(".kvp-bar:hover")||b.querySelector(".kvp-bar :focus-visible"))return kvpUi(b);b.classList.remove("ui")},2600)}
+async function kvpPlay(b){const v=kvpV(b);if(!v)return;
+ if(!v.getAttribute("src")&&v.dataset.kvref){if(b._hy)return;b._hy=1;b.classList.add("wait");b.classList.remove("err");let u=null;try{u=await resolveVideo(v.dataset.kvref)}catch(e){console.warn(e)}b._hy=0;
+  if(!u){b.classList.remove("wait");b.classList.add("err");toast("Video açılamadı. Bağlantını kontrol et.");return}if(!b.isConnected)return;v.src=u}
+ if(!v.getAttribute("src"))return;
+ if(v.readyState<3)b.classList.add("wait");
+ try{await v.play()}catch(e){if(e&&e.name==="NotAllowedError"&&!v.muted){v.muted=true;try{await v.play()}catch{b.classList.remove("wait")}}else if(!e||e.name!=="AbortError")b.classList.remove("wait");kvpSync(b)}}
+function kvpToggle(b){const v=kvpV(b);if(!v)return;if(v.paused||v.ended)kvpPlay(b);else v.pause()}
+function kvpSkip(b,s){const v=kvpV(b);if(!v||!v.getAttribute("src"))return;const d=kvpDur(b);try{v.currentTime=Math.max(0,Math.min(d?d-.05:Infinity,(v.currentTime||0)+s))}catch{}
+ const el=b.querySelector(".kvp-sk."+(s<0?"l":"r"));if(el){el.classList.remove("go");void el.offsetWidth;el.classList.add("go")}vib(8);kvpTime(b)}
+function kvpMute(b){const v=kvpV(b);if(!v)return;
+ if(b.dataset.mus){if(b.classList.toggle("mm")){if(kvpMusV===v){Music.stop();kvpMusV=null}}else if(!v.paused){Music.start(b.dataset.mus);kvpMusV=v}}
+ else v.muted=!v.muted;kvpIcons(b)}
+function kvpRate(b){const v=kvpV(b);if(!v)return;const i=(KVP_RATES.indexOf(v.playbackRate)+1)%KVP_RATES.length;v.playbackRate=KVP_RATES[i];kvpIcons(b)}
+function kvpScrub(b,sc,e){const v=kvpV(b);const d=kvpDur(b);if(!v||!d||!v.getAttribute("src"))return;b._scrub=true;b.classList.add("scrub");kvpUi(b);try{sc.setPointerCapture(e.pointerId)}catch{}
+ const at=x=>{const r=sc.getBoundingClientRect();const f=Math.max(0,Math.min(1,(x-r.left)/Math.max(1,r.width)));const t=f*d;try{v.currentTime=Math.min(t,d-.05)}catch{}kvpTime(b,t)};at(e.clientX);
+ const mv=ev=>{if(ev.pointerId===e.pointerId)at(ev.clientX)};
+ const up=ev=>{if(ev.pointerId!==e.pointerId)return;sc.removeEventListener("pointermove",mv);sc.removeEventListener("pointerup",up);sc.removeEventListener("pointercancel",up);b._scrub=false;b.classList.remove("scrub");kvpUi(b);vib(6)};
+ sc.addEventListener("pointermove",mv);sc.addEventListener("pointerup",up);sc.addEventListener("pointercancel",up)}
+/* tam ekran: ayrı katmanda yeni bir oynatıcı (sohbet yeniden çizilse de bozulmaz); tarayıcı izin verirse gerçek tam ekran */
+function kvpFs(b){if(b.closest(".kvfs"))return closeLayer("kvfs");const v=kvpV(b);if(!v)return;const src=v.getAttribute("src");
+ if(!src){if(v.dataset.kvref)kvpPlay(b).then(()=>{if(v.getAttribute("src")&&b.isConnected)kvpFs(b)});return}
+ const t=v.currentTime||0,on=!v.paused&&!v.ended,rate=v.playbackRate||1,mm=b.classList.contains("mm"),kid=b.dataset.kvid||"";let fv=null;try{v.pause()}catch{}
+ const l=openLayer("kvfs",`<div class="kvfs" role="dialog" aria-label="Tam ekran video">${kvpHtml({src,poster:v.getAttribute("poster")||"",dur:kvpDur(b),cls:"kvp-full",mus:b.dataset.mus||"",muted:v.muted,loop:v.loop,label:"Tam ekran video",fix:true})}</div>`,{noScrim:true,onClose:()=>{if(!fv)return;const tt=fv.currentTime||0,non=!fv.paused&&!fv.ended,r2=fv.playbackRate||1;try{fv.pause()}catch{}if(kvpMusV===fv){Music.stop();kvpMusV=null}fv.removeAttribute("src");try{fv.load()}catch{}
+   try{if(document.fullscreenElement&&document.exitFullscreen)document.exitFullscreen().catch(()=>{})}catch{}try{screen.orientation&&screen.orientation.unlock&&screen.orientation.unlock()}catch{}
+   const ob=b.isConnected?b:(kid?document.querySelector(`#main .kvp[data-kvid="${CSS.escape(kid)}"]`):null);const ov=ob&&kvpV(ob);if(ov&&ov.getAttribute("src")){try{ov.currentTime=tt}catch{}ov.playbackRate=r2;if(non)kvpPlay(ob);kvpSync(ob)}}});
+ const box=l.querySelector(".kvp");fv=kvpV(box);if(mm)box.classList.add("mm");fv.preload="auto";fv.playbackRate=rate;
+ const go=()=>{try{fv.currentTime=t}catch{}fv.playbackRate=rate;if(on)kvpPlay(box);kvpSync(box);kvpUi(box)};if(fv.readyState>=1)go();else fv.addEventListener("loadedmetadata",go,{once:true});
+ const el=l.querySelector(".kvfs");try{const rq=el.requestFullscreen||el.webkitRequestFullscreen;if(rq){const p=rq.call(el,{navigationUI:"hide"});if(p&&p.then)p.then(()=>{el._fs=1;try{if(v.videoWidth>v.videoHeight&&screen.orientation&&screen.orientation.lock)screen.orientation.lock("landscape").catch(()=>{})}catch{}}).catch(()=>{})}}catch{}
+ setTimeout(()=>{try{box.focus({preventScroll:true})}catch{}},60)}
+document.addEventListener("fullscreenchange",()=>{if(document.fullscreenElement)return;const l=$('#overlay [data-layer="kvfs"]');const el=l&&l.querySelector(".kvfs");if(el&&el._fs)closeLayer("kvfs")});
+/* medya olayları kabarcıklanmaz; belge düzeyinde yakalama aşamasında dinlenir */
+function kvpEv(e){const v=e.target;if(!v||v.tagName!=="VIDEO")return;const b=v.parentElement;if(!b||!b.classList||!b.classList.contains("kvp"))return;
+ switch(e.type){
+  case"play":KVP_ON.add(b);kvpKick();b.classList.remove("err");for(const o of $$(".kvp video"))if(o!==v&&!o.paused)try{o.pause()}catch{}
+   if(b.dataset.mus){v.muted=true;if(!b.classList.contains("mm")){Music.start(b.dataset.mus);kvpMusV=v}}kvpUi(b);break;
+  case"playing":case"canplay":case"seeked":b.classList.remove("wait");break;
+  case"pause":case"ended":KVP_ON.delete(b);b.classList.remove("wait");if(kvpMusV===v){Music.stop();kvpMusV=null}kvpUi(b);break;
+  case"waiting":if(!v.paused)b.classList.add("wait");break;
+  case"loadedmetadata":if(v.videoWidth&&v.videoHeight&&!b.dataset.fixar)b.style.setProperty("--kvp-ar",String(Math.max(.3,Math.min(3,v.videoWidth/v.videoHeight))));break;
+  case"progress":kvpBuf(b);return;
+  case"error":if(v.getAttribute("src")){b.classList.add("err");b.classList.remove("wait")}break}
+ kvpSync(b)}
+["play","playing","pause","ended","waiting","canplay","seeked","loadedmetadata","durationchange","volumechange","ratechange","progress","error"].forEach(ev=>document.addEventListener(ev,kvpEv,true));
+const kvpBoxOf=e=>{const t=e.target;return t&&t.closest?t.closest(".kvp"):null};
+document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data-kv]");if(!t)return;const b=t.closest(".kvp");if(!b)return;e.preventDefault();e.stopPropagation();const a=t.dataset.kv;
+ if(a==="pp")kvpToggle(b);else if(a==="mute")kvpMute(b);else if(a==="rate")kvpRate(b);else if(a==="fs")kvpFs(b);else return;kvpUi(b)},true);
+document.addEventListener("pointerdown",e=>{const b=kvpBoxOf(e);if(!b)return;
+ const sc=e.target.closest('[data-kv="sc"]');if(sc){e.preventDefault();setTimeout(()=>{clearTimeout(lpT);lpXY=null},0);kvpScrub(b,sc,e);return}
+ if(e.target.closest(".kvp-bar,button"))return;b._pd={x:e.clientX,y:e.clientY,t:now()}},true);
+document.addEventListener("pointerup",e=>{const b=kvpBoxOf(e);if(!b)return;if(b.closest(".msg"))lastTap={id:null,t:0};/* video balonunda çift dokunma kalp değil, ±5 sn */
+ const pd=b._pd;b._pd=null;if(!pd||e.target.closest(".kvp-bar,button"))return;if(Math.hypot(e.clientX-pd.x,e.clientY-pd.y)>12||now()-pd.t>450)return;
+ if(e.pointerType==="mouse"){kvpToggle(b);kvpUi(b);return}
+ const r=b.getBoundingClientRect();const z=(e.clientX-r.left)/Math.max(1,r.width);const t=now();const side=z<.4?-5:z>.6?5:0;
+ if(side&&b._sk&&t-b._sk<700&&b._sks===side){clearTimeout(b._st);b._lt=0;b._sk=t;kvpSkip(b,side);return}
+ if(b._lt&&t-b._lt<300){clearTimeout(b._st);b._lt=0;if(side){b._sk=t;b._sks=side;kvpSkip(b,side)}else kvpToggle(b);kvpUi(b);return}
+ b._lt=t;clearTimeout(b._st);b._st=setTimeout(()=>{b._lt=0;const v=kvpV(b);if(!v)return;if(v.paused||v.ended){kvpPlay(b);kvpUi(b)}else kvpUi(b,!b.classList.contains("ui"))},280)},true);
+document.addEventListener("dblclick",e=>{const b=kvpBoxOf(e);if(!b||e.target.closest(".kvp-bar,button"))return;e.preventDefault();kvpFs(b)});
+document.addEventListener("pointermove",e=>{if(e.pointerType!=="mouse")return;const b=kvpBoxOf(e);if(b&&!b._scrub){const n=now();if(!b._mvT||n-b._mvT>250){b._mvT=n;kvpUi(b)}}},{passive:true});
+document.addEventListener("contextmenu",e=>{const b=kvpBoxOf(e);if(b&&!b.closest(".msg"))e.preventDefault()});
+document.addEventListener("keydown",e=>{const b=kvpBoxOf(e);if(!b||e.ctrlKey||e.metaKey||e.altKey)return;const k=e.key;const self=e.target===b,sc=e.target.matches&&e.target.matches('[data-kv="sc"]');
+ if(((k===" "||k==="Enter")&&self)||k==="k"||k==="K"){e.preventDefault();kvpToggle(b)}
+ else if((k==="ArrowLeft"&&(self||sc))||k==="j"||k==="J"){e.preventDefault();kvpSkip(b,-5)}
+ else if((k==="ArrowRight"&&(self||sc))||k==="l"||k==="L"){e.preventDefault();kvpSkip(b,5)}
+ else if(k==="m"||k==="M"){e.preventDefault();kvpMute(b)}
+ else if(k==="f"||k==="F"){e.preventDefault();kvpFs(b)}
+ else return;kvpUi(b)});
+/* yeniden çizimde oynayan (ya da başlatılmış) oynatıcıyı koru */
+function kvpKeep(root){const m=new Map();if(!root)return m;for(const b of root.querySelectorAll(".kvp[data-kvid]")){const v=kvpV(b);if(v&&v.getAttribute("src")&&(!v.paused||v.currentTime>0))m.set(b.dataset.kvid,b)}return m}
+function kvpPut(root,m){if(!root||!m||!m.size)return;for(const[id,old]of m){if(old.isConnected)continue;const nb=root.querySelector(`.kvp[data-kvid="${CSS.escape(id)}"]`);if(nb&&nb!==old){nb.replaceWith(old);kvpSync(old)}}}
+const renderBaseM51=render;
+render=function(...a){const keep=kvpKeep($("#main"));const r=renderBaseM51.apply(this,a);try{kvpPut($("#main"),keep)}catch(e){console.warn(e)}return r};
+HOOKS.after.push(()=>{if(kvpMusV&&!kvpMusV.isConnected){Music.stop();kvpMusV=null}});
+
+/* --- paylaşım sayfası: Klaket videosu sayfada oynar --- */
+const vPostOld=vPost;
+vPost=function(id){const h=vPostOld(id);try{const p=postById(id);if(!p||p.kind!=="reel"||!p.video||!canSee(p))return h;const m=mediaHtml(p);const i=h.indexOf(m);if(i<0)return h;
+ const chunk=String(p.video).startsWith("chunk:");const src=vsrc(p);const mus=p.music&&p.music!=="none"?p.music:"";
+ const pl=`<div class="kvp-post">${kvpHtml({src,ref:chunk&&!src?p.video:"",poster:R(p.poster||""),dur:p.dur||0,ar:"9/16",cls:"kvp-pd",mus,loop:true,label:"Klaket videosu",id:"p-"+p.id})}<button type="button" class="kvp-to" data-reel="${esc(p.id)}">${I("reels")}Klaket akışında aç</button></div>`;
+ return h.slice(0,i)+pl+h.slice(i+m.length)}catch(e){console.warn(e);return h}};
+
+/* --- video hazırlama ve yükleme (Klaket ile aynı kurallar; iptal edilebilir) --- */
+async function kvPrep(f,{onProg,alive=()=>true}={}){f=await kmMem(f);
+ const lim2=S.mode==="local"?1.5*1048576:cldOn()?CLD.maxMB*1048576:VMAX;const tgt=S.mode==="local"?lim2:cldOn()?lim2:3*1048576;
+ const longV=cldOn()&&(await vidDur(f))>CLD.maxS+3;
+ if(f.size>tgt||longV){const big=f.size>lim2;let g=null;
+  try{g=await compressVideo(f,{maxSide:cldOn()?1280:854,maxS:cldOn()?CLD.maxS:30,limit:cldOn()?25*1048576:tgt,onProg})}
+  catch(e){if(!alive())throw kmAbort();if(big)throw new Error((e&&e.message)||"Video hazırlanamadı.");if(longV)throw new Error("Video 2 dakikadan uzun ve kısaltılamadı. Daha kısa bir video seç.")}
+  if(!alive())throw kmAbort();if(g&&g.size<f.size){g._mem=1;f=g}
+  if(f.size>lim2)throw new Error("Video hâlâ çok büyük. Daha kısa bir video seç.")}
+ return f}
+function kvCld(file,onProg,ctl){return new Promise((res,rej)=>{if(ctl&&ctl.aborted)return rej(kmAbort());const fd=new FormData();fd.append("file",file);fd.append("upload_preset",CLD.preset);
+ const x=new XMLHttpRequest();if(ctl)ctl.xhr=x;x.open("POST",`https://api.cloudinary.com/v1_1/${CLD.cloud}/video/upload`);
+ x.upload.onprogress=e=>{if(e.lengthComputable&&onProg)onProg(e.loaded,e.total)};
+ x.onload=()=>{let j=null;try{j=JSON.parse(x.responseText)}catch{}if(x.status>=200&&x.status<300&&j&&j.secure_url){cldTrack(j.bytes||file.size);cldWarm(j.secure_url);res(j.secure_url)}else rej(new Error((j&&j.error&&j.error.message)||"Cloudinary yüklemesi başarısız"))};
+ x.onerror=()=>rej(new Error("Bağlantı hatası"));x.ontimeout=()=>rej(new Error("Zaman aşımı"));x.onabort=()=>rej(kmAbort());x.timeout=10*60e3;x.send(fd)})}
+/* storeVideo ile aynı yol: bulut (bağlantı hatasında bir kez daha), olmazsa küçültüp Firestore parçaları */
+async function kvStore(file,onProg,ctl){const chk=()=>{if(ctl&&ctl.aborted)throw kmAbort()};
+ if(cldOn()){let err=null;for(let i=0;i<2;i++){chk();try{return await kvCld(file,onProg,ctl)}catch(e){if(e&&e.kvAbort)throw e;console.warn("cloudinary",e);err=e;if(!/Bağlantı|Zaman/.test(e&&e.message||""))break}}
+  if(file.size>VMAX){let g=null;try{g=await compressVideo(file,{maxS:60,limit:Math.round(VMAX*.85),onProg:p=>onProg&&onProg(Math.round(p*100),100)})}catch(e2){console.warn(e2)}chk();
+   if(!g||g.size>VMAX)throw new Error("Video yüklenemedi ("+((err&&err.message)||"bulut hatası")+"). Daha kısa bir video dene.");file=g}}
+ chk();const ref=await storeVideoFs(file,onProg);if(ctl&&ctl.aborted){delChunks(ref);throw kmAbort()}return ref}
+/* sohbet kapağı: videonun kendi oranında küçük JPEG */
+function kvPoster(url,maxSide=360){return new Promise(res=>{const v=document.createElement("video");v.muted=true;v.preload="auto";v.playsInline=true;let done=false;
+ const fin=r=>{if(done)return;done=true;try{v.pause()}catch{}v.removeAttribute("src");try{v.load()}catch{}res(r)};
+ v.onloadeddata=()=>{try{v.currentTime=Math.min(1,(isFinite(v.duration)&&v.duration>0?v.duration:2)/2)}catch{fin(null)}};
+ v.onseeked=()=>{try{const w=v.videoWidth,h=v.videoHeight;if(!w||!h)return fin(null);const s=Math.min(1,maxSide/Math.max(w,h));const c=document.createElement("canvas");c.width=Math.round(w*s);c.height=Math.round(h*s);c.getContext("2d").drawImage(v,0,0,c.width,c.height);fin({img:c.toDataURL("image/jpeg",.66),ar:w+"/"+h})}catch{fin(null)}};
+ v.onerror=()=>fin(null);setTimeout(()=>fin(null),7000);v.src=url;try{const p=v.play();if(p&&p.then)p.then(()=>{try{v.pause()}catch{}}).catch(()=>{})}catch{}})}
+
+/* --- sohbette fotoğraf ve video --- */
+const KVU=[];let kvuBusy=false;
+/* gönderimden önce: sendMessage'in çocuk modu/grup kurallarıyla aynı (yüklemeye boşuna başlanmasın) */
+function kvCanSend(key){let k;try{k=keyInfo(key)}catch{return false}
+ if(k.type==="bot"){toast("Botlara video gönderilemez.");return false}if(!guard())return false;if(k.type==="dm"&&!childGate(k.uid))return false;
+ if(!S.admin){if(k.type==="meydan"&&isChild(S.uid)){toast("Çocuk modunda Meydan kapalı.");return false}
+  if(k.type==="dm"&&!BOT[k.uid]&&isChild(k.uid)&&!isChild(S.uid)&&!(isFollowing(S.uid,k.uid)&&isFollowing(k.uid,S.uid))){toast("Bu kişi Çocuk Modu'nda; ona yalnızca karşılıklı arkadaşları yazabilir.");return false}
+  if(k.type==="group"){const gc=S.chats[k.cid];if(gc?(Array.isArray(gc.members)&&!gc.members.includes(S.uid)):S._chatsIn){toast("Bu grubun üyesi değilsin.");return false}}}
+ return true}
+async function kvSendImg(key,img,extra={}){const iw=img.naturalWidth||img.width,ih=img.naturalHeight||img.height;const s=Math.min(1,900/Math.max(iw,ih));const c=document.createElement("canvas");c.width=Math.round(iw*s);c.height=Math.round(ih*s);c.getContext("2d").drawImage(img,0,0,c.width,c.height);S.forceBottom=true;return sendMessage(key,{img:encode(c,150000),text:"",...extra})}
+function kvSendVideo(key,file,extra={}){if(!kvCanSend(key))return false;KVU.push({id:"u"+rid(),key,file,extra,st:"wait",pct:0,poster:"",ar:"9/16",ctl:{aborted:false,xhr:null}});S.forceBottom=true;kvuPaint();kvuPump();return true}
+async function kvChatSend(key,items){const extra=S.replyTo?{reply:S.replyTo}:{};S.replyTo=null;drawReply();let first=true;
+ for(const x of items){const ex=first?extra:{};first=false;if(x.video){kvSendVideo(key,x.video,ex);continue}if(x.img)await kvSendImg(key,x.img,ex)}}
+async function kvuPump(){if(kvuBusy)return;kvuBusy=true;try{let u;while((u=KVU.find(x=>x.st==="wait")))await kvuDo(u)}finally{kvuBusy=false}}
+async function kvuDo(u){const alive=()=>!u.ctl.aborted;let ref=null;
+ try{u.st="prep";kvuUpd(u);let f=await kmMem(u.file);u.file=null;if(!alive())return;
+  const url0=URL.createObjectURL(f);const pm=await kvPoster(url0);URL.revokeObjectURL(url0);if(pm){u.poster=pm.img;u.ar=pm.ar}if(!alive())return;kvuPaint();
+  const dur=await vidDur(f).catch(()=>0);
+  f=await kvPrep(f,{onProg:p=>{u.pct=p;kvuUpd(u)},alive});if(!alive())return;
+  u.st="up";u.pct=0;kvuUpd(u);ref=await kvStore(f,(i,n)=>{u.pct=i/Math.max(1,n);kvuUpd(u)},u.ctl);if(!alive()){delChunks(ref);return}
+  vcache[ref]=URL.createObjectURL(f);u.st="send";kvuUpd(u);const i=KVU.indexOf(u);if(i>=0)KVU.splice(i,1);
+  const ok=await sendMessage(u.key,{video:ref,text:"",...(u.poster?{poster:u.poster}:{}),...(dur>0?{dur:Math.round(dur*10)/10}:{}),ar:u.ar,...u.extra});
+  if(!ok){delChunks(ref);if(ok===false)toast("Video gönderilemedi.")}}
+ catch(e){if(ref)delChunks(ref);if(!(e&&e.kvAbort)&&alive()){console.warn(e);toast("Video gönderilemedi: "+kvErrText(e))}}
+ finally{const i=KVU.indexOf(u);if(i>=0)KVU.splice(i,1);kvuPaint()}}
+function kvuRow(u){return`<div class="mrow me kvu-row" id="kvu-${u.id}"><div class="mcol"><div class="msg kvu"><div class="kvu-m" style="--kvp-ar:${kvpArN(u.ar)||9/16}">${u.poster?`<img src="${esc(u.poster)}" alt="">`:""}<span class="kvu-ring"><svg viewBox="0 0 44 44" aria-hidden="true"><circle cx="22" cy="22" r="19"/><circle class="kvu-pr" cx="22" cy="22" r="19" pathLength="100"/></svg><button type="button" class="kvu-x" data-kvux="${u.id}" aria-label="Gönderimi iptal et">${I("close")}</button></span><span class="kvu-st" role="status"></span></div></div></div></div>`}
+function kvuUpd(u){const r=document.getElementById("kvu-"+u.id);if(!r)return;const p=Math.round(Math.max(0,Math.min(1,u.pct||0))*100);const ring=r.querySelector(".kvu-ring");if(ring)ring.style.setProperty("--p",u.st==="send"?100:u.st==="wait"?0:p);
+ const s=r.querySelector(".kvu-st");if(s)s.textContent=u.st==="wait"?"Sırada":u.st==="prep"?(p?`Hazırlanıyor %${p}`:"Hazırlanıyor"):u.st==="up"?`Yükleniyor %${p}`:"Gönderiliyor";r.classList.toggle("spinning",(u.st==="prep"&&!p)||u.st==="send"||u.st==="wait")}
+function kvuPaint(){const box=$("#msgs");if(!box||S.route.name!=="chat")return;box.querySelectorAll(".kvu-row").forEach(e=>e.remove());const list=KVU.filter(u=>u.key===S.route.params.key);if(!list.length)return;
+ const pin=box._pin!==false||S.forceBottom;box.insertAdjacentHTML("beforeend",list.map(kvuRow).join(""));list.forEach(kvuUpd);if(pin){box.scrollTop=box.scrollHeight;S.forceBottom=false}}
+document.addEventListener("click",e=>{const x=e.target.closest&&e.target.closest("[data-kvux]");if(!x)return;e.stopPropagation();const u=KVU.find(q=>q.id===x.dataset.kvux);if(!u)return;
+ u.ctl.aborted=true;try{u.ctl.xhr&&u.ctl.xhr.abort()}catch{}const i=KVU.indexOf(u);if(i>=0)KVU.splice(i,1);kvuPaint();toast("Video gönderimi iptal edildi")},true);
+function kvMsgHtml(m){const ref=String(m.video||"");const chunk=ref.startsWith("chunk:");const c=vcache[ref];const src=c||(chunk?"":cldPlay(ref));if(!c&&!chunk&&!kvpOkSrc(src))return"";
+ const poster=/^data:image\//.test(m.poster||"")?m.poster:"";return kvpHtml({src,ref:chunk&&!c?ref:"",poster,dur:m.dur||0,ar:m.ar||"9/16",cls:"kvp-msg",label:"Video mesaj",id:"m-"+(m.id||"")})}
+function kvMsgDecor(keep){if(S.route.name!=="chat")return;const box=$("#msgs");if(!box)return;let added=false;
+ for(const m of currentMsgs()){if(!m||!m.video||m.del||!m.id)continue;const el=document.getElementById("m-"+m.id);if(!el||el.querySelector(".kvp"))continue;
+  let node=keep&&keep.get("m-"+m.id);if(!node){const h=kvMsgHtml(m);if(!h)continue;const w=document.createElement("div");w.innerHTML=h;node=w.firstElementChild}
+  const anc=[...el.children].filter(c=>c.matches(".fwd,.quote")).pop();if(anc)anc.after(node);else el.prepend(node);el.classList.add("has-kvp");kvpSync(node);added=true}
+ if(added&&box._pin!==false)box.scrollTop=box.scrollHeight}
+const renderMsgsBaseM51=renderMsgs;
+renderMsgs=function(...a){const keep=kvpKeep($("#msgs"));const r=renderMsgsBaseM51.apply(this,a);try{kvMsgDecor(keep)}catch(e){console.warn(e)}try{kvuPaint()}catch(e){console.warn(e)}return r};
+/* + menüsü ve ekle düğmesi: Kadraj seçici, çoklu fotoğraf ve video */
+const attachPhotoOld=attachPhoto;
+attachPhoto=async function(){const key=S.route&&S.route.params&&S.route.params.key;if(!key)return attachPhotoOld();let k;try{k=keyInfo(key)}catch{return attachPhotoOld()}
+ const vOk=k.type!=="bot";const r=await kmpOpen({title:vOk?"Fotoğraf ya da video gönder":"Fotoğraf gönder",accept:vOk?"both":"image",multi:true,max:10});if(r)kvChatSend(key,r)};
+const plusMenuBaseM51=plusMenu;
+plusMenu=function(...a){const r=plusMenuBaseM51.apply(this,a);try{const l=$('#overlay [data-layer="plus"]');const b=l&&$("#pph",l);const k=keyInfo(S.route.params.key);
+ if(b&&k.type!=="bot"){const t=b.querySelector("b"),s=b.querySelector("small");if(t)t.textContent="Fotoğraf ya da video";if(s)s.textContent="Galeri, kamera, çizim · birden çok seçebilirsin"}}catch(e){console.warn(e)}return r};
+/* iletme: video da taşınsın */
+const fwdSheetBaseM51=fwdSheet;
+fwdSheet=function(m){const r=fwdSheetBaseM51(m);try{if(m&&m.video&&!m.del){const l=$('#overlay [data-layer="fwd"]');if(l)$$("[data-fwd]",l).forEach(b=>b.onclick=async()=>{closeLayer("fwd");const p={fwd:1,video:m.video,text:m.text||""};if(m.poster)p.poster=m.poster;if(m.dur)p.dur=m.dur;if(m.ar)p.ar=m.ar;if(await sendMessage(b.dataset.fwd,p))toast("İletildi")})}}catch(e){console.warn(e)}return r};
+
+/* --- oluştur ekranı: Kadraj oynatıcı, sürükle-bırak, çoklu kare --- */
+const drawComposerBaseM51=drawComposer;
+drawComposer=function(...a){const r=drawComposerBaseM51.apply(this,a);try{kmComposerDecor()}catch(e){console.warn(e)}return r};
+function kmComposerDecor(){const c=S.cmp;const l=$('#overlay [data-layer="composer"]');if(!c||!l||c.kind!=="reel")return;
+ if(c.mode==="video"){const v=$("#vPrev",l);if(v){const box=kvpAdopt(v,{cls:"kvp-cmp",mus:c.vmusic&&c.vmusic!=="none"?c.vmusic:"",loop:true,label:"Video önizlemesi"});
+   $$("[data-vmu]",l).forEach(b=>b.addEventListener("click",()=>{if(!box)return;const m=c.vmusic&&c.vmusic!=="none"?c.vmusic:"";if(m)box.dataset.mus=m;else delete box.dataset.mus;box.classList.remove("mm");if(m&&!v.paused)kvpMusV=v;else if(kvpMusV===v)kvpMusV=null;kvpIcons(box)}))}
+  const srcs=$("#rBody .srcs",l);if(srcs&&!srcs.classList.contains("kmp-vsrc")){srcs.classList.add("kmp-vsrc");srcs.insertAdjacentHTML("beforebegin",`<button type="button" class="kmp-drop kmp-cdrop" id="kmCDrop"><span class="kmp-dic">${I("kvup")}</span><b>Videoyu buraya sürükle</b><small>ya da dokun, galeriden seç</small></button>`);const vp=$("#vPick",l);$("#kmCDrop",l).onclick=()=>vp&&vp.click()}}
+ else{const sa=$("#sAdd",l);if(sa)sa.onclick=async()=>{const room=3-c.slides.length;if(room<1)return;const r=await kmpOpen({title:"Kare ekle",accept:"image",multi:room>1,max:room});if(!r||S.cmp!==c)return;for(const x of r.slice(0,room))c.slides.push(x.src?x.src:encode(toCanvas(x.img,540,960),60000,.72));drawComposer()}}}
+/* oluştur ekranına bırakılan dosya: #vPick'in kendi akışı (useFile) kullanılır */
+function kmFeedPick(file,btn){const np=nativePick;nativePick=function(){nativePick=np;return Promise.resolve(file)};try{btn.click()}finally{setTimeout(()=>{if(nativePick!==np)nativePick=np},0)}}
+async function kmComposerDrop(files){const c=S.cmp;const l=$('#overlay [data-layer="composer"]');if(!c||!l||!files.length)return;
+ if(c.kind==="reel"&&c.mode==="video"){const f=files.find(kmIsVid);if(!f)return toast("Bir video dosyası bırak.");const b=$("#vPick",l);if(b)kmFeedPick(f,b);return}
+ const imgs=files.filter(kmIsImg);if(!imgs.length)return toast("Bir fotoğraf bırak.");
+ try{if(c.kind==="reel"){const room=3-c.slides.length;for(const f of imgs.slice(0,Math.max(0,room))){const img=await loadImg(await readFile(f));c.slides.push(encode(toCanvas(img,540,960),60000,.72))}if(room<1)toast("En fazla 3 kare eklenebilir.");return drawComposer()}
+  if(c.kind==="photo"||c.kind==="story"){const img=await loadImg(await readFile(imgs[0]));c.img=img;c.src=null;KMR.add({img});drawComposer()}}catch{toast("Fotoğraf açılamadı. HEIC ise önce JPEG olarak kaydet ya da başka bir dosya dene.")}}
+/* belge düzeyinde sürükle-bırak: tarayıcı dosyayı açıp uygulamadan çıkmasın; sohbete bırakılan gönderilir */
+{let dz=0;const on=v=>document.documentElement.classList.toggle("kmdrag",v);
+ document.addEventListener("dragenter",e=>{if(!kmHasFiles(e))return;dz++;on(true)});
+ document.addEventListener("dragleave",()=>{dz=Math.max(0,dz-1);if(!dz)on(false)});
+ document.addEventListener("dragover",e=>{if(!kmHasFiles(e))return;e.preventDefault()});
+ document.addEventListener("drop",async e=>{dz=0;on(false);if(!kmHasFiles(e))return;e.preventDefault();if(e._km)return;const files=[...e.dataTransfer.files];if(!files.length)return;
+  const top=$$("#overlay .layer").pop();if(top){if(top.dataset.layer==="composer")kmComposerDrop(files);return}
+  if(S.route.name!=="chat"||!S.authed&&!S.uid)return;const key=S.route.params.key;let k;try{k=keyInfo(key)}catch{return}const items=[];
+  for(const f of files.slice(0,10)){if(kmIsVid(f)){if(k.type==="bot"){toast("Botlara video gönderilemez.");continue}items.push({video:f})}else if(kmIsImg(f)){try{items.push({img:await loadImg(await readFile(f))})}catch{toast("Fotoğraf açılamadı.")}}}
+  if(items.length)kvChatSend(key,items)})}
+
+/* --- Yönetici > Toplu Klaket yükle --- */
+const BQ={items:[],running:false,paused:false,cur:null,auto:true,kid:false,mu:"none",wl:null};
+const BQ_MU=[["none","Orijinal"],["lofi","Lo-fi"],["enerjik","Enerjik"],["sakin","Sakin"]];
+const BQ_ST={wait:"Sırada",prep:"Hazırlanıyor",up:"Yükleniyor",post:"Paylaşılıyor",done:"Paylaşıldı",err:"Hata",cancel:"Durduruldu"};
+const bqFind=id=>BQ.items.find(x=>x.id===id);
+const bqArOf=(w,h)=>{const r=w/h;return r>1.3?"16/9":r<.9?"4/5":"1/1"};
+function bqAutoCap(name){let s=String(name||"").replace(/\.[a-z0-9]{2,5}$/i,"").replace(/[_]+/g," ").replace(/\s+/g," ").trim();if(/^(vid|img|video|mov|pxl|dsc|dscn|mvi|screen ?recording|ekran kayd\S*|klaket|flick|cekim|foto|photo|image|whatsapp( video| image)?)?[\s\d_.:-]*(at[\s\d_.:-]*)?$/i.test(s))return"";return s.slice(0,120)}
+function bqCounts(){const c={total:BQ.items.length,wait:0,done:0,err:0,cancel:0,busy:0};for(const x of BQ.items){if(x.st==="wait")c.wait++;else if(x.st==="done")c.done++;else if(x.st==="err")c.err++;else if(x.st==="cancel")c.cancel++;else c.busy++}return c}
+function bqCount(){const c=bqCounts();if(BQ.running)return{t:`${c.done}/${c.total}`,c:"live"};if(c.err)return{t:c.err+" hata",c:"warn"};if(c.wait)return{t:c.wait+" sırada",c:"on"};return c.total?{t:c.done+" bitti",c:"dim"}:null}
+function bqAdd(files){let n=0,bad=0;for(const f of files){const v=kmIsVid(f),im=!v&&kmIsImg(f);if(!v&&!im){bad++;continue}
+  BQ.items.push({id:"b"+rid(),kind:v?"video":"photo",file:f,name:f.name||(v?"video":"fotoğraf"),size:f.size||0,thumb:"",poster:"",dur:0,cap:"",mu:BQ.mu,st:"wait",pct:0,err:"",pid:""});n++}
+ if(bad)toast(`${bad} dosya video ya da fotoğraf değil, atlandı.`);if(n){toast(`${n} dosya sıraya eklendi`);bqRepaint();bqThumbs()}}
+let bqThB=false;
+async function bqThumbs(){if(bqThB)return;bqThB=true;try{for(;;){const it=BQ.items.find(x=>!x._th&&x.file&&x.st!=="done");if(!it)break;it._th=1;
+  try{const used=BQ.items.reduce((a,x)=>a+(x!==it&&x.file&&x.file._mem?x.file.size:0),0);if(!it.file._mem&&it.file.size<=300*1048576&&used+it.file.size<=450*1048576)it.file=await kmMem(it.file);
+   const url=URL.createObjectURL(it.file);try{if(it.kind==="video"){it.poster=await videoPoster(url);it.thumb=it.poster;it.dur=await vidDur(it.file).catch(()=>0)}else{const img=await loadImg(url);it.thumb=toCanvas(img,160,160).toDataURL("image/jpeg",.7)}}finally{URL.revokeObjectURL(url)}}
+  catch(e){console.warn("bq küçük resim",e);if(it.st==="wait"){it.st="err";it.err=it.kind==="photo"?"Fotoğraf açılamadı (HEIC olabilir). JPEG olarak kaydedip yeniden seç.":kvErrText(e)}}
+  bqPaintItem(it)}}finally{bqThB=false}}
+async function bqWake(on){try{if(on){if(!BQ.wl&&navigator.wakeLock&&!document.hidden)BQ.wl=await navigator.wakeLock.request("screen")}else if(BQ.wl){const w=BQ.wl;BQ.wl=null;await w.release()}}catch{BQ.wl=null}}
+document.addEventListener("visibilitychange",()=>{if(!document.hidden&&BQ.running){BQ.wl=null;bqWake(true)}});
+async function bqRun(){if(BQ.running)return;if(!S.admin)return toast("Önce yönetici olarak gir.");if(!guard())return;BQ.running=true;BQ.paused=false;bqWake(true);bqRepaint();let n=0;
+ try{for(;;){if(BQ.paused||!S.admin)break;const it=BQ.items.find(x=>x.st==="wait");if(!it)break;BQ.cur=it;await bqDo(it);if(it.st==="done")n++}}
+ finally{BQ.running=false;BQ.cur=null;bqWake(false);bqRepaint();const c=bqCounts();
+  if(n||c.err)toast(BQ.paused&&c.wait?`Duraklatıldı: ${n} paylaşıldı, ${c.wait} sırada`:`Toplu yükleme bitti: ${n} paylaşıldı${c.err?`, ${c.err} hata`:""}`);if(n)vib(30)}}
+async function bqDo(it){it.ctl={aborted:false,xhr:null};it.err="";let ref=null;const id=rid();const alive=()=>!it.ctl.aborted;
+ const upd=(st,p)=>{if(st)it.st=st;if(p!=null)it.pct=p;bqPaintItem(it);bqPaintSum()};
+ try{if(!it.file)throw new Error("Dosya artık yok; yeniden seç.");upd("prep",0);
+  const base={uid:S.uid,at:now(),caption:cleanText(((it.cap||"").trim())||(BQ.auto?bqAutoCap(it.name):"")),loc:"",...(BQ.kid?{noKids:1}:{})};let doc;
+  if(it.kind==="photo"){const f=await kmMem(it.file);const url=URL.createObjectURL(f);let img;try{img=await loadImg(url)}catch{throw new Error("Fotoğraf açılamadı (HEIC olabilir). JPEG olarak kaydedip yeniden seç.")}finally{URL.revokeObjectURL(url)}
+   const ar=bqArOf(img.naturalWidth||1,img.naturalHeight||1);const[w,h]=arSize(ar);const cv=toCanvas(img,w,h);doc={...base,kind:"photo",img:encode(cv,170000),ar,exif:`Filtre: Normal · ${w} × ${h}`}}
+  else{let f=await kmMem(it.file);it.file=f;if(!alive())throw kmAbort();const url=URL.createObjectURL(f);let poster=it.poster;try{if(!poster)poster=await videoPoster(url)}finally{URL.revokeObjectURL(url)}
+   const vdur=it.dur||await vidDur(f).catch(()=>0);f=await kvPrep(f,{onProg:p=>upd(null,p),alive});if(!alive())throw kmAbort();
+   upd("up",0);ref=await kvStore(f,(i,n)=>upd(null,i/Math.max(1,n)),it.ctl);if(!alive())throw kmAbort();
+   doc={...base,kind:"reel",video:ref,poster,...(vdur>0?{dur:Math.round(vdur*10)/10}:{}),exif:"Video · "+kmMB(f.size),...(it.mu&&it.mu!=="none"?{music:it.mu}:{})}}
+  upd("post",1);doc.at=now();const ok=await write(()=>DB.set("posts/"+id,doc),{quiet:true});if(!ok)throw new Error("Paylaşım kaydedilemedi (bağlantı ya da izin).");ref=null;
+  S.posts={...S.posts,[id]:{id,...doc}};it.pid=id;it.file=null;upd("done",1);scheduleRefresh()}
+ catch(e){if(ref)delChunks(ref);if((e&&e.kvAbort)||!alive())upd("cancel",0);else{console.warn("bq",e);it.err=kvErrText(e);upd("err",0)}}}
+function bqStop(id){const it=bqFind(id);if(!it||!it.ctl)return;it.ctl.aborted=true;try{it.ctl.xhr&&it.ctl.xhr.abort()}catch{}it.err="";bqPaintItem(it)}
+function bqStatus(it){const p=Math.round((it.pct||0)*100);return it.st==="prep"?(it.kind==="video"&&p?`Hazırlanıyor %${p}`:"Hazırlanıyor"):it.st==="up"?`Yükleniyor %${p}`:it.st==="err"?"Hata: "+(it.err||"bilinmiyor"):it.st==="cancel"?"Durduruldu":BQ_ST[it.st]||""}
+function bqActs(it){const me=BQ.cur===it&&BQ.running;if(["prep","up","post"].includes(it.st)&&me)return it.ctl&&it.ctl.aborted?`<span class="bq-wait">Duruyor…</span>`:`<button type="button" class="btn sm sec" data-bqstop="${it.id}">Durdur</button>`;
+ if(it.st==="err"||it.st==="cancel")return`${it.file?`<button type="button" class="ib" data-bqre="${it.id}" aria-label="Yeniden dene">${I("kvretry")}</button>`:""}<button type="button" class="ib" data-bqx="${it.id}" aria-label="Sıradan çıkar">${I("close")}</button>`;
+ if(it.st==="wait")return`<button type="button" class="ib" data-bqx="${it.id}" aria-label="Sıradan çıkar">${I("close")}</button>`;
+ if(it.st==="done"&&it.pid)return`<button type="button" class="btn sm sec" data-open="${esc(it.pid)}">Gör</button>`;return""}
+function bqItemHtml(it){const ed=["wait","err","cancel"].includes(it.st);const p=it.st==="done"?1:it.pct||0;
+ return`<li class="bq-it st-${it.st}" id="bq-${it.id}" data-st="${it.st}"><span class="bq-th">${it.thumb?`<img src="${esc(it.thumb)}" alt="">`:`<span class="spin"></span>`}<span class="bq-k">${I(it.kind==="video"?"reels":"image")}<span>${it.kind==="video"?(it.dur?mmss(it.dur):""):"Foto"}</span></span></span><div class="bq-m"><div class="bq-n"><b>${esc(it.name)}</b><small>${kmMB(it.size)}</small></div><input class="in bq-cap" data-bqcap="${it.id}" maxlength="900" placeholder="${it.kind==="video"?"Klaket açıklaması":"Fotoğraf açıklaması"} (isteğe bağlı)" value="${esc(it.cap)}"${ed?"":" disabled"} aria-label="Açıklama">${it.kind==="video"?`<label class="bq-mu">${I("music")}<select class="in" data-bqmu="${it.id}" aria-label="Müzik"${ed?"":" disabled"}>${BQ_MU.map(([v,lb])=>`<option value="${v}"${it.mu===v?" selected":""}>${lb}</option>`).join("")}</select></label>`:""}<div class="bq-pr"><i style="transform:scaleX(${p})"></i></div><div class="bq-st" role="status">${esc(bqStatus(it))}</div></div><div class="bq-act">${bqActs(it)}</div></li>`}
+function bqPaintItem(it){const el=document.getElementById("bq-"+it.id);if(!el)return;el.className="bq-it st-"+it.st;
+ const p=it.st==="done"?1:it.pct||0;const bar=el.querySelector(".bq-pr i");if(bar)bar.style.transform=`scaleX(${p})`;const s=el.querySelector(".bq-st");if(s){const t=bqStatus(it);if(s.textContent!==t)s.textContent=t}
+ const th=el.querySelector(".bq-th");if(th&&it.thumb&&!th.querySelector("img")){const sp=th.querySelector(".spin");if(sp)sp.outerHTML=`<img src="${esc(it.thumb)}" alt="">`}
+ const kd=el.querySelector(".bq-k span");if(kd&&it.kind==="video"&&it.dur)kd.textContent=mmss(it.dur);
+ const ed=["wait","err","cancel"].includes(it.st);el.querySelectorAll("[data-bqcap],[data-bqmu]").forEach(x=>x.disabled=!ed);
+ const key=it.st+"|"+(it.ctl&&it.ctl.aborted?1:0)+"|"+(BQ.cur===it)+"|"+!!it.file;if(el.dataset.ak!==key){el.dataset.ak=key;const a=el.querySelector(".bq-act");if(a)a.innerHTML=bqActs(it)}}
+function bqSumHtml(){const c=bqCounts();if(!c.total)return"";const f=c.total?(c.done+(BQ.cur&&BQ.cur.st!=="done"?BQ.cur.pct||0:0))/c.total:0;
+ return`<div class="bq-sum"><div class="bq-sl"><b>${c.done} / ${c.total} paylaşıldı</b><small>${[c.wait?c.wait+" sırada":"",c.err?c.err+" hata":"",c.cancel?c.cancel+" durduruldu":""].filter(Boolean).join(" · ")||(BQ.running?"":"Hepsi tamam")}</small></div><div class="bq-pr big"><i style="transform:scaleX(${Math.min(1,f)})"></i></div></div>`}
+function bqPaintSum(){const s=$("#bqSum");if(s)s.innerHTML=bqSumHtml();const n=$("#admS-toplu .adm5-n");const c=bqCount();if(n&&c){n.textContent=String(c.t);n.className="adm5-n "+(c.c||"")}}
+function bqCtl(){const c=bqCounts();if(!c.total)return"";let h="";
+ if(BQ.running)h+=BQ.paused?`<span class="bq-wait">${I("pause")}Bu dosya bitince duracak</span><button type="button" class="btn sm" data-bq="go">${I("play")}Devam et</button>`:`<button type="button" class="btn sm sec" data-bq="pause">${I("pause")}Duraklat</button>`;
+ else if(c.wait)h+=`<button type="button" class="btn sm" data-bq="go">${I("play")}${c.done||c.err?"Devam et":"Başlat"} (${c.wait})</button>`;
+ if(!BQ.running&&(c.err||c.cancel))h+=`<button type="button" class="btn sm sec" data-bq="retry">${I("kvretry")}Hatalıları yeniden dene</button>`;
+ if(c.done)h+=`<button type="button" class="btn sm ghost" data-bq="clean">Bitenleri temizle</button>`;
+ if(!BQ.running)h+=`<button type="button" class="btn sm ghost" data-bq="clear">Tümünü kaldır</button>`;return`<div class="bq-ctl">${h}</div>`}
+function bqInner(){const its=BQ.items;
+ return`<button type="button" class="kmp-drop bq-drop" data-bq="pick"><span class="kmp-dic">${I("kvup")}</span><b>Video ve fotoğrafları seç</b><small>Birden çok dosya seçebilir ya da buraya sürükleyebilirsin. Videolar Klaket, fotoğraflar paylaşım olarak sırayla ve senin adınla yayınlanır.</small></button>`
+ +`<details class="bq-more"${its.length?"":" open"}><summary>${I("gear")}Seçenekler</summary><div class="adm5-set"><label class="srow"><span class="t">Açıklama boşsa dosya adını yaz<small>“IMG_1234” gibi kamera adları yazılmaz</small></span><span class="sw"><input type="checkbox" data-bqo="auto"${BQ.auto?" checked":""}><span></span></span></label><label class="srow"><span class="t">Çocuk modundakiler göremez<small>Sıradaki tüm paylaşımlar için</small></span><span class="sw"><input type="checkbox" data-bqo="kid"${BQ.kid?" checked":""}><span></span></span></label></div><span class="lbl">Klaket müziği (yeni eklenenler ve sıradakiler)</span><div class="seg">${BQ_MU.map(([v,lb])=>`<button type="button" data-bqmall="${v}" aria-pressed="${BQ.mu===v}">${lb}</button>`).join("")}</div></details>`
+ +(its.length?`<div id="bqSum">${bqSumHtml()}</div>${bqCtl()}<ol class="bq-list">${its.map(bqItemHtml).join("")}</ol>`:`<p class="bq-note">${I("info")}<span>Büyük videolar telefonda küçültülür, sonra buluta yüklenir. Yükleme sürerken bu sekmeyi açık tut; ekran kapanmasın diye Kadraj ekranı açık tutar.</span></p>`)}
+function bqHtml(){return`<div class="bq" id="bqBox">${bqInner()}</div>`}
+function bqRepaint(){const b=$("#bqBox");if(!b)return bqPaintSum();const a=document.activeElement;const fid=a&&b.contains(a)&&a.dataset&&a.dataset.bqcap;const det=b.querySelector(".bq-more");const op=det?det.open:null;
+ b.innerHTML=bqInner();if(op!=null){const d=b.querySelector(".bq-more");if(d)d.open=op}if(fid){const i=b.querySelector(`[data-bqcap="${fid}"]`);if(i&&!i.disabled){i.focus();try{i.setSelectionRange(i.value.length,i.value.length)}catch{}}}bqPaintSum()}
+function bqWire(el){const b=(el&&el.querySelector("#bqBox"))||null;if(!b||b._bqw)return;b._bqw=1;
+ b.addEventListener("click",async e=>{const t=e.target.closest("[data-bq],[data-bqmall],[data-bqx],[data-bqre],[data-bqstop]");if(!t)return;
+  if(t.dataset.bq==="pick"){const r=await kmNative("video/*,image/*,.mp4,.mov,.m4v,.webm,.3gp,.mkv",{multi:true});if(r===undefined)return toast("Dosya seçici açılmadı. Dosyaları buraya sürükleyebilirsin.");if(r)bqAdd(r);return}
+  if(t.dataset.bq==="go"){BQ.paused=false;if(BQ.running)return bqRepaint();bqRun();return}
+  if(t.dataset.bq==="pause"){BQ.paused=true;bqRepaint();return}
+  if(t.dataset.bq==="retry"){for(const x of BQ.items)if((x.st==="err"||x.st==="cancel")&&x.file){x.st="wait";x.err="";x.pct=0}bqRepaint();if(!BQ.running)bqRun();return}
+  if(t.dataset.bq==="clean"){BQ.items=BQ.items.filter(x=>x.st!=="done");bqRepaint();return}
+  if(t.dataset.bq==="clear"){if(BQ.running)return;BQ.items=[];bqRepaint();return}
+  if(t.dataset.bqmall){BQ.mu=t.dataset.bqmall;for(const x of BQ.items)if(x.kind==="video"&&x.st==="wait")x.mu=BQ.mu;bqRepaint();return}
+  if(t.dataset.bqx){const it=bqFind(t.dataset.bqx);if(it&&BQ.cur!==it){BQ.items=BQ.items.filter(x=>x!==it);bqRepaint()}return}
+  if(t.dataset.bqre){const it=bqFind(t.dataset.bqre);if(it&&it.file){it.st="wait";it.err="";it.pct=0;bqRepaint();if(!BQ.running)bqRun()}return}
+  if(t.dataset.bqstop){bqStop(t.dataset.bqstop);return}});
+ b.addEventListener("input",e=>{const t=e.target;if(t.dataset.bqcap){const it=bqFind(t.dataset.bqcap);if(it)it.cap=t.value}});
+ b.addEventListener("change",e=>{const t=e.target;if(t.dataset.bqmu){const it=bqFind(t.dataset.bqmu);if(it)it.mu=t.value}else if(t.dataset.bqo==="auto")BQ.auto=t.checked;else if(t.dataset.bqo==="kid")BQ.kid=t.checked});
+ let dc=0;b.addEventListener("dragenter",e=>{if(!kmHasFiles(e))return;e.preventDefault();dc++;b.classList.add("over")});
+ b.addEventListener("dragover",e=>{if(kmHasFiles(e))e.preventDefault()});
+ b.addEventListener("dragleave",()=>{dc=Math.max(0,dc-1);if(!dc)b.classList.remove("over")});
+ b.addEventListener("drop",e=>{if(!kmHasFiles(e))return;e.preventDefault();e._km=1;dc=0;b.classList.remove("over");bqAdd([...e.dataTransfer.files])})}
+try{ADM_EXTRA.push({id:"toplu",title:"Toplu Klaket yükle",desc:"Birçok video ve fotoğrafı sırayla paylaş",icon:"kvup",order:55,count:bqCount,html:bqHtml,wire:bqWire})}catch(e){console.warn(e)}
+/* yükleme sürerken sayfa kapanmasın, otomatik güncelleme beklesin */
+addEventListener("beforeunload",e=>{if(BQ.running||KVU.length){e.preventDefault();e.returnValue=""}});
+const verSafeBaseM51=verSafe;
+verSafe=function(){if(BQ.running||KVU.length)return false;return verSafeBaseM51()};
+/* düzeltme: vidDur/videoPoster zaman aşımında video yüklemeyi bırakmıyor, adresi serbest bırakmıyordu; MediaRecorder WebM'inde süre
+   "Infinity" gelince 0 yazılıyordu (sona atlanıp gerçek süre okunur). Eskileri vidDurOld/videoPosterOld. */
+const vidDurOld=vidDur;
+vidDur=function(file){return new Promise(r=>{const v=document.createElement("video");let u="";try{u=URL.createObjectURL(file)}catch{return r(0)}let done=false,t=0;
+ const fin=d=>{if(done)return;done=true;clearTimeout(t);v.onloadedmetadata=v.ontimeupdate=v.onerror=null;v.removeAttribute("src");try{v.load()}catch{}URL.revokeObjectURL(u);r(d>0&&isFinite(d)?d:0)};
+ v.preload="metadata";v.muted=true;v.onloadedmetadata=()=>{const d=v.duration;if(isFinite(d))return fin(d);v.ontimeupdate=()=>{if(isFinite(v.duration))fin(v.duration)};try{v.currentTime=1e7}catch{fin(0)}};
+ v.onerror=()=>fin(0);t=setTimeout(()=>fin(isFinite(v.duration)?v.duration:0),8000);v.src=u})};
+const videoPosterOld=videoPoster;
+videoPoster=function(url){return new Promise(res=>{const v=document.createElement("video");let done=false,t=0;
+ const fin=x=>{if(done)return;done=true;clearTimeout(t);v.onloadeddata=v.onseeked=v.onerror=null;try{v.pause()}catch{}v.removeAttribute("src");try{v.load()}catch{}res(x)};
+ v.muted=true;v.preload="auto";v.playsInline=true;v.src=url;try{const pp=v.play();if(pp&&pp.then)pp.then(()=>{try{v.pause()}catch{}}).catch(()=>{})}catch{}
+ v.onloadeddata=()=>{try{v.currentTime=Math.min(1,(isFinite(v.duration)&&v.duration>0?v.duration:2)/2)}catch{fin("")}};
+ v.onseeked=()=>{try{fin(toCanvas(v,360,640).toDataURL("image/jpeg",.7))}catch{fin("")}};v.onerror=()=>fin("");t=setTimeout(()=>fin(""),6000)})};
 /*}@js:51MEDIA*/
 
 /*@js:51STREAK{*/
