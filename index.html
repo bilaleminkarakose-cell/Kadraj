@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
 <meta charset="utf-8">
-<meta name="kadraj-version" content="50102">
+<meta name="kadraj-version" content="50103">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,interactive-widget=resizes-content">
 <meta name="theme-color" content="#0C7A63">
 <link rel="manifest" href="manifest.webmanifest">
@@ -2868,6 +2868,19 @@ html.reduce-motion .k51pt,html.reduce-motion .rzchip{transition:none!important}
 .ak5 .ak5-kr{display:flex;gap:6px;align-items:center}
 .ak5 .ak5-kr .in{flex:1;min-width:0;font:500 .78rem/1.3 var(--f-mono)}
 .ak5 .ak5-row{display:flex;gap:8px;flex-wrap:wrap}
+.kapi{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;pointer-events:none;background:radial-gradient(circle at 50% 50%,color-mix(in srgb,var(--accent) 45%,#000) 0,rgba(0,0,0,.84) 62%);animation:kapiBg 1.25s ease forwards}
+.kapi .kq{position:absolute;width:44px;height:44px;border:4px solid #fff;animation:kapiIn .7s cubic-bezier(.2,.8,.2,1) both}
+.kapi .q1{left:calc(50% - 92px);top:calc(50% - 92px);border-right:0;border-bottom:0;border-top-left-radius:14px;--dx:-38vw;--dy:-38vh}
+.kapi .q2{right:calc(50% - 92px);top:calc(50% - 92px);border-left:0;border-bottom:0;border-top-right-radius:14px;--dx:38vw;--dy:-38vh}
+.kapi .q3{left:calc(50% - 92px);bottom:calc(50% - 92px);border-right:0;border-top:0;border-bottom-left-radius:14px;--dx:-38vw;--dy:38vh}
+.kapi .q4{right:calc(50% - 92px);bottom:calc(50% - 92px);border-left:0;border-top:0;border-bottom-right-radius:14px;--dx:38vw;--dy:38vh}
+.kapi .kc{display:grid;justify-items:center;gap:10px;color:#fff;opacity:0;animation:kapiTx .9s .35s ease forwards}
+.kapi .kc .i{width:46px;height:46px}.kapi .kc b{font:700 1.15rem/1 var(--f-display);letter-spacing:.04em}
+.kapi .kc small{font:500 .78rem/1 var(--f-mono);opacity:.8;letter-spacing:.12em;text-transform:uppercase}
+@keyframes kapiIn{from{transform:translate(var(--dx),var(--dy));opacity:0}to{transform:none;opacity:1}}
+@keyframes kapiTx{0%{opacity:0;transform:scale(.8)}60%{opacity:1;transform:scale(1.06)}100%{opacity:1;transform:scale(1)}}
+@keyframes kapiBg{0%{opacity:0}15%{opacity:1}80%{opacity:1}100%{opacity:0}}
+@media (prefers-reduced-motion:reduce){.kapi{display:none}}
 /*}@css:511*/
 
 
@@ -2909,7 +2922,7 @@ const vib=ms=>{try{if(settings.haptics===false)return;navigator.vibrate&&navigat
 /* Sürüm: ana.ara.yama (4.1.0). Hata düzeltme ve küçük şeyler → yama artar (4.1.1); büyük güncelleme → ara artar (4.2.0).
    APP_V = ana*10000 + ara*100 + yama (4.1.0 → 40100). Başlıktaki <meta name="kadraj-version"> ile aynı tutulmalı.
    Eski biçim (4.0 → 40) verNorm ile çevrilir. "İki sürüm geride" ara sürüm sayısıyla ölçülür (yamalar engellemez). */
-const APP_V=50102,APP_VER="5.1.2";
+const APP_V=50103,APP_VER="5.1.3";
 const verNorm=x=>{x=Math.max(0,Math.floor(+x||0));return x<1000?Math.floor(x/10)*10000+(x%10)*100:x};
 const verLvl=x=>Math.floor(verNorm(x)/100);
 /* 4.9: fark sürüm adımıyla sayılır (4.9 → 5.0 bir adım); eskisi ana*100+ara farkıydı ve 5.0'ı 91 sürüm ileride sanıyordu */
@@ -10560,6 +10573,33 @@ document.addEventListener("click",async e=>{const b=e.target.closest&&e.target.c
   const go=async()=>{b.disabled=true;try{AK5.keys=await ak5Gen();ak5Paint()}catch(x){toast("Anahtar üretilemedi.")}b.disabled=false};
   if(AK5.st&&AK5.st.push)return dialog("Anahtarlar zaten kurulu","Köprüde bildirim anahtarları var. Yenisini kurarsan herkesin bildirim ayarını yeniden açması gerekir.",[{label:"Vazgeç"},{label:"Yine de üret",cls:"danger",fn:go}]);go()}});
 try{const ae=ADM_EXTRA.find(x=>x.id==="ai");if(ae){const base=ae.html;ae.html=()=>base()+ak5Html();ae.desc="Rota'nın yapay zekâsı, internet araması ve bildirim anahtarları"}}catch(e){console.warn(e)}
+/* ===== 5.1.3: Clawd'a gizli söz → yönetici paneli (yalnızca sahibi) =====
+   Clawd'a sorulan metin, harf işaretleri ve boşluklar atılıp karıştırılır (kapiH); söz kodda düz durmaz.
+   Söz tutarsa asıl denetim Firestore'dadır: admin/kapi belgesine yazmayı dener; kurallar admin/ yazımını yalnızca
+   yöneticiye (sahibin uid'i) verdiği için başkasında yazma reddedilir ve Clawd soruyu her zamanki gibi yanıtlar.
+   Söz Yönetici › Hızlı giriş bölümünden değiştirilir (admin/kapi.h). Varsayılan söz sahibine sohbette söylendi. */
+const KAPI_H0="924c26ed-bc3b30f3";
+function kapiH(t){const f=cwFold(String(t||"")).replace(/\s+/g,"");return String(hash32("kadraj-kapi:"+f,2166136261))+"-"+String(hash32(f+":kapi",16777619))}
+function kapiTarget(){const k=S.adm&&S.adm.kapi;return(k&&typeof k.h==="string"&&k.h)||KAPI_H0}
+async function kapiProve(){if(S.mode!=="cloud")return true;const k=(S.adm&&S.adm.kapi)||{};
+ try{await DB.set("admin/kapi",{h:typeof k.h==="string"?k.h:"",at:now(),by:S.uid});return true}catch{return false}}
+function kapiAnim(){if(kbReduce())return Promise.resolve();const d=document.createElement("div");d.className="kapi";d.setAttribute("aria-hidden","true");
+ d.innerHTML=`<i class="kq q1"></i><i class="kq q2"></i><i class="kq q3"></i><i class="kq q4"></i><div class="kc">${I("key")}<b>Yönetici</b><small>Kapı açıldı</small></div>`;
+ document.body.appendChild(d);return new Promise(res=>setTimeout(()=>{res();setTimeout(()=>d.remove(),450)},850))}
+async function kapiTry(q){const t=String(q||"").trim();if(!S.uid||S.guest||t.length<4||t.length>64)return false;if(kapiH(t)!==kapiTarget())return false;
+ if(S.admin){go("admin");return true}
+ if(!await kapiProve())return false;
+ try{CW.pose="happy";Promise.resolve(cwSay("Anahtarlarım burada bir yerde... Buldum! Kapı açılıyor.",{hold:900})).catch(()=>{})}catch{}
+ vib(30);await kapiAnim();S.admin=true;LS.set("kadraj_admin_"+S.uid,true);try{admWatchReports()}catch{}admLog("Yönetici paneline Clawd ile girildi");go("admin");return true}
+const cwAskBase513=cwAsk;
+cwAsk=function(q){const t=String(q||"").trim();if(t.length>=4&&t.length<=64&&kapiH(t)===kapiTarget()){CW.lastInput=now();kapiTry(t).then(ok=>{if(!ok)cwAskBase513(q)},()=>cwAskBase513(q));return}return cwAskBase513(q)};
+function kapiHtml(){const k=S.adm&&S.adm.kapi;return`<p class="adm5-note" style="margin:0 0 10px">Clawd'a dokun › Clawd'a sor › gizli sözü yaz: yönetici paneli şifresiz açılır. Yalnızca senin hesabında çalışır; başkası aynı sözü yazsa bile Firebase izin vermez. Söz büyük/küçük harf ve Türkçe harf farkı gözetmez.</p>
+ <div class="field"><label for="kapiIn">Yeni gizli söz (en az 6 karakter)</label><input class="in" id="kapiIn" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="${k&&k.h?"Özel söz kayıtlı":"Şu an varsayılan söz kullanılıyor"}"></div>
+ <div class="ak5-row"><button class="btn sm" type="button" data-kapi="save">${I("check")}Kaydet</button>${k&&k.h?`<button class="btn ghost sm" type="button" data-kapi="reset">Varsayılana dön</button>`:""}</div>`}
+document.addEventListener("click",async e=>{const b=e.target.closest&&e.target.closest("[data-kapi]");if(!b||!S.admin)return;e.preventDefault();
+ let h="";if(b.dataset.kapi==="save"){const v=(($("#kapiIn")||{}).value||"").trim();if(cwFold(v).replace(/\s+/g,"").length<6)return toast("Söz en az 6 harf olmalı.");h=kapiH(v)}
+ if(await write(()=>DB.set("admin/kapi",{h,at:now(),by:S.uid}))){S.adm={...(S.adm||{}),kapi:{h,at:now(),by:S.uid}};admLog(h?"Clawd gizli sözü değişti":"Clawd gizli sözü varsayılana döndü");toast(h?"Yeni söz kaydedildi.":"Varsayılan söz geri geldi.");render(false)}});
+try{ADM_EXTRA.push({id:"kapi",title:"Hızlı giriş",desc:"Clawd'a gizli sözü söyle, panel şifresiz açılsın",icon:"key",order:66,count:()=>S.adm&&S.adm.kapi&&S.adm.kapi.h?{t:"Özel",c:"on"}:{t:"Varsayılan",c:"dim"},html:kapiHtml})}catch(e){console.warn(e)}
 /*}@js:511*/
 
 
