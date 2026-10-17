@@ -53,7 +53,8 @@ ok(await crypto.subtle.verify({name:"ECDSA",hash:"SHA-256"},vpubKey,unb64u(s2),t
 let mm=false;try{await P.vapidKeys({...env,VAPID_PUBLIC_KEY:b64u(s1.uaPub)})}catch(e){mm=/^vapid_(mismatch|private)$/.test(e.message)}ok(mm,"mismatched VAPID pair detected");
 // 3) uç noktayı taklit et: global fetch, push sunucularını yakalar
 const realFetch=globalThis.fetch;let pushes=[];let statusFor=()=>201;
-globalThis.fetch=async(u,o={})=>{const url=typeof u==="string"?u:u.url;if(/^https:\/\/(fcm\.googleapis\.com|web\.push\.apple\.com|updates\.push\.services\.mozilla\.com)\//.test(url)){pushes.push({url,headers:o.headers,body:new Uint8Array(o.body)});return new Response("",{status:statusFor(url)})}return realFetch(u,o)};
+const capFetch=async(u,o={})=>{const url=typeof u==="string"?u:u.url;if(/^https:\/\/(fcm\.googleapis\.com|web\.push\.apple\.com|updates\.push\.services\.mozilla\.com)\//.test(url)){pushes.push({url,headers:o.headers,body:new Uint8Array(o.body)});return new Response("",{status:statusFor(url)})}return realFetch(u,o)};
+globalThis.fetch=capFetch;
 const call=async(path,{method="POST",body,tok,origin=O,e=env}={})=>{const r=await W.fetch(new Request("https://w.example"+path,{method,headers:{Origin:origin,"Content-Type":"application/json",...(tok!==null?{Authorization:"Bearer "+(tok||await jwt())}:{})},...(body?{body:JSON.stringify(body)}:{})}),e);let j=null;try{j=await r.json()}catch{}return {status:r.status,json:j,acao:r.headers.get("access-control-allow-origin")}};
 let r=await call("/vapid",{method:"GET",tok:null});ok(r.status===200&&r.json.key===vpub&&r.acao===O,"GET /vapid returns public key");
 r=await call("/vapid",{method:"GET",tok:null,e:{...env,VAPID_PRIVATE_KEY:""}});ok(r.status===501&&r.json.error==="no_vapid","GET /vapid without keys 501");
@@ -87,4 +88,10 @@ r=await call("/push",{body:{subscription:s2_.sub,payload:{title:"q"}},tok:await 
 globalThis.fetch=realFetch;
 r=await call("/ask",{body:{messages:[{role:"user",content:"x"}]}});ok(r.status===500&&r.json.error==="no_key","ask route unaffected");
 r=await W.fetch(new Request("https://w.example/push",{method:"OPTIONS",headers:{Origin:O}}),env);ok(r.status===204,"push preflight");
+{globalThis.fetch=capFetch;const waits=[];const ctx={waitUntil:(p)=>waits.push(p)};pushes=[];const t0=Date.now();
+ const rq=new Request("https://w.example/push",{method:"POST",headers:{Origin:O,"Content-Type":"application/json",Authorization:"Bearer "+await jwt({sub:"u8"})},body:JSON.stringify({subscription:s2_.sub,payload:{title:"Test",kind:"nudge"},delay:1})});
+ const rr=await W.fetch(rq,env,ctx);const jj=await rr.json();ok(rr.status===202&&jj.queued===true&&jj.delay===1&&pushes.length===0,"delayed push returns 202 before sending");
+ await Promise.all(waits);ok(pushes.length===1&&Date.now()-t0>=950,"delayed push sent after delay");
+ const rq2=new Request("https://w.example/push",{method:"POST",headers:{Origin:O,"Content-Type":"application/json",Authorization:"Bearer "+await jwt({sub:"u8"})},body:JSON.stringify({subscription:s2_.sub,payload:{title:"T"},delay:99})});
+ const w2=[];const r2=await W.fetch(rq2,env,{waitUntil:(p)=>w2.push(p)});ok(r2.status===202&&(await r2.json()).delay===10,"delay capped at 10s");}
 srv.close();

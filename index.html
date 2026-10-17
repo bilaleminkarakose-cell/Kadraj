@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
 <meta charset="utf-8">
-<meta name="kadraj-version" content="50104">
+<meta name="kadraj-version" content="50105">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,interactive-widget=resizes-content">
 <meta name="theme-color" content="#0C7A63">
 <link rel="manifest" href="manifest.webmanifest">
@@ -2925,7 +2925,7 @@ const vib=ms=>{try{if(settings.haptics===false)return;navigator.vibrate&&navigat
 /* Sürüm: ana.ara.yama (4.1.0). Hata düzeltme ve küçük şeyler → yama artar (4.1.1); büyük güncelleme → ara artar (4.2.0).
    APP_V = ana*10000 + ara*100 + yama (4.1.0 → 40100). Başlıktaki <meta name="kadraj-version"> ile aynı tutulmalı.
    Eski biçim (4.0 → 40) verNorm ile çevrilir. "İki sürüm geride" ara sürüm sayısıyla ölçülür (yamalar engellemez). */
-const APP_V=50104,APP_VER="5.1.4";
+const APP_V=50105,APP_VER="5.1.5";
 const verNorm=x=>{x=Math.max(0,Math.floor(+x||0));return x<1000?Math.floor(x/10)*10000+(x%10)*100:x};
 const verLvl=x=>Math.floor(verNorm(x)/100);
 /* 4.9: fark sürüm adımıyla sayılır (4.9 → 5.0 bir adım); eskisi ana*100+ara farkıydı ve 5.0'ı 91 sürüm ileride sanıyordu */
@@ -10563,7 +10563,7 @@ function ak5KeysHtml(){const k=AK5.keys;if(!k)return"";const row=(n,t,v,id)=>`<d
 function ak5Html(){setTimeout(()=>ak5Status(false),0);
  return`<div class="ak5" id="ak5"><div class="adm5-sub">Köprünün durumu</div><div class="ak5-st" id="ak5St">${ak5StHtml()}</div><div class="ak5-row"><button class="btn ghost sm" type="button" data-ak5="st">${I("rotate")}Durumu yenile</button></div>
  <div class="adm5-sub">Uygulama kapalıyken bildirim</div><p class="adm5-note" style="margin:0">Bildirim anahtarları bu cihazda üretilir ve hiçbir yere gönderilmez. Bir kez kur, sonra değiştirme: değişirse herkesin "Uygulama kapalıyken de bildir" ayarını yeniden açması gerekir.</p>
- <div class="ak5-row"><button class="btn sm" type="button" data-ak5="gen">${I("key")}Anahtar üret</button></div><div id="ak5Out" style="display:grid;gap:10px">${ak5KeysHtml()}</div>
+ <div class="ak5-row"><button class="btn sm" type="button" data-ak5="gen">${I("key")}Anahtar üret</button><button class="btn sec sm" type="button" data-ak5="test">${I("bell")}Test bildirimi (5 sn sonra)</button></div><div id="ak5Out" style="display:grid;gap:10px">${ak5KeysHtml()}</div>
  <div class="adm5-sub">İnternet araması (Tavily, ücretsiz)</div><p class="adm5-note" style="margin:0">tavily.com'da ücretsiz hesap aç (ayda 1000 arama, kart istemez) ve API anahtarını kopyala (tvly- ile başlar). Cloudflare'de kadraj-ai › Settings › Variables and Secrets › Add: Type <b>Secret</b>, Name <b>TAVILY_API_KEY</b>. Deploy'dan sonra Rota genel bilgi sorularında internete bakar; Kadraj sorularında aramaz.</p></div>`}
 function ak5Paint(){const st=$("#ak5St");if(st)st.innerHTML=ak5StHtml();const o=$("#ak5Out");if(o)o.innerHTML=ak5KeysHtml()}
 async function ak5Gen(){const b64u=a=>btoa(String.fromCharCode(...a)).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
@@ -10572,9 +10572,20 @@ async function ak5Gen(){const b64u=a=>btoa(String.fromCharCode(...a)).replace(/\
 document.addEventListener("click",async e=>{const b=e.target.closest&&e.target.closest("[data-ak5]");if(!b||!S.admin)return;e.preventDefault();const k=b.dataset.ak5;
  if(k==="st")return ak5Status(true);
  if(k==="cp"){const inp=$("#"+b.dataset.id);if(!inp)return;try{await navigator.clipboard.writeText(inp.value);toast("Kopyalandı.")}catch{inp.select();toast("Seçildi, Ctrl+C ile kopyala.")}return}
+ if(k==="test")return ak5Test(b);
  if(k==="gen"){if(!(window.crypto&&crypto.subtle))return toast("Bu tarayıcı anahtar üretemiyor.");
   const go=async()=>{b.disabled=true;try{AK5.keys=await ak5Gen();ak5Paint()}catch(x){toast("Anahtar üretilemedi.")}b.disabled=false};
   if(AK5.st&&AK5.st.push)return dialog("Anahtarlar zaten kurulu","Köprüde bildirim anahtarları var. Yenisini kurarsan herkesin bildirim ayarını yeniden açması gerekir.",[{label:"Vazgeç"},{label:"Yine de üret",cls:"danger",fn:go}]);go()}});
+/* 5.1.5: kendine test bildirimi; köprü 5 sn bekleyip gönderir, bu arada Kadraj kapatılır (uygulama kapalıyken gelişi denenir) */
+async function ak5Test(b){if(!kAI.url())return toast("Önce köprü adresini kaydet.");if(S.mode!=="cloud")return toast("Test bildirimi yalnızca gerçek hesapta çalışır.");
+ let d=null;try{d=await DB.get("push/"+S.uid)}catch{}
+ const subs=d&&d.subs?Object.values(d.subs).filter(x=>x&&x.endpoint&&x.keys).slice(0,20).map(x=>({endpoint:x.endpoint,keys:{p256dh:x.keys.p256dh,auth:x.keys.auth}})):[];
+ if(!subs.length)return dialog("Önce bildirimi aç","Ayarlar › Bildirimler › <b>Uygulama kapalıyken de bildir</b> anahtarını aç, izin ver, sonra tekrar dene.",[{label:"Tamam"}]);
+ let tok="";try{tok=await FB.auth.currentUser.getIdToken()}catch{return toast("Oturum doğrulanamadı, yeniden giriş yap.")}
+ b.disabled=true;try{const rq=await fetch(kAI.url().replace(/\/+$/,"")+"/push",{method:"POST",headers:{"Content-Type":"application/json",Authorization:"Bearer "+tok},body:JSON.stringify({subscriptions:subs,payload:{title:"Kadraj",body:"Test bildirimi: uygulama kapalıyken de geliyor.",kind:"nudge",key:"activity",tag:"kadraj-test"},delay:5})});
+  let j=null;try{j=await rq.json()}catch{}
+  if(rq.status===202)toast(`5 saniye içinde Kadraj'ı kapat. Bildirim ${subs.length>1?subs.length+" cihazına":"cihazına"} gelecek.`);else if(rq.ok)toast(j&&j.ok?"Bildirim gönderildi (köprü eski sürüm, beklemeden).":"Bildirim cihaza ulaşmadı.");else toast((j&&j.message)||"Gönderilemedi ("+rq.status+").")}
+ catch{toast("Köprüye ulaşılamadı.")}b.disabled=false}
 try{const ae=ADM_EXTRA.find(x=>x.id==="ai");if(ae){const base=ae.html;ae.html=()=>base()+ak5Html();ae.desc="Rota'nın yapay zekâsı, internet araması ve bildirim anahtarları"}}catch(e){console.warn(e)}
 /* ===== 5.1.3: Clawd'a gizli söz → yönetici paneli (yalnızca sahibi) =====
    Clawd'a sorulan metin, harf işaretleri ve boşluklar atılıp karıştırılır (kapiH); söz kodda düz durmaz.
