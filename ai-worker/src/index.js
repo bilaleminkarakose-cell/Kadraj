@@ -3,6 +3,7 @@
 // - Yalnızca Kadraj'a giriş yapmış kişilerin isteklerini kabul eder: her istekte Firebase kimlik jetonu doğrulanır.
 // - Kişi başına günlük sınır vardır (DAILY_LIMIT). Asıl harcama sınırını Anthropic Console > Limits'ten koy.
 import Anthropic from "@anthropic-ai/sdk";
+import { handlePush, vapidKeys } from "./push.js";
 
 const JWKS_URL_DEFAULT = "https://www.googleapis.com/service_accounts/v1/jwk/securetoken@system.gserviceaccount.com";
 const MAX_MESSAGES = 24;
@@ -89,6 +90,26 @@ function takeQuota(uid, env) {
   u.recent.push(t);
   usage.set(uid, u);
   if (usage.size > 5000) usage.clear();
+  return true;
+}
+
+// 5.1 bildirimler: kişi başına 10 dakikada en fazla 80, günde en fazla PUSH_DAILY_LIMIT (varsayılan 600) gönderim isteği.
+const pushUsage = new Map();
+function takePushQuota(uid, env) {
+  const day = new Date().toISOString().slice(0, 10);
+  const lim = Math.max(1, parseInt(env.PUSH_DAILY_LIMIT || "600", 10) || 600);
+  let u = pushUsage.get(uid);
+  if (!u || u.day !== day) u = { day, n: 0, recent: [] };
+  const t = Date.now();
+  u.recent = u.recent.filter((x) => t - x < 600e3);
+  if (u.n >= lim || u.recent.length >= 80) {
+    pushUsage.set(uid, u);
+    return false;
+  }
+  u.n++;
+  u.recent.push(t);
+  pushUsage.set(uid, u);
+  if (pushUsage.size > 5000) pushUsage.clear();
   return true;
 }
 
@@ -190,7 +211,41 @@ export default {
     if (req.method === "OPTIONS") return new Response(null, { status: origin ? 204 : 403, headers: cors(origin) });
     if (req.method === "GET" && (url.pathname === "/" || url.pathname === "/health")) {
       const free = !env.ANTHROPIC_API_KEY && !!env.AI;
-      return json({ ok: true, name: "kadraj-ai", provider: env.ANTHROPIC_API_KEY ? "claude" : free ? "free" : "none", model: env.ANTHROPIC_API_KEY ? String(env.MODEL || "claude-opus-5-5") : free ? String(env.FREE_MODEL || "@cf/meta/llama-3.3-70b-instruct-fp8-fast") : "", key: !!(env.ANTHROPIC_API_KEY || env.AI) }, 200, origin);
+      return json({ ok: true, name: "kadraj-ai", provider: env.ANTHROPIC_API_KEY ? "claude" : free ? "free" : "none", model: env.ANTHROPIC_API_KEY ? String(env.MODEL || "claude-opus-5-5") : free ? String(env.FREE_MODEL || "@cf/meta/llama-3.3-70b-instruct-fp8-fast") : "", key: !!(env.ANTHROPIC_API_KEY || env.AI), push: !!(env.VAPID_PUBLIC_KEY && env.VAPID_PRIVATE_KEY) }, 200, origin);
+    }
+    // 5.1: Web Push açık anahtarı (tarayıcı aboneliği için applicationServerKey)
+    if (req.method === "GET" && url.pathname === "/vapid") {
+      if (!env.VAPID_PUBLIC_KEY || !env.VAPID_PRIVATE_KEY) return json({ error: "no_vapid", message: "Köprüde VAPID anahtarları yok. KURULUM.md'deki bildirim adımlarını yap." }, 501, origin);
+      try {
+        const k = await vapidKeys(env);
+        return json({ key: k.pub }, 200, origin);
+      } catch (e) {
+        return json({ error: "bad_vapid", message: "VAPID anahtarları hatalı ya da birbirini tutmuyor (" + String((e && e.message) || "") + ")." }, 500, origin);
+      }
+    }
+    // 5.1: uygulama kapalıyken bildirim gönder (gönderenin Firebase oturumu gerekir)
+    if (req.method === "POST" && url.pathname === "/push") {
+      if (!origin) return json({ error: "origin", message: "Bu adres yalnızca Kadraj'dan kullanılabilir." }, 403, origin);
+      if (!env.VAPID_PUBLIC_KEY || !env.VAPID_PRIVATE_KEY) return json({ error: "no_vapid", message: "Köprüde VAPID anahtarları yok." }, 501, origin);
+      let puid;
+      try {
+        puid = await verifyFirebase((req.headers.get("Authorization") || "").replace(/^Bearer\s+/i, ""), env);
+      } catch {
+        return json({ error: "auth", message: "Kadraj'a giriş yapmış olman gerekiyor." }, 401, origin);
+      }
+      if (!takePushQuota(puid, env)) return json({ error: "rate_limited", message: "Çok fazla bildirim gönderildi, biraz bekle." }, 429, origin);
+      let pb;
+      try {
+        pb = await req.json();
+      } catch {
+        return json({ error: "bad_request", message: "İstek okunamadı." }, 400, origin);
+      }
+      try {
+        const r = await handlePush(pb || {}, puid, env);
+        return json(r.data, r.status, origin);
+      } catch (e) {
+        return json({ error: "push", message: "Bildirim gönderilemedi (" + String((e && e.message) || "") + ")." }, 500, origin);
+      }
     }
     if (req.method !== "POST" || url.pathname !== "/ask") return json({ error: "not_found" }, 404, origin);
     if (!origin) return json({ error: "origin", message: "Bu adres yalnızca Kadraj'dan kullanılabilir." }, 403, origin);

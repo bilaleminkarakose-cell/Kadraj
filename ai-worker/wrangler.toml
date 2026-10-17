@@ -17,3 +17,5 @@ DAILY_LIMIT = "60"
 ALLOWED_ORIGINS = "https://kadrajsosyalmedya.github.io"
 FIREBASE_PROJECT = "kadraj-6f1e0"
 FREE_MODEL = "@cf/meta/llama-3.3-70b-instruct-fp8-fast"
+PUSH_DAILY_LIMIT = "600"
+# Bildirimler (5.1): VAPID_PUBLIC_KEY, VAPID_PRIVATE_KEY (Secret) ve VAPID_SUBJECT Cloudflare panelinden eklenir; değerleri `node vapid-anahtar.mjs` üretir. Buraya YAZMA.
