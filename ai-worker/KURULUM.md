@@ -25,7 +25,7 @@ Bu kurulumdan sonra Rota ve Clawd gerçek yapay zekâyla konuşur. Aynı köprü
 1. https://dash.cloudflare.com adresinde ücretsiz hesap aç. Kredi kartı istemez.
 2. **Workers & Pages** bölümünde **Create**'e bas, sonra **Import a repository**'yi seç.
 3. GitHub hesabını bağla ve `kadrajsosyalmedya/Kadraj` deposunu seç.
-4. **Root directory** (kök dizin) kutusuna `ai-worker` yaz. Diğer ayarları olduğu gibi bırakıp **Deploy**'a bas.
+4. **Project name** kutusuna `kadraj-ai` yaz. **Root directory** (kök dizin, bazen **Advanced settings** altında) kutusuna `ai-worker` yaz. Diğer ayarları olduğu gibi bırakıp **Deploy**'a bas. Kök dizin boş kalırsa köprü yerine Kadraj sitesinin kopyası yüklenir.
 5. Kurulum bitince Worker'ın adresini kopyala. Adres `https://kadraj-ai.<adın>.workers.dev` gibi görünür.
 
 Bu kadar: ücretsiz yapay zekâ bağlantısı (Workers AI) kendiliğinden kurulur.
@@ -106,6 +106,7 @@ Worker'da **Settings**, sonra **Variables** bölümünden değiştirebilirsin:
 
 | Sına'da gördüğün | Ne yapmalı |
 |---|---|
+| Cloudflare'de "Variables cannot be added to a Worker that only has static assets" ya da adres Kadraj sitesini açıyor | Worker > **Settings** > **Builds** > **Root directory** kutusuna `ai-worker` yaz, kaydet ve yeniden kur (Deployments > son kurulum > **Retry build**). |
 | "Köprüye ulaşılamadı" | Adresi kontrol et. Worker yayında mı (Deploy edildi mi), ona bak. |
 | "ne API anahtarı ne de ücretsiz model bağlı" | Yol B'nin 4. adımını yap (Workers AI bağlantısı). |
 | "Ücretsiz yapay zekâ yanıt vermedi" | Günlük ücretsiz kota dolmuş olabilir. Ertesi gün kendiliğinden yenilenir. |
