@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
 <meta charset="utf-8">
-<meta name="kadraj-version" content="50105">
+<meta name="kadraj-version" content="50106">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,interactive-widget=resizes-content">
 <meta name="theme-color" content="#0C7A63">
 <link rel="manifest" href="manifest.webmanifest">
@@ -2925,7 +2925,7 @@ const vib=ms=>{try{if(settings.haptics===false)return;navigator.vibrate&&navigat
 /* Sürüm: ana.ara.yama (4.1.0). Hata düzeltme ve küçük şeyler → yama artar (4.1.1); büyük güncelleme → ara artar (4.2.0).
    APP_V = ana*10000 + ara*100 + yama (4.1.0 → 40100). Başlıktaki <meta name="kadraj-version"> ile aynı tutulmalı.
    Eski biçim (4.0 → 40) verNorm ile çevrilir. "İki sürüm geride" ara sürüm sayısıyla ölçülür (yamalar engellemez). */
-const APP_V=50105,APP_VER="5.1.5";
+const APP_V=50106,APP_VER="5.1.6";
 const verNorm=x=>{x=Math.max(0,Math.floor(+x||0));return x<1000?Math.floor(x/10)*10000+(x%10)*100:x};
 const verLvl=x=>Math.floor(verNorm(x)/100);
 /* 4.9: fark sürüm adımıyla sayılır (4.9 → 5.0 bir adım); eskisi ana*100+ara farkıydı ve 5.0'ı 91 sürüm ileride sanıyordu */
@@ -10618,6 +10618,17 @@ document.addEventListener("click",async e=>{const b=e.target.closest&&e.target.c
  let h="";if(b.dataset.kapi==="save"){const v=(($("#kapiIn")||{}).value||"").trim();if(cwFold(v).replace(/\s+/g,"").length<6)return toast("Söz en az 6 harf olmalı.");h=kapiH(v)}
  if(await write(()=>DB.set("admin/kapi",{h,at:now(),by:S.uid}))){S.adm={...(S.adm||{}),kapi:{h,at:now(),by:S.uid}};admLog(h?"Clawd gizli sözü değişti":"Clawd gizli sözü varsayılana döndü");toast(h?"Yeni söz kaydedildi.":"Varsayılan söz geri geldi.");render(false)}});
 try{ADM_EXTRA.push({id:"kapi",title:"Hızlı giriş",desc:"Clawd'a gizli sözü söyle, panel şifresiz açılsın",icon:"key",order:66,count:()=>S.adm&&S.adm.kapi&&S.adm.kapi.h?{t:"Özel",c:"on"}:{t:"Varsayılan",c:"dim"},html:kapiHtml})}catch(e){console.warn(e)}
+/* ===== 5.1.6: Akış'ta bir kez "bildirimleri aç" kartı =====
+   Köprü kuruluysa, bu cihazda "Uygulama kapalıyken de bildir" kapalıysa ve izin engellenmemişse Akış'ın başında çıkar.
+   Varken ana ekrana ekle afişinin yerini alır (ikisi üst üste binmesin). Açınca ya da kapatınca bir daha çıkmaz (kadraj_pushcard_<uid>). */
+function kpcShow(){try{return S.route.name==="feed"&&S.authed&&!S.guest&&!!S.uid&&!LS.get("kadraj_pushcard_"+S.uid)&&KP.status().can&&!KP.isOn()}catch{return false}}
+function kpcHtml(){return`<div class="banner inst kpc">${I("bell")}<span><b>Kadraj kapalıyken de haberin olsun</b><br>Mesaj, beğeni ve aramalar telefonuna bildirim olarak gelsin.</span><button class="btn sm" data-act="kpcOn">Aç</button><button class="ib plain" data-act="kpcHide" aria-label="Kapat">${I("close")}</button></div>`}
+const vFeedBase516=vFeed;
+vFeed=function(...a){let h=vFeedBase516.apply(this,a);if(typeof h!=="string"||!kpcShow())return h;
+ h=h.replace(/<div class="banner inst">[\s\S]*?data-act="insthide"[\s\S]*?<\/button><\/div>/,"");
+ return h.includes('<div class="stories">')?h.replace('<div class="stories">',kpcHtml()+'<div class="stories">'):kpcHtml()+h};
+ACT.kpcOn=async t=>{if(t)t.disabled=true;const ok=await KP.enable();if(ok){LS.set("kadraj_pushcard_"+S.uid,now());vib(15);toast("Bildirimler açık. Ayarlar › Bildirimler'den kapatabilirsin.");render(false)}else if(t)t.disabled=false};
+ACT.kpcHide=()=>{LS.set("kadraj_pushcard_"+S.uid,now());toast("Tamam. İstersen Ayarlar › Bildirimler'den açarsın.");render(false)};
 /*}@js:511*/
 
 
