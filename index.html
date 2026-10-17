@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
 <meta charset="utf-8">
-<meta name="kadraj-version" content="50100">
+<meta name="kadraj-version" content="50101">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,interactive-widget=resizes-content">
 <meta name="theme-color" content="#0C7A63">
 <link rel="manifest" href="manifest.webmanifest">
@@ -2898,7 +2898,7 @@ const vib=ms=>{try{if(settings.haptics===false)return;navigator.vibrate&&navigat
 /* Sürüm: ana.ara.yama (4.1.0). Hata düzeltme ve küçük şeyler → yama artar (4.1.1); büyük güncelleme → ara artar (4.2.0).
    APP_V = ana*10000 + ara*100 + yama (4.1.0 → 40100). Başlıktaki <meta name="kadraj-version"> ile aynı tutulmalı.
    Eski biçim (4.0 → 40) verNorm ile çevrilir. "İki sürüm geride" ara sürüm sayısıyla ölçülür (yamalar engellemez). */
-const APP_V=50100,APP_VER="5.1.0";
+const APP_V=50101,APP_VER="5.1.1";
 const verNorm=x=>{x=Math.max(0,Math.floor(+x||0));return x<1000?Math.floor(x/10)*10000+(x%10)*100:x};
 const verLvl=x=>Math.floor(verNorm(x)/100);
 /* 4.9: fark sürüm adımıyla sayılır (4.9 → 5.0 bir adım); eskisi ana*100+ara farkıydı ve 5.0'ı 91 sürüm ileride sanıyordu */
@@ -3231,7 +3231,7 @@ function renderMsgs(){const box=$("#msgs");if(!box||S.route.name!=="chat")return
   S.knownMids.add(mk)});
  const typer=k.type==="dm"?(S.typing[k.uid]===k.cid?k.uid:null):(multi?Object.keys(S.typing).find(u=>S.typing[u]===k.cid):null);
  if((k.type==="bot"&&S.botTyping===k.uid)||typer||(multi&&S.botTyping==="bot:rota@"+key))h+=multi&&typer?`<div class="mrow">${avatar(typer,32,{click:false,ring:false,online:false})}<div class="typing" aria-label="${esc(P(typer).username)} yazıyor"><i></i><i></i><i></i></div></div>`:`<div class="typing" aria-label="yazıyor"><i></i><i></i><i></i></div>`;
- if(S.stream&&S.stream.key===key)h+=`<div class="mrow"><div class="mcol"><div class="msg ai">${md(S.stream.text||"…")}</div></div></div>`;
+ if(S.stream&&S.stream.key===key&&S.stream.text)h+=`<div class="mrow"><div class="mcol"><div class="msg ai">${md(S.stream.text)}</div></div></div>`;/* 5.1.1: boş "…" balonu yazıyor noktalarıyla çift görünüyordu */
  if(!msgs.length&&k.type!=="bot")h+=`<div class="empty" style="padding:10px"><span>İlk mesajı sen yaz.</span></div>`;
  box.innerHTML=h;if(atBottom||S.forceBottom){box.scrollTop=box.scrollHeight;box._pin=true;S.forceBottom=false}
  /* 4.4.1: klavye açılınca, yanıt çubuğu çıkınca ya da fotoğraf geç yüklenince en alttaysan altta kal */
@@ -10501,6 +10501,28 @@ ACT.rvstep=()=>{if(!CH)return;rvJump(CH.moves.length?1:0)};
 ACT.rvstepx=()=>{if(!CH)return;CH._rvStep=false;const b=$("#cRvBar");if(b)b.remove();CH.view=null;chDraw()};
 HOOKS.after.push(r=>{if(r==="chessgame"&&CH&&CH.mode!=="puzzle")rvKick()});
 /*}@js:51REV*/
+/*@js:511{*/
+/* ===== 5.1.1: Rota'nın yanıtı harf harf gelir =====
+   Köprü (kAI) yanıtı tek parça döndürür; botReply sarıldı (botReplyBase511): yanıt gelince S.stream ile parça parça yazılır,
+   yalnızca baloncuğun içi güncellenir (her adımda renderMsgs yok). Sohbet açık değilse, animasyon azaltılmışsa ya da yanıt
+   zaten akışla geldiyse beklemeden döner. En uzun yanıt yaklaşık 2,5 sn'de biter. */
+function rtTypeOk(key){return S.route.name==="chat"&&S.route.params.key===key&&document.visibilityState!=="hidden"&&!kbReduce()}
+async function rtTypewrite(key,text){const box=$("#msgs");if(!box||!rtTypeOk(key))return;
+ const step=Math.max(2,Math.ceil(text.length/80));let n=Math.min(step,text.length);
+ S.botTyping=null;S.stream={key,text:text.slice(0,n)};renderMsgs();
+ const bubs=box.querySelectorAll(".msg.ai");const bub=bubs[bubs.length-1];if(!bub)return;
+ while(n<text.length){await new Promise(res=>setTimeout(res,30));
+  if(!rtTypeOk(key)||!bub.isConnected||!S.stream||S.stream.key!==key)return;
+  n=Math.min(text.length,n+step);const sp=text.indexOf(" ",n);if(sp>n&&sp-n<6)n=sp;
+  S.stream.text=text.slice(0,n);const pin=box.scrollHeight-box.scrollTop-box.clientHeight<80;bub.innerHTML=md(S.stream.text);if(pin)box.scrollTop=box.scrollHeight}}
+const botReplyBase511=botReply;
+botReply=async function(b,msgs){const key="u:"+b.uid;const smp=S.caps.sample;let calls=0;
+ /* köprü yanıtı tek seferde onText ile verir: ilk çağrı tutulur (yazıyor noktaları kalır); ikinci çağrı gelirse gerçek akıştır, iletilir */
+ const wrap=smp&&b.ai?Object.assign((p,o)=>smp(p,o&&typeof o.onText==="function"?{...o,onText:x=>{calls++;if(calls>1)o.onText(x)}}:o),smp):null;if(wrap)S.caps.sample=wrap;
+ let r;try{r=await botReplyBase511(b,msgs)}finally{if(wrap&&S.caps.sample===wrap)S.caps.sample=smp}
+ if(r&&b.ai&&calls<=1)try{await rtTypewrite(key,r)}catch(e){console.warn(e)}
+ return r};
+/*}@js:511*/
 
 
 boot();
