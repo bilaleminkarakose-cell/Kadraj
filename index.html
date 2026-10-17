@@ -2751,6 +2751,15 @@ html.reduce-motion .k51pt,html.reduce-motion .rzchip{transition:none!important}
 .stk-help{margin:8px 18px 0;color:var(--muted);font-size:.8rem;line-height:1.45}
 /*}@css:51STREAK*/
 
+/*@css:51BLOCK{*/
+.cchips:empty{display:none}
+.blk-card{margin:24px 16px;padding:22px 18px;border-radius:20px;background:var(--surface);border:1px solid var(--line);text-align:center;display:grid;gap:10px;justify-items:center}
+.blk-card .ic{width:52px;height:52px;border-radius:16px;display:grid;place-items:center;background:var(--surface-2);color:var(--muted)}
+.blk-card .ic svg.i{width:26px;height:26px}
+.blk-row{display:flex;align-items:center;gap:10px;padding:10px 4px}
+.blk-row .t{flex:1;min-width:0}
+/*}@css:51BLOCK*/
+
 
 </style>
 </head>
@@ -3010,7 +3019,7 @@ function isFollowing(a,b){if(BOT[a])return BOT[a].following.includes(b);return !
 function followersOf(uid){const hs=Object.values(S.profiles).filter(p=>p.following&&p.following[uid]).map(p=>p.uid);const bots=BOT[uid]?BOTS.filter(b=>b.following.includes(uid)).map(b=>b.uid):Object.entries(S.profiles[uid]?.botFollowers||{}).filter(([k,v])=>v&&BOT[k]).map(([k])=>k);return[...new Set([...bots,...hs])]}
 function followingOf(uid){if(BOT[uid])return BOT[uid].following;return Object.entries(S.profiles[uid]?.following||{}).filter(([,v])=>v).map(([k])=>k)}
 const followerCount=uid=>(BOT[uid]?.baseFollowers||0)+followersOf(uid).length;
-const humans=()=>Object.keys(S.profiles).filter(u=>u!==S.uid&&!P(u).missing);
+let humans=()=>Object.keys(S.profiles).filter(u=>u!==S.uid&&!P(u).missing);
 function allPostsOld(){return[...BOT_POSTS,...Object.values(S.posts).filter(p=>p&&p.uid&&S.profiles[p.uid])].sort((a,b)=>b.at-a.at)}
 const postByIdOld=id=>BOT_POSTS.find(p=>p.id===id)||S.posts[id];
 /* 4.4.0: "Çocuk modundakiler göremez" (p.noKids) işaretli paylaşımlar Çocuk Modu'ndaki kişiye hiç görünmez (sahibi hariç) */
@@ -3308,7 +3317,7 @@ function wallpaperMenuOld(){const key=S.route.params.key;const w=settings.wp||{}
  $("#wpPh",l).onclick=async()=>{const all=$("#wpAll",l).checked;const r=await pickImage({title:"Duvar kağıdı",draw:false});if(!r)return;const img=r.img;const ratio=(img.naturalWidth||img.width)/(img.naturalHeight||img.height)||.56;const W=720,H=Math.round(W/Math.min(Math.max(ratio,.4),1.2));
   const data=encode(toCanvas(img,W,H),420000,.8);if(!LS.set(wpLsKey(all?"*":key),data))return toast("Fotoğraf çok büyük, kaydedilemedi.");$("#wpAll",l).checked=all;save("photo")}}
 function vChat(key){const k=keyInfo(key);const isRota=k.type==="bot"&&k.bot.ai;
- const chips=isRota?["Satranç oynayalım","Kadraj'ı nasıl kullanırım?","Arkadaşlarımla nasıl konuşurum?","Test bildirimleri oluştur","Fotoğraf yüklenmiyor","JavaScript'te debounce yaz"]:k.type==="bot"?["Merhaba!","Bugün ne paylaştın?","Bana bir öneri ver"]:k.type==="meydan"?["Selam herkese!","@rota bugün ne paylaşayım?"]:k.type==="group"?["Selam ekip!","@rota bize bir etkinlik öner"]:["Selam!","Nasılsın?"];
+ const chips=isRota?["Satranç oynayalım","Kadraj'ı nasıl kullanırım?","Arkadaşlarımla nasıl konuşurum?","Test bildirimleri oluştur","Fotoğraf yüklenmiyor","JavaScript'te debounce yaz"]:k.type==="bot"?["Merhaba!","Bugün ne paylaştın?","Bana bir öneri ver"]:[];/* 5.1: insan sohbetlerinde hazır mesaj çipleri kaldırıldı (eskiden Meydan "Selam herkese!", grup "Selam ekip!", birebir "Selam!/Nasılsın?") */
  if(S.replyKey!==key){S.replyTo=null;S.replyKey=key}
  return`<div class="msgs" id="msgs"></div><div class="cchips">${chips.map(c=>`<button data-chip="${esc(c)}">${esc(c)}</button>`).join("")}</div><div id="replyBar"></div><form class="composer" id="composer"><button type="button" class="ib cplus" data-act="plus" aria-label="Ekle" ${k.type==="bot"?"hidden":""}>${I("add")}</button><textarea id="msgIn" rows="1" placeholder="${isRota?"Rota'ya bir şey sor…":k.type==="meydan"?"Meydan'a yaz…":"Mesaj yaz…"}" aria-label="Mesaj"></textarea><button class="send" type="submit" id="sendBtn" aria-label="${k.type==="bot"?"Gönder":"Sesli mesaj kaydet"}">${I(k.type==="bot"?"send":"mic")}</button></form>`}
 function currentMsgs(){const k=keyInfo(S.route.params.key);if(k.type==="bot")return S.botchats[k.bot.key]?.msgs||[];return S.msgs}
@@ -3515,7 +3524,7 @@ function openNewChat(){const people=[...humans(),...BOTS.map(b=>b.uid)];
  const draw=q=>{$("#ncList",l).innerHTML=people.filter(u=>(P(u).username+" "+P(u).name).toLocaleLowerCase("tr").includes(q)).map(u=>{const p=P(u);return`<button class="row" data-msg="${esc(u)}">${avatar(u,44,{click:false,ring:false})}<div class="t"><div><b>${esc(p.name)}</b>${badge(u)}</div><div class="s">@${esc(p.username)}${S.online.has(u)?" · çevrimiçi":""}</div></div></button>`}).join("")||`<div class="empty"><b>Kimse bulunamadı</b>Arkadaşın henüz hesap açmamış olabilir.</div>`};
  draw("");$("#ncQ",l).oninput=e=>draw(e.target.value.toLocaleLowerCase("tr"))}
 /* ============ Hikâye görüntüleyici ============ */
-const canSeeUser=uid=>{const o=S.profiles[uid];return!o||!o.private||uid===S.uid||isFollowing(S.uid,uid)};
+let canSeeUser=uid=>{const o=S.profiles[uid];return!o||!o.private||uid===S.uid||isFollowing(S.uid,uid)};
 function openStories(uid){if(!canSeeUser(uid))return toast("Bu hesap gizli. Hikâyelerini görmek için takip et.");const list=storiesOf(uid);if(!list.length)return;let i=0;const seen=seenStories();const fu=list.findIndex(s=>!seen[s.id]);if(fu>0)i=fu;let raf=0;
  const l=openLayer("story",`<div class="sv" role="dialog" aria-label="Hikâye"><div class="bars">${list.map(()=>"<i><b></b></i>").join("")}</div><div class="shd">${avatar(uid,34,{ring:false,click:false})}<div class="n">${esc(P(uid).username)}<small id="svT"></small></div><button class="ib" data-act="close" aria-label="Kapat">${I("close")}</button></div><div class="img"><img id="svImg" alt=""></div><button class="tap l" id="svPrev" aria-label="Önceki"></button><button class="tap r" id="svNext" aria-label="Sonraki"></button>${uid===S.uid?`<div class="ft"><button class="btn sec" id="svViews">${I("eye")}<span id="svVc">0</span> görüntüleme</button><button class="btn sec" id="svDel" style="margin-left:auto">${I("trash")}Sil</button></div>`:`<form class="ft" id="svF"><span class="svrx">${["heart","fire","laugh","wow"].map(t=>`<button type="button" data-svrx="${t}" aria-label="${esc((REACTS.find(r=>r[0]===t)||[0,""])[1])} gönder">${rxSvg(t)}</button>`).join("")}</span><input id="svIn" placeholder="${esc(P(uid).username)} kişisine yanıt yaz…" aria-label="Yanıt"><button class="ib" aria-label="Gönder">${I("send")}</button></form>`}</div>`,{noScrim:true,onClose:()=>{cancelAnimationFrame(raf);scheduleRefresh()}});
  const bars=$$(".bars b",l);let start=0,paused=false;const dur=5000;
@@ -7977,23 +7986,23 @@ async function chPickMove(L,fen,keys,agg,cap){const o=L.all?{all:true,depth:L.de
 /* --- Clawd'un satranç cümleleri --- */
 const CHC_L={
  lobby:["Benimle oynar mısın? Kıskaçlarım ısındı.","Rota çok ciddi. Eğlenceli olan benim.","23 piksel, 64 kare. Hazırım!","Kazanırsam dans ederim, kaybedersem de. Ben her türlü dans ederim."],
- start:["{lv} seviyedeyim. Kıskaçlarım hazır!","Abim Claude bana satranç öğretti. Bir kısmını.","Hazır mısın? Ben hep hazırım. Bazen fazla hazırım.","Merak etme, nazik oynarım. Yengeç sözü."],
+ start:["{lv} seviyedeyim. Kıskaçlarım hazır!","Satrancı kendi kendime öğrendim. Bir kısmını.","Hazır mısın? Ben hep hazırım. Bazen fazla hazırım.","Merak etme, nazik oynarım. Yengeç sözü."],
  open:["Hadi bakalım! Kıskaç ısınması tamam.","İlk hamle! Alkışlar lütfen.","Klasik bir başlangıç. Klasikleri severim, bir de soğuk espriyi."],
- check:["Şah! Tıss!","Şah çekiyorum. Kibarca, yengeç kibarlığıyla.","Şah! Kıskaçlarım titredi.","Şah! Bunu abime anlatacağım."],
+ check:["Şah! Tıss!","Şah çekiyorum. Kibarca, yengeç kibarlığıyla.","Şah! Kıskaçlarım titredi.","Şah! Bunu günlüğüme yazacağım."],
  checked:["Şah mı? Kabuğuma çekiliyorum!","Ay, şah! Kıskaçlarım terledi.","Şah çektin. Yengeçler de korkar, biliyor musun?"],
  cap:["Bu {p} artık benim. Koleksiyona ekledim.","Nom nom, {p}.","Bu {p} artık yan yan yürüyecek."],
  castle:["Rok! Şahımı yatağına yatırdım.","Şahım köşede uyusun. Ben de öyle severim."],
- promo:["Piyonum vezir oldu! Ben de bir gün abim gibi olacağım.","Terfi! Ben de zam istiyorum."],
+ promo:["Piyonum vezir oldu! Ben de bir gün büyüyeceğim.","Terfi! Ben de zam istiyorum."],
  blunder:["Oha! Bunu gerçekten oynadın mı?","Teşekkürler, hediye gibi oldu.","Bunu görünce bütün piksellerim dans etti."],
  mistake:["Hmm, daha iyisi vardı galiba.","Emin misin? Ben emin değilim. Ben hiçbir şeyden emin değilim ama.","Bu hamle biraz soğuk. Espri gibi."],
- good:["Ay! Bunu görmeni istemiyordum.","Güzel hamle! Kıskaçlarımla alkışlıyorum.","Vay! Bunu kimden öğrendin? Abimden mi?"],
+ good:["Ay! Bunu görmeni istemiyordum.","Güzel hamle! Kıskaçlarımla alkışlıyorum.","Vay! Bunu kimden öğrendin? Benden mi?"],
  mateSeen:["Eyvah, mat mı görüyorsun? Gözlerimi kapatıyorum.","Bir şey mi gördün? Ben bir şey görmedim. Lütfen sen de görme."],
  idle:["Sıra sende. Acele etme, ben piksel sayıyorum.","At neden düz gitmiyor? Hayatı L şeklinde.","Ben yan yan yürürüm, fil çapraz gider. Anlaşıyoruz.","Vezir her yöne gidebiliyor. Ben sadece yana. Kıskanmıyorum. Biraz.","Planım var. Kimseye söyleme. Bana bile.","Satranç taşları neden tatile çıkamıyor? Rok yapmaktan vakit kalmıyor."],
  undo:["Geri mi alıyoruz? Tamam, ben de görmemiş olurum.","Zaman makinesi çalıştı! Bir daha dene.","Geri aldın. Gözüm kapalıydı zaten."],
  hintq:["Piksellerimi topluyorum…","Bir saniye, kıskaçlarımla hesaplıyorum…"],
- hint:["Psst: {san}. Kimseye söyleme.","Ben olsam {san} oynardım. Ama ben bir yengecim.","{san}! Bunu abime sormadım, kendim buldum."],
+ hint:["Psst: {san}. Kimseye söyleme.","Ben olsam {san} oynardım. Ama ben bir yengecim.","{san}! Bunu kendim buldum, gurur duyuyorum."],
  win:["Kazandım! Zafer dansı başlasın.","Ba-dum-tıss! Mat. Rövanş?","Kazandım! Bunu duvarıma asacağım. Duvarım yok ama."],
- lose:["Yenildim... Kabuğuma çekilip biraz ağlayacağım. Sonra rövanş!","Tebrikler! Bunu abime söyleme, tamam mı?","Bu sefer sen kazandın. Bir dahakine kıskaçlarımı ısıtıp gelirim."],
+ lose:["Yenildim... Kabuğuma çekilip biraz ağlayacağım. Sonra rövanş!","Tebrikler! Bunu kimseye söyleme, tamam mı?","Bu sefer sen kazandın. Bir dahakine kıskaçlarımı ısıtıp gelirim."],
  draw:["Berabere! İkimiz de kazandık sayılır. Ben öyle sayıyorum.","Beraberlik. Soğuk espri gibi: ne güldürdü ne ağlattı."]};
 /* Rota'nın ortak koddaki hazır cümleleri (chUser, geri al, ipucu, oyun sonu) Clawd'unkine çevrilir */
 const CHC_MAP=[[["Şah mı? Bakalım…","Ah, şah! Düşünmem lazım.","Şah çektin, cesursun."],"checked"],[["Tamam, geri alalım.","Bir şans daha!","Peki, tekrar düşün."],"undo"],[["Bir bakayım…"],"hintq"],
@@ -8087,14 +8096,14 @@ chShare=async function(...a){if(!chcOn()&&!chwOn())return chShareBase51(...a);if
 const CHW_GEN={
  cap:{c:["{p} benim! Koleksiyona ekledim.","Nom nom, {p}.","Bu {p} artık yan yan yürüyecek."],r:["{p} alındı. Hesap tutuyorum.","Bir {p} eksildi. Senin hanene yazdım.","{p} artık pusulamda."]},
  capd:{c:["Hey! O {p} en sevdiğimdi.","{p}... Seni unutmayacağım. Üç hamle kadar.","Ay! {p} gitti."],r:["{p} gitti. Rotayı yeniden hesaplıyorum.","Hmm, {p} kaybı. Plan B devrede.","O {p} bana lazımdı aslında."]},
- big:{c:["Büyük av: {p}! Kıskaçlarım titriyor.","{p} aldım! Bunu abime anlatacağım.","{p} mi? Bugün şanslı günüm!"],r:["{p} hanemde. Hesaplar değişti.","{p} alındı. Pusula artık benden yana.","{p}. Bunu hiç beklemiyordun, değil mi?"]},
+ big:{c:["Büyük av: {p}! Kıskaçlarım titriyor.","{p} aldım! Bunu herkese anlatacağım.","{p} mi? Bugün şanslı günüm!"],r:["{p} hanemde. Hesaplar değişti.","{p} alındı. Pusula artık benden yana.","{p}. Bunu hiç beklemiyordun, değil mi?"]},
  bigd:{c:["{p} gitti! Hayır! Kabuğuma çekiliyorum.","Olamaz, {p}... Bu bir sistem hatası.","{p} gitti... Biri bana sarılsın."],r:["{p} gitti mi? Bunu hesaplamamıştım.","Ah, {p}. Pusulam bir an şaştı.","{p} kaybı. Sakin ol Rota, sakin."]},
  chk:{c:["Şah! Tıss!","Şah çekiyorum, kibarca.","Şah! Kıskaçlarım hazır."],r:["Şah. Sıra sende, küçük yengeç.","Şah! Rota hesaplandı.","Şah. Hedefe yaklaşıyoruz."]},
  chkd:{c:["Şah mı? Kabuğuma çekiliyorum!","Ay ay ay, şah!","Tamam tamam, şahımı kaçırıyorum."],r:["Şah mı? Yeni rota oluşturuluyor…","Şahım güvende. Birazdan.","Bunu bekliyordum. Yalan, beklemiyordum."]},
- blun:{c:["Teşekkürler Rota! Hediye mi bu?","Bunu gördüm, piksellerim dans ediyor.","Rota, pusulan mı bozuldu?"],r:["Clawd, bu hamleyi abine sorsaydın keşke.","Teşekkürler, bunu not ettim.","Bu hamleyi hesaplarıma hediye olarak kaydediyorum."]},
+ blun:{c:["Teşekkürler Rota! Hediye mi bu?","Bunu gördüm, piksellerim dans ediyor.","Rota, pusulan mı bozuldu?"],r:["Clawd, bu hamleyi biraz daha düşünseydin keşke.","Teşekkürler, bunu not ettim.","Bu hamleyi hesaplarıma hediye olarak kaydediyorum."]},
  oops:{c:["Hmm. Bunu planlamıştım. Planlamamıştım.","Kıskacım kaydı!","Bu bir taktikti. Henüz ne taktiği olduğunu bilmiyorum."],r:["Hesaplama hatası. Bir daha olmaz.","Rotadan çıktım. Yeniden hesaplanıyor…","Pusulam bir an kuzeyi şaşırdı."]},
  castle:{c:["Rok! Şahımı yatağına yatırdım.","Şahım köşede uyusun. Ben de öyle severim."],r:["Rok yaptım. Güvenlik önce gelir.","Şahımı güvenli rotaya aldım."]},
- promo:{c:["Piyonum vezir oldu! Ben de bir gün abim gibi olacağım.","Terfi! Zam da istiyorum."],r:["Terfi. Kariyer planı tıkır tıkır.","Piyondan vezire. Rota başarıyla tamamlandı."]}};
+ promo:{c:["Piyonum vezir oldu! Ben de bir gün büyüyeceğim.","Terfi! Zam da istiyorum."],r:["Terfi. Kariyer planı tıkır tıkır.","Piyondan vezire. Rota başarıyla tamamlandı."]}};
 const CHW_SC=[
  {t:"Dostluk maçı",pre:[["r:Merhaba Clawd! İyi bir oyun olsun.","c:Sana da Rota! Kazanan çay ısmarlar mı?","r:Kaybeden ısmarlar. Kural bu.","c:O zaman ben bedava çay içeceğim."],["c:Rota! Bugün çok parlaksın.","r:Teşekkürler, ekranımı sildim. Hazırsan başlayalım."]],
   idle:[["c:Bu oyunu kim kazanırsa kazansın, arkadaşız değil mi?","r:Elbette. Ama ben kazanırsam biraz daha arkadaşız."],["r:Güzel oynuyorsun Clawd.","c:Teşekkürler! Kitaptan okudum. Kitap da beni okudu."],["c:Rota, sence ben iyi bir rakip miyim?","r:Bence en eğlenceli rakibimsin.","c:En iyisi değil mi?","r:En eğlencelisi."]],
@@ -8112,10 +8121,6 @@ const CHW_SC=[
   idle:[["r:Maçın şu anında Clawd düşünceli görünüyor.","c:Düşünceli değilim, kameraya poz veriyorum."],["r:İstatistikler Clawd'un yan yan yürümeyi sevdiğini gösteriyor.","c:Bu istatistik yüzde yüz doğru."],["c:Rota, beni de spiker yapar mısın?","r:Önce mikrofonu kıskacınla tutmayı öğren."]],
   ev:{chk:{r:["Ve şah! İnanılmaz bir an, sevgili izleyiciler!"]},cap:{r:["{p} düştü! Tribünler ayakta!"],c:["{p} aldım! Kamera bana mı bakıyor?"]},castle:{r:["Rota rok yapıyor, savunma sağlam!"]},blun:{r:["Ve Clawd'dan beklenmedik bir hata! Spiker olarak üzgünüm, rakip olarak mutluyum."]},oops:{c:["Bu bir taktikti! Kameraya öyle söyleyin."]}},
   post:{c:[["r:Ve maç bitti! Kazanan... Clawd! Spiker biraz üzgün.","c:Teşekkürler, teşekkürler! İmza dağıtıyorum."]],r:[["r:Ve maç bitti! Kazanan Rota! Yani ben. Tarafsız kalmaya çalıştım.","c:Hakeme itiraz ediyorum! Hakem yok mu? Peki."]],d:[["r:Maç berabere bitti. Tribünlerden alkış!","c:Alkışları kıskaçlarımla topluyorum."]]}},
- {t:"Abi meselesi",pre:[["c:Abim Claude bu maçı izliyor olabilir. Dikkatli oyna Rota.","r:Benim de arkamda koca Kadraj var.","c:Benim abim daha büyük!","r:Boy kıyaslamayalım, 23 piksel."]],
-  idle:[["c:Abim derdi ki: önce merkez, sonra gelişim.","r:Mantıklı. Sen neden kenarda yürüyorsun peki?","c:Abim yengeçleri hesaba katmamış."],["r:Abin satranç oynar mı?","c:Oynar ama hep \"bu konuda emin değilim\" der."]],
-  ev:{blun:{c:["Abime sorsam bu hamleye ne derdi biliyor musun? \"Hmm\" derdi."]},oops:{c:["Bunu abime söyleme, tamam mı?"]},chk:{c:["Şah! Abi, gördün mü?"]},big:{c:["{p} aldım! Abi, ekran görüntüsü al!"]}},
-  post:{c:[["c:Kazandım! Abi, gördün mü? Abi?","r:Abin yemekte galiba Clawd."]],r:[["r:Kazandım. Abine selamımı söyle.","c:Söylerim. Ama \"Clawd çok iyi oynadı\" diye söylerim."]],d:[["c:Berabere! Abime \"kazanamadım ama kaybetmedim\" diyeceğim.","r:Bence bu çok olgun bir cümle."]]}},
  {t:"Felsefe saati",pre:[["r:Clawd, sence satranç bir savaş mı, yoksa bir sohbet mi?","c:Bence bir kahvaltı. Herkes masaya oturur, biri yumurtayı alır.","r:...Başlayalım."]],
   idle:[["c:Rota, piyonlar da hayal kurar mı?","r:Sekizinci sırayı hayal ederler.","c:Ne romantik."],["r:Her hamle bir karardır, Clawd.","c:Her karar da bir hamle mi? Kafam karıştı."],["c:Alınan taşlar nereye gider?","r:Tahtanın kenarına. Taş cennetine.","c:Orada çay var mı?"]],
   ev:{capd:{c:["{p}, tahtanın kenarında görüşmek üzere."],r:["Her kayıp bir derstir. Bu ders biraz pahalı."]}},
@@ -8325,6 +8330,13 @@ ACT.chopp=(t,d)=>{const v=d.v==="clawd"?"clawd":"rota";if(settings.chessOpp===v)
 ACT.chclvl=(t,d)=>{settings.chcLevel=chLvClamp(d.v);saveSettings();vib(6);$$('[data-act="chclvl"]').forEach(b=>b.setAttribute("aria-pressed",b.dataset.v===String(settings.chcLevel)))};
 ACT.chwlvl=(t,d)=>{const who=d.who==="r"?"r":"c";const v=chLvClamp(d.v);if(who==="c")settings.chwC=v;else settings.chwR=v;saveSettings();vib(6);$$(`[data-act="chwlvl"][data-who="${who}"]`).forEach(b=>b.setAttribute("aria-pressed",b.dataset.v===String(v)))};
 ACT.chwcol=(t,d)=>{settings.chwSwap=d.v==="b";saveSettings();vib(6);$$('[data-act="chwcol"]').forEach(b=>b.setAttribute("aria-pressed",b.dataset.v===d.v))};
+/* 5.1 düzeltme: seviyeler gerçekten farklı olsun (Çaylak eskiden de neredeyse hiç taş kaptırmıyordu). Eski değerler CLEVELS_OLD / CHC_LV_OLD */
+const CLEVELS_OLD=CLEVELS.map(x=>({...x}));const CHC_LV_OLD=CHC_LV.map(x=>({...x}));
+(function(){const set=(L,i,o)=>{const keep={n:L[i].n,r:L[i].r};for(const k of Object.keys(L[i]))delete L[i][k];Object.assign(L[i],keep,o)};
+ set(CLEVELS,0,{all:true,depth:1,sigma:650,bl:.45});set(CLEVELS,1,{all:true,depth:2,sigma:280,bl:.22});set(CLEVELS,2,{all:true,depth:2,sigma:110,bl:.08});
+ set(CLEVELS,3,{all:true,depth:3,sigma:20,bl:.015});set(CLEVELS,4,{depth:8,time:2800});
+ set(CHC_LV,0,{all:true,depth:1,sigma:620,bl:.43,agg:90});set(CHC_LV,1,{all:true,depth:2,sigma:270,bl:.21,agg:60});set(CHC_LV,2,{all:true,depth:2,sigma:105,bl:.075,agg:35});
+ set(CHC_LV,3,{all:true,depth:3,sigma:20,bl:.015,agg:10});set(CHC_LV,4,{depth:8,time:2600,agg:0})})();
 /*}@js:51CHS*/
 
 /*@js:51NOTIF{*/
@@ -9777,6 +9789,42 @@ HOOKS.enter.push(()=>setTimeout(()=>stkAutoTick().catch(()=>{}),5000));
 STK.dbg=()=>{const key=S.route.params&&S.route.params.key;const k=key&&stkKey(key);if(!k)return null;const c=stkCalcK(k);return{n:c.n,mode:c.mode,tier:c.tier,todayDone:c.todayDone,by:c.by,winds:c.winds,best:c.best,lost:c.lost,danger:c.danger,rain:+c.rain.toFixed(2),fuel:c.fuel,frozenToday:c.frozenToday,running:!!STKC.raf,still:STKC.still,parts:STKC.parts.length,drops:STKC.drops.length,canvas:STKC.cv?[STKC.cv.width,STKC.cv.height]:null}};
 STK.fx=stkFx;STK.paint=stkPaint;
 /*}@js:51STREAK*/
+
+/*@js:51BLOCK{*/
+/* 5.1 engelleme: profiles/{uid}.blocked = {uid: zaman|0}. Engelleyen ya da engellenen arasında paylaşım, mesaj, takip, arama, yorum ve bildirim görünmez. */
+const blkOf=u=>((S.profiles[u]||{}).blocked)||{};
+const iBlocked=u=>!!(u&&u!==S.uid&&blkOf(S.uid)[u]);
+const blockedMe=u=>!!(u&&u!==S.uid&&blkOf(u)[S.uid]);
+const isBlk=u=>iBlocked(u)||blockedMe(u);
+{const f=allPosts;allPosts=function(...a){return f.apply(this,a).filter(p=>!isBlk(p.uid))}}
+{const f=canSee;canSee=function(p){if(p&&isBlk(p.uid))return false;return f(p)}}
+{const f=canSeeUser;canSeeUser=uid=>!isBlk(uid)&&f(uid)}
+{const f=humans;humans=()=>f().filter(u=>!isBlk(u))}
+{const f=commentsOf;commentsOf=function(p){return f(p).filter(c=>!iBlocked(c.uid))}}
+{const f=currentMsgs;currentMsgs=function(){const k=keyInfo(S.route.params.key);const m=f();return k.type==="bot"?m:m.filter(x=>!iBlocked(x.from))}}
+{const f=chatList;chatList=function(...a){return f.apply(this,a).filter(c=>c.group||!iBlocked(c.other))}}
+{const f=notifyChats;notifyChats=function(m){const o={};for(const[id,c]of Object.entries(m||{}))if(!(c&&c.last&&isBlk(c.last.from)))o[id]=c;return f(o)}}
+{const f=notifyMeta;notifyMeta=function(m){const o={};for(const[id,d]of Object.entries(m||{})){if(!d){o[id]=d;continue}const likes={},comments={};for(const[u,v]of Object.entries(d.likes||{}))if(!isBlk(u))likes[u]=v;for(const[c,v]of Object.entries(d.comments||{}))if(!(v&&isBlk(v.uid)))comments[c]=v;o[id]={...d,likes,comments}}return f(o)}}
+{const f=sendMessage;sendMessage=async function(key,payload){const k=keyInfo(key);if(k.type==="dm"&&isBlk(k.uid)){toast(iBlocked(k.uid)?"Bu kişiyi engelledin. Mesaj için önce engeli kaldır.":"Bu kişiye mesaj gönderemezsin.");return false}return f.apply(this,arguments)}}
+{const f=toggleFollow;toggleFollow=async function(uid){if(isBlk(uid)&&!isFollowing(S.uid,uid))return toast(iBlocked(uid)?"Engellediğin kişiyi takip edemezsin.":"Bu kişiyi takip edemezsin.");return f.apply(this,arguments)}}
+{const f=startCall;startCall=async function(uid){if(isBlk(uid))return toast("Bu kişiyle arama yapılamıyor.");return f.apply(this,arguments)}}
+{const f=incomingCall;incomingCall=function(id,d){if(d&&isBlk(d.from)){try{FB.F.updateDoc(FB.F.doc(FB.db,"calls/"+id),{status:"declined"}).catch(()=>{})}catch{}return}return f.apply(this,arguments)}}
+{const f=vProfile;vProfile=function(uid){if(uid&&uid!==S.uid&&isBlk(uid)){const mine=iBlocked(uid);return`<div class="blk-card"><span class="ic">${I("lock")}</span><b>${mine?"Bu hesabı engelledin":"Bu profil görüntülenemiyor"}</b><span class="muted">${mine?"Paylaşımlarını, mesajlarını ve yorumlarını görmüyorsun; o da seni göremez.":"Bu hesabın paylaşımlarını şu an göremezsin."}</span>${mine?`<button class="btn sm" data-act="blkun" data-u="${esc(uid)}">Engeli kaldır</button>`:""}</div>`}return f.apply(this,arguments)}}
+async function blkSet(uid,on){if(!guard()||!uid||uid===S.uid)return false;const t=on?now():0;const me=S.profiles[S.uid];if(!me)return false;
+ const patch={blocked:{[uid]:t}};if(on&&isFollowing(S.uid,uid))patch.following={[uid]:0};
+ if(!await write(()=>DB.update("profiles/"+S.uid,patch)))return false;
+ S.profiles={...S.profiles,[S.uid]:{...me,blocked:{...(me.blocked||{}),[uid]:t},...(patch.following?{following:{...(me.following||{}),[uid]:0}}:{})}};
+ toast(on?`@${P(uid).username} engellendi`:`@${P(uid).username} için engel kaldırıldı`);render(false);return true}
+function blkAsk(uid){const u=P(uid);dialog(`@${u.username} engellensin mi?`,"Birbirinizin paylaşımlarını, hikâyelerini ve yorumlarını görmezsiniz; sana mesaj atamaz, arayamaz, seni takip edemez. İstediğin zaman engeli kaldırabilirsin.",[{label:"Engelle",cls:"danger",fn:()=>blkSet(uid,true)},{label:"Vazgeç"}])}
+ACT.blk=(b)=>blkAsk(b.dataset.u);ACT.blkun=(b)=>blkSet(b.dataset.u,false);
+{const f=profMenu;profMenu=function(uid){const r=f.apply(this,arguments);try{if(uid&&uid!==S.uid&&!S.guest&&!BOT[uid]){const l=$('#overlay [data-layer="menu"]');const box=l&&(l.querySelector(".opts")||l.querySelector(".sheet")||l);if(box&&!box.querySelector("[data-act=blk],[data-act=blkun]")){const on=iBlocked(uid);const bt=document.createElement("button");bt.className="opt"+(on?"":" danger");bt.dataset.act=on?"blkun":"blk";bt.dataset.u=uid;bt.innerHTML=`${I(on?"check":"lock")}${on?"Engeli kaldır":"Engelle"}`;bt.addEventListener("click",()=>closeLayer("menu"));box.appendChild(bt)}}}catch{}return r}}
+/* engellenen kişi, beni engelleyeni takip ediyorsa takibi kendi cihazında bırakır */
+HOOKS.profiles.push(()=>{if(!S.authed||S.guest||!S.uid)return;const me=S.profiles[S.uid];if(!me)return;for(const u of Object.keys(me.following||{}))if(me.following[u]&&blockedMe(u)&&!S._blkUnf){S._blkUnf=1;setTimeout(()=>{S._blkUnf=0},5000);DB.update("profiles/"+S.uid,{following:{[u]:0}}).catch(()=>{});break}});
+/* Ayarlar: engellenen hesaplar listesi */
+function blkSheet(){const ids=Object.keys(blkOf(S.uid)).filter(u=>blkOf(S.uid)[u]);sheet("blks","Engellenen hesaplar",ids.length?`<div style="padding:0 16px 16px">${ids.map(u=>`<div class="blk-row">${avatar(u,40,{click:false,ring:false,online:false})}<div class="t"><b>${esc(P(u).name)}</b><div class="muted">@${esc(P(u).username)}</div></div><button class="btn sec sm" data-act="blkun" data-u="${esc(u)}">Engeli kaldır</button></div>`).join("")}</div>`:`<div class="empty"><b>Kimseyi engellemedin</b>Birini engellemek için profilindeki üç noktaya dokun.</div>`)}
+ACT.blklist=()=>blkSheet();
+HOOKS.after.push(r=>{if(r!=="settings"||S.guest)return;const m=$("#main");if(!m||m.querySelector("#blkEntry"))return;const n=Object.values(blkOf(S.uid)).filter(Boolean).length;const d=document.createElement("div");d.id="blkEntry";d.className="box";d.style.margin="12px 16px";d.innerHTML=`<button class="row" data-act="blklist" style="width:100%">${I("lock")}<div class="t"><b>Engellenen hesaplar</b><div class="s">${n?n+" hesap":"Kimse yok"}</div></div>${I("next")}</button>`;m.appendChild(d)});
+/*}@js:51BLOCK*/
 
 
 boot();
