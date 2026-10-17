@@ -1,8 +1,11 @@
 {
+ "id": "/Kadraj/",
  "name": "Kadraj",
  "short_name": "Kadraj",
  "description": "Arkadaşlarla fotoğraf, Klaket, sohbet ve satranç",
  "lang": "tr",
+ "dir": "ltr",
+ "categories": ["social", "photo"],
  "start_url": "./",
  "scope": "./",
  "display": "standalone",

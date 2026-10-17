@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
 <meta charset="utf-8">
-<meta name="kadraj-version" content="50108">
+<meta name="kadraj-version" content="50109">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,interactive-widget=resizes-content">
 <meta name="theme-color" content="#0C7A63">
 <link rel="manifest" href="manifest.webmanifest">
@@ -2934,7 +2934,7 @@ const vib=ms=>{try{if(settings.haptics===false)return;navigator.vibrate&&navigat
 /* Sürüm: ana.ara.yama (4.1.0). Hata düzeltme ve küçük şeyler → yama artar (4.1.1); büyük güncelleme → ara artar (4.2.0).
    APP_V = ana*10000 + ara*100 + yama (4.1.0 → 40100). Başlıktaki <meta name="kadraj-version"> ile aynı tutulmalı.
    Eski biçim (4.0 → 40) verNorm ile çevrilir. "İki sürüm geride" ara sürüm sayısıyla ölçülür (yamalar engellemez). */
-const APP_V=50108,APP_VER="5.1.8";
+const APP_V=50109,APP_VER="5.1.9";
 const verNorm=x=>{x=Math.max(0,Math.floor(+x||0));return x<1000?Math.floor(x/10)*10000+(x%10)*100:x};
 const verLvl=x=>Math.floor(verNorm(x)/100);
 /* 4.9: fark sürüm adımıyla sayılır (4.9 → 5.0 bir adım); eskisi ana*100+ara farkıydı ve 5.0'ı 91 sürüm ileride sanıyordu */
@@ -5011,7 +5011,6 @@ const APP_GUIDE=`Kadraj bir sosyal uygulamadır (Firebase üzerinde çalışır,
 - 5.1 engelleme: bir profilin üç nokta menüsünden Engelle. Engellenen kişiyle birbirinizin paylaşımlarını, yorumlarını ve mesajlarını görmezsiniz, birbirinizi takip edemez ve arayamazsınız. Ayarlar › Engellenen hesaplar'dan engel kaldırılır. İnsan sohbetlerindeki hazır mesaj çipleri kaldırıldı.
 - 5.1 yönetim: duyurular her ekranın üstünde şerit olarak görünür. Profillerde rozetler: Kurucu, Onaylı, İlk kullanıcı, Destekleyen, Satranç ustası, Klaket yıldızı, Üretken. Kadraj, Claude Opus ve BiloloTR tarafından yapıldı (Ayarlar'daki Yapımcılar satırında yazar); sağ altta küçük saydam sürüm yazısı var.
 - 5.1.2 Rota internette arar: yönetici köprüye ücretsiz Tavily anahtarını eklediyse Rota genel bilgi sorularında (kim, ne zaman, hangi, bugün, haber...) internete bakar ve yanıtın sonunda kaynağın adını yazar; Kadraj ile ilgili sorularda aramaz. Rota'nın yanıtları harf harf gelir.
-- 5.1.8 Bağlantıyla Klaket: yönetici YouTube Shorts, Instagram Reels ve TikTok bağlantılarını (Yönetici › Bağlantıyla Klaket) toplu ekleyebilir. Video indirilmez; Klaket'te o platformun kendi oynatıcısıyla oynar, köşede platformun adı yazar. YouTube kendiliğinden oynar, dokununca durur. Instagram ve TikTok'ta önce ekrana bir kez dokunulur; o videolarda kaydırmak için alttaki yazının ya da sağdaki düğmelerin üstünden kaydırılır. Bazı videolar gömmeye kapalıdır, onlar oynamaz.
 - 5.0 yenilikleri (Kadraj 5.0): Yeni görünüm "Vizör": alttaki yüzen çubukta etkin sekme odak köşeleriyle çerçevelenir, ortadaki deklanşör düğmesi paylaşım menüsünü açar; paylaşımlar numaralı "kare"lerdir; görülmemiş hikâyeler diyafram halkasıyla işaretlenir; eski görünüm Ayarlar > Görünüm > Arayüz'den "Klasik" seçilerek geri gelir.
 - 5.0 arama: sohbet başlığındaki telefon ya da kamera ile. Arama ekranında Mikrofon, Kamera (sesli aramada da açılır), Ekran (bilgisayarda ekran paylaşımı), Tepki ve Diğer (kamerayı çevir, ses çıkışı, gürültü engelleme, Küçült) var. Küçült aramayı yüzen pencereye alır. Gelen aramada "Kamerasız yanıtla" ve "Mesajla yanıtla" var. Ekran paylaşımı ve tepkiler için iki tarafın da 5.0 kullanması gerekir.
 - 5.0 Keşfet araması: ad, @kullanıcı adı, #etiket ya da kelime yazılır; ı/i, ş/s gibi harf farkları önemsizdir. Hepsi, Kişiler, Paylaşımlar, Klaket ve Etiketler süzgeçleri; En yeni / En çok beğenilen sıralaması; son aramalar ve yazarken öneriler. Uygulamadaki her #etikete dokununca o etiketin sayfası açılır.
@@ -10707,7 +10706,9 @@ document.addEventListener("click",async e=>{const b=e.target.closest&&e.target.c
   if(await write(()=>DB.set("posts/"+id,doc),{quiet:true})){S.posts={...S.posts,[id]:{id,...doc}};ok++}}
  b.disabled=false;const inp=$("#kembIn");if(inp&&ok)inp.value="";admLog(`Bağlantıyla ${ok} Klaket eklendi`);scheduleRefresh();
  say(`<b>${ok}</b> Klaket eklendi.${ok<add.length?` ${add.length-ok} tanesi kaydedilemedi.`:""}${dup?` ${dup} tanesi zaten vardı.`:""}${bad.length?`<br>Tanınmayan: ${bad.slice(0,5).map(x=>esc(x.slice(0,60))).join(", ")}${bad.length>5?"…":""}`:""}`)});
-try{ADM_EXTRA.push({id:"kemb",title:"Bağlantıyla Klaket",desc:"YouTube, Instagram ve TikTok videolarını indirmeden Klaket yap",icon:"link",order:56,count:()=>{const n=kembCount();return{t:String(n),c:n?"on":"dim"}},html:kembAdmHtml})}catch(e){console.warn(e)}
+/* 5.1.9: sahibinin isteğiyle Bağlantıyla Klaket kaldırıldı (yönetici bölümü gösterilmez); daha önce eklenenler oynamaya devam eder, ⋯ menüsünden silinebilir */
+const KEMB_ADM=false;
+try{if(KEMB_ADM)ADM_EXTRA.push({id:"kemb",title:"Bağlantıyla Klaket",desc:"YouTube, Instagram ve TikTok videolarını indirmeden Klaket yap",icon:"link",order:56,count:()=>{const n=kembCount();return{t:String(n),c:n?"on":"dim"}},html:kembAdmHtml})}catch(e){console.warn(e)}
 /*}@js:511*/
 
 
