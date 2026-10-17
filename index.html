@@ -2123,7 +2123,7 @@ html.reduce-motion .chess .cmk .chk::after{opacity:.8}
 .cw-rhost{position:relative;height:0;margin:0;padding:0;border:0;pointer-events:none;z-index:1}
 .cw-rc{position:relative}
 .cw-room{position:absolute;left:0;top:0;pointer-events:none;overflow:hidden;isolation:isolate;z-index:2;contain:layout style;
- --rw:color-mix(in srgb,var(--surface-2) 86%,#D97757);--rw2:color-mix(in srgb,var(--surface-2) 74%,#D97757);--rbb:color-mix(in srgb,#74482C 70%,var(--bg));
+ --rw:color-mix(in srgb,var(--surface-2) 86%,#D97757);--rw2:color-mix(in srgb,var(--surface-2) 82%,#D97757);--rbb:color-mix(in srgb,#74482C 70%,var(--bg));
  --rfl:color-mix(in srgb,#B07A4A 80%,var(--bg));--rfl2:color-mix(in srgb,#7E5232 82%,var(--bg));--rfl3:color-mix(in srgb,#C89463 80%,var(--bg));--rcb:color-mix(in srgb,#74482C 85%,var(--bg));
  --red:color-mix(in srgb,var(--fg) 16%,transparent);--rwd:#9A6A45;--rwd2:#74482C;--rwd3:#B88358}
 .cw-room.cw-room{border-radius:3px}
@@ -6601,13 +6601,14 @@ Object.assign(IP,{clawd:'<path d="M6.5 5.5h11v8h-11zM2.5 9h4M17.5 9h4M7.5 13.5v4
 
 /* --- sprite --- */
 const CW_GW=23,CW_GH=18,CW_Y=3;
-const CW_COL={1:"#D97757",2:"#BE684D",3:"#171310",4:"#F4A48E",5:"#F0A39A",6:"#D8343F",7:"#931F2A",8:"#F6F0E6",9:"#6B4428",10:"#2A1E16",11:"#E9D3A3",13:"#3E6FD8",14:"#2A4FA8",18:"#B9B0A2"};
+const CW_COL={1:"#D97757",2:"#BE684D",3:"#171310",4:"#F4A48E",5:"#F0A39A",6:"#26201C",7:"#5A4E46",8:"#F6F0E6",9:"#C9955F",10:"#7A726B",11:"#6B4428",13:"#3E6FD8",14:"#2A4FA8",18:"#B9B0A2"};
 const CW_SVG=new Map();
 /* 5.1 · sahne eşyaları: elektro gitar (gövde sol altta, sap sağa yukarı) ve küçük kitap */
-function cwGuitar(R,Y){R(3,Y+8,4,1,6);R(2,Y+9,6,1,6);R(2,Y+10,7,1,6);R(2,Y+11,7,1,6);R(3,Y+12,5,1,6);R(4,Y+13,3,1,7);R(2,Y+11,1,1,7);R(3,Y+12,1,1,7);
- R(3,Y+9,2,1,8);R(4,Y+10,2,1,8);R(5,Y+11,2,1,10);R(6,Y+9,1,1,10);
- for(let x=8;x<=19;x++){const y=Y+10-Math.round((x-8)*.36);R(x,y,1,1,9);if(x%3===1)R(x,y,1,1,11)}
- R(20,Y+5,2,2,10);R(20,Y+4,1,1,11);R(22,Y+5,1,1,11)}
+function cwGuitar(R,Y){R(3,Y+7,4,1,6);R(2,Y+8,7,1,6);R(1,Y+9,8,1,6);R(1,Y+10,9,1,6);R(1,Y+11,9,1,6);R(2,Y+12,7,1,6);R(3,Y+13,5,1,6);
+ R(3,Y+7,2,1,7);R(2,Y+8,1,1,7);R(1,Y+9,1,2,7);
+ R(3,Y+9,3,3,8);R(4,Y+9,2,1,10);R(4,Y+11,2,1,10);R(7,Y+10,1,2,10);
+ for(let x=9;x<=19;x++){const y=Y+9-Math.floor((x-9)/3);R(x,y,1,2,9);if(x%3===1)R(x,y,1,1,11)}
+ R(20,Y+4,3,2,9);R(20,Y+3,1,1,11);R(22,Y+3,1,1,11)}
 function cwBook(R,Y,flip){R(7,Y+6,11,5,13);R(8,Y+6,4,4,8);R(13,Y+6,4,4,8);R(12,Y+6,1,5,14);R(7,Y+10,11,1,14);
  const ln=flip?[[9,7],[14,8]]:[[9,7],[9,8],[14,7],[14,8]];for(const[x,dy]of ln)R(x,Y+dy,2,1,18)}
 function cwPaint(sp){const g=[];for(let y=0;y<CW_GH;y++)g.push(new Array(CW_GW).fill(0));
@@ -6623,7 +6624,7 @@ function cwPaint(sp){const g=[];for(let y=0;y<CW_GH;y++)g.push(new Array(CW_GW).
  R(4,Y,3,12,2);R(7,Y,13,12,1);
  if(sp.prop==="guitar")cwGuitar(R,Y);
  const ar=sp.arms||"down";
- if(ar==="g1"||ar==="g2"){const yy=Y+(ar==="g1"?8:10);R(0,yy,3,3,2);R(3,yy,3,3,1);R(20,Y+7,3,4,1)}
+ if(ar==="g1"||ar==="g2"){const yy=Y+(ar==="g1"?8:10);R(0,yy-1,2,3,2);R(2,yy,4,2,2);R(20,Y+6,3,3,1)}
  else if(ar==="rd"){R(4,Y+7,3,3,2);R(17,Y+7,3,3,1)}
  else{const am={down:[0,0],up:[-4,-4],w1:[0,-5],w2:[0,-2],t1:[1,2],t2:[2,1],sh:[-2,-2],c1:[-5,0],c2:[0,-5],sg:[-3,-3],tk:[0,-3],hi:[-5,-5]}[ar]||[0,0];
   R(0,Y+4+am[0],3,4,2);R(3,Y+4+am[0],4,4,1);R(20,Y+4+am[1],3,4,1)}
@@ -7374,7 +7375,7 @@ const CLAWD={debug:{
  info(){const r=CW.b&&CW.b.getBoundingClientRect();return{vis:CW.vis,why:CW.why,x:Math.round(CW.x),y:Math.round(CW.y),surf:CW.surf,face:CW.face,flip:CW.flip,act:CW.act,pose:CW.pose,busy:CW.busy,
   bub:CW.bub?CW.bub.textContent:"",bubK:CW.bubK,menu:CW.menu,ask:CW.ask,inBed:CW.inBed,bed:CW.bed&&{x:Math.round(CW.bed.x),y:Math.round(CW.bed.y)},shield:CW.shieldLvl,shieldEl:!!CW.shEl,
   pass:CW.pass,zz:!!CW._fzz,stars:!!CW._fst,tears:!!CW._ftr,rect:r&&{x:Math.round(r.left),y:Math.round(r.top),w:Math.round(r.width),h:Math.round(r.height)},bounds:CW.bnd,
-  room:CW.room&&{kind:CW.room.kind,u:CW.room.u,w:Math.round(CW.room.w),h:Math.round(CW.room.h),rw:CW.room.RW,light:CW.room.light,el:!!CW.room.el.isConnected,inRoom:CW.room.stage.contains(CW.b)},U:CW.U,blips:CWS.n,on:cwOn()}},
+  room:CW.room&&{kind:CW.room.kind,u:CW.room.u,w:Math.round(CW.room.w),h:Math.round(CW.room.h),rw:CW.room.RW,light:CW.room.light,el:!!CW.room.el.isConnected,inRoom:CW.room.el.contains(CW.b)},U:CW.U,blips:CWS.n,on:cwOn()}},
  tap(n=1){for(let i=0;i<n;i++)cwTap()},
  hit(){CW.taps=[];cwTap();cwTap();cwTap()},
  fling(d=1){cwFling(d)},
@@ -7415,10 +7416,11 @@ try{if(S&&S.authed)HOOKS.enter.length&&setTimeout(()=>{if(!CW.root){cwMount();CW
      kod parantezleriyle jonglörlük, hapşırma, beğenide konfeti (notifyMeta sarıldı → notifyMetaBaseCW),
      mesajda dans (notifyChats sarıldı → notifyChatsBaseCW), sayfa açılınca el sallama.
    - Ortak API: CLAWD.sprite(poz) → SVG metni (idle, happy, think, sad, dance1, dance2, guitar1, guitar2, sleep, surprised, talk ...). */
-const CWR={RH:26,FL:23,MINW:68,MAXW:124,UMIN:2.4};
+const CWR={RH:26,FL:23,MINW:68,MAXW:112,UMIN:2.4};
 const cwRect=el=>el.getBoundingClientRect();
 function cwTextRight(el){try{const r=document.createRange();r.selectNodeContents(el);let m=-1e9;for(const x of r.getClientRects())if(x.width>0)m=Math.max(m,x.right);return m>-1e9?m:cwRect(el).left}catch{return cwRect(el).right}}
 function cwDp(v){const d=window.devicePixelRatio||1;return Math.round(v*d)/d}
+function cwDpF(v){const d=Math.max(2,window.devicePixelRatio||1);return Math.floor(v*d+1e-6)/d}
 function cwPix(rows,pal,cls){let r="";const H=rows.length,W=Math.max(...rows.map(x=>x.length));
  rows.forEach((row,y)=>{let x=0;while(x<row.length){const c=row[x];if(c==="."||c===" "||!pal[c]){x++;continue}let e=x+1;while(e<row.length&&row[e]===c)e++;r+=`<rect x="${x}" y="${y}" width="${e-x}" height="1" fill="${pal[c]}"/>`;x=e}});
  return`<svg${cls?` class="${cls}"`:""} viewBox="0 0 ${W} ${H}" shape-rendering="crispEdges" aria-hidden="true">${r}</svg>`}
@@ -7515,7 +7517,7 @@ function cwMeasFeed(){const st=document.querySelector("#main .stories");if(!st||
  const r=cwRect(st),l=cwRect(last);if(r.height<40)return null;return{after:st,left:l.right+16,right:r.right-12,top:r.top+2,bottom:l.bottom}}
 function cwMeasExplore(){const card=document.querySelector("#main .chesscard");if(!card)return null;const sec=cwSkipHost(card.nextElementSibling);if(!sec||!sec.classList.contains("sec-h"))return null;
  const row=cwSkipHost(sec.nextElementSibling);if(!row)return null;const c=cwRect(card),sr=cwRect(sec),rr=cwRect(row);const lab=sec.firstElementChild?cwTextRight(sec.firstElementChild):sr.left;
- return{after:sec,left:Math.max(lab+24,sr.left+sr.width*.32),right:Math.min(sr.right,c.right-10),top:c.bottom+2,bottom:rr.top-2,grow:{el:sec,prop:"paddingTop",max:56}}}
+ return{after:sec,left:Math.max(lab+24,sr.left+sr.width*.32),right:Math.min(sr.right,c.right-10),top:c.bottom+2,bottom:rr.top-2,grow:{el:sec,prop:"paddingTop",max:64}}}
 function cwMeasChats(){const nt=document.querySelector("#main .notes");if(!nt||nt.scrollWidth>nt.clientWidth+2)return null;const last=cwSkipHost(nt.lastElementChild)||nt.lastElementChild;if(!last)return null;
  const r=cwRect(nt);const lr=last.classList.contains("nt-empty")?cwTextRight(last):cwRect(last).right;return{after:nt,left:lr+18,right:r.right-12,top:r.top+2,bottom:r.bottom-8}}
 function cwMeasProfile(){const pr=document.querySelector("#main .prof");if(!pr)return null;const tp=pr.querySelector(".prof-top"),st=pr.querySelector(".stats"),bt=pr.querySelector(":scope>.btns");if(!tp||!st||!bt)return null;
@@ -7523,9 +7525,9 @@ function cwMeasProfile(){const pr=document.querySelector("#main .prof");if(!pr)r
  for(let e=tp.nextElementSibling;e&&e!==bt;e=e.nextElementSibling){if(e.classList.contains("cw-room"))continue;const r=cwRect(e);if(r.bottom<top||r.top>bottom+40)continue;left=Math.max(left,cwTextRight(e)+20)}
  return{in:pr,left,right:sr.right,top,bottom,grow:{el:bt,prop:"marginTop",max:44}}}
 function cwMeasNook(){const reel=activeReel&&activeReel.isConnected?activeReel:document.querySelector("#main .reel");if(!reel)return null;const side=reel.querySelector(".side");if(!side)return null;
- const rr=cwRect(reel),sr=cwRect(side);if(rr.height<200)return null;const u=cwDp(Math.min(CW.uRoam*.8,(rr.width*.5)/44));if(u<2)return null;const w=44*u,h=24*u;
+ const rr=cwRect(reel),sr=cwRect(side);if(rr.height<200)return null;const u=cwDpF(Math.min(CW.uRoam*.8,(rr.width*.5)/44));if(u<2)return null;const w=44*u,h=24*u;
  const right=Math.min(rr.right-6,sr.right+4),bottom=sr.top-8;if(bottom-h<rr.top+72)return null;return{reel,u,w,h,left:right-w,top:bottom-h,rr}}
-function cwMeasDisco(){const sh=document.querySelector('#overlay .layer[data-layer="comments"] .sheet');if(!sh)return null;const r=cwRect(sh);const u=cwDp(Math.min(CW.uRoam*.8,3.4));const h=26*u;
+function cwMeasDisco(){const sh=document.querySelector('#overlay .layer[data-layer="comments"] .sheet');if(!sh)return null;const r=cwRect(sh);const u=cwDpF(Math.min(CW.uRoam*.8,3.4));const h=26*u;
  const T=(window.visualViewport?window.visualViewport.offsetTop:0)+8;if(r.top-h<T)return null;return{sheet:sh,u,w:44*u,h}}
 function cwRoomWant(){if(!CW.root||(!cwOn()&&!CW.leaving)||!S.authed||!S.uid)return null;
  const ls=document.querySelectorAll("#overlay .layer");const top=ls[ls.length-1];if(top&&top.dataset.layer==="comments")return{key:"disco",kind:"disco",m:cwMeasDisco};
@@ -7542,8 +7544,8 @@ function cwRoomGeo(want){let g=want.m();if(!g)return null;
  if(g.grow){const cur=parseFloat(g.grow.el.style[g.grow.prop])||0;const need=Math.ceil(CWR.RH*Math.min(uW,CW.uRoam))+2;const h0=(g.bottom-g.top)-cur;
   const grow=Math.max(0,Math.min(g.grow.max,need-h0));if(Math.abs(grow-cur)>.5){cwGrowSet(g.grow,grow);g=want.m();if(!g)return null}}
  else if(CW.grow)cwGrowReset();
- const u=cwDp(Math.min(CW.uRoam,(g.right-g.left)/CWR.MINW,(g.bottom-g.top)/CWR.RH));if(u<CWR.UMIN){if(g.grow)cwGrowSet(g.grow,0);return null}
- g.u=Math.floor(u*(window.devicePixelRatio||1))/(window.devicePixelRatio||1)||u;g.RW=Math.min(CWR.MAXW,Math.floor((g.right-g.left)/g.u));g.w=g.RW*g.u;g.h=CWR.RH*g.u;return g}
+ const u=cwDpF(Math.min(CW.uRoam,(g.right-g.left)/CWR.MINW,(g.bottom-g.top)/CWR.RH));if(u<CWR.UMIN){if(g.grow)cwGrowSet(g.grow,0);return null}
+ g.u=u;g.RW=Math.min(CWR.MAXW,Math.floor((g.right-g.left)/g.u));g.w=g.RW*g.u;g.h=CWR.RH*g.u;return g}
 function cwGrowSet(gr,px){if(CW.grow&&CW.grow.el!==gr.el)cwGrowReset();gr.el.style[gr.prop]=px?px+"px":"";CW.grow=px?{el:gr.el,prop:gr.prop}:null}
 function cwRoomPos(R,g){const el=R.el;let x,y;
  if(R.kind==="room"){if(g.in){const c=g.in;if(!c.classList.contains("cw-rc"))c.classList.add("cw-rc");if(el.parentNode!==c)c.appendChild(el);if(CW.hostEl&&CW.hostEl.isConnected)CW.hostEl.remove();
