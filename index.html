@@ -7554,7 +7554,7 @@ HOOKS.profiles.push(m=>{if(!S.authed||!S.uid)return;const cur={};for(const[u,p]o
  for(const[u,at]of Object.entries(cur))if(!prev[u]&&at>S.bootAt&&now()-at<10*60e3)knNotify({kind:"follow",uid:u,title:P(u).name,text:`@${P(u).username} seni takip etmeye başladı`,key:"prof:"+u,at,tag:"fl-"+u})});
 /* ---- telefon bildirimi ---- */
 const sysNoteOld=sysNote;
-sysNote=function(title,body,tag,o={}){try{if(typeof Notification==="undefined"||Notification.permission!=="granted")return;if(!settings.notify)return;
+sysNote=function(title,body,tag,o={}){try{o={...o};if(!o.kind&&/^call-/.test(String(tag||"")))o.kind="call";if(typeof Notification==="undefined"||Notification.permission!=="granted")return;if(!settings.notify)return;
  if(document.visibilityState==="visible"&&!o.force)return;
  const okIc=typeof o.icon==="string"&&/^data:image\/(jpe?g|png|webp);/.test(o.icon)&&o.icon.length<200000;const ic=okIc?o.icon:"icon-192.png";const key=o.key||"";
  const msg=o.kind==="msg"&&key;
