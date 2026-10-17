@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
 <meta charset="utf-8">
-<meta name="kadraj-version" content="50001">
+<meta name="kadraj-version" content="50100">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,interactive-widget=resizes-content">
 <meta name="theme-color" content="#0C7A63">
 <link rel="manifest" href="manifest.webmanifest">
@@ -2898,7 +2898,7 @@ const vib=ms=>{try{if(settings.haptics===false)return;navigator.vibrate&&navigat
 /* Sürüm: ana.ara.yama (4.1.0). Hata düzeltme ve küçük şeyler → yama artar (4.1.1); büyük güncelleme → ara artar (4.2.0).
    APP_V = ana*10000 + ara*100 + yama (4.1.0 → 40100). Başlıktaki <meta name="kadraj-version"> ile aynı tutulmalı.
    Eski biçim (4.0 → 40) verNorm ile çevrilir. "İki sürüm geride" ara sürüm sayısıyla ölçülür (yamalar engellemez). */
-const APP_V=50001,APP_VER="5.0.1";
+const APP_V=50100,APP_VER="5.1.0";
 const verNorm=x=>{x=Math.max(0,Math.floor(+x||0));return x<1000?Math.floor(x/10)*10000+(x%10)*100:x};
 const verLvl=x=>Math.floor(verNorm(x)/100);
 /* 4.9: fark sürüm adımıyla sayılır (4.9 → 5.0 bir adım); eskisi ana*100+ara farkıydı ve 5.0'ı 91 sürüm ileride sanıyordu */
@@ -4967,6 +4967,13 @@ const APP_GUIDE=`Kadraj bir sosyal uygulamadır (Firebase üzerinde çalışır,
 - Mesajlar: mesaja uzun basınca 6 resimli tepki (kalp, gülme, şaşırma, üzülme, ateş, alkış), yanıtla, kopyala, düzenle, sil; çift dokunuş kalp bırakır. Profilde en fazla 3 paylaşım sabitlenebilir.
 - 4.4: Sahne'nin adı Flick oldu; 5.1'den beri adı Klaket (kısa video). Paylaşırken "Çocuk modundakiler göremez" açılırsa o paylaşım Çocuk Modu'ndaki kişilere hiç görünmez; sonradan paylaşımın ... menüsünden değiştirilebilir.
 - Clawd (5.1): Kadraj'da yaşayan oyuncu piksel yaratık. Akış'ta hikâyelerin yanında, Keşfet'te Satranç kartının altında, Sohbet'te notların yanında, profilde adın yanında küçük bir odası var (yatak, çekmece, ışık düğmesi); sığmazsa ekranda gezer. Klakette raf köşesinde patlamış mısırla izler, yorumlar açıkken dans eder. Gece 00:00-07:00 uyur, sen uyumazsan o da uyumaz; sabah elektro gitar çalar. Dokununca menü: Soğuk espri, Bir ipucu, Clawd'a sor, Gitar çal/Dans et, Işık, Biraz uyu, Clawd'ı gizle. Bilmediğini söyler ve soğuk espri yapar. Satrançta rakip olarak da seçilebilir. Ayarlar › Görünüm › Clawd / Clawd sesleri.
+- 5.1 Klaket: kısa videoların adı Flick'ti, 5.1'de Klaket oldu. Klaket'ler Kadraj oynatıcısıyla oynar (sürüklenen süre çubuğu, 1x/1,5x/2x, tam ekran, çift dokunuşla ±5 sn). Fotoğraf ya da video seçerken Kadraj'ın kendi seçicisi açılır (Galeri, Kamera, Video çek, Kadraj galerisi, Çizim, Yapıştır, son seçtiklerin). Sohbette + menüsünden video da gönderilir.
+- 5.1 satranç: lobide rakip Rota ya da Clawd seçilir; Clawd'un Çaylak'tan Usta'ya seviyeleri ve ayrı puanı var, atak oynar ve şaka yapar. "Clawd ve Rota" kartında ikisinin maçını izlersin, konuşarak oynarlar. Çevrim içi oyunda tahtanın altındaki sohbetle yazışılır. Seviyeler artık gerçekten farklı güçte.
+- 5.1 Oyun incelemesi: satrançta her hamle değerlendirilir (Muhteşem !!, Harika !, En iyi, Mükemmel, İyi, Kitap, Hatalı ?!, Hata ?, Kaçırılan, Büyük hata ??). Rozet tahtada hamlenin gittiği karede ve hamle listesinde görünür. Oyun menüsü › Hamle değerlendirmesi: Canlı / Oyun sonunda / Kapalı (çevrim içi oyunlarda yalnızca oyun bitince). Oyun sonu kartında ve menüde "Oyun incelemesi": iki tarafın doğruluk yüzdesi, sınıf sayıları, değerlendirme grafiği (dokununca o hamleye gider) ve "Hamleleri incele". Muhteşem ya da büyük hata yapınca Rota ve Clawd yorum yapar. Analiz cihazda, hızlı ve yaklaşıktır.
+- 5.1 Seri: birebir sohbette ikiniz de aynı gün en az bir mesaj yazınca seri bir gün uzar; sohbetin üstünde odun üstünde kamp ateşi yanar ve seri uzadıkça büyür. Gece yarısına az kala o gün yazılmadıysa yağmur yağar, 00:00'ı geçince ateş söner. Herkesin 3 Rüzgar hakkı var: kaçırılan günü korur. Grupta, Meydan'da ve botlarda seri yok.
+- 5.1 bildirimler: uygulama içindeyken üstten Kadraj kartı gelir (gönderen, saat, önizleme; mesajlarda Görüldü, Kalp at, Yanıtla). Ayarlar › Bildirimler'den bildirim sesi açılır kapanır; "Uygulama kapalıyken de bildir" kurulduysa telefon bildirimi uygulama kapalıyken de gelir (iPhone'da Kadraj ana ekrana eklenmiş olmalı).
+- 5.1 engelleme: bir profilin üç nokta menüsünden Engelle. Engellenen kişiyle birbirinizin paylaşımlarını, yorumlarını ve mesajlarını görmezsiniz, birbirinizi takip edemez ve arayamazsınız. Ayarlar › Engellenen hesaplar'dan engel kaldırılır. İnsan sohbetlerindeki hazır mesaj çipleri kaldırıldı.
+- 5.1 yönetim: duyurular her ekranın üstünde şerit olarak görünür. Profillerde rozetler: Kurucu, Onaylı, İlk kullanıcı, Destekleyen, Satranç ustası, Klaket yıldızı, Üretken. Kadraj, Claude Opus ve BiloloTR tarafından yapıldı (Ayarlar'daki Yapımcılar satırında yazar); sağ altta küçük saydam sürüm yazısı var.
 - 5.0 yenilikleri (Kadraj 5.0): Yeni görünüm "Vizör": alttaki yüzen çubukta etkin sekme odak köşeleriyle çerçevelenir, ortadaki deklanşör düğmesi paylaşım menüsünü açar; paylaşımlar numaralı "kare"lerdir; görülmemiş hikâyeler diyafram halkasıyla işaretlenir; eski görünüm Ayarlar > Görünüm > Arayüz'den "Klasik" seçilerek geri gelir.
 - 5.0 arama: sohbet başlığındaki telefon ya da kamera ile. Arama ekranında Mikrofon, Kamera (sesli aramada da açılır), Ekran (bilgisayarda ekran paylaşımı), Tepki ve Diğer (kamerayı çevir, ses çıkışı, gürültü engelleme, Küçült) var. Küçült aramayı yüzen pencereye alır. Gelen aramada "Kamerasız yanıtla" ve "Mesajla yanıtla" var. Ekran paylaşımı ve tepkiler için iki tarafın da 5.0 kullanması gerekir.
 - 5.0 Keşfet araması: ad, @kullanıcı adı, #etiket ya da kelime yazılır; ı/i, ş/s gibi harf farkları önemsizdir. Hepsi, Kişiler, Paylaşımlar, Klaket ve Etiketler süzgeçleri; En yeni / En çok beğenilen sıralaması; son aramalar ve yazarken öneriler. Uygulamadaki her #etikete dokununca o etiketin sayfası açılır.
@@ -5269,6 +5276,14 @@ setTimeout(verTidyCache,9000);
 
 /* ---- A · Neler yeni ---- */
 const WN_ITEMS=[
+ {ic:"clawd",g:"linear-gradient(135deg,#D97757,#BE684D)",t:"Clawd'ın odası",d:"Clawd artık Akış, Keşfet, Sohbet ve profildeki boş köşelerde kendi piksel odasında yaşıyor: yatak, çekmece, ampul. Gece 00:00'da yatar, sabahları gitar çalar, yorumlarda dans eder",go:"feed"},
+ {ic:"knight",g:"linear-gradient(135deg,#1baca6,#0C7A63)",t:"Oyun incelemesi",d:"Hamlelerin Muhteşem, En iyi, Kitap, Hata gibi rozetler alır; oyun sonunda doğruluk, grafik ve hamle hamle açıklama",go:"chess"},
+ {ic:"trophy",g:"linear-gradient(135deg,#D97757,#0C7A63)",t:"Clawd'la satranç",d:"Clawd'a karşı oyna (Çaylak'tan Usta'ya, ayrı puan), Clawd ile Rota'nın maçını izle, çevrim içi oyunda sohbet et. Seviyeler artık gerçekten farklı",go:"chess"},
+ {ic:"film",g:"linear-gradient(135deg,#f97316,#db2777)",t:"Flick'in yeni adı: Klaket",d:"Kısa videolar artık Klaket. Yeni Kadraj oynatıcı ve medya seçici; sohbette video da gönderebilirsin",go:"reels"},
+ {ic:"spark",g:"linear-gradient(135deg,#ff8a3d,#e23e57)",t:"Seri ve kamp ateşi",d:"Birebir sohbette ikiniz de her gün yazınca ateş büyür. Gece yarısına az kala yağmur başlar; kaçırırsan kişi başı 3 Rüzgar hakkı seriyi korur",go:"chats"},
+ {ic:"bell",g:"linear-gradient(135deg,#0c7a63,#0ea5e9)",t:"Yeni bildirimler",d:"Üstten gelen Kadraj kartı: saat, Görüldü, Kalp at, Yanıtla. Bildirim sesi var; kurulunca uygulama kapalıyken de gelir",go:"settings"},
+ {ic:"lock",g:"linear-gradient(135deg,#475569,#1e293b)",t:"Engelleme",d:"Bir profilin üç nokta menüsünden engelle: birbirinizin paylaşımlarını, mesajlarını ve yorumlarını görmezsiniz. Ayarlar'dan listeyi yönet",go:"settings"},
+ {ic:"flag",g:"linear-gradient(135deg,#5856d6,#0C7A63)",t:"Rozetler ve duyurular",d:"Kurucu, Onaylı, İlk kullanıcı, Destekleyen rozetleri; duyurular artık her ekranda üstte görünür",go:"feed"},
  {ic:"clawd",g:"linear-gradient(135deg,#D97757,#BE684D)",t:"Clawd geldi",d:"Ekranda yaşayan piksel arkadaşın: espri yapar, Kadraj'ı anlatır, bilmediğini dürüstçe söyler",go:"settings"},
  {ic:"aperture",g:"linear-gradient(135deg,#0c7a63,#ff8a4c)",t:"Kadraj 5.0: Vizör",d:"Yepyeni arayüz: yüzen alt çubuk, deklanşör düğmesi, odak köşeleri ve kare numaraları. İstersen Ayarlar › Görünüm'den Klasik'e dön",go:"feed"},
  {ic:"knight",g:"#0C7A63",t:"Kadraj Satrancı",d:"Yeni taşlar, kayan hamleler, kıvılcımlar, satranç saati ve 24 mat bulmacası",go:"chess"},
