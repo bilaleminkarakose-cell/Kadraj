@@ -2148,6 +2148,72 @@ html.reduce-motion .chess .cmk .chk::after{opacity:.8}
 /*}@css:51CHS*/
 
 /*@css:51NOTIF{*/
+/* ===== 5.1 · Kadraj bildirim kartı (#knStack .kn) =====
+   Üstten kayan dikdörtgen kart: fotoğraf + tür rozeti, "Kadraj · tür · saat" satırı, ad, iki satır önizleme, eylemler, yanıt kutusu.
+   Renkler tema değişkenlerinden; Vizör'de köşelerde odak işaretleri ve HUD yazısı. */
+#knStack{position:fixed;left:0;right:0;top:calc(8px + env(safe-area-inset-top,0px));z-index:85;display:flex;flex-direction:column;align-items:center;gap:8px;padding:0 12px;pointer-events:none}
+.kn{--kn-r:16px;position:relative;width:min(460px,100%);pointer-events:auto;background:color-mix(in srgb,var(--surface) 94%,transparent);color:var(--fg);border:1px solid var(--line);border-radius:var(--kn-r);box-shadow:0 18px 40px -16px rgba(0,0,0,.38),0 2px 8px rgba(0,0,0,.08);-webkit-backdrop-filter:blur(18px) saturate(1.3);backdrop-filter:blur(18px) saturate(1.3);overflow:hidden;touch-action:none;-webkit-user-select:none;user-select:none;
+ transform:translateY(calc(-100% - 24px));opacity:0;transition:transform .42s cubic-bezier(.2,1.25,.35,1),opacity .25s ease}
+.kn.in{transform:none;opacity:1}
+.kn.out{transform:translateY(calc(-100% - 24px))!important;opacity:0!important;transition:transform .26s ease-in,opacity .22s ease-in}
+.kn.rm,.kn.rm.out{transition:none}
+.kn::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--accent)}
+.kn[data-kind="like"]::before{background:var(--heart)}
+.kn[data-kind="comment"]::before,.kn[data-kind="post"]::before{background:var(--sun,#FF9F0A)}
+.kn-m{display:flex;gap:11px;align-items:flex-start;padding:11px 14px 11px 14px;cursor:pointer;outline:none;border-radius:var(--kn-r)}
+.kn-m:focus-visible{box-shadow:inset 0 0 0 2px var(--accent)}
+.kn-av{position:relative;flex:none;width:44px;height:44px}
+.kn-av .av{--s:44px}
+.kn-app-av{display:grid;place-items:center;width:44px;height:44px;border-radius:12px;background:var(--accent);color:var(--accent-ink)}
+.kn-app-av .vfmark{width:26px;height:26px}
+.kn-ki{position:absolute;right:-4px;bottom:-3px;display:grid;place-items:center;width:20px;height:20px;border-radius:7px;background:var(--accent);color:var(--accent-ink);box-shadow:0 0 0 2px var(--surface)}
+.kn[data-kind="like"] .kn-ki{background:var(--heart);color:#fff}
+.kn-ki svg.i{width:12px;height:12px;stroke-width:2.4}
+.kn-t{min-width:0;flex:1;display:flex;flex-direction:column;gap:1px}
+.kn-h{display:flex;align-items:center;gap:6px;font:600 .72rem/1.2 var(--f-body);color:var(--muted);letter-spacing:.01em}
+.kn-app{display:inline-flex;align-items:center;gap:4px;color:var(--fg)}
+.kn-app .vfmark{width:13px;height:13px;color:var(--accent)}
+.kn-app b{font:700 .7rem var(--f-display);letter-spacing:.02em}
+.kn-l::before{content:"·";margin-right:6px}
+.kn-h time{margin-left:auto;font-variant-numeric:tabular-nums;font-family:var(--f-mono);font-size:.7rem}
+.kn-n{font:700 .95rem/1.25 var(--f-body);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
+.kn-n small{font-weight:500;color:var(--muted);font-size:.82rem}
+.kn-x{font-size:.9rem;line-height:1.32;color:color-mix(in srgb,var(--fg) 86%,var(--muted));overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;word-break:break-word}
+.kn.sent .kn-x{color:var(--accent);font-weight:600}
+.kn-a{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line)}
+.kn-a button{display:flex;align-items:center;justify-content:center;gap:6px;min-height:42px;padding:8px 4px;font:600 .82rem var(--f-body);color:var(--fg);background:none;border:0;cursor:pointer}
+.kn-a button+button{border-left:1px solid var(--line)}
+.kn-a button svg.i{width:17px;height:17px}
+.kn-a button[data-kn="heart"] svg.i{color:var(--heart)}
+.kn-a button[data-kn="seen"] svg.i{color:var(--accent)}
+.kn-a button:active{background:color-mix(in srgb,var(--fg) 7%,transparent)}
+.kn-a button:disabled{opacity:.55;cursor:default}
+.kn-a button.done{opacity:1;color:var(--accent)}
+.kn-a button[data-kn="heart"].done{color:var(--heart)}
+.kn-a button.done svg.i{animation:knPop .4s cubic-bezier(.3,1.6,.5,1)}
+.kn.rp .kn-a{display:none}
+.kn-r{display:flex;gap:8px;align-items:center;padding:8px 10px 10px 12px;border-top:1px solid var(--line)}
+.kn-r[hidden]{display:none}
+.kn-in{flex:1;min-width:0;height:40px;padding:0 14px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--fg);font:500 16px var(--f-body);-webkit-user-select:text;user-select:text;outline:none}
+.kn-in:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.kn-send{flex:none;display:grid;place-items:center;width:40px;height:40px;border-radius:12px;border:0;background:var(--accent);color:var(--accent-ink);cursor:pointer}
+.kn-send svg.i{width:18px;height:18px}
+.kn-send:disabled{opacity:.5}
+.kn-grip{position:absolute;left:50%;bottom:4px;width:34px;height:4px;margin-left:-17px;border-radius:4px;background:color-mix(in srgb,var(--fg) 16%,transparent);pointer-events:none}
+.kn.rp .kn-grip{display:none}
+@keyframes knPop{50%{transform:scale(1.35)}}
+@media (max-width:360px){.kn-a button span{font-size:.76rem}.kn-a button svg.i{display:none}}
+/* Vizör: köşe işaretleri, HUD yazısı, daha keskin kart */
+:root[data-ui="vizor"] .kn{--kn-r:12px;border-color:color-mix(in srgb,var(--fg) 12%,transparent)}
+:root[data-ui="vizor"] .kn::after{content:"";position:absolute;inset:5px;pointer-events:none;color:color-mix(in srgb,var(--accent) 70%,transparent);background:var(--vz-brk-s);background-repeat:no-repeat;border-radius:8px}
+:root[data-ui="vizor"] .kn-h{font-family:var(--f-mono);text-transform:uppercase;letter-spacing:.08em;font-size:.64rem}
+:root[data-ui="vizor"] .kn-h time{font-size:.66rem}
+:root[data-ui="vizor"] .kn-app b{font-family:var(--f-mono);letter-spacing:.1em}
+:root[data-ui="vizor"] .kn-l::before{content:"";display:inline-block;width:6px;height:6px;margin:0 6px 1px 0;border-radius:50%;background:var(--vz-rec);vertical-align:middle;box-shadow:0 0 0 2px color-mix(in srgb,var(--vz-rec) 28%,transparent)}
+:root[data-ui="vizor"] .kn.in{transition:transform .5s var(--vz-spring),opacity .25s ease}
+:root[data-ui="vizor"] .kn-in,:root[data-ui="vizor"] .kn-send{border-radius:10px}
+html.reduce-motion .kn,html.reduce-motion .kn.out{transition:opacity .15s linear!important;transform:none!important}
+@media (prefers-reduced-motion:reduce){.kn,.kn.out,:root[data-ui="vizor"] .kn.in{transition:opacity .15s linear!important;transform:none!important}.kn-a button.done svg.i{animation:none}}
 /*}@css:51NOTIF*/
 
 /*@css:51ADM{*/
@@ -3256,7 +3322,7 @@ function subscribeShared(){admSubscribe();
  DB.watchCol("posts",docs=>{const m={};for(const d of docs)m[d.id]=d;notifyNewPosts(m);S.posts=m;scheduleRefresh()},{orderBy:["at","desc"],limit:300});
  DB.watchCol("meta",docs=>{const m={};for(const d of docs)m[d.id]=d;notifyMeta(m);S.meta=m;scheduleRefresh()},{limit:600,...(S.mode==="cloud"&&FB&&FB.F&&FB.F.documentId?{orderBy:[FB.F.documentId(),"desc"]}:{})});
  DB.watchCol("stories",docs=>{const m={};const lim=now()-24*H;for(const d of docs)if(d.at>lim)m[d.id]=d;S.stories=m;scheduleRefresh()},{orderBy:["at","desc"],limit:120});
- DB.watchDoc("chats/meydan",d=>{const o=S.meydan;S.meydan=d;if(d&&d.last&&notifReady&&settings.notify&&settings.nMsg!==false&&S.authed&&!isChild(S.uid)&&d.last.from!==S.uid&&d.last.at>(S.bootAt||Infinity)&&d.last.at>(LS.get("kadraj_meydan_"+S.uid,0)||0)&&(!o||!o.last||o.last.at<d.last.at)&&!(S.route.name==="chat"&&S.route.params.key==="meydan"))toast(`Meydan · ${P(d.last.from).username}: ${d.last.text.slice(0,60)}`,d.last.from);scheduleRefresh()})}
+ DB.watchDoc("chats/meydan",d=>{const o=S.meydan;S.meydan=d;if(d&&d.last&&notifReady&&settings.notify&&settings.nMsg!==false&&S.authed&&!isChild(S.uid)&&d.last.from!==S.uid&&d.last.at>(S.bootAt||Infinity)&&d.last.at>(LS.get("kadraj_meydan_"+S.uid,0)||0)&&(!o||!o.last||o.last.at<d.last.at)&&!(S.route.name==="chat"&&S.route.params.key==="meydan"))notifyMeydan(d);scheduleRefresh()})}
 let userUnsub=[];
 function subscribeUser(){teardownUser();const u=S.uid;if(S.mode==="cloud"&&FB)userUnsub.push(listenCalls());
  userUnsub.push(DB.watchCol("chats",docs=>{const m={};for(const d of docs)m[d.id]=d;notifyChats(m);S.chats=m;S._chatsIn=1;if(S.route.name==="chat"&&chatKey&&m[chatKey])markRead(chatKey);scheduleRefresh()},{where:["members","array-contains",u],limit:200}));
@@ -3959,6 +4025,7 @@ service cloud.firestore {
     match /games/{id} { allow read, write: if girdi(); }
     match /unames/{name} { allow get: if true; allow list: if false; allow create: if girdi() && request.resource.data.uid == request.auth.uid; allow update: if girdi() && resource.data.uid == request.auth.uid && request.resource.data.uid == request.auth.uid; allow delete: if girdi() && (resource.data.uid == request.auth.uid || yonetici()); }
     match /kurtar/{uid} { allow read: if girdi() && (request.auth.uid == uid || yonetici()); allow create: if girdi() && request.auth.uid == uid; allow update: if girdi() && (request.auth.uid == uid || (yonetici() && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['seen']))); allow delete: if girdi() && (request.auth.uid == uid || yonetici()); }
+    match /push/{uid} { allow read: if girdi(); allow write: if girdi() && request.auth.uid == uid; allow delete: if girdi() && (request.auth.uid == uid || yonetici()); }
     match /admin/{id} { allow read: if girdi(); allow write: if yonetici(); }
     match /bots/{id} { allow read: if girdi(); allow write: if yonetici(); }
     match /reports/{id} { allow create: if girdi(); allow read, delete: if yonetici(); }
@@ -7331,6 +7398,271 @@ try{if(S&&S.authed)HOOKS.enter.length&&setTimeout(()=>{if(!CW.root){cwMount();CW
 /*}@js:51CHS*/
 
 /*@js:51NOTIF{*/
+/* ===== 5.1: Kadraj bildirimleri =====
+   1) Uygulama içi bildirim kartı (knNotify → knCard): üstten kayan dikdörtgen kart; gönderen fotoğrafı, ad, geliş saati (SS:DD),
+      iki satır önizleme ve Kadraj işareti. Mesajlarda "Görüldü", "Kalp at", "Yanıtla" (kartın içinde yanıt kutusu). Yukarı kaydır → kapanır,
+      dokun → ilgili yer (openTarget ya da o.open). Aynı sohbetten gelenler tek kartta toplanır; en fazla 3 kart görünür, gerisi sırada bekler.
+      Sarılanlar: notifyChats, notifyMeta, notifyNewPosts, notifyGames (eskileri …Old), sysNote (sysNoteOld), kbOnFlag (kbOnFlagBase51N),
+      vSettings (vSettingsBase51N), sendMessage (sendMessageBase51N), toggleLike/addComment/toggleFollow/startCall (…Base51N), endSession (endSessionBase51N).
+      Meydan bildirimi subscribeShared içinden notifyMeydan(d) ile gelir. Takip bildirimi HOOKS.profiles ile (settings.nFollow).
+   2) Ses: knChime (WebAudio, kısa Kadraj zil sesi). AudioContext yalnızca ilk dokunuştan sonra kurulur. settings.msgSound ("Bildirim sesi").
+   3) Telefon bildirimi: sysNote artık badge-96.png (tek renk, saydam) rozetini, sohbet başına etiketi (m-<cid>), titreşimi ve
+      mesajlarda "Yanıtla / Kalp at / Görüldü" eylemlerini kullanır. sw.js eylemi {type:"kadraj-action",action,key,mid,cid,from,at} olarak
+      sayfaya iletir (ayrıca "kadraj-open" önbelleğinde "__act"); sayfa knAction ile yapar.
+   4) Uygulama kapalıyken (Web Push): KP. Abonelik Firestore push/{uid} = {uid, subs:{<hash>:{endpoint,keys,at,ua}}, prefs, at}.
+      Gönderim yapay zekâ köprüsünün /push yolundan (kAI.url()), VAPID açık anahtarı /vapid'den. Yerel modda yok.
+      Cihazda açık/kapalı: LS kadraj_push_<uid>. Ölü abonelikler (404/410) LS kadraj_push_dead içinde atlanır. */
+const KN={cards:[],queue:[],max:3,ctx:null,lastSnd:0,fol:null,doneActs:0};
+const knTime=t=>{try{return new Date(t||now()).toLocaleTimeString("tr-TR",{hour:"2-digit",minute:"2-digit"})}catch{return""}};
+const KN_KIND={msg:["chat","Mesaj"],group:["users","Grup"],meydan:["globe","Meydan"],like:["heart","Beğeni"],comment:["comment","Yorum"],follow:["users","Takip"],post:["image","Paylaşım"],game:["knight","Satranç"],call:["phone","Arama"],nudge:["hand","Dürtme"]};
+function knBox(){let b=document.getElementById("knStack");if(!b){b=document.createElement("div");b.id="knStack";b.setAttribute("aria-live","polite");b.setAttribute("aria-label","Bildirimler");document.body.appendChild(b)}return b}
+/* ---- ses: kısa, yumuşak Kadraj zili (iki nota; diğer bildirimlerde tek nota) ---- */
+function knUnlock(){try{if(!KN.ctx){const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;KN.ctx=new AC()}if(KN.ctx.state==="suspended")KN.ctx.resume().catch(()=>{});if(KN.ctx.state==="running"){document.removeEventListener("pointerdown",knUnlock,true);document.removeEventListener("keydown",knUnlock,true)}}catch{}}
+document.addEventListener("pointerdown",knUnlock,true);document.addEventListener("keydown",knUnlock,true);
+function knChime(kind,force){try{if(!force&&(settings.msgSound===false||!settings.notify))return;if(!force&&now()-KN.lastSnd<900)return;if(typeof CALL!=="undefined"&&CALL)return;if(typeof REC!=="undefined"&&REC)return;
+ const c=KN.ctx;if(!c||c.state!=="running")return;KN.lastSnd=now();const t0=c.currentTime+.02;
+ const out=c.createGain();out.gain.value=.9;out.connect(c.destination);
+ const notes=kind==="msg"?[[987.77,0],[1479.98,.11]]:kind==="call"?[[783.99,0],[1046.5,.12],[1318.51,.24]]:[[1174.66,0]];
+ for(const[f,dt]of notes){const t=t0+dt;const g=c.createGain();g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(kind==="msg"||kind==="call"?.16:.11,t+.012);g.gain.exponentialRampToValueAtTime(.0008,t+.62);g.connect(out);
+  const o=c.createOscillator();o.type="sine";o.frequency.setValueAtTime(f,t);o.connect(g);o.start(t);o.stop(t+.66);
+  const h=c.createOscillator();const hg=c.createGain();hg.gain.value=.22;h.type="triangle";h.frequency.setValueAtTime(f*2,t);h.connect(hg);hg.connect(g);h.start(t);h.stop(t+.3)}}catch{}}
+/* ---- son mesajın kimliği (Kalp at / yanıt için) ---- */
+async function knLastMid(cid,from,at){try{if(!cid)return"";
+ const pick=list=>{const ms=(list||[]).filter(m=>m&&m.id&&!m.del&&!m.sys);let m=ms.find(x=>x.from===from&&x.at===at);if(!m)m=ms.filter(x=>!from||x.from===from).sort((a,b)=>(b.at||0)-(a.at||0))[0];return m?m.id:""};
+ if(typeof chatKey!=="undefined"&&chatKey===cid&&S.msgs&&S.msgs.length){const id=pick(S.msgs);if(id)return id}
+ if(S.mode==="cloud"&&FB&&FB.F){const{F,db}=FB;const s=await withTimeout(F.getDocs(F.query(F.collection(db,`chats/${cid}/msgs`),F.orderBy("at","desc"),F.limit(6))),4000);return s?pick(s.docs.map(d=>({id:d.id,...d.data()}))):""}
+ return await new Promise(res=>{let un=null,done=false;const fin=v=>{if(done)return;done=true;try{un&&un()}catch{}res(v)};un=DB.watchCol(`chats/${cid}/msgs`,docs=>{setTimeout(()=>fin(pick(docs)))},{orderBy:["at","desc"],limit:6});setTimeout(()=>fin(""),2500)})}catch{return""}}
+/* ---- eylemler: Görüldü / Kalp at / Yanıtla ---- */
+async function knSeen(o){try{if(!S.authed||S.guest)return false;const k=keyInfo(o.key);if(k.type==="meydan"){LS.set("kadraj_meydan_"+S.uid,Math.max(now(),o.at||0));scheduleRefresh();return true}
+ const cid=o.cid||k.cid;if(!cid)return false;const c=S.chats[cid];const t=Math.max(now(),(o.at||0)+1);
+ if(c)S.chats={...S.chats,[cid]:{...c,reads:{...(c.reads||{}),[S.uid]:t}}};scheduleRefresh();clearChatNotes(cid);
+ return await write(()=>DB.update("chats/"+cid,{reads:{[S.uid]:t},noSeen:{[S.uid]:settings.readReceipts===false}}),{quiet:true})}catch{return false}}
+async function knHeart(o){try{if(!S.authed||!guard())return false;const k=keyInfo(o.key);if(k.type==="bot")return false;const cid=o.cid||k.cid;
+ const mid=o.mid||await knLastMid(cid,o.uid||o.from,o.at);if(!mid){toast("Mesaj bulunamadı.");return false}o.mid=mid;const t=now();vib(15);
+ if(typeof chatKey!=="undefined"&&chatKey===cid&&S.msgs){S.msgs=S.msgs.map(x=>x.id===mid?{...x,likes:{...(x.likes||{}),[S.uid]:t},reacts:{...(x.reacts||{}),[S.uid]:"heart"}}:x);if(S.route.name==="chat")renderMsgs()}
+ return await write(()=>DB.update(`chats/${cid}/msgs/${mid}`,{likes:{[S.uid]:t},reacts:{[S.uid]:"heart"}}),{quiet:true})}catch{return false}}
+async function knReply(o,text){text=String(text||"").trim();if(!text)return false;const mid=o.mid||await knLastMid(o.cid||keyInfo(o.key).cid,o.uid||o.from,o.at);
+ const extra=mid?{reply:{mid,from:o.uid||o.from||"",text:String(o.text||"").slice(0,80)}}:{};
+ const ok=await sendMessage(o.key,{text,...extra});if(ok===true){knSeen(o);return true}return false}
+/* sw.js'ten gelen eylem (telefon bildirimindeki düğmeler) */
+async function knAction(d){if(!d||!d.action||!d.key)return;if(d.at&&d.at<=KN.doneActs)return;KN.doneActs=d.at||now();
+ if(!S.authed){S.pendingAct=d;return}
+ const o={key:d.key,cid:d.cid||"",mid:d.mid||"",uid:d.from||"",from:d.from||"",at:+d.at||0,text:""};try{if(!o.cid)o.cid=keyInfo(o.key).cid||""}catch{}
+ if(d.action==="reply"){openTarget(d.key);setTimeout(async()=>{if(S.route.name!=="chat"||S.route.params.key!==d.key)return;const mid=o.mid||await knLastMid(o.cid,o.from,0);const m=(S.msgs||[]).find(x=>x.id===mid);
+   if(m){S.replyKey=d.key;S.replyTo={mid,from:m.from,text:msgPreview(m).slice(0,80)};drawReply()}const i=$("#msgIn");if(i)try{i.focus({preventScroll:true})}catch{i.focus()}},650);return}
+ const ok=d.action==="heart"?await knHeart(o):d.action==="seen"?await knSeen(o):false;
+ const msg=d.action==="heart"?(ok?"Kalp gönderildi":"Kalp gönderilemedi"):(ok?"Görüldü olarak işaretlendi":"İşaretlenemedi");
+ if(document.visibilityState==="visible")toast(msg);else knQuietNote(msg,d.tag||("m-"+o.cid))}
+/* arka planda yapılan eylemin küçük onayı (sessiz, 3 sn sonra kapanır) */
+function knQuietNote(text,tag){try{if(typeof Notification==="undefined"||Notification.permission!=="granted"||!navigator.serviceWorker)return;withTimeout(navigator.serviceWorker.ready,3000).then(reg=>{if(!reg)return;
+ return reg.showNotification("Kadraj",{body:text,tag:tag||"kadraj-ok",icon:"icon-192.png",badge:"badge-96.png",silent:true,renotify:false,data:{key:""}}).then(()=>setTimeout(()=>reg.getNotifications({tag:tag||"kadraj-ok"}).then(ns=>ns.forEach(n=>{if(n.body===text)n.close()})).catch(()=>{}),3000))}).catch(()=>{})}catch{}}
+try{navigator.serviceWorker&&navigator.serviceWorker.addEventListener("message",e=>{const d=e.data||{};if(d.type==="kadraj-pushsub"){setTimeout(()=>KP.sync(true),500);return}if(d.type==="kadraj-action"){try{window.caches&&caches.open("kadraj-open").then(c=>c.delete(new URL("__act",location.href).href)).catch(()=>{})}catch{}knAction(d)}})}catch{}
+async function knActPending(){try{if(!window.caches||!S.authed)return;const c=await caches.open("kadraj-open");const u=new URL("__act",location.href).href;const r=await c.match(u);if(!r)return;const d=await r.json();await c.delete(u);if(d&&Date.now()-(d.at||0)<10*60e3)knAction(d)}catch{}}
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")setTimeout(knActPending,250)});
+HOOKS.enter.push(()=>setTimeout(()=>{if(S.pendingAct){const d=S.pendingAct;S.pendingAct=null;KN.doneActs=0;knAction(d)}knActPending()},1200));
+/* ---- kart ---- */
+function knCardHtml(o){const[ic,lbl0]=KN_KIND[o.kind==="msg"?(o.key==="meydan"?"meydan":o.group?"group":"msg"):o.kind]||KN_KIND.msg;
+ const lbl=o.count>1&&o.kind==="msg"?`${o.count} yeni mesaj`:lbl0;const isMsg=o.kind==="msg";
+ return`<div class="kn-m" role="button" tabindex="0" aria-label="${esc((o.title||"")+": "+(o.text||""))}">
+  <span class="kn-av">${o.uid?avatar(o.uid,44,{ring:false,click:false,online:false}):`<span class="kn-app-av">${VF}</span>`}<i class="kn-ki">${I(ic)}</i></span>
+  <span class="kn-t"><span class="kn-h"><span class="kn-app">${VF}<b>Kadraj</b></span><span class="kn-l">${esc(lbl)}</span><time>${esc(knTime(o.at))}</time></span>
+  <b class="kn-n">${esc(o.title||"")}${o.sub?`<small> · ${esc(o.sub)}</small>`:""}</b><span class="kn-x">${esc(o.text||"")}</span></span></div>
+ ${isMsg?`<div class="kn-a"><button type="button" data-kn="seen">${I("dcheck")}<span>Görüldü</span></button><button type="button" data-kn="heart">${I("heart")}<span>Kalp at</span></button><button type="button" data-kn="reply">${I("reply")}<span>Yanıtla</span></button></div>
+ <form class="kn-r" hidden><input class="kn-in" type="text" maxlength="1000" enterkeyhint="send" autocomplete="off" placeholder="${esc((o.key==="meydan"?"Meydan'a":o.group?(o.title||"Gruba")+" grubuna":(o.title||"")+" kişisine")+" yanıt yaz")}" aria-label="Yanıt"><button type="submit" class="kn-send" aria-label="Gönder">${I("send")}</button></form>`:""}
+ <span class="kn-grip" aria-hidden="true"></span>`}
+function knNotify(o){try{if(!o||!settings.notify)return;o.at=o.at||now();o.count=o.count||1;const vis=document.visibilityState==="visible";
+ if(vis){knCard(o);vib(o.kind==="msg"?[16,50,16]:12);knChime(o.kind)}
+ else if(typeof Notification==="undefined"||Notification.permission!=="granted")knCard(o);
+ if(o.sys!==false)knSys(o)}catch(e){console.warn("kn",e)}}
+function knSys(o){if(document.visibilityState==="visible")return;
+ const title=o.kind==="msg"?(o.group?(o.title||"Grup"):o.key==="meydan"?"Meydan":o.title):o.title;const body=o.kind==="msg"&&(o.group||o.key==="meydan")?`${o.sub||P(o.uid).name}: ${o.text||""}`:(o.text||"");
+ const tag=o.tag||(o.kind==="msg"?"m-"+(o.cid||keyInfo(o.key).cid||"x"):o.kind+"-"+(o.id||o.at));
+ const go=mid=>sysNote(title,body,tag,{key:o.key||"",icon:o.uid?P(o.uid).avatar:"",kind:o.kind,mid:mid||"",cid:o.cid||"",from:o.uid||"",at:o.at});
+ if(o.kind==="msg"&&!o.mid&&o.cid)knLastMid(o.cid,o.uid,o.at).then(go,()=>go(""));else go(o.mid)}
+function knCard(o){const box=knBox();
+ /* aynı sohbetten yeni mesaj: kartı güncelle */
+ if(o.kind==="msg"){const ex=KN.cards.find(c=>c._o.kind==="msg"&&c._o.key===o.key&&!c._gone);if(ex){if(ex._replying){ex._o={...ex._o,text:o.text,at:o.at,mid:o.mid||"",count:(ex._o.count||1)+1};const x=$(".kn-x",ex);if(x)x.textContent=o.text||"";return}
+  const q={...o,count:(ex._o.count||1)+1};knKill(ex,true,true);return knCard(q)}
+  const qi=KN.queue.findIndex(q=>q.kind==="msg"&&q.key===o.key);if(qi>=0){o={...o,count:(KN.queue[qi].count||1)+1};KN.queue.splice(qi,1)}}
+ if(KN.cards.filter(c=>!c._gone).length>=KN.max){const old=KN.cards.find(c=>!c._gone&&!c._replying&&!c._hold);if(old)knKill(old,false,true);else{KN.queue.push(o);return}}
+ const el=document.createElement("div");el.className="kn"+(o.kind==="msg"?" kn-msg":"");el.dataset.kind=o.kind;el._o=o;el.innerHTML=knCardHtml(o);
+ if(document.visibilityState==="hidden")el.dataset.bg="1";
+ box.prepend(el);KN.cards.push(el);knWire(el);if(!kbReduce())requestAnimationFrame(()=>el.classList.add("in"));else el.classList.add("in","rm");
+ knArm(el)}
+function knArm(el,ms){clearTimeout(el._t);if(el._replying||el._hold)return;if(document.visibilityState!=="visible")return;el._t=setTimeout(()=>knKill(el),ms||(el._o.kind==="msg"?7000:5200))}
+function knKill(el,instant,toQueue){if(!el||el._gone)return;el._gone=true;clearTimeout(el._t);KN.cards=KN.cards.filter(c=>c!==el);
+ const fin=()=>{el.remove();if(!toQueue){const n=KN.queue.shift();if(n)knCard(n)}};
+ if(instant||kbReduce()){el.remove();if(!toQueue){const n=KN.queue.shift();if(n)knCard(n)}return}
+ el.classList.add("out");setTimeout(fin,260)}
+function knDismissKey(key){for(const c of[...KN.cards])if(c._o.key===key)knKill(c);KN.queue=KN.queue.filter(q=>q.key!==key)}
+function knWire(el){const o=()=>el._o;let sy=0,sx=0,dy=0,drag=false,pid=null,moved=false;
+ const main=$(".kn-m",el);
+ const open=()=>{const x=o();knKill(el,true);if(typeof x.open==="function")x.open();else if(x.key)openTarget(x.key)};
+ main.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();open()}});
+ el.addEventListener("pointerdown",e=>{if(e.target.closest("button,input,form"))return;pid=e.pointerId;sy=e.clientY;sx=e.clientX;dy=0;drag=true;moved=false;el._hold=true;clearTimeout(el._t);try{el.setPointerCapture(pid)}catch{}el.style.transition="none"});
+ el.addEventListener("pointermove",e=>{if(!drag||e.pointerId!==pid)return;dy=e.clientY-sy;const dx=e.clientX-sx;if(Math.abs(dy)>6||Math.abs(dx)>6)moved=true;const y=dy<0?dy:dy*.25;el.style.transform=`translateY(${y}px)`;el.style.opacity=String(Math.max(.25,1+Math.min(0,dy)/140))});
+ const end=e=>{if(!drag||(e&&e.pointerId!==pid))return;drag=false;el._hold=false;el.style.transition="";
+  if(dy<-36){el.style.transform=`translateY(${Math.min(dy,-60)}px)`;el.style.opacity="0";el._gone=false;knKill(el,false);return}
+  el.style.transform="";el.style.opacity="";if(!moved&&e&&e.type==="pointerup"&&!el._replying&&e.target.closest(".kn-m"))return open();knArm(el,4000)};
+ el.addEventListener("pointerup",end);el.addEventListener("pointercancel",end);
+ el.addEventListener("focusin",()=>{el._hold=true;clearTimeout(el._t)});el.addEventListener("focusout",()=>{setTimeout(()=>{if(!el.contains(document.activeElement)){el._hold=false;knArm(el,4500)}},0)});
+ for(const b of $$("[data-kn]",el))b.onclick=async e=>{e.stopPropagation();const a=b.dataset.kn;const x=o();
+  if(a==="reply"){const f=$(".kn-r",el);if(!f)return;el._replying=true;clearTimeout(el._t);f.hidden=false;el.classList.add("rp");const i=$(".kn-in",f);try{i.focus({preventScroll:true})}catch{i.focus()}return}
+  b.disabled=true;const ok=x.demo?true:a==="heart"?await knHeart(x):await knSeen(x);
+  if(ok){b.classList.add("done");const s=$("span",b);if(s)s.textContent=a==="heart"?"Kalp atıldı":"Görüldü";setTimeout(()=>knKill(el),700)}else b.disabled=false};
+ const f=$(".kn-r",el);if(f){const i=$(".kn-in",f);
+  i.addEventListener("keydown",e=>{if(e.key==="Escape"){e.preventDefault();el._replying=false;knKill(el)}});
+  f.onsubmit=async e=>{e.preventDefault();const v=i.value.trim();if(!v)return;const sb=$(".kn-send",f);sb.disabled=true;i.disabled=true;
+   const ok=await knReply(o(),v);if(ok){el._replying=false;el.classList.add("sent");const x=$(".kn-x",el);if(x)x.textContent="Yanıtın gönderildi";f.hidden=true;setTimeout(()=>knKill(el),900)}else{sb.disabled=false;i.disabled=false;try{i.focus()}catch{}}}}}
+/* arka plandayken oluşan kartlar: telefon bildirimi gösterildiyse dönüşte kaldır, gösterilmediyse şimdi saymaya başla */
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState!=="visible")return;const sys=typeof Notification!=="undefined"&&Notification.permission==="granted";let oc="";try{if(S.route.name==="chat")oc=keyInfo(S.route.params.key).cid||""}catch{}for(const c of[...KN.cards]){if(c.dataset.bg){delete c.dataset.bg;if(sys||(oc&&c._o.cid===oc))knKill(c,true);else knArm(c)}}});
+/* sohbet açılınca o sohbetin kartları kapanır */
+HOOKS.after.push(r=>{if(r==="chat"&&S.route.params&&S.route.params.key){const key=S.route.params.key;let cid="";try{cid=keyInfo(key).cid}catch{}for(const c of[...KN.cards])if(c._o.kind==="msg"&&!c._replying&&(c._o.key===key||(cid&&c._o.cid===cid)))knKill(c);KN.queue=KN.queue.filter(q=>!(q.kind==="msg"&&(q.key===key||(cid&&q.cid===cid))))}});
+/* ---- bildirim kaynakları (eskileri …Old) ---- */
+const notifyChatsOld=notifyChats;
+notifyChats=function(m){for(const[id,c]of Object.entries(m||{})){const o=S.chats[id];const l=c&&c.last;if(!l)continue;
+  /* başka cihazda okundu: telefon bildirimi ve kart kapanır */
+  const rd=((c.reads||{})[S.uid]||0),ord=o?((o.reads||{})[S.uid]||0):0;if(rd>ord&&rd>=l.at&&l.from!==S.uid){clearChatNotes(id);for(const k of[...KN.cards])if(k._o.cid===id&&!k._replying)knKill(k)}}
+ if(!notifReady||!settings.notify||settings.nMsg===false)return;
+ for(const[id,c]of Object.entries(m||{})){const o=S.chats[id];const l=c&&c.last;
+  if(!l||l.from===S.uid||!(l.at>S.bootAt)||(o&&o.last&&o.last.at>=l.at))continue;
+  if(((c.reads||{})[S.uid]||0)>=l.at)continue;
+  const open=S.route.name==="chat"&&(()=>{try{return keyInfo(S.route.params.key).cid===id}catch{return false}})();
+  if(open&&document.visibilityState==="visible")continue;
+  if(Array.isArray(c.members)&&!c.members.includes(S.uid))continue;
+  const nk=c.group?"g:"+id:"u:"+l.from;
+  knNotify({kind:"msg",uid:l.from,title:c.group?(c.name||"Grup"):P(l.from).name,sub:c.group?P(l.from).name:"",text:String(l.text||""),key:nk,cid:id,at:l.at,group:!!c.group,sys:true})}};
+function notifyMeydan(d){if(!d||!d.last)return;const l=d.last;
+ knNotify({kind:"msg",uid:l.from,title:P(l.from).name,sub:"",text:String(l.text||""),key:"meydan",cid:"meydan",at:l.at,group:false,tag:"m-meydan"})}
+const notifyMetaOld=notifyMeta;
+notifyMeta=function(m){if(!notifReady||!settings.notify||!S.authed)return;for(const[id,d]of Object.entries(m||{})){const p=S.posts[id];if(!p||p.uid!==S.uid)continue;const old=S.meta[id]||{};
+ for(const[u,at]of Object.entries(d.likes||{}))if(settings.nLike!==false&&at&&u!==S.uid&&!(old.likes||{})[u]&&at>S.bootAt)knNotify({kind:"like",uid:u,title:P(u).name,text:`@${P(u).username} paylaşımını beğendi`,key:"post:"+id,at,tag:"like-"+id});
+ for(const[cid,c]of Object.entries(d.comments||{}))if(settings.nComment!==false&&c&&c.uid&&c.uid!==S.uid&&!(old.comments||{})[cid]&&c.at>S.bootAt)knNotify({kind:"comment",uid:c.uid,title:P(c.uid).name,text:String(c.text||"").slice(0,140),key:"post:"+id,at:c.at,tag:"cm-"+cid})}};
+const notifyNewPostsOld=notifyNewPosts;
+notifyNewPosts=function(m){if(!notifReady||!settings.notify||settings.nPost===false||!S.authed)return;for(const[id,p]of Object.entries(m||{}))if(!S.posts[id]&&p.uid!==S.uid&&p.at>S.bootAt&&isFollowing(S.uid,p.uid)&&!kidHid(p))
+ knNotify({kind:"post",uid:p.uid,title:P(p.uid).name,text:`@${P(p.uid).username} yeni ${p.kind==="reel"?"bir Klaket":"bir paylaşım"} yaptı`+(p.caption?`: ${String(p.caption).slice(0,80)}`:""),key:"post:"+id,at:p.at,tag:"post-"+id})};
+const notifyGamesOld=notifyGames;
+notifyGames=function(m){if(!notifReady||!settings.notify||!S.authed)return;for(const[id,d]of Object.entries(m||{})){const o=(S.games||{})[id];const viewing=S.route.name==="chessgame"&&CH&&CH.gid===id;if(viewing||!o)continue;const ou=oppOf(d);const opp=P(ou).username;
+ const n=t=>knNotify({kind:"game",uid:ou,title:P(ou).name,text:t,at:now(),tag:"game-"+id,open:()=>{closeAll();chOpenOnline(id)}});
+ if((d.moves||[]).length>(o.moves||[]).length&&d.lastBy!==S.uid)n(`@${opp} hamlesini yaptı. Sıra sende!`);
+ else if(o.status==="invite"&&d.status==="active"&&d.from===S.uid)n(`@${opp} satranç davetini kabul etti`);
+ else if(o.status!=="over"&&d.status==="over"&&d.lastBy!==S.uid&&d.reason!=="iptal")n(`@${opp} ile oyun bitti: ${d.result==="1/2"?"berabere":((d.result==="1-0")===(d.w===S.uid)?"kazandın":"kaybettin")}`)}};
+/* yeni takipçi (eskiden hiç bildirilmiyordu; settings.nFollow) */
+HOOKS.profiles.push(m=>{if(!S.authed||!S.uid)return;const cur={};for(const[u,p]of Object.entries(m||{})){const v=p&&p.following&&p.following[S.uid];if(v&&u!==S.uid)cur[u]=v}
+ const prev=KN.fol;KN.fol=cur;if(!prev||KN.folFor!==S.uid){KN.folFor=S.uid;return}
+ if(!notifReady||!settings.notify||settings.nFollow===false)return;
+ for(const[u,at]of Object.entries(cur))if(!prev[u]&&at>S.bootAt&&now()-at<10*60e3)knNotify({kind:"follow",uid:u,title:P(u).name,text:`@${P(u).username} seni takip etmeye başladı`,key:"prof:"+u,at,tag:"fl-"+u})});
+/* ---- telefon bildirimi ---- */
+const sysNoteOld=sysNote;
+sysNote=function(title,body,tag,o={}){try{if(typeof Notification==="undefined"||Notification.permission!=="granted")return;if(!settings.notify)return;
+ if(document.visibilityState==="visible"&&!o.force)return;
+ const okIc=typeof o.icon==="string"&&/^data:image\/(jpe?g|png|webp);/.test(o.icon)&&o.icon.length<200000;const ic=okIc?o.icon:"icon-192.png";const key=o.key||"";
+ const msg=o.kind==="msg"&&key;
+ const opts={body:String(body||"").slice(0,240),tag:tag||"kadraj",icon:ic,badge:"badge-96.png",renotify:true,silent:false,timestamp:o.at||now(),
+  data:{key,mid:o.mid||"",cid:o.cid||"",from:o.from||"",kind:o.kind||"",at:o.at||now(),tag:tag||"kadraj",body:String(body||"").slice(0,240)},
+  ...(settings.haptics===false?{}:{vibrate:o.kind==="call"?[300,150,300,150,300]:[70,40,70]}),
+  ...(msg?{actions:[{action:"reply",title:"Yanıtla"},{action:"heart",title:"Kalp at"},{action:"seen",title:"Görüldü"}]}:{}),
+  ...(o.kind==="call"?{requireInteraction:true}:{})};
+ const plain=()=>{try{const{actions,...p}=opts;const n=new Notification(title,p);n.onclick=()=>{try{window.focus()}catch{}n.close();if(key)openTarget(key)}}catch{}};
+ if(navigator.serviceWorker){withTimeout(navigator.serviceWorker.ready,3000).then(reg=>{if(!reg)return plain();
+   const show=()=>reg.showNotification(title,opts).catch(()=>reg.showNotification(title,{...opts,icon:"icon-192.png"})).catch(plain);
+   /* aynı sohbetten birikenler: son üç satır tek bildirimde (sw.js push ile aynı biçim) */
+   if(o.kind==="msg"&&reg.getNotifications)return reg.getNotifications({tag:opts.tag}).then(ns=>{for(const x of ns||[]){const xd=x.data||{};if(xd.kind!=="msg")continue;
+    const lines=[...(Array.isArray(xd.lines)?xd.lines:[xd.body||x.body]),opts.body].filter(Boolean).slice(-3);const n=(xd.n||1)+1;opts.data={...opts.data,lines,n};opts.body=lines.join("\n");title=String(title).replace(/ · \d+ yeni mesaj$/,"")+" · "+n+" yeni mesaj"}
+    if(!opts.data.lines)opts.data={...opts.data,lines:[opts.body],n:1}}).catch(()=>{}).then(show);
+   return show()}).catch(plain);return}
+ plain()}catch{}};
+/* ---- ayarlar ---- */
+const kbOnFlagBase51N=kbOnFlag;
+kbOnFlag=function(f,v){const r=kbOnFlagBase51N(f,v);try{if(f==="msgSound"&&v){knUnlock();setTimeout(()=>knChime("msg",true),60)}if(/^n(Msg|Like|Comment|Follow)$/.test(f))KP.sync(true)}catch{}return r};
+function knTog(o){const kw=(...a)=>esc(kbFold(a.join(" ")));return`<label class="srow" data-k="${kw(o.t,o.s||"",o.k||"")}"><span class="sic" style="--c:${o.c}">${I(o.ic)}</span><span class="t">${o.t}${o.s?`<small${o.sid?` id="${o.sid}"`:""}>${o.s}</small>`:""}</span><span class="sw"><input type="checkbox" ${o.id?`id="${o.id}"`:`data-set="${o.f}"`} ${o.on?"checked":""} ${o.dis?"disabled":""} aria-label="${esc(o.t)}"><span></span></span></label>`}
+const vSettingsBase51N=vSettings;
+vSettings=function(){let h=vSettingsBase51N();try{const nOn=!!settings.notify;
+ const i=h.indexOf('data-set="nPost"');const j=i<0?-1:h.indexOf("</label>",i);
+ if(j>=0){const add=knTog({f:"nFollow",on:settings.nFollow!==false,dis:!nOn,ic:"users",c:"#5E5CE6",t:"Yeni takipçiler",k:"takip bildirimi"})+knTog({f:"msgSound",on:settings.msgSound!==false,dis:!nOn,ic:"vol",c:"#0C7A63",t:"Bildirim sesi",s:"Kadraj'ın kısa zil sesi",k:"ses zil sessiz"});h=h.slice(0,j+8)+add+h.slice(j+8)}
+ const k=h.indexOf('data-sec="bildirim"');const e=k<0?-1:h.indexOf("</div></section>",k);
+ if(e>=0){const st=KP.status();h=h.slice(0,e)+knTog({id:"setPush",on:st.on,dis:!st.can,ic:"bell",c:"#FF9F0A",t:"Uygulama kapalıyken de bildir",s:esc(st.text),sid:"pushSt",k:"push kapalı uygulama arka plan bildirim"})+
+  `<button class="srow" type="button" data-act="kntest" data-k="${esc(kbFold("bildirimi dene deneme ses"))}"><span class="sic" style="--c:#34C759">${I("spark")}</span><span class="t">Bildirimi dene<small>Kadraj bildirim kartı ve sesi</small></span>${I("next","chev")}</button>`+h.slice(e)}
+ h=h.replace("Uygulama kapalıyken de haber verir","Kadraj arka plandayken de haber verir")}catch(x){console.warn("kn set",x)}return h};
+HOOKS.after.push(r=>{if(r!=="settings")return;const p=$("#setPush");if(p)p.onchange=async()=>{p.disabled=true;const want=p.checked;const ok=want?await KP.enable():await KP.disable();p.checked=KP.status().on;p.disabled=!KP.status().can;const s=$("#pushSt");if(s)s.textContent=KP.status().text;if(want&&!ok)p.checked=false}});
+ACT.kntest=()=>{knUnlock();const u=BOT["bot:rota"]?"bot:rota":S.uid;knNotify({kind:"msg",uid:u,title:P(u).name,text:"Merhaba! Kadraj bildirimleri böyle görünür. Yukarı kaydırarak kapatabilirsin.",key:"u:"+u,cid:"",at:now(),sys:false,demo:true})};
+/* ---- gönderirken: karşı tarafa uygulama kapalıyken bildirim ---- */
+const sendMessageBase51N=sendMessage;
+sendMessage=async function(key,payload){const t0=now();const r=await sendMessageBase51N(key,payload);
+ if(r===true)try{KP.afterSend(key,payload||{},t0)}catch(e){console.warn("push",e)}return r};
+const toggleLikeBase51N=toggleLike;
+toggleLike=async function(id,onlyLike){const was=iLike(id);const r=await toggleLikeBase51N(id,onlyLike);try{const p=postById(id);if(!was&&iLike(id)&&p&&p.uid&&p.uid!==S.uid&&KP.once("like-"+id))KP.send([p.uid],{title:"Yeni beğeni",body:`@${me().username} paylaşımını beğendi`,key:"post:"+id,tag:"like-"+id,kind:"like"},"nLike")}catch{}return r};
+const addCommentBase51N=addComment;
+addComment=async function(id,text){const n0=Object.keys((metaOf(id)||{}).comments||{}).length;const r=await addCommentBase51N(id,text);try{const p=postById(id);const t=String(text||"").trim();if(Object.keys((metaOf(id)||{}).comments||{}).length>n0&&t&&p&&p.uid&&p.uid!==S.uid)KP.send([p.uid],{title:"Yeni yorum",body:`@${me().username}: ${(isChild(S.uid)?cleanText(t):t).slice(0,90)}`,key:"post:"+id,tag:"cm-"+id,kind:"comment"},"nComment")}catch{}return r};
+const toggleFollowBase51N=toggleFollow;
+toggleFollow=async function(uid){const was=isFollowing(S.uid,uid);const r=await toggleFollowBase51N(uid);try{if(!was&&isFollowing(S.uid,uid)&&!BOT[uid]&&KP.once("fl-"+uid))KP.send([uid],{title:"Yeni takipçi",body:`@${me().username} seni takip etmeye başladı`,key:"prof:"+S.uid,tag:"fl-"+S.uid,kind:"follow"},"nFollow")}catch{}return r};
+const startCallBase51N=startCall;
+startCall=async function(uid,video){const r=await startCallBase51N(uid,video);try{const c=typeof CALL!=="undefined"&&CALL;if(c&&c.role==="caller"&&c.peer===uid&&c.status==="ringing"&&!c._pushed){c._pushed=1;KP.send([uid],{title:`${me().name} arıyor`,body:(c.video?"Görüntülü arama":"Sesli arama")+" · açmak için dokun",key:"u:"+S.uid,tag:"call-"+c.id,kind:"call"},null)}}catch{}return r};
+const endSessionBase51N=endSession;
+endSession=function(...a){try{KP.forget()}catch{}return endSessionBase51N.apply(this,a)};
+/* ---- Web Push istemcisi ---- */
+const KP={cache:new Map(),denied:0,
+ supported(){try{return!!(window.isSecureContext&&"serviceWorker"in navigator&&"PushManager"in window&&typeof Notification!=="undefined")}catch{return false}},
+ can(){return S.mode==="cloud"&&!!FB&&!!(FB.auth&&FB.auth.currentUser)&&S.authed&&!S.guest&&!!kAI.url()},
+ onKey(){return"kadraj_push_"+S.uid},
+ isOn(){return!!(S.uid&&LS.get(this.onKey(),0))},
+ status(){if(S.mode!=="cloud")return{can:false,on:false,text:"Yalnızca bulut modunda (Firebase) çalışır."};
+  if(!this.supported())return{can:false,on:false,text:/iPhone|iPad/.test(navigator.userAgent||"")?"iPhone'da önce Kadraj'ı Ana ekrana ekle, oradan aç.":"Bu tarayıcı desteklemiyor."};
+  if(!kAI.url())return{can:false,on:false,text:"Yönetici Kadraj köprüsünü kurunca açılabilir."};
+  if(notifPerm()==="denied")return{can:false,on:false,text:"Bildirim izni engellendi. Tarayıcı ayarlarından izin ver."};
+  return this.isOn()?{can:true,on:true,text:"Açık · Kadraj kapalıyken de mesaj, beğeni ve aramalardan haberin olur."}:{can:true,on:false,text:"Kadraj kapalıyken de mesaj, beğeni ve aramalardan haberin olsun."}},
+ async reg(){if(!this.supported())return null;return await withTimeout(navigator.serviceWorker.ready,8000)},
+ async vapid(){const r=await fetch(kAI.url()+"/vapid");let d=null;try{d=await r.json()}catch{}if(!r.ok||!d||!d.key)throw Object.assign(new Error((d&&d.message)||"Köprüden bildirim anahtarı alınamadı."),{code:(d&&d.error)||"vapid"});return d.key},
+ keyBytes(k){const s=String(k).replace(/-/g,"+").replace(/_/g,"/");const b=atob(s+"===".slice((s.length+3)%4));const u=new Uint8Array(b.length);for(let i=0;i<b.length;i++)u[i]=b.charCodeAt(i);return u},
+ prefs(){return{notify:!!settings.notify,nMsg:settings.nMsg!==false,nLike:settings.nLike!==false,nComment:settings.nComment!==false,nFollow:settings.nFollow!==false}},
+ async save(sub){const j=sub.toJSON?sub.toJSON():sub;if(!j||!j.endpoint||!j.keys)return false;const uid=S.uid;const h=hash32(j.endpoint,7)+hash32(j.endpoint,99);
+  let d=null;try{d=await DB.get("push/"+uid)}catch{}const subs={};const lim=now()-60*24*H;for(const[k,v]of Object.entries((d&&d.subs)||{}))if(v&&v.endpoint&&(v.at||0)>lim&&v.endpoint!==j.endpoint)subs[k]=v;
+  subs[h]={endpoint:j.endpoint,keys:{p256dh:j.keys.p256dh,auth:j.keys.auth},at:now(),ua:String(navigator.userAgent||"").replace(/\s*\(.*?\)\s*/g," ").slice(0,80)};
+  LS.set("kadraj_push_h_"+uid,h);return write(()=>DB.set("push/"+uid,{uid,subs,prefs:this.prefs(),at:now()}),{quiet:true})},
+ async enable(){try{if(!this.can()){toast(this.status().text);return false}
+  const p=await askNotif(true);if(p!=="granted"){toast(p==="denied"?"Bildirim izni engellendi. Tarayıcı ayarlarından izin ver.":"Bildirime izin verilmedi.");return false}
+  const reg=await this.reg();if(!reg||!reg.pushManager){toast("Kadraj'ın arka plan parçası (service worker) hazır değil. Sayfayı yenileyip tekrar dene.");return false}
+  let key;try{key=await this.vapid()}catch(e){toast(e.code==="no_vapid"?"Köprüde bildirim anahtarları kurulmamış (KURULUM.md, Bildirimler).":(e.message||"Köprüye ulaşılamadı."));return false}
+  let sub=await reg.pushManager.getSubscription();
+  if(sub){let same=false;try{const a=new Uint8Array(sub.options.applicationServerKey||[]);const b=this.keyBytes(key);same=a.length===b.length&&a.every((x,i)=>x===b[i])}catch{}if(!same){try{await sub.unsubscribe()}catch{}sub=null}}
+  if(!sub)sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:this.keyBytes(key)});
+  if(!await this.save(sub)){toast("Abonelik kaydedilemedi. Yönetici Firestore kurallarını yeniden yayınlamalı.");return false}
+  LS.set(this.onKey(),1);toast("Kadraj kapalıyken de bildirim alacaksın");return true}
+  catch(e){console.warn("push",e);toast("Bildirim açılamadı: "+String((e&&e.message)||e).slice(0,90));return false}},
+ async disable(){try{LS.del(this.onKey());const reg=await this.reg();const sub=reg&&reg.pushManager&&await reg.pushManager.getSubscription();await this.drop(sub);if(sub)try{await sub.unsubscribe()}catch{}toast("Kadraj kapalıyken bildirim gelmeyecek");return true}catch{return true}},
+ async drop(sub){if(S.mode!=="cloud"||!S.uid)return;const ep=sub&&sub.endpoint;const uid=S.uid;try{const d=await DB.get("push/"+uid);if(!d||!d.subs)return;const subs={};for(const[k,v]of Object.entries(d.subs))if(v&&v.endpoint!==ep&&k!==LS.get("kadraj_push_h_"+uid,""))subs[k]=v;await DB.set("push/"+uid,{...d,subs,at:now()})}catch{}},
+ /* çıkışta: bu cihaz o hesabın bildirimlerini almasın (abonelik iptal edilir; açık tercih hesapta kalır, yeniden girince yenilenir) */
+ forget(){if(S.mode!=="cloud"||!S.uid||!this.isOn()||!this.supported())return;const uid=S.uid;
+  navigator.serviceWorker.getRegistration().then(reg=>reg&&reg.pushManager&&reg.pushManager.getSubscription()).then(sub=>{if(!sub)return;const ep=sub.endpoint;
+   DB.get("push/"+uid).then(d=>{if(d&&d.subs){const subs={};for(const[k,v]of Object.entries(d.subs))if(v&&v.endpoint!==ep)subs[k]=v;return DB.set("push/"+uid,{...d,subs,at:now()})}}).catch(()=>{});
+   return sub.unsubscribe()}).catch(()=>{})},
+ /* açılışta: açık olan cihazın aboneliği hâlâ geçerli mi, tercihler güncel mi */
+ async sync(force){try{if(!this.isOn()||!this.can()||!this.supported()||notifPerm()!=="granted")return;const sk="kadraj_push_sync_"+S.uid;const sig=JSON.stringify(this.prefs());const last=LS.get(sk,{})||{};
+  const reg=await this.reg();if(!reg||!reg.pushManager)return;let sub=await reg.pushManager.getSubscription();
+  if(!sub){let key;try{key=await this.vapid()}catch{return}sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:this.keyBytes(key)}).catch(()=>null);if(!sub)return}
+  if(!force&&last.ep===sub.endpoint&&last.sig===sig&&now()-(last.at||0)<12*H)return;
+  if(await this.save(sub))LS.set(sk,{ep:sub.endpoint,sig,at:now()})}catch(e){console.warn("push sync",e)}},
+ once(tag){const m=this._once||(this._once={});if(m[tag]&&now()-m[tag]<10*60e3)return false;m[tag]=now();return true},
+ dead(){return LS.get("kadraj_push_dead",[])||[]},
+ async doc(uid){const c=this.cache.get(uid);if(c&&now()-c.at<60e3)return c.d;let d=null;try{d=await DB.get("push/"+uid)}catch(e){if(e&&e.code==="permission-denied")this.denied=now();return null}this.cache.set(uid,{at:now(),d});return d},
+ async send(uids,payload,pref){try{if(!this.can()||now()-this.denied<10*60e3)return;
+  const list=[...new Set(uids||[])].filter(u=>u&&u!==S.uid&&!BOT[u]&&!String(u).startsWith("bot:")).slice(0,40);if(!list.length)return;
+  const dead=new Set(this.dead());const subs=[];const lim=now()-60*24*H;
+  for(const u of list){const d=await this.doc(u);if(!d||!d.subs)continue;const pr=d.prefs||{};if(pr.notify===false||(pref&&pr[pref]===false))continue;
+   for(const s of Object.values(d.subs).slice(0,8))if(s&&s.endpoint&&s.keys&&!dead.has(s.endpoint)&&(s.at||0)>lim)subs.push({endpoint:s.endpoint,keys:{p256dh:s.keys.p256dh,auth:s.keys.auth}})}
+  if(!subs.length)return;let tok="";try{tok=await FB.auth.currentUser.getIdToken()}catch{return}
+  const body={...payload,at:payload.at||now()};const gone=[];
+  for(let i=0;i<subs.length;i+=20){const part=subs.slice(i,i+20);let r=null;try{r=await fetch(kAI.url()+"/push",{method:"POST",headers:{"Content-Type":"application/json",Authorization:"Bearer "+tok},body:JSON.stringify({subscriptions:part,payload:body})})}catch{return}
+   let j=null;try{j=await r.json()}catch{}if(!r.ok||!j||!Array.isArray(j.results))return;for(const x of j.results)if(x&&x.gone&&part[x.i])gone.push(part[x.i].endpoint)}
+  if(gone.length){const all=[...new Set([...gone,...dead])].slice(0,200);LS.set("kadraj_push_dead",all)}}catch(e){console.warn("push send",e)}},
+ afterSend(key,payload,t0){if(!this.can())return;let k;try{k=keyInfo(key)}catch{return}if(!k||(k.type!=="dm"&&k.type!=="group"))return;
+  const prev=String(payload.text||(payload.post?"Bir paylaşım gönderdi":payload.img?"Fotoğraf":payload.audio?"Sesli mesaj":payload.game?"Satranç daveti":payload.call?"Arama":"Yeni mesaj")).replace(/\s+/g," ").trim();
+  const short=prev.length>90?prev.slice(0,88)+"…":prev;const mine=me();
+  let mid="",at=t0;if(typeof chatKey!=="undefined"&&chatKey===k.cid){const m=(S.msgs||[]).filter(x=>x.from===S.uid&&x.at>=t0).pop();if(m){mid=m.id;at=m.at}}
+  if(k.type==="dm")return this.send([k.uid],{title:mine.name,body:short,key:"u:"+S.uid,tag:"m-"+k.cid,kind:"msg",cid:k.cid,mid,at},"nMsg");
+  const c=S.chats[k.cid];if(!c||!Array.isArray(c.members))return;
+  this.send(c.members.filter(u=>u!==S.uid),{title:c.name||"Grup",body:`${mine.name}: ${short}`,key:"g:"+k.cid,tag:"m-"+k.cid,kind:"msg",cid:k.cid,mid,at},"nMsg")}};
+HOOKS.enter.push(()=>setTimeout(()=>KP.sync(false),4000));
 /*}@js:51NOTIF*/
 
 /*@js:51ADM{*/
