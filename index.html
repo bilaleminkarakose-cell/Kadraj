@@ -9988,7 +9988,7 @@ function rvClassify(P,i){const u=CH.moves[i]&&CH.moves[i].u;if(!u)return null;
   const free=!!(mP.c&&rvSee(gB.b,mP.f,mP.t)>=200);const evade=CC.inCheck(gB)&&A.length<=3;
   if(!o.dv&&!/#$/.test(CH.moves[i].san||"")&&wB-w2>=.2&&w2<=.8&&wP>=.25&&!recap&&!flee&&!free&&!evade)c="gr"}
  if(["in","mi","bl"].includes(c)&&i>0){const pr=P.res[i-1];if(!pr||pr.wait)o.fin=false;
-  else if(pr.c==="mi"||pr.c==="bl"){const Ap=RVS.cache.get(P.k[i-1]);if(Ap&&Ap.length&&wP>=1-rvWp(Ap[0].s)-.05)c="ms"}}
+  else if((pr.c==="mi"||pr.c==="bl")&&pr.l>=.15&&c!=="in"){const Ap=RVS.cache.get(P.k[i-1]);if(Ap&&Ap.length){const base=1-rvWp(Ap[0].s);if(wB>=base+.15&&wP>=base-.05)c="ms"}}}
  o.om=sP<-RV_M&&sB>=-RV_M;o.mm=sB>RV_M&&sP<=RV_M;if(th[0]>=200&&th[0]-pre>=150)o.hg=th[2];o.mate=/#$/.test(CH.moves[i].san||"");
  o.c=c;return o}
 const rvR=(P,i)=>{const r=P.res[i];return r&&!r.wait?r:null};
