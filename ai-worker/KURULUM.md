@@ -13,7 +13,7 @@ Bu kurulumdan sonra Rota ve Clawd gerçek yapay zekâyla konuşur. Aynı köprü
 | Para | Yok. Cloudflare'in günlük ücretsiz kotası kullanılır. | Soru başına birkaç sent. |
 | Gereken | Yalnızca ücretsiz bir Cloudflare hesabı | Cloudflare hesabı ve Anthropic API anahtarı |
 | Model | Açık kaynaklı Llama 3.3 70B | Claude (varsayılan: Claude Opus 5.5) |
-| İnternette arama ("abime sorayım") | Yok | Var |
+| İnternette arama | Tavily anahtarı eklenirse var (ücretsiz, ayda 1000 arama; 4. bölüm) | Var |
 
 Önce ücretsiz başla. İstersen sonra Claude anahtarını eklersin; anahtar eklendiği anda köprü kendiliğinden Claude'a geçer.
 
@@ -67,13 +67,11 @@ Bu kadar: ücretsiz yapay zekâ bağlantısı (Workers AI) kendiliğinden kurulu
 
 Bu adımdan sonra Kadraj kapalıyken de mesaj, beğeni, yorum, takip ve aramalar telefona bildirim olarak gelir. Aynı köprü kullanılır; yapay zekâ için Claude anahtarı gerekmez.
 
-1. Bilgisayarında bu depoyu aç ve `ai-worker` klasöründe şunu çalıştır (Node 20 ya da daha yenisi gerekir):
+1. Anahtarları üret. İki yol var, ikisi de aynı şeyi üretir:
+   - **Kadraj'da (önerilen, Node gerekmez):** Yönetici paneli > **Yapay zekâ** > **Anahtar üret**. Anahtarlar senin tarayıcında üretilir, hiçbir yere gönderilmez. Sayfayı kapatınca kaybolur; Cloudflare'e eklemeden kapatma.
+   - **Bilgisayarda:** Bu depoyu indir ve `ai-worker` klasöründe `node vapid-anahtar.mjs` çalıştır (Node 20 ya da daha yenisi).
 
-   ```
-   node vapid-anahtar.mjs
-   ```
-
-   Ekrana üç değer yazar: `VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY` ve `VAPID_SUBJECT`. Node yoksa bir yetişkinden ya da bilgisayarı olan bir arkadaşından yardım iste; anahtarlar yalnızca bir kez üretilir.
+   Üç değer çıkar: `VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY` ve `VAPID_SUBJECT`. Yalnızca bir kez üretilir.
 2. Cloudflare'de Worker'ı aç, **Settings** sekmesinde **Variables and Secrets** bölümüne gir ve **Add**'e basarak üçünü ekle:
    - `VAPID_PUBLIC_KEY`: Type **Text**, değer: çıktıdaki açık anahtar (`B` ile başlar, 87 karakter)
    - `VAPID_PRIVATE_KEY`: Type **Secret**, değer: çıktıdaki gizli anahtar (43 karakter). Kimseyle paylaşma, GitHub'a yazma.
@@ -90,6 +88,17 @@ Bu adımdan sonra Kadraj kapalıyken de mesaj, beğeni, yorum, takip ve aramalar
 - Kişi başına sınır: günde `PUSH_DAILY_LIMIT` (varsayılan 600) gönderim isteği, 10 dakikada en fazla 80.
 - Köprü yalnızca bilinen push hizmetlerine (Google, Mozilla, Apple, Microsoft) istek atar. Bildirimin içeriği yolda şifrelidir (RFC 8291); köprü içeriği saklamaz.
 
+## 4. Rota internette arasın (Tavily, ücretsiz)
+
+Ücretsiz modelin bilgisi eskidir ve bazen yanlış olabilir. Tavily eklenince Rota genel bilgi sorularında (kim, ne zaman, hangi, bugün, haber...) internete bakar ve yanıtın sonunda kaynağın adını yazar. Kadraj'la ilgili sorularda aramaz, böylece kota boşa gitmez.
+
+> Kayıt için yaş sınırı olabilir; gerekirse bu adımı bir yetişkine yaptır.
+
+1. https://tavily.com adresinde ücretsiz hesap aç. Kredi kartı istemez; ayda 1000 arama ücretsizdir.
+2. Paneldeki **API Keys** bölümünden anahtarı kopyala (`tvly-` ile başlar). Kimseyle paylaşma, Kadraj'a yazma.
+3. Cloudflare'de Worker'ı aç, **Settings** > **Variables and Secrets** > **Add**: Type **Secret**, Name `TAVILY_API_KEY`, Value: anahtar. Kaydet ve **Deploy**'a bas.
+4. Kadraj > Yönetici paneli > **Yapay zekâ** > **Durumu yenile**. "İnternet araması: açık" görürsen tamam.
+
 ## Ayarlar (isteğe bağlı)
 
 Worker'da **Settings**, sonra **Variables** bölümünden değiştirebilirsin:
@@ -101,6 +110,7 @@ Worker'da **Settings**, sonra **Variables** bölümünden değiştirebilirsin:
 | `EFFORT` | `low` | Claude'un düşünme derinliği: `low`, `medium` ya da `high`. |
 | `DAILY_LIMIT` | `60` | Bir kişinin günde sorabileceği soru sayısı. |
 | `PUSH_DAILY_LIMIT` | `600` | Bir kişinin günde gönderebileceği bildirim isteği sayısı. |
+| `SEARCH_DAILY_LIMIT` | `20` | Bir kişinin günde yapabileceği internet araması sayısı (Tavily kotası ayda 1000). |
 
 ## Sorun giderme
 
@@ -114,4 +124,5 @@ Worker'da **Settings**, sonra **Variables** bölümünden değiştirebilirsin:
 | "Kadraj'a giriş yapmış olman gerekiyor" | Kadraj'dan çıkıp yeniden giriş yap. |
 | "Köprüde bildirim anahtarları kurulmamış" | 3. bölümün 1. ve 2. adımlarını yap, sonra Deploy'a bas. |
 | `/vapid` "VAPID anahtarları hatalı ya da birbirini tutmuyor" | İki anahtarı aynı `node vapid-anahtar.mjs` çıktısından kopyala; başında ya da sonunda boşluk kalmasın. |
+| "İnternet araması: kapalı (Tavily anahtarı yok)" | 4. bölümü yap. Anahtarı ekledikten sonra Deploy'a basmayı unutma. |
 | "Abonelik kaydedilemedi" | Firestore kurallarını yeniden yayınla (3. bölüm, 3. adım). |

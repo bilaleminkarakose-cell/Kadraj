@@ -113,6 +113,58 @@ function takePushQuota(uid, env) {
   return true;
 }
 
+// 5.1.1 İnternet araması (ücretsiz yol): TAVILY_API_KEY varsa genel bilgi soruları Tavily ile aranır (ayda 1000 ücretsiz arama).
+// İstemci "search" alanında ya true ya da kişinin asıl sorusunu (metin) gönderir. Metinse yalnızca soru gibi görünen ve
+// Kadraj'ın kendisiyle ilgili olmayan mesajlarda aranır; kota boşa gitmesin diye kişi başına günde SEARCH_DAILY_LIMIT (varsayılan 20).
+const Q_HINT = /\?|(^|[\s,.;:'"(])(kim|kimdir|kimin|ne zaman|nedir|ne demek|kaç|kaçta|hangi|nerede|nereye|nereden|neden|niçin|niye|haber|bugün|dün|yarın|güncel|son durum|fiyat|hava durumu|skor|maç|sonuç|kazandı|kaybetti|öldü|doğdu|başkent|nüfus|tarihi|ne oldu|araştır|internette)/i;
+const APP_HINT = /kadraj|klaket|flick|hikâye|hikaye|profil|ayar|takip|sohbet|bildirim|şifre|tema|rota|clawd|meydan|satranç|anket|yönetici|paylaş|uygulama|beğen|yorum/i;
+function lastUserText(messages) {
+  for (let i = (messages || []).length - 1; i >= 0; i--) if (messages[i].role === "user") return flatText(messages[i].content);
+  return "";
+}
+function searchQuery(body, messages) {
+  const s = body.search;
+  if (typeof s === "string") {
+    const q = s.replace(/\s+/g, " ").trim().slice(0, 380);
+    if (q.length < 6 || APP_HINT.test(q) || !Q_HINT.test(q)) return "";
+    return q;
+  }
+  if (s === true) return lastUserText(messages).replace(/\s+/g, " ").trim().slice(0, 380);
+  return "";
+}
+const searchUsage = new Map();
+function takeSearchQuota(uid, env) {
+  const day = new Date().toISOString().slice(0, 10);
+  const lim = Math.max(0, parseInt(env.SEARCH_DAILY_LIMIT || "20", 10) || 0);
+  let u = searchUsage.get(uid);
+  if (!u || u.day !== day) u = { day, n: 0 };
+  if (u.n >= lim) return false;
+  u.n++;
+  searchUsage.set(uid, u);
+  if (searchUsage.size > 5000) searchUsage.clear();
+  return true;
+}
+async function tavily(env, q, fetcher = fetch) {
+  const r = await fetcher("https://api.tavily.com/search", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Authorization: "Bearer " + String(env.TAVILY_API_KEY).trim() },
+    body: JSON.stringify({ query: q, search_depth: "basic", max_results: 5, include_answer: false }),
+  });
+  if (!r.ok) return [];
+  const j = await r.json();
+  return (Array.isArray(j && j.results) ? j.results : [])
+    .filter((x) => x && /^https?:\/\//.test(String(x.url || "")))
+    .slice(0, 5)
+    .map((x) => ({ title: String(x.title || x.url).slice(0, 160), url: String(x.url), content: String(x.content || "").replace(/\s+/g, " ").slice(0, 700) }));
+}
+function hostOf(u) {
+  try {
+    return new URL(u).hostname.replace(/^www\./, "");
+  } catch {
+    return "";
+  }
+}
+
 // İstemciden gelen mesajları sıkıca denetler (yalnızca metin ve küçük resimler).
 function cleanMessages(raw) {
   if (!Array.isArray(raw) || !raw.length || raw.length > MAX_MESSAGES) return null;
@@ -154,15 +206,29 @@ function flatText(c) {
   if (typeof c === "string") return c;
   return (c || []).filter((b) => b.type === "text").map((b) => b.text).join("\n");
 }
-async function askFree(env, body) {
+async function askFree(env, body, uid, fetcher = fetch) {
   const messages = cleanMessages(body.messages);
   if (!messages) return { status: 400, data: { error: "bad_request", message: "İstek biçimi hatalı." } };
   const model = String(env.FREE_MODEL || "@cf/meta/llama-3.3-70b-instruct-fp8-fast");
-  const sys = (typeof body.system === "string" ? body.system.slice(0, 20000) + "\n\n" : "") + "Her zaman Türkçe yanıt ver.";
+  let sys = (typeof body.system === "string" ? body.system.slice(0, 20000) + "\n\n" : "") + "Her zaman Türkçe yanıt ver.";
+  let sources = [];
+  const q = env.TAVILY_API_KEY ? searchQuery(body, messages) : "";
+  if (q && takeSearchQuota(uid || "?", env)) {
+    try {
+      const res = await tavily(env, q, fetcher);
+      if (res.length) {
+        sources = res.map((x) => ({ title: x.title, url: x.url }));
+        sys +=
+          "\n\nİnternet araması sonuçları (bugünün tarihi " + new Date().toISOString().slice(0, 10) + "). Soruyu bu sonuçlara dayanarak, kısa ve doğru yanıtla; sonuçlarda yoksa bilmediğini söyle, uydurma. " +
+          "Yanıtın sonuna yeni satırda \"Kaynak:\" yazıp en fazla iki sitenin yalnızca adını yaz (bağlantı yazma).\n" +
+          res.map((x, i) => "[" + (i + 1) + "] " + x.title + " (" + hostOf(x.url) + ")\n" + x.content).join("\n\n");
+      }
+    } catch {}
+  }
   const msgs = [{ role: "system", content: sys }, ...messages.map((m) => ({ role: m.role, content: flatText(m.content) }))];
   const r = await env.AI.run(model, { messages: msgs, max_tokens: 900 });
   const text = String((r && (r.response ?? r.result?.response)) || "").trim();
-  return { status: 200, data: { text, sources: [], model, provider: "free" } };
+  return { status: 200, data: { text, sources, model, provider: "free", searched: !!sources.length } };
 }
 
 async function ask(env, body) {
@@ -179,7 +245,7 @@ async function ask(env, body) {
     messages,
     ...(system ? { system } : {}),
   };
-  if (body.search) {
+  if (searchQuery(body, messages)) {
     params.tools = [supportsDynamicSearch(model) ? { type: "web_search_20260209", name: "web_search", max_uses: 3 } : { type: "web_search_20250305", name: "web_search", max_uses: 3 }];
   }
   const fallback = supportsDefaultFallback(model);
@@ -211,7 +277,7 @@ export default {
     if (req.method === "OPTIONS") return new Response(null, { status: origin ? 204 : 403, headers: cors(origin) });
     if (req.method === "GET" && (url.pathname === "/" || url.pathname === "/health")) {
       const free = !env.ANTHROPIC_API_KEY && !!env.AI;
-      return json({ ok: true, name: "kadraj-ai", provider: env.ANTHROPIC_API_KEY ? "claude" : free ? "free" : "none", model: env.ANTHROPIC_API_KEY ? String(env.MODEL || "claude-opus-5-5") : free ? String(env.FREE_MODEL || "@cf/meta/llama-3.3-70b-instruct-fp8-fast") : "", key: !!(env.ANTHROPIC_API_KEY || env.AI), push: !!(env.VAPID_PUBLIC_KEY && env.VAPID_PRIVATE_KEY) }, 200, origin);
+      return json({ ok: true, name: "kadraj-ai", provider: env.ANTHROPIC_API_KEY ? "claude" : free ? "free" : "none", model: env.ANTHROPIC_API_KEY ? String(env.MODEL || "claude-opus-5-5") : free ? String(env.FREE_MODEL || "@cf/meta/llama-3.3-70b-instruct-fp8-fast") : "", key: !!(env.ANTHROPIC_API_KEY || env.AI), push: !!(env.VAPID_PUBLIC_KEY && env.VAPID_PRIVATE_KEY), search: !!(env.ANTHROPIC_API_KEY || env.TAVILY_API_KEY) }, 200, origin);
     }
     // 5.1: Web Push açık anahtarı (tarayıcı aboneliği için applicationServerKey)
     if (req.method === "GET" && url.pathname === "/vapid") {
@@ -266,7 +332,7 @@ export default {
       return json({ error: "bad_request", message: "İstek okunamadı." }, 400, origin);
     }
     try {
-      const r = env.ANTHROPIC_API_KEY ? await ask(env, body || {}) : await askFree(env, body || {});
+      const r = env.ANTHROPIC_API_KEY ? await ask(env, body || {}) : await askFree(env, body || {}, uid);
       return json(r.data, r.status, origin);
     } catch (e) {
       if (e instanceof Anthropic.AuthenticationError) return json({ error: "api_key", message: "API anahtarı geçersiz. Cloudflare'deki ANTHROPIC_API_KEY değerini kontrol et." }, 502, origin);
@@ -281,3 +347,6 @@ export default {
     }
   },
 };
+
+// Testler için (test/search-test.mjs); Worker yalnızca default dışa aktarımı kullanır.
+export { askFree as _askFree, searchQuery as _searchQuery };

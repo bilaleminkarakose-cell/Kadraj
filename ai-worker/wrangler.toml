@@ -18,4 +18,6 @@ ALLOWED_ORIGINS = "https://kadrajsosyalmedya.github.io"
 FIREBASE_PROJECT = "kadraj-6f1e0"
 FREE_MODEL = "@cf/meta/llama-3.3-70b-instruct-fp8-fast"
 PUSH_DAILY_LIMIT = "600"
+SEARCH_DAILY_LIMIT = "20"
+# İnternet araması (5.1.1, isteğe bağlı): TAVILY_API_KEY Cloudflare panelinden Secret olarak eklenir. Buraya YAZMA.
 # Bildirimler (5.1): VAPID_PUBLIC_KEY, VAPID_PRIVATE_KEY (Secret) ve VAPID_SUBJECT Cloudflare panelinden eklenir; değerleri `node vapid-anahtar.mjs` üretir. Buraya YAZMA.
