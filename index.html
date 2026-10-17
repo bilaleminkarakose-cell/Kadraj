@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
 <meta charset="utf-8">
-<meta name="kadraj-version" content="50107">
+<meta name="kadraj-version" content="50108">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,interactive-widget=resizes-content">
 <meta name="theme-color" content="#0C7A63">
 <link rel="manifest" href="manifest.webmanifest">
@@ -2884,6 +2884,15 @@ html.reduce-motion .k51pt,html.reduce-motion .rzchip{transition:none!important}
 .kapi.kapi-rm,.kapi.kapi-rm .kq,.kapi.kapi-rm .kc{animation-name:kapiFade!important;animation-duration:1s!important;animation-delay:0s!important;transform:none!important}
 .kapi.kapi-rm .kc{opacity:1}
 @keyframes kapiFade{0%{opacity:0}20%{opacity:1}80%{opacity:1}100%{opacity:0}}
+.reel .kemb{position:absolute;inset:0;background:#000;z-index:0}
+.reel .kemb iframe{position:absolute;inset:0;width:100%;height:100%;border:0;pointer-events:none;background:#000}
+.reel .kemb.on iframe{pointer-events:auto}
+.reel .kemb .kemb-b{position:absolute;left:14px;top:calc(4.2rem + env(safe-area-inset-top,0px));z-index:2;font:600 .7rem/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;padding:6px 9px;border-radius:999px;background:rgba(0,0,0,.45);color:#fff;pointer-events:none}
+.reel .kemb .kemb-tap{position:absolute;inset:0;z-index:1;display:grid;place-items:center;background:transparent;border:0;color:#fff;cursor:pointer}
+.reel .kemb .kemb-tap span{display:inline-flex;gap:8px;align-items:center;padding:10px 14px;border-radius:999px;background:rgba(0,0,0,.55);font:600 .85rem/1.2 var(--f-body)}
+.reel .kemb.on .kemb-tap{display:none}
+.reel .kemb .kemb-ic{position:absolute;left:50%;top:50%;z-index:2;transform:translate(-50%,-50%);width:64px;height:64px;border-radius:50%;background:rgba(0,0,0,.45);display:grid;place-items:center;opacity:0;transition:opacity .2s;pointer-events:none}
+.reel .kemb .kemb-ic.show{opacity:1}.reel .kemb .kemb-ic .i{width:30px;height:30px}
 /*}@css:511*/
 
 
@@ -2925,7 +2934,7 @@ const vib=ms=>{try{if(settings.haptics===false)return;navigator.vibrate&&navigat
 /* Sürüm: ana.ara.yama (4.1.0). Hata düzeltme ve küçük şeyler → yama artar (4.1.1); büyük güncelleme → ara artar (4.2.0).
    APP_V = ana*10000 + ara*100 + yama (4.1.0 → 40100). Başlıktaki <meta name="kadraj-version"> ile aynı tutulmalı.
    Eski biçim (4.0 → 40) verNorm ile çevrilir. "İki sürüm geride" ara sürüm sayısıyla ölçülür (yamalar engellemez). */
-const APP_V=50107,APP_VER="5.1.7";
+const APP_V=50108,APP_VER="5.1.8";
 const verNorm=x=>{x=Math.max(0,Math.floor(+x||0));return x<1000?Math.floor(x/10)*10000+(x%10)*100:x};
 const verLvl=x=>Math.floor(verNorm(x)/100);
 /* 4.9: fark sürüm adımıyla sayılır (4.9 → 5.0 bir adım); eskisi ana*100+ara farkıydı ve 5.0'ı 91 sürüm ileride sanıyordu */
@@ -5002,6 +5011,7 @@ const APP_GUIDE=`Kadraj bir sosyal uygulamadır (Firebase üzerinde çalışır,
 - 5.1 engelleme: bir profilin üç nokta menüsünden Engelle. Engellenen kişiyle birbirinizin paylaşımlarını, yorumlarını ve mesajlarını görmezsiniz, birbirinizi takip edemez ve arayamazsınız. Ayarlar › Engellenen hesaplar'dan engel kaldırılır. İnsan sohbetlerindeki hazır mesaj çipleri kaldırıldı.
 - 5.1 yönetim: duyurular her ekranın üstünde şerit olarak görünür. Profillerde rozetler: Kurucu, Onaylı, İlk kullanıcı, Destekleyen, Satranç ustası, Klaket yıldızı, Üretken. Kadraj, Claude Opus ve BiloloTR tarafından yapıldı (Ayarlar'daki Yapımcılar satırında yazar); sağ altta küçük saydam sürüm yazısı var.
 - 5.1.2 Rota internette arar: yönetici köprüye ücretsiz Tavily anahtarını eklediyse Rota genel bilgi sorularında (kim, ne zaman, hangi, bugün, haber...) internete bakar ve yanıtın sonunda kaynağın adını yazar; Kadraj ile ilgili sorularda aramaz. Rota'nın yanıtları harf harf gelir.
+- 5.1.8 Bağlantıyla Klaket: yönetici YouTube Shorts, Instagram Reels ve TikTok bağlantılarını (Yönetici › Bağlantıyla Klaket) toplu ekleyebilir. Video indirilmez; Klaket'te o platformun kendi oynatıcısıyla oynar, köşede platformun adı yazar. YouTube kendiliğinden oynar, dokununca durur. Instagram ve TikTok'ta önce ekrana bir kez dokunulur; o videolarda kaydırmak için alttaki yazının ya da sağdaki düğmelerin üstünden kaydırılır. Bazı videolar gömmeye kapalıdır, onlar oynamaz.
 - 5.0 yenilikleri (Kadraj 5.0): Yeni görünüm "Vizör": alttaki yüzen çubukta etkin sekme odak köşeleriyle çerçevelenir, ortadaki deklanşör düğmesi paylaşım menüsünü açar; paylaşımlar numaralı "kare"lerdir; görülmemiş hikâyeler diyafram halkasıyla işaretlenir; eski görünüm Ayarlar > Görünüm > Arayüz'den "Klasik" seçilerek geri gelir.
 - 5.0 arama: sohbet başlığındaki telefon ya da kamera ile. Arama ekranında Mikrofon, Kamera (sesli aramada da açılır), Ekran (bilgisayarda ekran paylaşımı), Tepki ve Diğer (kamerayı çevir, ses çıkışı, gürültü engelleme, Küçült) var. Küçült aramayı yüzen pencereye alır. Gelen aramada "Kamerasız yanıtla" ve "Mesajla yanıtla" var. Ekran paylaşımı ve tepkiler için iki tarafın da 5.0 kullanması gerekir.
 - 5.0 Keşfet araması: ad, @kullanıcı adı, #etiket ya da kelime yazılır; ı/i, ş/s gibi harf farkları önemsizdir. Hepsi, Kişiler, Paylaşımlar, Klaket ve Etiketler süzgeçleri; En yeni / En çok beğenilen sıralaması; son aramalar ve yazarken öneriler. Uygulamadaki her #etikete dokununca o etiketin sayfası açılır.
@@ -10644,6 +10654,60 @@ const renderBase517=render;
 render=function(...a){try{if(S.route.name!=="reels"){const vs=$$("#main .reel video");if(vs.length){vs.forEach(v=>kmsUnload(v,false));kmsIdle()}}}catch{}return renderBase517.apply(this,a)};
 function kmsNoCast(){for(const v of document.querySelectorAll("video:not([disableremoteplayback])")){try{v.disableRemotePlayback=true}catch{}v.setAttribute("disableremoteplayback","")}}
 (()=>{let q=0;const mo=new MutationObserver(()=>{if(q)return;q=requestAnimationFrame(()=>{q=0;kmsNoCast()})});mo.observe(document.documentElement,{childList:true,subtree:true});kmsNoCast()})();
+/* ===== 5.1.8: Bağlantıyla Klaket (YouTube Shorts, Instagram Reels, TikTok) =====
+   Video indirilmez: paylaşımda posts.embed={p:"yt"|"ig"|"tt",id,u}, Klaket'te platformun resmî gömülü oynatıcısı (iframe) açılır.
+   slidesHtml sarıldı (slidesHtmlBase518): embed varsa yer tutucu çizer; iframe yalnızca Klaket açıkken yüklenir (activateReel sarıldı → activateReelBase518),
+   uzaktakiler kaldırılır. YouTube: postMessage ile oynat/durdur/ses (iframe dokunuşa kapalı, kaydırma bozulmaz; dokununca durur/oynar).
+   Instagram ve TikTok'ta denetim yok: ilk dokunuşta oynatıcı dokunuşa açılır (.kemb.on); kaydırmak için alttaki yazı ya da sağdaki düğmeler kullanılır.
+   YouTube kapağı posts.poster'a yazılır (postThumb ızgarada kullanır). Yönetici › Bağlantıyla Klaket: toplu ekleme (ADM_EXTRA "kemb"). */
+const KEMB_RE=[["yt",/(?:youtube\.com\/(?:shorts\/|watch\?(?:[^#]*&)?v=|embed\/|live\/)|youtu\.be\/)([\w-]{11})/i],
+ ["ig",/instagram\.com\/(?:[\w.]+\/)?(?:reels?|p|tv)\/([\w-]{5,40})/i],["tt",/tiktok\.com\/(?:@[\w.-]+\/video|embed(?:\/v2)?|player\/v1)\/(\d{8,25})/i]];
+const KEMB_NAME={yt:"YouTube",ig:"Instagram",tt:"TikTok"};
+function kembParse(u){u=String(u||"").trim();for(const[p,re]of KEMB_RE){const m=u.match(re);if(m)return{p,id:m[1]}}return null}
+function kembSrc(e,auto,mute){const id=encodeURIComponent(e.id);
+ if(e.p==="yt")return`https://www.youtube-nocookie.com/embed/${id}?enablejsapi=1&playsinline=1&loop=1&playlist=${id}&rel=0&modestbranding=1&controls=0&autoplay=${auto?1:0}&mute=${mute?1:0}&origin=${encodeURIComponent(location.origin)}`;
+ if(e.p==="ig")return`https://www.instagram.com/reel/${id}/embed/`;
+ return`https://www.tiktok.com/player/v1/${id}?autoplay=${auto?1:0}&loop=1&music_info=0&description=0&rel=0`}
+function kembHtml(p){const e=p.embed;const n=KEMB_NAME[e.p]||"";return`<div class="kemb" data-kemb="${esc(e.p)}" data-id="${esc(e.id)}"><span class="kemb-b">${esc(n)}</span>${e.p==="yt"?`<span class="kemb-ic">${I("pause")}</span>`:`<button type="button" class="kemb-tap" aria-label="${esc(n)} oynatıcısını aç"><span>${I("play")}Dokun, ${esc(n)} oynatıcısı açılsın</span></button>`}</div>`}
+const slidesHtmlBase518=slidesHtml;
+slidesHtml=function(p){return p&&p.embed&&KEMB_NAME[p.embed.p]&&p.embed.id?kembHtml(p):slidesHtmlBase518(p)};
+function kembCmd(f,func,args){try{f.contentWindow.postMessage(JSON.stringify({event:"command",func,args:args||[]}),"*")}catch{}}
+function kembOn(el){const k=el&&el.querySelector(".kemb");if(!k)return;
+ const reels=$$("#main .reel");const i=reels.indexOf(el);reels.forEach((x,j)=>{if(Math.abs(j-i)>1){const f=x.querySelector(".kemb iframe");if(f){f.remove();x.querySelector(".kemb").classList.remove("on")}}});
+ let f=k.querySelector("iframe");const e={p:k.dataset.kemb,id:k.dataset.id};
+ if(!f){f=document.createElement("iframe");f.allow="autoplay; encrypted-media; picture-in-picture";f.setAttribute("allowfullscreen","");f.referrerPolicy="strict-origin-when-cross-origin";f.title=(KEMB_NAME[e.p]||"")+" videosu";f.src=kembSrc(e,true,!!S.muted);k.insertBefore(f,k.firstChild);k._paused=false}
+ else if(e.p==="yt"){kembCmd(f,S.muted?"mute":"unMute");kembCmd(f,"playVideo");k._paused=false}}
+function kembOff(el){const k=el&&el.querySelector(".kemb");if(!k)return;const f=k.querySelector("iframe");if(!f)return;
+ if(k.dataset.kemb==="yt")kembCmd(f,"pauseVideo");else{f.remove();k.classList.remove("on")}}
+const activateReelBase518=activateReel;
+activateReel=function(el){const r=activateReelBase518.apply(this,arguments);try{kembOn(el)}catch(e){console.warn(e)}return r};
+const deactivateReelBase518=deactivateReel;
+deactivateReel=function(el){try{kembOff(el)}catch{}return deactivateReelBase518.apply(this,arguments)};
+document.addEventListener("click",e=>{const t=e.target;const k=t.closest&&t.closest(".reel .kemb");if(!k)return;
+ if(k.dataset.kemb==="yt"){e.preventDefault();e.stopPropagation();const f=k.querySelector("iframe");if(!f)return kembOn(k.closest(".reel"));
+  k._paused=!k._paused;kembCmd(f,k._paused?"pauseVideo":"playVideo");const ic=k.querySelector(".kemb-ic");if(ic){ic.innerHTML=I(k._paused?"play":"pause");ic.classList.add("show");clearTimeout(ic._t);ic._t=setTimeout(()=>ic.classList.remove("show"),k._paused?99999:600)}return}
+ if(t.closest(".kemb-tap")){e.preventDefault();e.stopPropagation();kembOn(k.closest(".reel"));k.classList.add("on")}},true);
+document.addEventListener("click",e=>{if(!(e.target.closest&&e.target.closest('[data-act="mute"]')))return;setTimeout(()=>{for(const f of $$('#main .reel .kemb[data-kemb="yt"] iframe'))kembCmd(f,S.muted?"mute":"unMute")},0)});
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="hidden"){for(const x of $$("#main .reel"))kembOff(x)}else if(S.route.name==="reels"&&activeReel&&!$$("#overlay .layer").length)kembOn(activeReel)});
+let KEMB_MSG="";
+function kembCount(){return allPosts().filter(p=>p.embed&&p.embed.id).length}
+function kembAdmHtml(){return`<p class="adm5-note" style="margin:0 0 10px">YouTube Shorts, Instagram Reels ya da TikTok bağlantılarını alt alta yapıştır. Videolar indirilmez; Klaket'te platformun kendi oynatıcısıyla oynar, cihazda yer kaplamaz. En iyi YouTube Shorts çalışır (kendiliğinden oynar, kaydırınca durur). Instagram ve TikTok'ta izlemek için bir kez dokunulur. Bazı videoların sahibi gömmeyi kapatmıştır, onlar oynamaz.</p>
+ <div class="field"><label for="kembIn">Bağlantılar (her satıra bir tane, en fazla 100)</label><textarea class="in" id="kembIn" rows="6" spellcheck="false" autocapitalize="off" placeholder="https://youtube.com/shorts/...&#10;https://www.instagram.com/reel/...&#10;https://www.tiktok.com/@ad/video/..."></textarea></div>
+ <div class="field"><label for="kembCap">Açıklama (isteğe bağlı, hepsine eklenir)</label><input class="in" id="kembCap" maxlength="200" placeholder="#komik"></div>
+ <div class="ak5-row"><button class="btn sm" type="button" data-kembadm="add">${I("add")}Klaket olarak ekle</button></div><div class="ak5-st" id="kembSt" style="margin-top:8px">${KEMB_MSG}</div>`}
+document.addEventListener("click",async e=>{const b=e.target.closest&&e.target.closest('[data-kembadm="add"]');if(!b||!S.admin)return;e.preventDefault();if(!guard())return;
+ const say=t=>{KEMB_MSG=t;const st=$("#kembSt");if(st)st.innerHTML=t};const raw=(($("#kembIn")||{}).value||"").split(/[\s,]+/).filter(Boolean);const cap=(($("#kembCap")||{}).value||"").trim().slice(0,200);
+ if(!raw.length)return say("Önce bağlantı yapıştır.");
+ const have=new Set(allPosts().filter(p=>p.embed).map(p=>p.embed.p+":"+p.embed.id));const add=[],bad=[];let dup=0;
+ for(const u of raw.slice(0,100)){const e2=kembParse(u);if(!e2){bad.push(u);continue}const key=e2.p+":"+e2.id;if(have.has(key)){dup++;continue}have.add(key);add.push({...e2,u:u.slice(0,300)})}
+ if(!add.length)return say(`Eklenecek yeni bağlantı yok.${dup?` ${dup} tanesi zaten var.`:""}${bad.length?` ${bad.length} bağlantı tanınmadı.`:""}`);
+ b.disabled=true;let ok=0;const t0=now();
+ for(let i=0;i<add.length;i++){const e2=add[i];const id=rid();say(`Ekleniyor… ${i+1}/${add.length}`);
+  const doc={uid:S.uid,at:t0-i*1000,kind:"reel",caption:cap,embed:e2,music:"none",fx:"none",noKids:0};if(e2.p==="yt")doc.poster=`https://i.ytimg.com/vi/${e2.id}/hqdefault.jpg`;
+  if(await write(()=>DB.set("posts/"+id,doc),{quiet:true})){S.posts={...S.posts,[id]:{id,...doc}};ok++}}
+ b.disabled=false;const inp=$("#kembIn");if(inp&&ok)inp.value="";admLog(`Bağlantıyla ${ok} Klaket eklendi`);scheduleRefresh();
+ say(`<b>${ok}</b> Klaket eklendi.${ok<add.length?` ${add.length-ok} tanesi kaydedilemedi.`:""}${dup?` ${dup} tanesi zaten vardı.`:""}${bad.length?`<br>Tanınmayan: ${bad.slice(0,5).map(x=>esc(x.slice(0,60))).join(", ")}${bad.length>5?"…":""}`:""}`)});
+try{ADM_EXTRA.push({id:"kemb",title:"Bağlantıyla Klaket",desc:"YouTube, Instagram ve TikTok videolarını indirmeden Klaket yap",icon:"link",order:56,count:()=>{const n=kembCount();return{t:String(n),c:n?"on":"dim"}},html:kembAdmHtml})}catch(e){console.warn(e)}
 /*}@js:511*/
 
 
