@@ -2152,7 +2152,7 @@ html.reduce-motion .chess .cmk .chk::after{opacity:.8}
    Üstten kayan dikdörtgen kart: fotoğraf + tür rozeti, "Kadraj · tür · saat" satırı, ad, iki satır önizleme, eylemler, yanıt kutusu.
    Renkler tema değişkenlerinden; Vizör'de köşelerde odak işaretleri ve HUD yazısı. */
 #knStack{position:fixed;left:0;right:0;top:calc(8px + env(safe-area-inset-top,0px));z-index:85;display:flex;flex-direction:column;align-items:center;gap:8px;padding:0 12px;pointer-events:none}
-.kn{--kn-r:16px;position:relative;width:min(460px,100%);pointer-events:auto;background:color-mix(in srgb,var(--surface) 94%,transparent);color:var(--fg);border:1px solid var(--line);border-radius:var(--kn-r);box-shadow:0 18px 40px -16px rgba(0,0,0,.38),0 2px 8px rgba(0,0,0,.08);-webkit-backdrop-filter:blur(18px) saturate(1.3);backdrop-filter:blur(18px) saturate(1.3);overflow:hidden;touch-action:none;-webkit-user-select:none;user-select:none;
+.kn{--kn-r:16px;position:relative;width:min(460px,100%);pointer-events:auto;background:color-mix(in srgb,var(--surface) 98%,transparent);color:var(--fg);border:1px solid var(--line);border-radius:var(--kn-r);box-shadow:0 18px 40px -16px rgba(0,0,0,.38),0 2px 8px rgba(0,0,0,.08);-webkit-backdrop-filter:blur(18px) saturate(1.3);backdrop-filter:blur(18px) saturate(1.3);overflow:hidden;touch-action:none;-webkit-user-select:none;user-select:none;
  transform:translateY(calc(-100% - 24px));opacity:0;transition:transform .42s cubic-bezier(.2,1.25,.35,1),opacity .25s ease}
 .kn.in{transform:none;opacity:1}
 .kn.out{transform:translateY(calc(-100% - 24px))!important;opacity:0!important;transition:transform .26s ease-in,opacity .22s ease-in}
@@ -2200,7 +2200,7 @@ html.reduce-motion .chess .cmk .chk::after{opacity:.8}
 .kn-send svg.i{width:18px;height:18px}
 .kn-send:disabled{opacity:.5}
 .kn-grip{position:absolute;left:50%;bottom:4px;width:34px;height:4px;margin-left:-17px;border-radius:4px;background:color-mix(in srgb,var(--fg) 16%,transparent);pointer-events:none}
-.kn.rp .kn-grip{display:none}
+.kn.rp .kn-grip,.kn-msg .kn-grip{display:none}
 @keyframes knPop{50%{transform:scale(1.35)}}
 @media (max-width:360px){.kn-a button span{font-size:.76rem}.kn-a button svg.i{display:none}}
 /* Vizör: köşe işaretleri, HUD yazısı, daha keskin kart */
@@ -7495,15 +7495,15 @@ function knKill(el,instant,toQueue){if(!el||el._gone)return;el._gone=true;clearT
  if(instant||kbReduce()){el.remove();if(!toQueue){const n=KN.queue.shift();if(n)knCard(n)}return}
  el.classList.add("out");setTimeout(fin,260)}
 function knDismissKey(key){for(const c of[...KN.cards])if(c._o.key===key)knKill(c);KN.queue=KN.queue.filter(q=>q.key!==key)}
-function knWire(el){const o=()=>el._o;let sy=0,sx=0,dy=0,drag=false,pid=null,moved=false;
+function knWire(el){const o=()=>el._o;let sy=0,sx=0,dy=0,drag=false,pid=null,moved=false,inMain=false;
  const main=$(".kn-m",el);
  const open=()=>{const x=o();knKill(el,true);if(typeof x.open==="function")x.open();else if(x.key)openTarget(x.key)};
  main.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();open()}});
- el.addEventListener("pointerdown",e=>{if(e.target.closest("button,input,form"))return;pid=e.pointerId;sy=e.clientY;sx=e.clientX;dy=0;drag=true;moved=false;el._hold=true;clearTimeout(el._t);try{el.setPointerCapture(pid)}catch{}el.style.transition="none"});
+ el.addEventListener("pointerdown",e=>{if(e.target.closest("button,input,form"))return;pid=e.pointerId;inMain=!!e.target.closest(".kn-m");sy=e.clientY;sx=e.clientX;dy=0;drag=true;moved=false;el._hold=true;clearTimeout(el._t);try{el.setPointerCapture(pid)}catch{}el.style.transition="none"});
  el.addEventListener("pointermove",e=>{if(!drag||e.pointerId!==pid)return;dy=e.clientY-sy;const dx=e.clientX-sx;if(Math.abs(dy)>6||Math.abs(dx)>6)moved=true;const y=dy<0?dy:dy*.25;el.style.transform=`translateY(${y}px)`;el.style.opacity=String(Math.max(.25,1+Math.min(0,dy)/140))});
  const end=e=>{if(!drag||(e&&e.pointerId!==pid))return;drag=false;el._hold=false;el.style.transition="";
   if(dy<-36){el.style.transform=`translateY(${Math.min(dy,-60)}px)`;el.style.opacity="0";el._gone=false;knKill(el,false);return}
-  el.style.transform="";el.style.opacity="";if(!moved&&e&&e.type==="pointerup"&&!el._replying&&e.target.closest(".kn-m"))return open();knArm(el,4000)};
+  el.style.transform="";el.style.opacity="";if(!moved&&e&&e.type==="pointerup"&&!el._replying&&inMain)return open();knArm(el,4000)};
  el.addEventListener("pointerup",end);el.addEventListener("pointercancel",end);
  el.addEventListener("focusin",()=>{el._hold=true;clearTimeout(el._t)});el.addEventListener("focusout",()=>{setTimeout(()=>{if(!el.contains(document.activeElement)){el._hold=false;knArm(el,4500)}},0)});
  for(const b of $$("[data-kn]",el))b.onclick=async e=>{e.stopPropagation();const a=b.dataset.kn;const x=o();
@@ -7584,7 +7584,7 @@ vSettings=function(){let h=vSettingsBase51N();try{const nOn=!!settings.notify;
  if(e>=0){const st=KP.status();h=h.slice(0,e)+knTog({id:"setPush",on:st.on,dis:!st.can,ic:"bell",c:"#FF9F0A",t:"Uygulama kapalıyken de bildir",s:esc(st.text),sid:"pushSt",k:"push kapalı uygulama arka plan bildirim"})+
   `<button class="srow" type="button" data-act="kntest" data-k="${esc(kbFold("bildirimi dene deneme ses"))}"><span class="sic" style="--c:#34C759">${I("spark")}</span><span class="t">Bildirimi dene<small>Kadraj bildirim kartı ve sesi</small></span>${I("next","chev")}</button>`+h.slice(e)}
  h=h.replace("Uygulama kapalıyken de haber verir","Kadraj arka plandayken de haber verir")}catch(x){console.warn("kn set",x)}return h};
-HOOKS.after.push(r=>{if(r!=="settings")return;const p=$("#setPush");if(p)p.onchange=async()=>{p.disabled=true;const want=p.checked;const ok=want?await KP.enable():await KP.disable();p.checked=KP.status().on;p.disabled=!KP.status().can;const s=$("#pushSt");if(s)s.textContent=KP.status().text;if(want&&!ok)p.checked=false}});
+HOOKS.after.push(r=>{if(r!=="settings")return;const p=$("#setPush");if(p)p.onchange=async()=>{p.disabled=true;const want=p.checked;const ok=want?await KP.enable():await KP.disable();const q=$("#setPush")||p;const st=KP.status();q.checked=st.on&&!(want&&!ok);q.disabled=!st.can;const s=$("#pushSt");if(s)s.textContent=st.text}});
 ACT.kntest=()=>{knUnlock();const u=BOT["bot:rota"]?"bot:rota":S.uid;knNotify({kind:"msg",uid:u,title:P(u).name,text:"Merhaba! Kadraj bildirimleri böyle görünür. Yukarı kaydırarak kapatabilirsin.",key:"u:"+u,cid:"",at:now(),sys:false,demo:true})};
 /* ---- gönderirken: karşı tarafa uygulama kapalıyken bildirim ---- */
 const sendMessageBase51N=sendMessage;
