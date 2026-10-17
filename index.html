@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
 <meta charset="utf-8">
-<meta name="kadraj-version" content="50200">
+<meta name="kadraj-version" content="50201">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,interactive-widget=resizes-content">
 <meta name="theme-color" content="#0A110F">
 <link rel="manifest" href="manifest.webmanifest">
@@ -2953,7 +2953,7 @@ const vib=ms=>{try{if(settings.haptics===false)return;navigator.vibrate&&navigat
 /* Sürüm: ana.ara.yama (4.1.0). Hata düzeltme ve küçük şeyler → yama artar (4.1.1); büyük güncelleme → ara artar (4.2.0).
    APP_V = ana*10000 + ara*100 + yama (4.1.0 → 40100). Başlıktaki <meta name="kadraj-version"> ile aynı tutulmalı.
    Eski biçim (4.0 → 40) verNorm ile çevrilir. "İki sürüm geride" ara sürüm sayısıyla ölçülür (yamalar engellemez). */
-const APP_V=50200,APP_VER="5.2.0";
+const APP_V=50201,APP_VER="5.2.1";
 const verNorm=x=>{x=Math.max(0,Math.floor(+x||0));return x<1000?Math.floor(x/10)*10000+(x%10)*100:x};
 const verLvl=x=>Math.floor(verNorm(x)/100);
 /* 4.9: fark sürüm adımıyla sayılır (4.9 → 5.0 bir adım); eskisi ana*100+ara farkıydı ve 5.0'ı 91 sürüm ileride sanıyordu */
@@ -10794,7 +10794,12 @@ function mnAfterRender(){const key=mnKey();const box=$("#msgs");if(!key||!box)re
   if(ty.length){const nm=ty.map(u=>u==="bot:rota"?"Rota":P(u).name.split(" ")[0]);const lbl=nm.length===1?nm[0]+" yazıyor":nm.length===2?nm[0]+" ve "+nm[1]+" yazıyor":nm[0]+" ve "+(nm.length-1)+" kişi yazıyor";
    box.insertAdjacentHTML("beforeend",`<div class="mrow mn-ty"><span class="mn-avs">${ty.slice(0,3).map(u=>avatar(u,30,{click:false,ring:false,online:false})).join("")}</span><div class="typing" aria-label="${esc(lbl)}"><i></i><i></i><i></i></div><small>${esc(lbl)}</small></div>`);if(pin)box.scrollTop=box.scrollHeight}}}
 const renderMsgsBase520=renderMsgs;
-renderMsgs=function(...a){const r=renderMsgsBase520.apply(this,a);try{mnAfterRender()}catch(e){console.warn(e)}return r};
+/* 5.2.1: etiket ve "Rota" yazısı çizimden sonra eklendiği için sohbet en alttan kayıyor, sonra düzelirken aşağı yukarı oynuyordu.
+   Çizimden önce en alttaysa (ya da çizim alta sabitlediyse) eklemelerden sonra aynı karede yeniden en alta sabitlenir. */
+renderMsgs=function(...a){const b0=$("#msgs");const was=!!b0&&(b0.scrollHeight-b0.scrollTop-b0.clientHeight<120||b0._pin===true);
+ const r=renderMsgsBase520.apply(this,a);const b=$("#msgs");const h0=b?b.scrollHeight:0;const at=b?b.scrollHeight-b.scrollTop-b.clientHeight<2:false;
+ try{mnAfterRender()}catch(e){console.warn(e)}
+ if(b&&(was||at)&&b.scrollHeight!==h0||b&&at)b.scrollTop=b.scrollHeight;return r};
 /* kaydırarak yanıtla */
 (()=>{let st=null;
  document.addEventListener("pointerdown",e=>{st=null;if(S.route.name!=="chat"||e.button>0)return;const row=e.target.closest&&e.target.closest("#msgs .mrow");if(!row)return;const msg=row.querySelector(".msg[data-mid]");
