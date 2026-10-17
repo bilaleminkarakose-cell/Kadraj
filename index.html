@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
 <meta charset="utf-8">
-<meta name="kadraj-version" content="50106">
+<meta name="kadraj-version" content="50107">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,interactive-widget=resizes-content">
 <meta name="theme-color" content="#0C7A63">
 <link rel="manifest" href="manifest.webmanifest">
@@ -2925,7 +2925,7 @@ const vib=ms=>{try{if(settings.haptics===false)return;navigator.vibrate&&navigat
 /* Sürüm: ana.ara.yama (4.1.0). Hata düzeltme ve küçük şeyler → yama artar (4.1.1); büyük güncelleme → ara artar (4.2.0).
    APP_V = ana*10000 + ara*100 + yama (4.1.0 → 40100). Başlıktaki <meta name="kadraj-version"> ile aynı tutulmalı.
    Eski biçim (4.0 → 40) verNorm ile çevrilir. "İki sürüm geride" ara sürüm sayısıyla ölçülür (yamalar engellemez). */
-const APP_V=50106,APP_VER="5.1.6";
+const APP_V=50107,APP_VER="5.1.7";
 const verNorm=x=>{x=Math.max(0,Math.floor(+x||0));return x<1000?Math.floor(x/10)*10000+(x%10)*100:x};
 const verLvl=x=>Math.floor(verNorm(x)/100);
 /* 4.9: fark sürüm adımıyla sayılır (4.9 → 5.0 bir adım); eskisi ana*100+ara farkıydı ve 5.0'ı 91 sürüm ileride sanıyordu */
@@ -10629,6 +10629,21 @@ vFeed=function(...a){let h=vFeedBase516.apply(this,a);if(typeof h!=="string"||!k
  return h.includes('<div class="stories">')?h.replace('<div class="stories">',kpcHtml()+'<div class="stories">'):kpcHtml()+h};
 ACT.kpcOn=async t=>{if(t)t.disabled=true;const ok=await KP.enable();if(ok){LS.set("kadraj_pushcard_"+S.uid,now());vib(15);toast("Bildirimler açık. Ayarlar › Bildirimler'den kapatabilirsin.");render(false)}else if(t)t.disabled=false};
 ACT.kpcHide=()=>{LS.set("kadraj_pushcard_"+S.uid,now());toast("Tamam. İstersen Ayarlar › Bildirimler'den açarsın.");render(false)};
+/* ===== 5.1.7: Klaket'ten çıkınca medya bildirimi kalmasın, TV'ye yayınla simgesi çıkmasın =====
+   Android, sesi duran ama yüklü kalan videonun oynat/durdur bildirimini gösterir. Klaket sayfasından çıkınca ve uygulama arka plana
+   geçince Klaket ve Kadraj oynatıcı videoları boşaltılır (src kaldırılır); geri dönünce kaldığı yerden yeniden yüklenir.
+   Bütün videolara disableRemotePlayback verilir: Chrome'un video üstündeki "TV'de aç" (yayınla) düğmesi çıkmaz. */
+const KMS_SEL="#main .reel video,.kvp video";
+function kmsIdle(){try{if("mediaSession"in navigator){navigator.mediaSession.metadata=null;navigator.mediaSession.playbackState="none"}}catch{}}
+function kmsUnload(v,keep){try{const src=v.getAttribute("src");if(!src||v.srcObject)return;if(keep){v._kmSrc=src;v._kmT=v.currentTime||0}v.pause();v.removeAttribute("src");v.load()}catch{}}
+function kmsRestore(v){const src=v._kmSrc;if(!src)return false;v._kmSrc=null;const t=v._kmT||0;try{v.setAttribute("src",src);v.load();if(t>0.3)v.addEventListener("loadedmetadata",()=>{try{v.currentTime=Math.min(t,(v.duration||t)-0.1)}catch{}},{once:true})}catch{}return true}
+document.addEventListener("visibilitychange",()=>{
+ if(document.visibilityState==="hidden"){for(const v of $$(KMS_SEL)){v._kmPlay=!!(activeReel&&activeReel._bg&&activeReel.contains(v));kmsUnload(v,true)}kmsIdle();return}
+ for(const v of $$(KMS_SEL)){const play=v._kmPlay;v._kmPlay=false;if(kmsRestore(v)&&play&&S.route.name==="reels"&&activeReel&&activeReel.contains(v)&&!$$("#overlay .layer").length)v.play().catch(()=>{})}});
+const renderBase517=render;
+render=function(...a){try{if(S.route.name!=="reels"){const vs=$$("#main .reel video");if(vs.length){vs.forEach(v=>kmsUnload(v,false));kmsIdle()}}}catch{}return renderBase517.apply(this,a)};
+function kmsNoCast(){for(const v of document.querySelectorAll("video:not([disableremoteplayback])")){try{v.disableRemotePlayback=true}catch{}v.setAttribute("disableremoteplayback","")}}
+(()=>{let q=0;const mo=new MutationObserver(()=>{if(q)return;q=requestAnimationFrame(()=>{q=0;kmsNoCast()})});mo.observe(document.documentElement,{childList:true,subtree:true});kmsNoCast()})();
 /*}@js:511*/
 
 
