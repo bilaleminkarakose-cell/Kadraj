@@ -1,10 +1,14 @@
 /* Kadraj: çevrimdışı açılış, ana ekran desteği, bildirime dokununca uygulamayı açma ve (5.1) uygulama kapalıyken gelen bildirimler (Web Push).
    Her zaman önce internetten en yeni sürümü dener. */
-const C="kadraj-v51";
+const C="kadraj-v52";
 const ICON="icon-192.png",BADGE="badge-96.png";
 self.addEventListener("install",e=>{self.skipWaiting();e.waitUntil(caches.open(C).then(c=>c.addAll(["./","./index.html","./manifest.webmanifest","./icon-192.png","./icon-512.png","./badge-96.png"])).catch(()=>{}))});
 self.addEventListener("activate",e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==C&&k!=="kadraj-open").map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});
 self.addEventListener("fetch",e=>{const r=e.request;if(r.method!=="GET")return;const u=new URL(r.url);if(u.origin!==location.origin)return;
+ /* 5.1.7: sayfa açılışı GitHub'ın 10 dakikalık sunucu önbelleğine (CDN) takılmasın diye benzersiz adresle istenir;
+    yoksa eski sürüm açılıp hemen yeniden yükleniyordu. Çevrimdışıyken önbellekteki index.html açılır. */
+ if(r.mode==="navigate"){const fresh=new URL("./index.html",self.registration.scope);fresh.searchParams.set("_k",Date.now().toString(36));
+  e.respondWith(fetch(fresh.href,{cache:"no-store",credentials:"same-origin"}).then(res=>{if(res&&res.ok){const cp=res.clone();caches.open(C).then(c=>c.put("./index.html",cp)).catch(()=>{});return res}throw new Error("http "+(res&&res.status))}).catch(()=>caches.match("./index.html").then(m=>m||fetch(r))));return}
  e.respondWith(fetch(r,{cache:"no-cache"}).then(res=>{if(res&&res.ok){const cp=res.clone();caches.open(C).then(c=>c.put(r,cp)).catch(()=>{})}return res}).catch(()=>caches.match(r,{ignoreSearch:true}).then(m=>m||caches.match("./index.html"))))});
 const scope=()=>self.registration.scope;
 const mine=c=>c.url.startsWith(scope());
