@@ -7448,7 +7448,7 @@ try{if(S&&S.authed)HOOKS.enter.length&&setTimeout(()=>{if(!CW.root){cwMount();CW
 const CHC={carry:null,rateCw:false,lobby:""};
 const chcOn=()=>!!(CH&&CH.mode==="bot"&&CH.opp==="clawd");
 const chwOn=()=>!!(CH&&CH.mode==="watch"&&CH.wv);
-const chFill=(t,o)=>String(t).replace(/\{(\w+)\}/g,(m,k)=>o&&o[k]!=null?o[k]:m);
+const chFill=(t,o)=>{const s=String(t).replace(/\{(\w+)\}/g,(m,k)=>o&&o[k]!=null?o[k]:m);return /^\{p\}/.test(t)&&s?s[0].toLocaleUpperCase("tr")+s.slice(1):s};
 const chLvClamp=v=>Math.max(0,Math.min(4,(+v)|0));
 Object.assign(REASON,{uzun:"Maç çok uzadı, berabere sayıldı"});
 Object.assign(IP,{chswap:'<path d="M7 4 3 8l4 4M3 8h13M17 12l4 4-4 4M21 16H8"/>'});
@@ -7593,7 +7593,7 @@ const CHW_GEN={
  cap:{c:["{p} benim! Koleksiyona ekledim.","Nom nom, {p}.","Bu {p} artık yan yan yürüyecek."],r:["{p} alındı. Hesap tutuyorum.","Bir {p} eksildi. Senin hanene yazdım.","{p} artık pusulamda."]},
  capd:{c:["Hey! O {p} en sevdiğimdi.","{p}... Seni unutmayacağım. Üç hamle kadar.","Ay! {p} gitti."],r:["{p} gitti. Rotayı yeniden hesaplıyorum.","Hmm, {p} kaybı. Plan B devrede.","O {p} bana lazımdı aslında."]},
  big:{c:["Büyük av: {p}! Kıskaçlarım titriyor.","{p} aldım! Bunu abime anlatacağım.","{p} mi? Bugün şanslı günüm!"],r:["{p} hanemde. Hesaplar değişti.","{p} alındı. Pusula artık benden yana.","{p}. Bunu hiç beklemiyordun, değil mi?"]},
- bigd:{c:["Benim {p}! Hayır! Kabuğuma çekiliyorum.","Olamaz, {p}... Bu bir sistem hatası.","{p} gitti... Biri bana sarılsın."],r:["{p} gitti mi? Bunu hesaplamamıştım.","Ah, {p}. Pusulam bir an şaştı.","{p} kaybı. Sakin ol Rota, sakin."]},
+ bigd:{c:["{p} gitti! Hayır! Kabuğuma çekiliyorum.","Olamaz, {p}... Bu bir sistem hatası.","{p} gitti... Biri bana sarılsın."],r:["{p} gitti mi? Bunu hesaplamamıştım.","Ah, {p}. Pusulam bir an şaştı.","{p} kaybı. Sakin ol Rota, sakin."]},
  chk:{c:["Şah! Tıss!","Şah çekiyorum, kibarca.","Şah! Kıskaçlarım hazır."],r:["Şah. Sıra sende, küçük yengeç.","Şah! Rota hesaplandı.","Şah. Hedefe yaklaşıyoruz."]},
  chkd:{c:["Şah mı? Kabuğuma çekiliyorum!","Ay ay ay, şah!","Tamam tamam, şahımı kaçırıyorum."],r:["Şah mı? Yeni rota oluşturuluyor…","Şahım güvende. Birazdan.","Bunu bekliyordum. Yalan, beklemiyordum."]},
  blun:{c:["Teşekkürler Rota! Hediye mi bu?","Bunu gördüm, piksellerim dans ediyor.","Rota, pusulan mı bozuldu?"],r:["Clawd, bu hamleyi abine sorsaydın keşke.","Teşekkürler, bunu not ettim.","Bu hamleyi hesaplarıma hediye olarak kaydediyorum."]},
