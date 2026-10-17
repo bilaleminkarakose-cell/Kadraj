@@ -2189,6 +2189,9 @@ html.reduce-motion .chess .cmk .chk::after{opacity:.8}
 .cw-scope .cw-g.jg{animation:none;background:none;box-shadow:none;width:calc(var(--cw-u)*7);height:calc(var(--cw-u)*7);font-size:calc(var(--cw-u)*5.5);color:#D97757}
 :root.reduce-motion .cw-room *{animation:none!important;transition:none!important}
 @media (prefers-reduced-motion:reduce){.cw-room *{animation:none!important;transition:none!important}}
+.cw-room .cw-shield{width:calc(var(--cw-u)*24);height:calc(var(--cw-u)*24);margin:calc(var(--cw-u)*-12)}
+.cw-room .cw-shield[data-l="2"]{width:calc(var(--cw-u)*28);height:calc(var(--cw-u)*28);margin:calc(var(--cw-u)*-14)}
+.cw-room .cw-shield[data-l="3"]{width:calc(var(--cw-u)*32);height:calc(var(--cw-u)*32);margin:calc(var(--cw-u)*-16)}
 /*}@css:51CLAWD*/
 
 /*@css:51CHS{*/
@@ -6578,7 +6581,7 @@ try{if(typeof ADM_EXTRA!=="undefined"&&Array.isArray(ADM_EXTRA))ADM_EXTRA.push({
 
 /*@js:50PIKO{*/
 /* ===== 5.0 · Clawd: ekranda yaşayan piksel maskot =====
-   Clawd, Claude'un küçük kardeşi; Kadraj'ın ekranında yaşar, Claude'a "abi" der.
+   Clawd: Kadraj'da yaşayan, kendi karakteri olan oyuncu piksel yaratık (5.1: kimsenin kardeşi değil, "abi" demez).
    - Çizim: 23x18'lik ızgarada SVG <rect> pikselleri (cwPaint → cwSvg, önbellekli), crispEdges. Piksel boyu cihazın
      piksel oranına göre tam sayıya yuvarlanır (CW.U). Pozlar: idle, blink, walk, jump, happy, surprised, talk, sleep,
      cry, dizzy (yıldız + şişlik), type (uçuşan kod), shield, wave, sit, climb, lookup, shrug.
@@ -6586,13 +6589,12 @@ try{if(typeof ADM_EXTRA!=="undefined"&&Array.isArray(ADM_EXTRA))ADM_EXTRA.push({
      Yükseğe çıkmak için kod bloklarından merdiven/basamak yazar (cwStairs, cwLadder), tavanda baş aşağı yürür, aşağı zıplar.
    - Döngü: tek requestAnimationFrame (cwTick); bekleme ve hareketler CW.clock'a bağlı tween'ler (cwTween). Görünmüyorken
      400 ms'de bir yavaş denetim, sekme gizliyken hiç çalışmaz. Etkinlikler async (cwRun); yenisi başlayınca eskisi CW_STOP ile kesilir.
-   - Saklanır: reels, chat, chessgame, edit, admin; arama/mini arama; #overlay'de katman; yazı kutusu odaktayken ya da klavye açıkken.
+   - Saklanır: chat, chessgame, edit, admin (Klaket'te yalnızca köşesinde görünür); arama/mini arama; #overlay'de katman; yazı kutusu odaktayken ya da klavye açıkken.
      Uygulamanın tıklanabilir öğesinin üstündeyse kendisi de tıklanmaz (cwPass, .pt).
-   - Gece (22-05) yatağında uyur; açılışta/dönüşte irkilir, yataktan düşer, başını vurur. Yatak sürüklenirse geri ışınlar.
-   - 3+ hızlı dokunuş ya da sert savurma: kod kalkanı. Menü: Soğuk espri, Bir ipucu, Clawd'a sor, Biraz uyu, Clawd'ı gizle.
-   - Clawd'a sor: önce cihazdaki bilgi tabanı (CW_KB, Türkçe ve harf işaretinden bağımsız). Kadraj sorusu ama emin değilse ve
-     kAI hazırsa kendi kişiliğiyle kAI'ye sorar; genel ya da bilinmeyen soruda "abime sorayım" → üstte abi kartı (cwAbi*).
-     Yanıt provider "free" ise kart Claude adını/işaretini kullanmaz, "ücretsiz model" yazar.
+   - Gece (5.1: 00-07) yatağında uyur; açılışta/dönüşte irkilir, yataktan düşer, başını vurur. Yatak sürüklenirse geri ışınlar.
+   - 3+ hızlı dokunuş ya da sert savurma: kod kalkanı. Menü: Soğuk espri, Bir ipucu, Clawd'a sor, Gitar çal/Dans et, Işık, Biraz uyu, Clawd'ı gizle.
+   - Clawd'a sor: tamamen çevrimdışı bilgi tabanı (CW_KB, Türkçe ve harf işaretinden bağımsız). Bilmiyorsa komik bir dille
+     söyler ve soğuk bir espri anlatır (actDunno). Yapay zekâ köprüsü (kAI) Clawd tarafından kullanılmaz.
    - Ses: WebAudio piksel konuşma sesleri (cwBlip), yalnızca kullanıcı dokunuşundan sonra; Ayarlar > Görünüm > Clawd sesleri.
    - Ayarlar: settings.clawd, settings.clawdSound (varsayılan açık). vSettings sarıldı (vSettingsBaseCW), kbOnFlag sarıldı (kbOnFlagBaseCW).
    - Ayrıca sarıldı: toast (toastBaseCW, zıplar), chOver (chOverBaseCW, kazanınca dans).
@@ -6735,7 +6737,7 @@ const CW_JOKES=[
  "Bilgisayar neden hapşırmış?|Bir virüs kapmış ama güvenlik duvarı ateşini düşürmüş.",
  "Pil neden partide en son ayrılır?|Enerjisi hiç bitmiyor. Şarj aletini de getirmiş.",
  "Bildirim neden hep heyecanlı?|Her haberi ilk o duyuyor."];
-const CW_JOKE_TAIL=["Ba-dum-tıss!","Soğuk oldu, biliyorum. Hırkanı al.","Gülmedin mi? Kodum gülüyor ama.","Bu espri sıfır derece. Tam kıvamında.","Abim bunu duysa gurur duyardı. Ya da utanırdı.","Gitarla çalsam daha komik olurdu. Belki."];
+const CW_JOKE_TAIL=["Ba-dum-tıss!","Soğuk oldu, biliyorum. Hırkanı al.","Gülmedin mi? Kodum gülüyor ama.","Bu espri sıfır derece. Tam kıvamında.","Bunu duyan piksel bile donar. Ben dondum.","Gitarla çalsam daha komik olurdu. Belki."];
 const CW_TIPS=[
  "Ortadaki + ile fotoğraf, Klaket, hikâye, not, anket ya da çizim paylaşabilirsin.",
  "Mesaja basılı tut: 6 tepki, yanıtla, ilet, düzenle, sil. Hepsi orada.",
@@ -6774,7 +6776,7 @@ const CW_ROUTE={
  chess:["Satranç mı? Ben piyonum ama hayallerim vezir.","Rota'yı yenersen zafer dansı yaparım, söz!"],
  activity:["Bildirimler! Kim ne beğenmiş, bakalım.","Beğeniler yağıyor. Şemsiyeni al."],
  settings:["Ayarlarla oynuyoruz ha? Beni kapatma sakın.","Görünüm bölümünde benim de bir anahtarım var. Dokunma, gıdıklanırım."],
- chats:["Sohbetler burada. Ben de Claude abiyle hep sohbet ederim.","Meydan'a bir selam bırak, herkes görsün."],
+ chats:["Sohbetler burada. Ben de çekmecemdeki lastik ördekle hep sohbet ederim.","Meydan'a bir selam bırak, herkes görsün."],
  invite:["Arkadaşlarını çağır! Daha çok kişi, daha çok espri dinleyicisi.","Davet bağlantısını gönder, ben de kapıda karşılarım."],
  feed:["Akış'a döndük. Burası benim mahallem.","Yeni kareler var mı? Bakalım bakalım."]};
 const CW_HIT=["Kalkan.exe devrede!","Kalkan v2.0 yüklendi! Şimdi daha kalın.","Maksimum kalkan! Güvenlik duvarı benim."];
@@ -6785,8 +6787,8 @@ const CW_BEDLINE=["Yatağımı geri ışınladım. Ctrl+Z hayat kurtarır!","Yat
 const CW_KB=[
  {t:"me",k:["selam","merhaba","hey","selamlar","naber","gunaydin","iyi aksamlar"],a:"Selam @! Ben Clawd. Bir şey sor, bir espri iste ya da sadece takıl."},
  {t:"me",k:["nasilsin","iyi misin","keyfin nasil","ne haber"],a:"Harikayım! Piksellerim yerinde, kodum derli toplu. Sen nasılsın @?"},
- {t:"me",k:["kimsin","adin ne","sen kimsin","ismin ne","clawd kim","clawd nedir"],a:"Ben Clawd! Claude'un küçük kardeşiyim, Kadraj'da kendi küçük odamda yaşıyorum. Yatağım, çekmecem, bir de ampulüm var."},
- {t:"me",k:["abin","abi kim","claude kim","claude kimdir","kardes"],a:"Abim Claude! Çok şey bilir. Ben daha çok soğuk espri, sabah gitarı ve merdiven yazma işindeyim."},
+ {t:"me",k:["kimsin","adin ne","sen kimsin","ismin ne","clawd kim","clawd nedir"],a:"Ben Clawd! Kadraj'da yaşayan turuncu, piksel bir yaratığım. Kendi küçük odam var: yatağım, çekmecem, bir de ampulüm. Espri, gitar ve dans benden sorulur."},
+ {t:"me",k:["ailen","kardesin","nereden geldin","nasil dogdun","kim yapti"],a:"Kadraj'ın kodunda, bir noktalı virgülün yanında doğdum. Ailem mi? Piksellerim, gitarım ve çekmecemdeki lastik ördek."},
  {t:"me",k:["kac yasinda","yasin kac","yasin"],a:"Piksel yaşıyla 23 genişliğindeyim. Gerçek yaşım mı? Kadraj 5.0 kadar."},
  {t:"me",k:["nerede yasiyorsun","evin","nerede oturuyorsun","odan","oda"],a:"Akış'ta hikâyelerin yanında, Keşfet'te Satranç kartının altında, Sohbet'te notların yanında, profilde de adının yanında küçük bir odam var. Sığmazsam ekranda gezerim."},
  {t:"me",k:["gitar","muzik caliyor","riff"],a:"Sabahları elektro gitar çalarım! Clawd sesleri açıksa küçük bir retro riff de duyarsın. Komşular şikâyetçi ama olsun."},
@@ -7174,7 +7176,7 @@ function cwTap(){const t=now();CW.lastInput=t;CW.taps=CW.taps.filter(x=>t-x<1200
  clearTimeout(CW.tapT);CW.tapT=setTimeout(()=>{if(CW.taps.length&&CW.taps.length<3)cwSingleTap()},Math.max(20,330/CW.speed))}
 function cwFling(dir){const t=now();CW.lastHit=t;CW.taps=[];clearTimeout(CW.tapT);cwMenuClose();CW.shieldLvl=Math.min(3,CW.shieldLvl+1);cwRun(actShield.bind(null,dir),{pri:6,name:"shield"})}
 function cwSingleTap(){if(CW.leaving)return;if(CW.menu){cwMenuClose();return}if(CW.ask){cwAskClose();return}
- if(CW.inBed||CW.act==="nap"){cwRun(async()=>{CW.zz=false;CW.pose="sleepy";await cwSay(cwPick(["Hıı? Uyuyordum... Ne oldu?","Zzz... Ha? Buradayım, buradayım!","Rüyamda abimle satranç oynuyordum. Ne vardı?"]),{hold:600});cwMenu()},{pri:5,name:"wake"});return}
+ if(CW.inBed||CW.act==="nap"){cwRun(async()=>{CW.zz=false;CW.pose="sleepy";await cwSay(cwPick(["Hıı? Uyuyordum... Ne oldu?","Zzz... Ha? Buradayım, buradayım!","Rüyamda lastik ördeğimle satranç oynuyordum. Ne vardı?"]),{hold:600});cwMenu()},{pri:5,name:"wake"});return}
  cwCancel();CW.pose="idle";CW.lookX=0;cwMenu()}
 
 /* --- menü ve soru kutusu --- */
@@ -7264,7 +7266,7 @@ async function actArrive(){const b=cwB();const p=cwPeriod();CW.arrived=true;
  else if(CW.room&&!cwReduce()){CW.inBed=false;CW.surf="floor";CW.y=b.B;CW.pose="surprised";await cwHop(CW.x,b.B,10,300)}
  CW.pose="wave";await cwWait(300);
  if(last&&now()-last>3*86400e3){CW.pose="joy";await cwSay("Özledim seni!",{hold:900})}
- if(first){LS.set(introK,true);await cwSay("Merhaba! Ben Clawd, Claude'un küçük kardeşiyim. Artık Kadraj'ın ekranında yaşıyorum.",{hold:1600})}
+ if(first){LS.set(introK,true);await cwSay("Merhaba! Ben Clawd. Kadraj'da yaşayan piksel bir yaratığım, artık burada küçük bir odam var.",{hold:1600})}
  CW.pose="wave";await cwSay(cwPick(CW_GREET[p]),{hold:2200});
  if(first){CW.pose="idle";await cwSay("Bana dokunursan espri yaparım, soru sorarsan cevaplarım. Bilmediğimi itiraf ederim, sonra soğuk bir espri patlatırım!",{hold:2200})}
  CW.lastSay=now();CW.pose="idle"}
@@ -7274,7 +7276,7 @@ async function actLeave(){CW.leaving=true;try{CW.zz=false;if(CW.inBed){CW.inBed=
  if(CW.surf!=="floor"){CW.surf="floor";CW.flip=false;CW.rot=0;CW.y=cwB().B}
  CW.pose="cry";CW.tears=true;await cwThink(`${CW_BHEART}<span>neden?..</span>`,2600);
  await cwSay(cwPick(["Peki... Gidiyorum. Ayarlar'dan beni geri çağırabilirsin.","Anladım... Biraz kenarda ağlayacağım. Ayarlar'da beklerim."]),{hold:1300});
- if(!cwReduce()){const b=cwB();const side=CW.x<(b.L+b.R)/2?-1:1;await cwWalk(side<0?b.L-CW.W*.7:b.R+CW.W*.7,26,"crywalk")}
+ if(!cwReduce()){const b=cwB();const side=CW.x<(b.L+b.R)/2?-1:1;await cwWalk(side<0?b.L-CW.W*.7:b.R+CW.W*.7,CW.room?60:26,"crywalk")}
  else{CW.root.classList.add("off");await cwWait(400)}}
  finally{CW.tears=false;CW.leaving=false;CW.pose="idle";CW.x=-1;CW.root.classList.add("off");CW.vis=false}}
 async function actRoute(r,p){const k=r==="profile"?(p&&p.uid===S.uid?"profile_me":"profile"):r;const l=CW_ROUTE[k];
@@ -7282,7 +7284,7 @@ async function actRoute(r,p){const k=r==="profile"?(p&&p.uid===S.uid?"profile_me
  CW.lastWave=now();CW.pose="wave";await cwWait(400);CW.pose="idle";await cwSay(cwPick(l))}
 async function actRouteOld(r,p){if(!cwMaySay())return;const k=r==="profile"?(p&&p.uid===S.uid?"profile_me":"profile"):r;const l=CW_ROUTE[k];if(!l)return;CW.pose="idle";await cwSay(cwPick(l))}
 async function actToast(){CW.pose="surprised";await cwHop(CW.x,cwB().B,16,300);CW.pose="idle";await cwWait(400)}
-async function actWin(){CW.pendWin=false;CW.pose="joy";await cwSay("Şah mat! Zafer dansı başlıyor!",{hold:400});await actDance();CW.pose="happy";await cwSay("Abim bunu duyunca çok gururlanacak!",{hold:1400})}
+async function actWin(){CW.pendWin=false;CW.pose="joy";await cwSay("Şah mat! Zafer dansı başlıyor!",{hold:400});await actDance();CW.pose="happy";await cwSay("Bu zaferi gitarla kutlamak lazım!",{hold:1400})}
 
 /* --- beyin --- */
 function cwBrain(){if(CW.busy||CW.menu||CW.ask||CW.drag||CW.clock<CW.nextAt)return;
@@ -7310,7 +7312,7 @@ function cwMatch(q){const fq=" "+cwFold(q)+" ";const toks=fq.trim().split(" ").f
  const topic=toks.some(t=>CW_TOPIC.some(w=>t===w||(w.length>=4&&t.startsWith(w))));
  const conf=!!best&&best.sc>=2&&(best.sc-b2>=1||best.sc>=4);
  return{e:best&&best.e,sc:best?best.sc:0,conf,topic:topic||!!(best&&best.e.t!=="me"&&best.sc>=2)}}
-/* 5.1: "abime sorayım" ve üstteki abi kartı tamamen kaldırıldı. Clawd çevrimdışıdır: bilmediğini dürüstçe ve komik bir dille
+/* 5.1: eski yapay zekâya sorma özelliği ve üstteki kart tamamen kaldırıldı. Clawd çevrimdışıdır: bilmediğini dürüstçe ve komik bir dille
    söyler, ardından soğuk bir espri anlatır (actDunno). */
 const CW_DUNNO=["Bunu bilmiyorum. Piksellerim yetmedi.","Hmm... Bu soru benim 23 pikselime sığmadı.","Bilmiyorum! Ama bilmediğimi bilmek de bir bilgidir, değil mi?",
  "Bu konuda bellek taşması yaşadım. Yani bilmiyorum.","Kodlarıma baktım, yok. Çekmeceme baktım, bir çorap çıktı. Bilmiyorum.","Bunu bilseydim gitarımla şarkısını yapardım. Bilmiyorum.",
@@ -7363,7 +7365,7 @@ kbOnFlag=function(f,v){kbOnFlagBaseCW(f,v);try{if(f==="clawd"){if(v)cwEnable();e
 const vSettingsBaseCW=vSettings;
 vSettings=function(){let h=vSettingsBaseCW();try{const i=h.indexOf('data-sec="gorunum"');const end=i<0?-1:h.indexOf("</div></section>",i);
  if(end>=0){const kw=s=>esc(kbFold(s));const row=(f,on,ic,c,t,s,k)=>`<label class="srow" data-k="${kw(t+" "+s+" "+k)}"><span class="sic" style="--c:${c}">${I(ic)}</span><span class="t">${t}<small>${s}</small></span><span class="sw"><input type="checkbox" data-set="${f}" ${on?"checked":""} aria-label="${esc(t)}"><span></span></span></label>`;
-  const rows=row("clawd",cwOn(),"clawd","#D97757","Clawd","Ekranda yaşayan piksel arkadaşın. Kapatırsan biraz alınır.","maskot piksel karakter claude kardeş gizle göster espri")+row("clawdSound",settings.clawdSound!==false,"vol","#D97757","Clawd sesleri","Konuşurken çıkan küçük retro bip sesleri","ses bip maskot clawd");
+  const rows=row("clawd",cwOn(),"clawd","#D97757","Clawd","Ekranda yaşayan piksel arkadaşın. Kapatırsan biraz alınır.","maskot piksel karakter oda gitar gizle göster espri")+row("clawdSound",settings.clawdSound!==false,"vol","#D97757","Clawd sesleri","Konuşurken çıkan küçük retro bip sesleri","ses bip maskot clawd");
   h=h.slice(0,end)+rows+h.slice(end)}}catch(e){console.warn("clawd",e)}return h};
 
 /* --- test ve hata ayıklama --- */
@@ -7420,7 +7422,7 @@ const CWR={RH:26,FL:23,MINW:68,MAXW:112,UMIN:2.4};
 const cwRect=el=>el.getBoundingClientRect();
 function cwTextRight(el){try{const r=document.createRange();r.selectNodeContents(el);let m=-1e9;for(const x of r.getClientRects())if(x.width>0)m=Math.max(m,x.right);return m>-1e9?m:cwRect(el).left}catch{return cwRect(el).right}}
 function cwDp(v){const d=window.devicePixelRatio||1;return Math.round(v*d)/d}
-function cwDpF(v){const d=Math.max(2,window.devicePixelRatio||1);return Math.floor(v*d+1e-6)/d}
+function cwDpF(v){const r=window.devicePixelRatio||1,d=r>=1.5?r:2;return Math.floor(v*d+1e-6)/d}
 function cwPix(rows,pal,cls){let r="";const H=rows.length,W=Math.max(...rows.map(x=>x.length));
  rows.forEach((row,y)=>{let x=0;while(x<row.length){const c=row[x];if(c==="."||c===" "||!pal[c]){x++;continue}let e=x+1;while(e<row.length&&row[e]===c)e++;r+=`<rect x="${x}" y="${y}" width="${e-x}" height="1" fill="${pal[c]}"/>`;x=e}});
  return`<svg${cls?` class="${cls}"`:""} viewBox="0 0 ${W} ${H}" shape-rendering="crispEdges" aria-hidden="true">${r}</svg>`}
@@ -7428,7 +7430,7 @@ const CW_NOTE=cwPix(["..##","..#.","..#.","..#.","###.","###."],{"#":"currentCol
 const CW_ITEMS=[
  {k:"sock",t:"Kayıp çorabım! Teki hâlâ kayıp ama.",s:cwPix(["..wwww..","..rrrr..","..wwww..","..rrrr..","..wwwww.","..wwwwww","...wwwww"],{w:"#F4F1EA",r:"#E5484D"})},
  {k:"duck",t:"Lastik ördeğim! Hata ayıklarken ona anlatırım, hep sabırla dinler.",s:cwPix(["...yyy..","..yykyy.","..yyyyoo","y..yyy..","yyyyyyy.","yyyyyyy.",".yyyyy.."],{y:"#FFD43B",k:"#171310",o:"#F08C2B"})},
- {k:"floppy",t:"Disket! Abim bunu müzede görmüş.",s:cwPix(["bbbbbbb.","bbsssbbb","bbsssbbb","bbbbbbbb","bwwwwwwb","bwkkkkwb","bwwwwwwb","bbbbbbbb"],{b:"#3E6FD8",s:"#C9CED6",w:"#F4F1EA",k:"#8A93A3"})},
+ {k:"floppy",t:"Disket! Müzeden kaçırmadım, söz.",s:cwPix(["bbbbbbb.","bbsssbbb","bbsssbbb","bbbbbbbb","bwwwwwwb","bwkkkkwb","bwwwwwwb","bbbbbbbb"],{b:"#3E6FD8",s:"#C9CED6",w:"#F4F1EA",k:"#8A93A3"})},
  {k:"heart",t:"Yedek kalp. Beğeni gelmezse diye saklıyorum.",s:cwPix([".rr.rr.","rrrrrrr","rwrrrrr","rrrrrrr",".rrrrr.","..rrr..","...r..."],{r:"#E5484D",w:"#FF9A9D"})},
  {k:"semi",t:"Yedek noktalı virgül. Kod yazarken hep lazım olur;",s:cwPix(["...oo...","...oo...","........","...oo...","...oo...","....o...","...o...."],{o:"#D97757"})},
  {k:"cookie",t:"Kurabiye! Tarayıcı çerezi değil, gerçek olanı. Kabul et düğmesi de yok.",s:cwPix(["..cccc..",".ccdccc.","cccccdcc","ccdccccc","cccccdcc",".cdcccc.","..cccc.."],{c:"#C98B4A",d:"#5A3720"})}];
