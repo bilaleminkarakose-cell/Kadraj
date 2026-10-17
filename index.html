@@ -2202,7 +2202,11 @@ html[data-mode="dark"] .cwtag{color:#f2a184}
 .cbub.up{top:auto;bottom:calc(100% - 2px);transform-origin:20px 100%;transform:translateY(4px) scale(.96)}
 .cbub.up.show{transform:none}
 .cbub.up::before{top:auto;bottom:-7px;border-left:0;border-top:0;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+.chwend{gap:4px;padding:14px 14px 10px}
 .chwend .ct.face{background:none;width:auto;height:auto}
+.chwend .cbtns{gap:4px;margin-top:4px}
+.chw-b2{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.chw-b2 .btn{padding-left:6px;padding-right:6px}
 .chw-sco{display:flex;align-items:center;gap:10px;margin-top:4px;font-weight:700;font-size:.86rem}
 .chw-sco b{font:600 1.5rem/1 var(--f-display)}
 .chw-sd{color:var(--muted);font-size:.76rem}
@@ -7447,6 +7451,7 @@ const chwOn=()=>!!(CH&&CH.mode==="watch"&&CH.wv);
 const chFill=(t,o)=>String(t).replace(/\{(\w+)\}/g,(m,k)=>o&&o[k]!=null?o[k]:m);
 const chLvClamp=v=>Math.max(0,Math.min(4,(+v)|0));
 Object.assign(REASON,{uzun:"Maç çok uzadı, berabere sayıldı"});
+Object.assign(IP,{chswap:'<path d="M7 4 3 8l4 4M3 8h13M17 12l4 4-4 4M21 16H8"/>'});
 
 /* --- Clawd'un yüzü: iki kare, CSS ile değişir --- */
 function chcSpec(mood,state,fr){const s={eyes:"open",mouth:"",arms:"down",legs:"stand",lx:0,blush:false,bump:false,brow:""};
@@ -7634,13 +7639,13 @@ function chwLine(key,who,p){const sc=CHW_SC[CH.wv.si]||CHW_SC[0];const a=((sc.ev
 function chwStart(){const lc=chLvClamp(settings.chwC??1),lr=chLvClamp(settings.chwR??1);const N=CHW_SC.length;
  let si=Math.floor(Math.random()*N);const last=LS.get("kadraj_chw_last");if(si===last)si=(si+1)%N;LS.set("kadraj_chw_last",si);
  if(CH&&CH.mode==="watch")clearTimeout(CH._bt);
- chNew("watch",{my:0});CH.wv={cw:settings.chwSwap?8:0,lc,lr,si,bub:{},mood:{c:"",r:""},talk:{c:0,r:0},think:"",paused:false,ply:0,lastSay:-9,talking:0,idleAt:6+Math.floor(Math.random()*5),usedIdle:[],done:false,running:false};
+ chNew("watch",{my:0});CH.wv={cw:settings.chwSwap?8:0,lc,lr,si,bub:{},mood:{c:"",r:""},talk:{c:0,r:0},think:"",paused:false,ply:0,lastSay:-9,dlg:null,dlgN:0,rpN:0,idleAt:6+Math.floor(Math.random()*5),usedIdle:[],done:false,running:false};
  CH.flip=CH.wv.cw===8;const ov=$("#cOv");if(ov&&S.route.name==="chessgame"){ov.classList.remove("on");ov.innerHTML=""}
  chOpen();const tok=CH;setTimeout(()=>chwRun(tok),450)}
 /* bekleme kapısı: duraklatıldıysa, geçmişe bakılıyorsa, sayfa/sekme açık değilse bekle */
 async function chwGate(tok,end){while(CH===tok&&((!end&&(CH.wv.paused||CH.view!=null))||S.route.name!=="chessgame"||document.hidden))await sleep(200);return CH===tok}
 async function chwRun(tok){if(CH!==tok||!chwOn())return;const W=CH.wv;if(W.running||W.done)return;W.running=true;
- try{if(!W.pre){W.pre=1;const sc=CHW_SC[W.si]||CHW_SC[0];await chwDialog(tok,pick(sc.pre),{noLastWait:true})}
+ try{if(!W.pre){W.pre=1;const sc=CHW_SC[W.si]||CHW_SC[0];await chwDialog(tok,pick(sc.pre),{noLastWait:true,pri:2})}
   while(CH===tok&&!CH.over){if(!(await chwGate(tok)))return;if(CH.over)break;
    if(W.ply>=300){CH.over={over:true,result:"1/2",reason:"uzun"};break}
    const side=CH.g.turn,who=side===W.cw?"c":"r";const L=who==="c"?(CHC_LV[W.lc]||CHC_LV[1]):(CLEVELS[W.lr]||CLEVELS[1]);
@@ -7663,17 +7668,19 @@ function chwSay(who,t,ms){if(!chwOn()||!t)return;const W=CH.wv,tok=CH;const dur=
  clearTimeout(W["bt"+who]);W["bt"+who]=setTimeout(()=>{if(CH!==tok)return;const e2=$(`[data-wvb="${who}"]`);if(e2&&(!W.bub[who]||W.bub[who].until<=Date.now()+50))e2.classList.remove("show")},dur)}
 function chwFace(who){if(!chwOn())return;const W=CH.wv;if(who==="c"){const el=$('[data-cwav="c"]');if(!el)return;const st=W.think==="c"?"think":W.talk.c>Date.now()?"talk":"idle";el.className=`cbotav cwav ${W.mood.c||""}`;el.innerHTML=chcFace(46,W.mood.c,st)}
  else{const el=$("[data-rav]");if(!el)return;el.classList.remove("happy","sad","surp","talk");if(W.mood.r)el.classList.add(W.mood.r);if(W.talk.r>Date.now()){void el.offsetWidth;el.classList.add("talk")}}}
-async function chwDialog(tok,lines,o={}){if(!chwOn()||!lines||!lines.length)return;const W=CH.wv;W.talking++;
- try{for(let i=0;i<lines.length;i++){if(!(await chwGate(tok,o.end)))return;const[who,t]=chwParse(lines[i]);chwSay(who,t);W.lastSay=W.ply;if(i<lines.length-1||!o.noLastWait)await sleep(chwGap(t))}}
- finally{if(CH===tok)W.talking--}}
-function chwReply(tok,who,t,whoB,tB){chwSay(who,t);CH.wv.lastSay=CH.wv.ply;if(!tB)return;setTimeout(async()=>{if(!(await chwGate(tok)))return;chwSay(whoB,tB);if(chwOn())CH.wv.lastSay=CH.wv.ply},chwGap(t)*.85)}
+/* konuşma: pri 2 (maç önü/sonu) kesilmez; pri 1 (ara sohbet) bir olay olunca yarıda kalır */
+async function chwDialog(tok,lines,o={}){if(!chwOn()||!lines||!lines.length)return;const W=CH.wv;const id=++W.dlgN;W.dlg={id,pri:o.pri||1};const mine=()=>CH===tok&&W.dlg&&W.dlg.id===id;
+ try{for(let i=0;i<lines.length;i++){if(!(await chwGate(tok,o.end))||!mine())return;const[who,t]=chwParse(lines[i]);chwSay(who,t);W.lastSay=W.ply;if(i<lines.length-1||!o.noLastWait)await sleep(chwGap(t))}}
+ finally{if(CH===tok&&W.dlg&&W.dlg.id===id)W.dlg=null}}
+function chwReply(tok,who,t,whoB,tB){const W=CH.wv;if(W.dlg&&W.dlg.pri<2)W.dlg=null;chwSay(who,t);W.lastSay=W.ply;if(!tB)return;const k=++W.rpN;
+ setTimeout(async()=>{if(!(await chwGate(tok))||W.rpN!==k||W.dlg)return;chwSay(whoB,tB);W.lastSay=W.ply},chwGap(t)*.85)}
 function chwReact(tok,m,st,who,side,before,r){const W=CH.wv,op=who==="c"?"r":"c";
  /* ruh hâli: değerlendirme Clawd'un gözünden */
  const cv=W.cw===0?CH.eval:-CH.eval;const mate=Math.abs(cv)>CC.MATE-1000;
  W.mood.c=mate?(cv>0?"happy":"sad"):cv>260?"happy":cv<-260?"sad":"";W.mood.r=mate?(cv>0?"sad":"happy"):cv>260?"sad":cv<-260?"happy":"";
  if(st.check&&!st.over)W.mood[op]="surp";
  if(st.over)return;
- const pn=m.c?PNAME[m.c&7]:"";const mvB=side===0?before:-before,mvA=r.score;const busy=W.talking>0;const quiet=W.ply-W.lastSay<2;
+ const pn=m.c?PNAME[m.c&7]:"";const mvB=side===0?before:-before,mvA=r.score;const busy=!!(W.dlg&&W.dlg.pri>=2);const quiet=W.ply-W.lastSay<2;
  if(m.c&&(m.c&7)>=4){if(!busy)chwReply(tok,who,chwLine("big",who,pn),op,chwLine("bigd",op,pn));return}
  if(W.ply>4&&Math.abs(mvB)<CC.MATE-1000&&Math.abs(mvA)<CC.MATE-1000&&mvA-mvB>280){if(!busy){chwReply(tok,who,chwLine("blun",who),op,chwLine("oops",op))}return}
  if(st.check){if(!busy&&Math.random()<.7)chwReply(tok,who,chwLine("chk",who),op,Math.random()<.55?chwLine("chkd",op):"");return}
@@ -7681,22 +7688,22 @@ function chwReact(tok,m,st,who,side,before,r){const W=CH.wv,op=who==="c"?"r":"c"
  if(busy||quiet)return;
  if(m.fl&2){if(Math.random()<.55)chwReply(tok,who,chwLine("castle",who));return}
  if(m.c){if(Math.random()<.45)chwReply(tok,who,chwLine("cap",who,pn),op,Math.random()<.5?chwLine("capd",op,pn):"");return}
- if(W.ply>=W.idleAt){const sc=CHW_SC[W.si]||CHW_SC[0];const left=sc.idle.map((_,i)=>i).filter(i=>!W.usedIdle.includes(i));if(left.length){const i=pick(left);W.usedIdle.push(i);chwDialog(tok,sc.idle[i])}W.idleAt=W.ply+9+Math.floor(Math.random()*6)}}
+ if(W.ply>=W.idleAt&&!W.dlg){const sc=CHW_SC[W.si]||CHW_SC[0];const left=sc.idle.map((_,i)=>i).filter(i=>!W.usedIdle.includes(i));if(left.length){const i=pick(left);W.usedIdle.push(i);chwDialog(tok,sc.idle[i])}W.idleAt=W.ply+9+Math.floor(Math.random()*6)}}
 async function chwEnd(){if(!chwOn())return;const W=CH.wv,tok=CH;if(W.done)return;W.done=true;CH.thinking=false;W.think="";W.paused=false;
  const o=CH.over;const res=o.result;const cWin=res!=="1/2"&&((res==="1-0")===(W.cw===0));const draw=res==="1/2";
- const s=chwScore();if(draw)s.d++;else if(cWin)s.c++;else s.r++;LS.set(chwKey(),s);
+ const s=chwScore();if(draw)s.d++;else if(cWin)s.c++;else s.r++;LS.set(chwKey(),s);try{renderTop()}catch{}
  W.mood.c=draw?"":cWin?"happy":"sad";W.mood.r=draw?"":cWin?"sad":"happy";
  CSND.play("end");if(o.reason==="mat")chShake();chMarks();chUI();
  if(!draw)setTimeout(()=>{if(CH===tok)confetti()},300);
  const sc=CHW_SC[W.si]||CHW_SC[0];await sleep(500);if(CH!==tok)return;
- await chwDialog(tok,pick(sc.post[draw?"d":cWin?"c":"r"]),{end:true});if(CH!==tok)return;
+ await chwDialog(tok,pick(sc.post[draw?"d":cWin?"c":"r"]),{end:true,pri:2});if(CH!==tok)return;
  await sleep(900);if(CH!==tok||S.route.name!=="chessgame")return;chwCard()}
 function chwCard(){const ov=$("#cOv");if(!ov||!chwOn()||!CH.over)return;const W=CH.wv,o=CH.over,res=o.result;const cWin=res!=="1/2"&&((res==="1-0")===(W.cw===0));const draw=res==="1/2";const s=chwScore();
  const title=draw?"Berabere!":cWin?"Clawd kazandı!":"Rota kazandı!";
  const face=draw?I("knight"):cWin?`<span class="cwav lg">${chcFace(46,"happy","idle")}</span>`:`<span class="cbotav happy">${botFace(52)}</span>`;
  ov.innerHTML=`<div class="cend chwend"><div class="ct ${draw?"":"face"}">${face}</div><b>${title}</b><span>${esc(REASON[o.reason]||o.reason||"")} · ${Math.ceil(CH.moves.length/2)} hamle</span>
  <div class="chw-sco" aria-label="Skor"><span>Clawd</span><b>${s.c} – ${s.r}</b><span>Rota</span></div><small class="chw-sd">${s.d} berabere · ${esc((CHW_SC[W.si]||CHW_SC[0]).t)}</small>
- <div class="cbtns"><button class="btn" data-chs="wvrestart">${I("rotate")}Rövanş</button><button class="btn sec" data-chs="wvswap">${I("flip")}Renkleri değiştir</button><button class="btn ghost" data-chs="review">Tahtaya bak</button></div></div>`;ov.classList.add("on")}
+ <div class="cbtns"><div class="chw-b2"><button class="btn" data-chs="wvrestart">${I("rotate")}Rövanş</button><button class="btn sec" data-chs="wvswap">${I("chswap")}Renkler</button></div><button class="btn ghost" data-chs="review">Tahtaya bak</button></div></div>`;ov.classList.add("on")}
 function chwBar(side){const W=CH.wv,g=CH.g;const who=side===W.cw?"c":"r";const mat=chMaterial(chViewGame());const caps=mat.capBy(side);const adv=side===0?mat.diff:-mat.diff;const turn=!CH.over&&g.turn===side&&CH.view==null;
  const think=W.think===who;const L=who==="c"?(CHC_LV[W.lc]||CHC_LV[1]):(CLEVELS[W.lr]||CLEVELS[1]);
  const av=who==="c"?`<span class="cbotav cwav ${W.mood.c||""}" data-cwav="c">${chcFace(46,W.mood.c,think?"think":W.talk.c>Date.now()?"talk":"idle")}</span>`:`<span class="cbotav ${W.mood.r||""} ${think?"thinking":""}" data-rav>${botFace(46)}</span>`;
@@ -7707,7 +7714,7 @@ function chwUI(){const W=CH.wv;const mv=$("#cMoves");if(mv&&!CH.moves.length){co
  const ev=$("#cEval");if(ev){const show=settings.evalBar!==false;ev.hidden=!show;if(show){const cp=CH.eval;const mate=Math.abs(cp)>CC.MATE-1000;const w=mate?(cp>0?100:0):50+50*(2/(1+Math.exp(-cp/350))-1);
   ev.classList.toggle("fl",CH.flip);ev.classList.toggle("bl",w<50);ev.querySelector("i").style.height=w+"%";ev.querySelector("span").textContent=mate?"M"+Math.ceil((CC.MATE-Math.abs(cp))/2):(Math.abs(cp)/100).toFixed(1)}}
  const n=CH.moves.length,v=CH.view==null?n:CH.view;const B=(a,ic,l,dis,pr)=>`<button data-chs="${a}" ${dis?"disabled":""}${pr!=null?` aria-pressed="${pr}"`:""}>${I(ic)}<span>${l}</span></button>`;
- const ctl=$("#cCtl");if(ctl)ctl.innerHTML=B("wvpause",W.paused?"play":"pause",W.paused?"Devam":"Duraklat",!!CH.over,W.paused)+B("wvrestart","rotate","Baştan")+B("wvswap","flip","Renkler")+B("prev","prev","Önceki",v<=0)+B("next","next","Sonraki",v>=n)+B("menu","more","Daha");
+ const ctl=$("#cCtl");if(ctl)ctl.innerHTML=B("wvpause",W.paused?"play":"pause",W.paused?"Devam":"Duraklat",!!CH.over,W.paused)+B("wvrestart","rotate","Baştan")+B("wvswap","chswap","Renkler")+B("prev","prev","Önceki",v<=0)+B("next","next","Sonraki",v>=n)+B("menu","more","Daha");
  const bar=$("#chwBar");if(bar){const s=chwScore(),sp=chwSpd();const sig=[s.c,s.r,s.d,sp].join("|");if(bar._sig!==sig){bar._sig=sig;
   bar.innerHTML=`<span class="chw-sc" title="${s.d} berabere"><span>Clawd</span><b>${s.c}–${s.r}</b><span>Rota</span></span><div class="seg chw-sp" role="group" aria-label="Hız">${Object.entries(CHW_SPD).map(([k,[,l]])=>`<button data-chs="wvspd" data-v="${k}" aria-pressed="${sp===k}">${l}</button>`).join("")}</div><span class="chw-live" id="chwLive" aria-live="polite"></span>`}}}
 
