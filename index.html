@@ -2119,6 +2119,76 @@ html.reduce-motion .chess .cmk .chk::after{opacity:.8}
 
 /* ===== 5.1 bölgeleri ===== */
 /*@css:51CLAWD{*/
+/* 5.1 · Clawd'ın odası (sayfa içinde), Klaket köşesi, yorum dans pisti, yeni efektler */
+.cw-rhost{position:relative;height:0;margin:0;padding:0;border:0;pointer-events:none;z-index:1}
+.cw-rc{position:relative}
+.cw-room{position:absolute;left:0;top:0;pointer-events:none;overflow:hidden;isolation:isolate;z-index:2;contain:layout style;
+ --rw:color-mix(in srgb,var(--surface-2) 86%,#D97757);--rw2:color-mix(in srgb,var(--surface-2) 74%,#D97757);--rbb:color-mix(in srgb,#74482C 70%,var(--bg));
+ --rfl:color-mix(in srgb,#B07A4A 80%,var(--bg));--rfl2:color-mix(in srgb,#7E5232 82%,var(--bg));--rfl3:color-mix(in srgb,#C89463 80%,var(--bg));--rcb:color-mix(in srgb,#74482C 85%,var(--bg));
+ --red:color-mix(in srgb,var(--fg) 16%,transparent);--rwd:#9A6A45;--rwd2:#74482C;--rwd3:#B88358}
+.cw-room.cw-room{border-radius:3px}
+.cw-room>div{position:absolute}
+.cw-room svg{display:block;width:100%;height:100%;overflow:visible}
+.cw-room .cw-rbg{inset:0;z-index:0}
+.cw-room .w{fill:var(--rw)}.cw-room .w2{fill:var(--rw2)}.cw-room .cb{fill:var(--rcb)}.cw-room .cb2{fill:color-mix(in srgb,var(--rcb) 70%,var(--rw))}.cw-room .bb{fill:var(--rbb)}
+.cw-room .fl{fill:var(--rfl)}.cw-room .fl2{fill:var(--rfl2)}.cw-room .fl3{fill:var(--rfl3)}.cw-room .ed{fill:var(--red)}
+.cw-room .wf{fill:var(--rwd3)}.cw-room .wf2{fill:var(--rwd)}.cw-room .ps{fill:var(--rwd2)}.cw-room .ps2{fill:var(--surface)}.cw-room .acc{fill:var(--accent)}.cw-room .acc2{fill:#D97757}
+.cw-room .rg{fill:color-mix(in srgb,var(--accent) 55%,var(--rfl))}.cw-room .rg2{fill:color-mix(in srgb,#FFC93C 70%,var(--rfl))}
+.cw-room .sp{fill:color-mix(in srgb,var(--surface) 70%,#C9CED6)}.cw-room .sk2{fill:#8A93A3}.cw-room .son,.cw-room .soff{fill:#3A322C}
+.cw-room .son{display:none}.cw-room.lamp .son{display:inline}.cw-room.lamp .soff{display:none}
+.cw-room .lf{fill:#4FA35A}.cw-room .lf2{fill:#3D8A48}.cw-room .pt{fill:#C2643B}.cw-room .bk1{fill:#3E6FD8}.cw-room .bk2{fill:#E5484D}
+.cw-room .dt{fill:var(--rwd3)}.cw-room .dw{fill:var(--rwd)}.cw-room .dw2{fill:var(--rwd2)}.cw-room .df{fill:#A97A52}.cw-room .dfh{fill:#C2946A}.cw-room .kn{fill:#F2D58A}.cw-room .dk{fill:#2A1E16}
+.cw-room .cw-glow{inset:0;z-index:1;opacity:0;transition:opacity .5s;background:radial-gradient(circle at var(--gx) var(--gy),rgba(255,214,120,.5),rgba(255,214,120,.16) 34%,transparent 62%)}
+.cw-room.lamp .cw-glow{opacity:1}
+.cw-room.party .cw-glow{animation:cwParty 1.2s steps(4) infinite}
+@keyframes cwParty{to{filter:hue-rotate(360deg)}}
+.cw-room .cw-chest{z-index:1}
+.cw-room .cw-bulb{z-index:1;transform-origin:50% 0}
+.cw-room .bon{display:none}.cw-room.lamp .bon{display:inline}.cw-room.lamp .boff{display:none}
+.cw-room .cw-bulb.swing{animation:cwSwing 1.4s ease-out}
+@keyframes cwSwing{0%{transform:rotate(0)}15%{transform:rotate(16deg)}35%{transform:rotate(-11deg)}55%{transform:rotate(7deg)}75%{transform:rotate(-3deg)}100%{transform:rotate(0)}}
+.cw-room .cw-bed{left:0;top:0;pointer-events:none;cursor:default}
+.cw-room .cw-bk{z-index:1}.cw-room .cw-stage{inset:0;z-index:2}.cw-room .cw-ft{z-index:3}.cw-room .cw-fx{inset:0;z-index:4}
+.cw-room.cwfront .cw-stage{z-index:4}
+.cw-room .cw-dim{inset:0;z-index:5;background:rgba(6,8,22,.42);opacity:0;transition:opacity .6s}
+.cw-room.dark .cw-dim{opacity:1}
+.cw-room .cw-b{left:0;top:0}
+/* Klaket köşesi */
+.cw-room.cw-nook{overflow:visible;border-radius:0;filter:drop-shadow(0 2px 3px rgba(0,0,0,.35))}
+.cw-nook .cw-rbg{z-index:0}.cw-nook .cw-stick{z-index:1;transform-origin:8% 100%;transform:rotate(-22deg)}
+.cw-nook .cw-stick.clap{animation:cwClap .5s ease-in}
+@keyframes cwClap{0%{transform:rotate(-22deg)}40%{transform:rotate(0)}55%{transform:rotate(-6deg)}70%{transform:rotate(0)}100%{transform:rotate(-22deg)}}
+/* dans pisti (yorum katmanının üst kenarında) */
+.cw-room.cw-disco{left:auto;top:auto;right:22px;bottom:100%;overflow:visible;border-radius:0}
+.cw-disco .cw-rbg{inset:0;z-index:0}
+.cw-disco .t0,.cw-disco .t1,.cw-disco .t2,.cw-disco .t3{animation:cwTile 1.6s steps(1) infinite;fill:#D97757}
+.cw-disco .t1{animation-delay:-.4s}.cw-disco .t2{animation-delay:-.8s}.cw-disco .t3{animation-delay:-1.2s}
+@keyframes cwTile{0%{fill:#D97757}25%{fill:#FFC93C}50%{fill:#5BC27A}75%{fill:#6CB8FF}}
+.cw-disco .cw-spark{left:50%;top:calc(var(--cw-u)*7);width:0;height:0;z-index:1}
+.cw-disco .cw-spark i{position:absolute;width:calc(var(--cw-u)*1);height:calc(var(--cw-u)*1);background:#fff;opacity:0;animation:cwSpk 1.8s steps(2) infinite}
+.cw-disco .cw-spark i:nth-child(1){left:calc(var(--cw-u)*-9);top:calc(var(--cw-u)*2)}
+.cw-disco .cw-spark i:nth-child(2){left:calc(var(--cw-u)*7);top:calc(var(--cw-u)*5);animation-delay:-.6s}
+.cw-disco .cw-spark i:nth-child(3){left:calc(var(--cw-u)*-4);top:calc(var(--cw-u)*9);animation-delay:-1.2s}
+@keyframes cwSpk{0%,100%{opacity:0}50%{opacity:.9}}
+/* efektler */
+.cw-scope .cw-sq.bob{animation:cwBob .34s steps(2) infinite}
+@keyframes cwBob{50%{transform:translateY(calc(var(--cw-u)*-1))}}
+.cw-scope .cw-sq.str{animation:cwStr 1.5s ease-in-out}
+@keyframes cwStr{40%,70%{transform:scale(.94,1.1)}}
+.cw-scope .cw-note{position:absolute;width:calc(var(--cw-u)*3);height:calc(var(--cw-u)*4.5);pointer-events:none;animation:cwNote 1.4s ease-out forwards}
+.cw-scope .cw-note svg{display:block;width:100%;height:100%}
+@keyframes cwNote{0%{opacity:0;transform:translate(0,0)}15%{opacity:1}100%{opacity:0;transform:translate(var(--dx),calc(var(--cw-u)*-12))}}
+.cw-scope .cw-wave{position:absolute;left:0;top:55%;width:0;height:0;pointer-events:none}
+.cw-scope .cw-wave i{position:absolute;left:calc(var(--cw-u)*-2);top:calc(var(--cw-u)*-3);width:calc(var(--cw-u)*4);height:calc(var(--cw-u)*6);border:calc(var(--cw-u)*.75) solid #FFC93C;border-right:0;border-top-color:transparent;border-bottom-color:transparent;border-radius:50%;opacity:0;animation:cwWave 1s ease-out infinite}
+.cw-scope .cw-wave i:nth-child(2){animation-delay:.33s}.cw-scope .cw-wave i:nth-child(3){animation-delay:.66s}
+@keyframes cwWave{0%{opacity:.9;transform:translateX(0) scale(.6)}100%{opacity:0;transform:translateX(calc(var(--cw-u)*-6)) scale(1.4)}}
+.cw-scope .cw-cf{position:absolute;width:calc(var(--cw-u)*1.2);height:calc(var(--cw-u)*1.8);pointer-events:none;animation:cwConf 1.35s cubic-bezier(.2,.6,.4,1) both}
+@keyframes cwConf{0%{transform:translate(0,0);opacity:1}35%{transform:translate(calc(var(--dx)*.5),var(--up)) rotate(calc(var(--r)*.4))}100%{transform:translate(var(--dx),var(--dn)) rotate(var(--r));opacity:0}}
+.cw-scope .cw-item{position:absolute;pointer-events:none;animation:cwPop .25s cubic-bezier(.3,1.6,.5,1)}
+.cw-scope .cw-item svg{display:block;width:100%;height:100%}
+.cw-scope .cw-g.jg{animation:none;background:none;box-shadow:none;width:calc(var(--cw-u)*7);height:calc(var(--cw-u)*7);font-size:calc(var(--cw-u)*5.5);color:#D97757}
+:root.reduce-motion .cw-room *{animation:none!important;transition:none!important}
+@media (prefers-reduced-motion:reduce){.cw-room *{animation:none!important;transition:none!important}}
 /*}@css:51CLAWD*/
 
 /*@css:51CHS{*/
@@ -6959,7 +7029,22 @@ function cwSpec(){const t=CW.clock;const p=CW.pose;const s={eyes:"open",mouth:""
   case"lookup":s.eyes="up";break;
   case"listen":s.eyes="wide";s.arms="sh";break;
   case"shrug":s.eyes="blink";s.mouth="flat";s.arms="sg";break;
-  case"lie":s.eyes="x";s.legs="tuck";s.bump=true;break}
+  case"lie":s.eyes="x";s.legs="tuck";s.bump=true;break;
+  /* 5.1 pozları */
+  case"guitar":s.prop="guitar";s.arms=alt(150)?"g1":"g2";s.eyes=Math.floor(t/1100)%3===2?"closed":"happy";s.mouth="smile";s.legs=alt(300)?"stand":"spread";break;
+  case"read":s.prop=Math.floor(t/2400)%2?"book2":"book";s.arms="rd";s.eyes="down";s.legs="tuck";break;
+  case"think":s.eyes="up";s.lx=1;s.arms="tk";s.mouth="flat";break;
+  case"stretch":s.eyes="closed";s.mouth="yawn";s.arms="hi";s.legs="spread";break;
+  case"sniff":s.eyes="blink";s.mouth="flat";s.arms="sh";break;
+  case"sneeze":s.eyes="closed";s.mouth="yawn";s.arms="up";s.legs="spread";break;
+  case"reach":s.arms="w2";s.eyes="up";break;
+  case"switch":s.arms="w1";s.eyes="up";s.mouth="smile";break;
+  case"hold":s.arms="up";s.eyes="happy";s.mouth="smile";s.blush=true;break;
+  case"yawn":s.eyes="closed";s.mouth="yawn";s.arms="sg";break;
+  case"doze":s.eyes="closed";s.legs="tuck";break;
+  case"juggle":s.arms=alt(240)?"w1":"c2";s.eyes="up";s.mouth="o";break;
+  case"popcorn":{const ph=Math.floor(t/800)%4;s.legs=alt(700)?"dang1":"dang2";s.arms=ph===0?"w2":"down";s.mouth=ph===0?"t2":ph===1&&alt(150)?"t1":"";break}
+  case"bedsit":s.legs=alt(520)?"dang1":"dang2";break}
  if(CW.talking&&!["sleep","dizzy","lie"].includes(p))s.mouth=alt(115)?"t1":"t2";
  if(s.eyes==="open"||s.eyes==="up"||s.eyes==="down"){if(t>CW.blinkAt){CW.blinkOn=true;if(t>CW.blinkAt+130){CW.blinkOn=false;CW.blinkAt=t+cwRand(2200,5200)}}if(CW.blinkOn)s.eyes="blink"}
  if(CW.bumpOn&&!s.bump)s.bump=true;
@@ -7124,8 +7209,10 @@ async function actDance(){CW.pose="dance";for(let i=0;i<3;i++){await cwWait(450)
 async function actJoke(){const j=cwBag("j",CW_JOKES).split("|");CW.pose="idle";if(j.length>1){await cwSay(j[0],{hold:1300});CW.pose="happy";await cwSay(j[1],{hold:2200})}else await cwSay(j[0]);
  if(Math.random()<.35){CW.pose="happy";await cwSay(cwPick(CW_JOKE_TAIL),{hold:1500})}CW.pose="idle"}
 async function actStill(){const b=cwB();CW.face=-1;CW.surf="floor";CW.x=b.R-CW.W*.5-10;CW.y=b.B;CW.pose="sit";await cwWait(6000)}
-async function actNap(){CW.pose="sleepy";await cwWait(1200);CW.pose="sit";await cwWait(400);CW.pose="sleep";CW.zz=true;try{for(;;)await cwWait(1000)}finally{CW.zz=false}}
-async function actWakeNap(){CW.zz=false;CW.pose="surprised";await cwHop(CW.x,cwB().B,12,280);await cwSay(cwPick(["Uyuyakalmışım! Kod derlenirken gözüm dalmış.","Ha? Uyumuyordum, gözlerimi dinlendiriyordum.","Hop, geldim! Rüyamda sonsuz döngüdeydim."]))}
+async function actNap(){CW.pose="sleepy";await cwWait(1200);
+ if(CW.room&&CW.room.kind==="room"&&CW.bed){if(cwMaySay())await cwSay("Kimse yokken biraz kestireyim...",{hold:900});await cwIntoBed();cwRoomLamp(false);CW.pose="sleep";CW.zz=true;try{for(;;)await cwWait(1000)}finally{CW.zz=false}}
+ CW.pose="sit";await cwWait(400);CW.pose="sleep";CW.zz=true;try{for(;;)await cwWait(1000)}finally{CW.zz=false}}
+async function actWakeNap(){CW.zz=false;CW.pose="surprised";if(CW.inBed){CW.inBed=false;CW.surf="floor";cwRoomLamp();const bd=CW.bed;await cwHop(bd?Math.max(cwB().L+CW.W*.5,bd.x-(cwBG().w/2*CW.U+CW.W*.5)):CW.x,cwB().B,10,320)}else await cwHop(CW.x,cwB().B,12,280);await cwSay(cwPick(["Uyuyakalmışım! Kod derlenirken gözüm dalmış.","Ha? Uyumuyordum, gözlerimi dinlendiriyordum.","Hop, geldim! Rüyamda sonsuz döngüdeydim."]))}
 async function actSleepIn(){CW.inBed=true;CW.surf="bed";CW.pose="sleep";CW.zz=true;CW.sleptAt=now();cwRoomLamp(false);
  try{for(;;){await cwWait(1000);if(!cwNight()&&!(CW.napUntil&&now()<CW.napUntil)){CW.napUntil=0;await actMorning();return}
   if(cwNight()&&!CW.napUntil&&cwOwlWake()){CW.zz=false;await actOwlUp();return}}}finally{CW.zz=false}}
@@ -7311,6 +7398,313 @@ try{if(S&&S.authed)HOOKS.enter.length&&setTimeout(()=>{if(!CW.root){cwMount();CW
 
 /* ===== 5.1 bölgeleri ===== */
 /*@js:51CLAWD{*/
+/* ===== 5.1 · Clawd'ın odası, gece/sabah düzeni ve yeni davranışlar =====
+   - Oda (cwRoom*): sayfanın boş köşesine, içeriğin içine yerleşen piksel oda. Sayfayla birlikte kayar; sayfa değişince
+     Clawd yeni sayfadaki odasında belirir, havada asılı kalmaz. Yerler (cwMeas*): Akış = hikâye şeridinin sağı,
+     Keşfet = Satranç kartının altında "Kişiler" satırının sağı, Sohbet = notlar şeridinin sağı (Davet et üstü),
+     Profil = ad satırının sağı (istatistiklerin altı). Sığmazsa oda kurulmaz, Clawd eskisi gibi ekranda gezer.
+     Keşfet ve profilde gerekirse satır biraz uzatılır (CW.grow: sec-h padding-top / .btns margin-top), hiçbir yazının ya da
+     düğmenin üstüne binilmez. Oda kapsayıcısı: sıfır yükseklikli .cw-rhost (öğeden sonra) ya da .cw-rc (profil).
+   - Oda eşyaları: yatak (26x13), çekmece (açılır), tavandan sarkan ampul (duvardaki düğmeyle açılır/kapanır, çarpınca sallanır),
+     pencere (saate göre gökyüzü), poster, halı. Clawd, CW.b öğesi odaya taşınarak çizilir; koordinatlar odaya göredir (cwB).
+   - Klaket ekranında yan düğmelerin üstünde küçük bir köşe (nook: raf, patlamış mısır, klaket tahtası), yorumlar
+     açıkken sayfanın üst kenarında dans pisti (disco).
+   - Gece 00:00-07:00 uyur (cwNight). Kullanıcı etkinse uyumaz: esner, uyuklar, gece partisi yapar (actOwl*).
+     Sabah (07-11) elektro gitar çalar (actGuitar, cwRiff WebAudio, sesler açıksa).
+   - Yeni davranışlar: gerinme, yatağın kenarında oturma, çekmeceden bir şey çıkarma, ışık düğmesi, kitap okuma,
+     kod parantezleriyle jonglörlük, hapşırma, beğenide konfeti (notifyMeta sarıldı → notifyMetaBaseCW),
+     mesajda dans (notifyChats sarıldı → notifyChatsBaseCW), sayfa açılınca el sallama.
+   - Ortak API: CLAWD.sprite(poz) → SVG metni (idle, happy, think, sad, dance1, dance2, guitar1, guitar2, sleep, surprised, talk ...). */
+const CWR={RH:26,FL:23,MINW:68,MAXW:124,UMIN:2.4};
+const cwRect=el=>el.getBoundingClientRect();
+function cwTextRight(el){try{const r=document.createRange();r.selectNodeContents(el);let m=-1e9;for(const x of r.getClientRects())if(x.width>0)m=Math.max(m,x.right);return m>-1e9?m:cwRect(el).left}catch{return cwRect(el).right}}
+function cwDp(v){const d=window.devicePixelRatio||1;return Math.round(v*d)/d}
+function cwPix(rows,pal,cls){let r="";const H=rows.length,W=Math.max(...rows.map(x=>x.length));
+ rows.forEach((row,y)=>{let x=0;while(x<row.length){const c=row[x];if(c==="."||c===" "||!pal[c]){x++;continue}let e=x+1;while(e<row.length&&row[e]===c)e++;r+=`<rect x="${x}" y="${y}" width="${e-x}" height="1" fill="${pal[c]}"/>`;x=e}});
+ return`<svg${cls?` class="${cls}"`:""} viewBox="0 0 ${W} ${H}" shape-rendering="crispEdges" aria-hidden="true">${r}</svg>`}
+const CW_NOTE=cwPix(["..##","..#.","..#.","..#.","###.","###."],{"#":"currentColor"});
+const CW_ITEMS=[
+ {k:"sock",t:"Kayıp çorabım! Teki hâlâ kayıp ama.",s:cwPix(["..wwww..","..rrrr..","..wwww..","..rrrr..","..wwwww.","..wwwwww","...wwwww"],{w:"#F4F1EA",r:"#E5484D"})},
+ {k:"duck",t:"Lastik ördeğim! Hata ayıklarken ona anlatırım, hep sabırla dinler.",s:cwPix(["...yyy..","..yykyy.","..yyyyoo","y..yyy..","yyyyyyy.","yyyyyyy.",".yyyyy.."],{y:"#FFD43B",k:"#171310",o:"#F08C2B"})},
+ {k:"floppy",t:"Disket! Abim bunu müzede görmüş.",s:cwPix(["bbbbbbb.","bbsssbbb","bbsssbbb","bbbbbbbb","bwwwwwwb","bwkkkkwb","bwwwwwwb","bbbbbbbb"],{b:"#3E6FD8",s:"#C9CED6",w:"#F4F1EA",k:"#8A93A3"})},
+ {k:"heart",t:"Yedek kalp. Beğeni gelmezse diye saklıyorum.",s:cwPix([".rr.rr.","rrrrrrr","rwrrrrr","rrrrrrr",".rrrrr.","..rrr..","...r..."],{r:"#E5484D",w:"#FF9A9D"})},
+ {k:"semi",t:"Yedek noktalı virgül. Kod yazarken hep lazım olur;",s:cwPix(["...oo...","...oo...","........","...oo...","...oo...","....o...","...o...."],{o:"#D97757"})},
+ {k:"cookie",t:"Kurabiye! Tarayıcı çerezi değil, gerçek olanı. Kabul et düğmesi de yok.",s:cwPix(["..cccc..",".ccdccc.","cccccdcc","ccdccccc","cccccdcc",".cdcccc.","..cccc.."],{c:"#C98B4A",d:"#5A3720"})}];
+
+/* --- oda çizimi (ızgara birimi = u px) --- */
+function cwSky(){const p=cwPeriod();return p==="n"?{g:"#1D2747",s:"#F2E9C9",t:"#FFF6C9",k:"moon"}:p==="e"?{g:"#F2A26D",s:"#FFD38A",t:"#F7C59F",k:"sun"}:{g:"#9ED8FF",s:"#FFFFFF",t:"#E4F4FF",k:"cloud"}}
+function cwRoomBg(R){const W=R.RW,H=CWR.RH,F=CWR.FL;const px=[];const r=(x,y,w,h,c)=>{if(w>0&&h>0)px.push(`<rect x="${x}" y="${y}" width="${w}" height="${h}" class="${c}"/>`)};
+ const f=(x,y,w,h,c)=>{if(w>0&&h>0)px.push(`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${c}"/>`)};
+ r(0,0,W,F,"w");for(let x=3;x<W-1;x+=6)r(x,2,1,F-3,"w2");r(0,0,W,2,"cb");r(0,1,W,1,"cb2");r(0,F-1,W,1,"bb");
+ r(0,F,W,H-F,"fl");r(0,F,W,1,"fl3");for(let x=2,i=0;x<W;x+=9,i++)r(x+(i%2?4:0),F+1+(i%2),1,1,"fl2");r(0,H-1,W,1,"fl2");
+ r(0,0,1,H,"ed");r(W-1,0,1,H,"ed");
+ const L=R.lay;
+ if(L.win){const{x,y,w,h}=L.win;const sk=cwSky();r(x-1,y-1,w+2,h+2,"wf");f(x,y,w,h,sk.g);
+  if(sk.k==="moon"){f(x+w-4,y+1,2,2,sk.s);f(x+w-3,y+1,1,1,sk.g);f(x+2,y+2,1,1,sk.t);f(x+5,y+h-3,1,1,sk.t);f(x+1,y+h-2,1,1,sk.t)}
+  else if(sk.k==="sun"){f(x+w-5,y+h-4,3,3,sk.s);f(x,y+h-2,w,2,"#E58A5A")}
+  else{f(x+2,y+2,4,1,sk.s);f(x+1,y+3,6,1,sk.s);f(x+w-5,y+h-3,3,1,sk.t)}
+  r(x+Math.floor(w/2),y,1,h,"wf");r(x,y+Math.floor(h/2),w,1,"wf");r(x-2,y+h+1,w+4,1,"wf2")}
+ if(L.poster){const{x,y}=L.poster;r(x,y,7,9,"ps");r(x+1,y+1,5,7,"ps2");r(x+2,y+2,1,2,"acc");r(x+2,y+2,2,1,"acc");r(x+4,y+5,1,2,"acc");r(x+3,y+6,2,1,"acc");r(x+3,y+4,1,1,"acc2")}
+ if(L.rug){const{x,w}=L.rug;r(x+1,F,w-2,1,"rg");r(x,F+1,w,1,"rg");for(let i=x+1;i<x+w-1;i+=3)r(i,F+1,1,1,"rg2");r(x+1,F,1,1,"rg2");r(x+w-2,F,1,1,"rg2")}
+ if(L.sw){const x=L.sw;r(x,11,3,4,"sp");r(x+1,12,1,1,"son");r(x+1,13,1,1,"soff");r(x+1,12,1,2,"sk2")}
+ return`<svg viewBox="0 0 ${W} ${H}" shape-rendering="crispEdges" preserveAspectRatio="none" aria-hidden="true">${px.join("")}</svg>`}
+function cwChestSvg(open){const px=[];const r=(x,y,w,h,c)=>px.push(`<rect x="${x}" y="${y}" width="${w}" height="${h}" class="${c}"/>`);
+ /* 14x14: üstte saksı ve kitaplar (y 0-3), gövde y 3-13 */
+ r(2,1,3,2,"lf");r(3,0,1,1,"lf");r(2,2,3,1,"lf2");r(2,3,3,1,"pt");r(8,2,4,1,"bk1");r(9,1,3,1,"bk2");
+ r(1,4,12,1,"dt");r(1,5,12,9,"dw");r(1,5,1,9,"dw2");r(12,5,1,9,"dw2");
+ if(open){r(2,6,10,1,"dk");r(1,7,12,3,"df");r(1,7,12,1,"dfh");r(6,8,2,1,"kn")}else{r(2,6,10,3,"df");r(2,6,10,1,"dfh");r(6,7,2,1,"kn")}
+ r(2,10,10,3,"df");r(2,10,10,1,"dfh");r(6,11,2,1,"kn");r(2,13,2,1,"dw2");r(10,13,2,1,"dw2");
+ return`<svg viewBox="0 0 14 14" shape-rendering="crispEdges" aria-hidden="true">${px.join("")}</svg>`}
+function cwBulbSvg(){return`<svg viewBox="0 0 5 9" shape-rendering="crispEdges" aria-hidden="true"><rect x="2" y="0" width="1" height="4" fill="#3A322C"/><rect x="1" y="4" width="3" height="1" fill="#5B5249"/>`+
+ `<g class="boff"><rect x="1" y="5" width="3" height="1" fill="#D8D2C4"/><rect x="0" y="6" width="5" height="2" fill="#D8D2C4"/><rect x="1" y="8" width="3" height="1" fill="#C4BDAE"/><rect x="1" y="6" width="1" height="1" fill="#F4F1EA"/></g>`+
+ `<g class="bon"><rect x="1" y="5" width="3" height="1" fill="#FFE27A"/><rect x="0" y="6" width="5" height="2" fill="#FFD43B"/><rect x="1" y="8" width="3" height="1" fill="#F5B82E"/><rect x="2" y="6" width="1" height="2" fill="#FFF8D6"/><rect x="1" y="6" width="1" height="1" fill="#FFFFFF"/></g></svg>`}
+function cwRoomBedSvg(front){const px=[];const R=(x,y,w,h,c)=>px.push(`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${c}"/>`);const wd="#9A6A45",wk="#74482C",wl="#B88358";
+ if(!front){R(0,1,2,12,wd);R(0,0,2,1,wl);R(0,1,1,12,wk);R(2,7,24,3,"#F3ECE2");R(2,9,24,1,"#D8CFC2");R(2,4,6,3,"#FFFFFF");R(2,6,6,1,"#E3DBD0");R(3,10,2,3,wk);R(21,10,2,3,wk)}
+ else{R(7,4,17,5,"#5E7FD6");R(7,4,17,1,"#7B98E4");R(10,6,2,1,"#4A69BE");R(15,7,2,1,"#4A69BE");R(20,6,2,1,"#4A69BE");R(7,8,17,1,"#4A69BE");R(24,3,2,10,wd);R(24,2,2,1,wl);R(25,3,1,10,wk)}
+ return`<svg viewBox="0 0 26 13" shape-rendering="crispEdges" aria-hidden="true">${px.join("")}</svg>`}
+/* Klaket köşesi: raf, patlamış mısır kovası, klaket tahtası (üst çıta ayrı öğe) */
+function cwNookSvg(){return cwPix([
+ "....................................yy.y....",
+ "...................................yyyyyy...",
+ "...................................rwrwrw...",
+ "...................................rwrwrw...",
+ "...................................rwrwrw...",
+ ".bbbbbbbb..........................rwrwrw...",
+ ".bwbbwbbb..........................rwrwrw...",
+ ".bbbbbbbb...........................wrwr....",
+ ".bbwwwbbb..................................",
+ ".bbbbbbbb..................................",
+ "ssssssssssssssssssssssssssssssssssssssssssss",
+ "dddddddddddddddddddddddddddddddddddddddddddd",
+ "..kk....................................kk..",
+ "...k....................................k..."],{y:"#FFE08A",r:"#E5484D",w:"#F6F0E6",b:"#26201C",s:"#B88358",d:"#74482C",k:"#5A3D2A"})}
+const CW_STICK=cwPix(["bwwbbwwbb","bbbbbbbbb"],{b:"#26201C",w:"#F6F0E6"});
+/* Dans pisti: ayna top ve ışıklı karolar */
+function cwDiscoSvg(W){const px=[];const r=(x,y,w,h,c,cl)=>px.push(`<rect x="${x}" y="${y}" width="${w}" height="${h}"${c?` fill="${c}"`:""}${cl?` class="${cl}"`:""}/>`);
+ const cx=Math.floor(W/2);r(cx,0,1,4,"#8A93A3");r(cx-3,4,7,6,"#C9CED6");r(cx-2,3,5,8,"#C9CED6");for(let i=0;i<5;i++)r(cx-2+((i*2)%5),4+(i%3)*2,1,1,"#FFFFFF");r(cx-1,5,1,1,"#8A93A3");r(cx+1,8,1,1,"#8A93A3");
+ for(let x=0,i=0;x<W;x+=4,i++){r(x,22,4,2,null,"t"+(i%4));r(x,24,4,2,null,"t"+((i+2)%4))}r(0,22,W,1,"rgba(255,255,255,.35)");
+ return`<svg viewBox="0 0 ${W} 26" shape-rendering="crispEdges" aria-hidden="true">${px.join("")}</svg>`}
+
+/* --- oda öğesi --- */
+function cwRoomEl(kind){CW.rooms=CW.rooms||{};let el=CW.rooms[kind];if(el)return el;el=document.createElement("div");el.className="cw-room cw-scope cw-"+kind;el.dataset.kind=kind;
+ el.innerHTML=kind==="room"?`<div class="cw-rbg"></div><div class="cw-glow"></div><div class="cw-win"></div><div class="cw-chest"></div><div class="cw-bulb"></div><div class="cw-bed cw-bk"></div><div class="cw-stage"></div><div class="cw-bed cw-ft"></div><div class="cw-fx"></div><div class="cw-dim"></div>`
+  :kind==="nook"?`<div class="cw-rbg"></div><div class="cw-stick"></div><div class="cw-stage"></div><div class="cw-fx"></div>`
+  :`<div class="cw-rbg"></div><div class="cw-spark"><i></i><i></i><i></i></div><div class="cw-stage"></div><div class="cw-fx"></div>`;
+ CW.rooms[kind]=el;return el}
+function cwRoomLayout(RW){const L={};L.bedL=RW-27;L.chest=1;L.sw=16;const free0=19,free1=L.bedL-2;L.bulb=Math.round((15+L.bedL)/2)-2;
+ if(free1-free0>=26){L.win={x:L.bulb+5,y:5,w:11,h:8};if(L.win.x+L.win.w>free1)L.win=null}
+ if(L.win&&L.bulb-3-free0>=8)L.poster={x:Math.max(free0,L.bulb-10),y:7};else if(!L.win&&free1-free0>=14)L.poster={x:L.bulb+5,y:7};
+ L.rug={x:16,w:Math.max(8,L.bedL-17)};return L}
+function cwRoomRender(R){const el=R.el,u=R.u,k=`${R.kind}|${u}|${R.RW}|${cwPeriod()}`;if(R.rk===k)return;R.rk=k;const q=s=>el.querySelector(s);
+ el.style.width=R.w+"px";el.style.height=R.h+"px";el.style.setProperty("--cw-u",u+"px");
+ if(R.kind==="room"){R.lay=cwRoomLayout(R.RW);const L=R.lay;q(".cw-rbg").innerHTML=cwRoomBg(R);
+  const ch=q(".cw-chest");ch.style.cssText=`left:${L.chest*u}px;top:${(CWR.FL-14)*u}px;width:${14*u}px;height:${14*u}px`;ch.innerHTML=cwChestSvg(!!R.drawerOpen);
+  const bl=q(".cw-bulb");bl.style.cssText=`left:${L.bulb*u}px;top:${1*u}px;width:${5*u}px;height:${9*u}px`;bl.innerHTML=cwBulbSvg();
+  el.style.setProperty("--gx",(L.bulb+2.5)*u+"px");el.style.setProperty("--gy",8*u+"px");
+  for(const b of[q(".cw-bk"),q(".cw-ft")]){b.style.width=26*u+"px";b.style.height=13*u+"px"}
+  q(".cw-bk").innerHTML=cwRoomBedSvg(false);q(".cw-ft").innerHTML=cwRoomBedSvg(true);
+  R.bed.x=(L.bedL+13)*u;R.bed.y=CWR.FL*u;
+  R.bnd={L:u,R:(L.bedL+4)*u,T:0,B:CWR.FL*u}}
+ else if(R.kind==="nook"){const bg=q(".cw-rbg");bg.style.cssText=`left:0;top:${10*u}px;width:${44*u}px;height:${14*u}px`;bg.innerHTML=cwNookSvg();const st=q(".cw-stick");st.style.cssText=`left:${1*u}px;top:${13*u}px;width:${9*u}px;height:${2*u}px`;st.innerHTML=CW_STICK;
+  R.bnd={L:9*u,R:33*u,T:0,B:20*u}}
+ else{q(".cw-rbg").innerHTML=cwDiscoSvg(R.RW);R.bnd={L:u,R:(R.RW-1)*u,T:0,B:22*u}}}
+
+/* --- yer ölçümü: {after|in, left, right, top, bottom, grow} (ekran koordinatı) --- */
+function cwSkipHost(e){while(e&&e.classList&&(e.classList.contains("cw-rhost")||e.classList.contains("cw-room")))e=e.nextElementSibling;return e}
+function cwMeasFeed(){const st=document.querySelector("#main .stories");if(!st||st.scrollWidth>st.clientWidth+2)return null;const ss=st.querySelectorAll(":scope>.story");const last=ss[ss.length-1];if(!last)return null;
+ const r=cwRect(st),l=cwRect(last);if(r.height<40)return null;return{after:st,left:l.right+16,right:r.right-12,top:r.top+2,bottom:l.bottom}}
+function cwMeasExplore(){const card=document.querySelector("#main .chesscard");if(!card)return null;const sec=cwSkipHost(card.nextElementSibling);if(!sec||!sec.classList.contains("sec-h"))return null;
+ const row=cwSkipHost(sec.nextElementSibling);if(!row)return null;const c=cwRect(card),sr=cwRect(sec),rr=cwRect(row);const lab=sec.firstElementChild?cwTextRight(sec.firstElementChild):sr.left;
+ return{after:sec,left:Math.max(lab+24,sr.left+sr.width*.32),right:Math.min(sr.right,c.right-10),top:c.bottom+2,bottom:rr.top-2,grow:{el:sec,prop:"paddingTop",max:56}}}
+function cwMeasChats(){const nt=document.querySelector("#main .notes");if(!nt||nt.scrollWidth>nt.clientWidth+2)return null;const last=cwSkipHost(nt.lastElementChild)||nt.lastElementChild;if(!last)return null;
+ const r=cwRect(nt);const lr=last.classList.contains("nt-empty")?cwTextRight(last):cwRect(last).right;return{after:nt,left:lr+18,right:r.right-12,top:r.top+2,bottom:r.bottom-8}}
+function cwMeasProfile(){const pr=document.querySelector("#main .prof");if(!pr)return null;const tp=pr.querySelector(".prof-top"),st=pr.querySelector(".stats"),bt=pr.querySelector(":scope>.btns");if(!tp||!st||!bt)return null;
+ const sr=cwRect(st),br=cwRect(bt);const top=sr.bottom+4,bottom=br.top-6;let left=sr.left;const av=tp.firstElementChild&&cwRect(tp.firstElementChild);if(av&&av.bottom>top)left=Math.max(left,av.right+12);
+ for(let e=tp.nextElementSibling;e&&e!==bt;e=e.nextElementSibling){if(e.classList.contains("cw-room"))continue;const r=cwRect(e);if(r.bottom<top||r.top>bottom+40)continue;left=Math.max(left,cwTextRight(e)+20)}
+ return{in:pr,left,right:sr.right,top,bottom,grow:{el:bt,prop:"marginTop",max:44}}}
+function cwMeasNook(){const reel=activeReel&&activeReel.isConnected?activeReel:document.querySelector("#main .reel");if(!reel)return null;const side=reel.querySelector(".side");if(!side)return null;
+ const rr=cwRect(reel),sr=cwRect(side);if(rr.height<200)return null;const u=cwDp(Math.min(CW.uRoam*.8,(rr.width*.5)/44));if(u<2)return null;const w=44*u,h=24*u;
+ const right=Math.min(rr.right-6,sr.right+4),bottom=sr.top-8;if(bottom-h<rr.top+72)return null;return{reel,u,w,h,left:right-w,top:bottom-h,rr}}
+function cwMeasDisco(){const sh=document.querySelector('#overlay .layer[data-layer="comments"] .sheet');if(!sh)return null;const r=cwRect(sh);const u=cwDp(Math.min(CW.uRoam*.8,3.4));const h=26*u;
+ const T=(window.visualViewport?window.visualViewport.offsetTop:0)+8;if(r.top-h<T)return null;return{sheet:sh,u,w:44*u,h}}
+function cwRoomWant(){if(!CW.root||(!cwOn()&&!CW.leaving)||!S.authed||!S.uid)return null;
+ const ls=document.querySelectorAll("#overlay .layer");const top=ls[ls.length-1];if(top&&top.dataset.layer==="comments")return{key:"disco",kind:"disco",m:cwMeasDisco};
+ const r=S.route&&S.route.name;const m={feed:cwMeasFeed,explore:cwMeasExplore,chats:cwMeasChats,profile:cwMeasProfile,reels:cwMeasNook}[r];if(!m)return null;
+ return{key:r,kind:r==="reels"?"nook":"room",m}}
+
+/* --- yerleştirme --- */
+function cwHost(after){let h=CW.hostEl;if(!h){h=document.createElement("div");h.className="cw-rhost";h.setAttribute("aria-hidden","true");CW.hostEl=h}
+ if(h.previousElementSibling!==after||h.parentNode!==after.parentNode)after.after(h);return h}
+function cwGrowReset(){const g=CW.grow;if(g&&g.el){g.el.style[g.prop]="";}CW.grow=null}
+function cwRoomGeo(want){let g=want.m();if(!g)return null;
+ if(want.kind!=="room")return g;
+ const uW=Math.min(CW.uRoam,(g.right-g.left)/CWR.MINW);if(uW<CWR.UMIN){if(g.grow)cwGrowSet(g.grow,0);return null}
+ if(g.grow){const cur=parseFloat(g.grow.el.style[g.grow.prop])||0;const need=Math.ceil(CWR.RH*Math.min(uW,CW.uRoam))+2;const h0=(g.bottom-g.top)-cur;
+  const grow=Math.max(0,Math.min(g.grow.max,need-h0));if(Math.abs(grow-cur)>.5){cwGrowSet(g.grow,grow);g=want.m();if(!g)return null}}
+ else if(CW.grow)cwGrowReset();
+ const u=cwDp(Math.min(CW.uRoam,(g.right-g.left)/CWR.MINW,(g.bottom-g.top)/CWR.RH));if(u<CWR.UMIN){if(g.grow)cwGrowSet(g.grow,0);return null}
+ g.u=Math.floor(u*(window.devicePixelRatio||1))/(window.devicePixelRatio||1)||u;g.RW=Math.min(CWR.MAXW,Math.floor((g.right-g.left)/g.u));g.w=g.RW*g.u;g.h=CWR.RH*g.u;return g}
+function cwGrowSet(gr,px){if(CW.grow&&CW.grow.el!==gr.el)cwGrowReset();gr.el.style[gr.prop]=px?px+"px":"";CW.grow=px?{el:gr.el,prop:gr.prop}:null}
+function cwRoomPos(R,g){const el=R.el;let x,y;
+ if(R.kind==="room"){if(g.in){const c=g.in;if(!c.classList.contains("cw-rc"))c.classList.add("cw-rc");if(el.parentNode!==c)c.appendChild(el);if(CW.hostEl&&CW.hostEl.isConnected)CW.hostEl.remove();
+   const cr=cwRect(c);x=g.right-R.w-cr.left-c.clientLeft;y=g.bottom-R.h-cr.top-c.clientTop}
+  else{const h=cwHost(g.after);if(el.parentNode!==h)h.appendChild(el);const hr=cwRect(h);x=g.right-R.w-hr.left;y=g.bottom-R.h-hr.top}}
+ else if(R.kind==="nook"){if(el.parentNode!==g.reel){g.reel.appendChild(el);if(R.reel&&R.reel!==g.reel)setTimeout(cwClap,350)}R.reel=g.reel;x=g.left-g.rr.left;y=g.top-g.rr.top}
+ else{if(el.parentNode!==g.sheet)g.sheet.appendChild(el);el.style.left="";el.style.top="";return}
+ x=cwDp(x);y=cwDp(y);const k=x+","+y;if(R.pk!==k){R.pk=k;el.style.left=x+"px";el.style.top=y+"px"}}
+function cwRoomSync(){if(!CW.root||CW.syncing)return;CW.syncing=true;try{
+ const want=cwRoomWant();let g=want&&cwRoomGeo(want);
+ if(!g){if(CW.room&&!(CW.leaving&&CW.room.el.isConnected))cwRoomExit();else if(!CW.room&&CW.grow)cwGrowReset();return}
+ if(!CW.room||CW.room.key!==want.key)cwRoomEnter(want,g);else cwRoomUpdate(g)}
+ finally{CW.syncing=false}}
+function cwRoomApply(R,g){const oldU=R.u;R.u=g.u;R.w=g.w;R.h=g.h;R.RW=g.RW||44;cwRoomRender(R);cwRoomPos(R,g);
+ if(oldU&&oldU!==R.u&&CW.room===R){const f=R.u/oldU;CW.x*=f;CW.y*=f;cwSize();cwBoundsUpd();const b=cwB();CW.x=Math.max(b.L+CW.W*.5,Math.min(b.R-CW.W*.5,CW.x));if(CW.inBed||CW.bed)cwBedPlace();CW.tf="";cwFollow()}}
+function cwRoomUpdate(g){const R=CW.room;cwRoomApply(R,g);if(R.kind==="room"&&R.per!==cwPeriod()){R.per=cwPeriod();CW.lightOv=null;cwRoomLamp()}}
+function cwRoomEnter(want,g){const prev=CW.room;const wasBed=CW.inBed&&want.kind==="room";const xu=prev&&prev.kind==="room"&&want.kind==="room"?CW.x/CW.U:null;
+ cwCancel();cwMenuClose();if(CW.ask)cwAskClose();
+ if(prev)cwRoomDetach(prev,want.kind!==prev.kind);
+ else{CW.roamBed=CW.bed;if(CW.rootBed){CW.rootBed.B.hidden=CW.rootBed.F.hidden=true}}
+ const el=cwRoomEl(want.kind);const R={kind:want.kind,key:want.key,el,u:0,bed:{x:0,y:0},light:false,per:cwPeriod()};CW.room=R;cwRoomApply(R,g);
+ el.querySelector(".cw-stage").appendChild(CW.b);CW.fx=el.querySelector(".cw-fx");
+ if(R.kind==="room"){CW.bedB=el.querySelector(".cw-bk");CW.bedF=el.querySelector(".cw-ft");CW.bed=R.bed;CW.bedB.hidden=CW.bedF.hidden=false}else{CW.bed=null}
+ cwSize();cwBoundsUpd();const b=cwB();CW.surf="floor";CW.flip=false;CW.rot=0;CW.oy=0;CW.air=false;CW.zz=false;CW.stars=false;CW.tears=false;CW.bumpOn=false;CW.b.classList.remove("tp");
+ CW.inBed=false;CW.discoSaid=false;
+ if(wasBed){CW.inBed=true;CW.surf="bed"}
+ const mid=(b.L+b.R)/2;CW.x=xu!=null?xu*CW.U:R.kind==="room"?b.L+(b.R-b.L)*.42:mid;CW.x=Math.max(b.L+CW.W*.5,Math.min(b.R-CW.W*.5,CW.x));CW.y=b.B;CW.face=R.kind==="nook"?-1:CW.face;
+ if(R.kind==="nook")CW.oy=3*CW.U;
+ CW.tf="";CW.itf="";if(CW.bed)cwBedPlace();cwFollow();cwRoomLamp();cwDraw(performance.now(),true);CW.nextAt=CW.clock+350}
+function cwRoomDetach(R,drop){const el=R.el;if(R.kind==="room"){R.drawerOpen=false;R.rk="";el.classList.remove("cwfront","party")}
+ if(drop||R.kind!=="room"){el.remove()}}
+function cwRoomExit(){const R=CW.room;if(!R)return;const wasBed=CW.inBed;cwCancel();cwMenuClose();if(CW.ask)cwAskClose();CW.room=null;
+ CW.root.insertBefore(CW.b,CW.root.querySelector(".cw-ft"));CW.fx=CW.rootFx;cwFxClearRoom(R);R.el.remove();if(CW.hostEl)CW.hostEl.remove();cwGrowReset();
+ if(CW.rootBed){CW.bedB=CW.rootBed.B;CW.bedF=CW.rootBed.F}CW.bed=null;CW.inBed=false;if(CW.bedB)CW.bedB.hidden=CW.bedF.hidden=true;
+ cwSize();cwBoundsUpd();const b=cwB();CW.surf="floor";CW.flip=false;CW.rot=0;CW.oy=0;CW.air=false;CW.zz=false;CW.y=b.B;CW.x=b.R-CW.W*.5-10;CW.face=-1;CW.tf="";CW.itf="";
+ if(wasBed&&cwNight())CW.nextAt=0;cwDraw(performance.now(),true)}
+function cwFxClearRoom(R){const f=R.el.querySelector(".cw-fx");if(f)f.innerHTML=""}
+function cwRoomDrop(){if(CW.room)cwRoomExit()}
+
+/* --- ışık --- */
+function cwRoomLamp(v){const R=CW.room;if(!R||R.kind!=="room")return;
+ if(v===undefined){if(CW.lightOv&&CW.lightOv.per===cwPeriod())v=CW.lightOv.v;else v=CW.inBed?false:(cwNight()||cwPeriod()==="e")}
+ R.light=!!v;R.el.classList.toggle("lamp",R.light);R.el.classList.toggle("dark",!R.light&&cwNight())}
+function cwBulbSwing(){const R=CW.room;if(!R||R.kind!=="room"||cwReduce())return;const b=R.el.querySelector(".cw-bulb");b.classList.remove("swing");void b.offsetWidth;b.classList.add("swing");setTimeout(()=>b.classList.remove("swing"),1500)}
+function cwChest(open){const R=CW.room;if(!R||R.kind!=="room")return;R.drawerOpen=!!open;const c=R.el.querySelector(".cw-chest");if(c)c.innerHTML=cwChestSvg(!!open)}
+function cwClap(){const R=CW.room;if(!R||R.kind!=="nook")return;const s=R.el.querySelector(".cw-stick");if(!s||cwReduce())return;s.classList.remove("clap");void s.offsetWidth;s.classList.add("clap");cwSfx("clap")}
+
+/* --- efekt yardımcıları --- */
+function cwNoteFx(n=1){if(cwReduce()||!CW.b)return;for(let i=0;i<n;i++){const e=document.createElement("i");e.className="cw-note";e.innerHTML=CW_NOTE;
+ e.style.left=(CW.W*cwRand(.05,.45))+"px";e.style.top=(CW.H*cwRand(.35,.6))+"px";e.style.setProperty("--dx",cwRand(-18,8).toFixed(0)+"px");e.style.color=cwPick(["#D97757","#FFC93C","#6CB8FF","var(--accent)"]);CW.b.appendChild(e);setTimeout(()=>e.remove(),1400)}}
+function cwConfetti(x,y,n=26){if(cwReduce())return;const C=["#D97757","#FFC93C","#5BC27A","#6CB8FF","#E5484D","#B57BFF"];for(let i=0;i<n;i++){const p=document.createElement("i");p.className="cw-cf";
+  p.style.left=x+"px";p.style.top=y+"px";p.style.background=cwPick(C);const dx=cwRand(-70,70);p.style.setProperty("--dx",dx.toFixed(0)+"px");p.style.setProperty("--up",cwRand(-60,-24).toFixed(0)+"px");
+  p.style.setProperty("--dn",cwRand(30,90).toFixed(0)+"px");p.style.setProperty("--r",cwRand(-540,540).toFixed(0)+"deg");p.style.animationDelay=(i*12)+"ms";CW.fx.appendChild(p);setTimeout(()=>p.remove(),1500)}}
+function cwItemEl(it){const s=Math.round(CW.U*8);const d=document.createElement("div");d.className="cw-item";d.innerHTML=it.s;d.style.width=s+"px";d.style.height=s+"px";
+ d.style.left=Math.round(CW.x-s/2)+"px";d.style.top=Math.round(CW.y-CW.H-s*.4)+"px";CW.fx.appendChild(d);return d}
+
+/* --- yeni etkinlikler --- */
+async function actGuitar(){CW.lastGuitar=now();if(CW.inBed){CW.inBed=false;CW.surf="floor";CW.y=cwB().B}const b=cwB();
+ if(CW.room&&CW.room.kind==="room"&&!cwReduce())await cwWalk(Math.max(b.L+CW.W*.5,Math.min(b.R-CW.W*.5,(b.L+b.R)/2)),60);
+ CW.pose="idle";await cwSay(cwPick(["amp.on()","guitar.tune()","riff.play()"]),{kind:"code",hold:200});CW.face=1;
+ const wv=document.createElement("div");wv.className="cw-wave";wv.innerHTML="<i></i><i></i><i></i>";CW.b.appendChild(wv);CW.sq.classList.add("bob");
+ try{CW.pose="guitar";cwRiff();let n=0;const t0=CW.clock;while(CW.clock-t0<5600){await cwWait(340);if(n++%2===0)cwNoteFx(1);if(n===8)cwRiff()}
+  CW.pose="joy";cwNoteFx(2);await cwHop(CW.x,cwB().B,CW.room?10:16,320);CW.pose="happy";
+  if(cwMaySay()||Math.random()<.5)await cwSay(cwPick(["Günaydın! Bu riff senin için.","Teşekkürler, teşekkürler! İmza saat 10'da.","Komşular alkışlıyor. Ya da duvara vuruyorlar, emin değilim.","Sabah gitarı: kahveden daha etkili!"]),{hold:1500})}
+ finally{wv.remove();CW.sq.classList.remove("bob")}CW.pose="idle"}
+async function actStretch(){CW.pose="stretch";CW.sq.classList.add("str");try{await cwWait(1500)}finally{CW.sq.classList.remove("str")}CW.pose="idle";await cwWait(300)}
+async function actYawn(){CW.pose="yawn";await cwWait(1300);CW.pose="sleepy";await cwWait(700);if(Math.random()<.4&&cwMaySay())await cwSay(cwPick(["Haaa... Sen uyumuyorsan ben de uyumam.","Uykum var ama meraklıyım. Ne yapıyoruz?","Esnemek bulaşıcıdır. Sen de esnedin, gördüm!"]),{hold:1300});CW.pose="idle"}
+async function actDoze(){CW.pose="sit";await cwWait(500);CW.pose="doze";CW.zz=true;const y0=CW.oy;try{for(let i=0;i<5;i++){await cwWait(cwRand(500,900));CW.oy=y0+CW.U*.5;await cwWait(220);CW.oy=y0}}finally{CW.zz=false;CW.oy=y0}
+ CW.pose="surprised";await cwHop(CW.x,cwB().B,8,240);if(cwMaySay()||Math.random()<.5)await cwSay(cwPick(["Uyumuyordum! Gözlerimi dinlendiriyordum.","Ha? Buradayım! Kod derliyordum, kod.","Bir saniyeliğine kapandım. Yeniden başlatıldım!"]),{hold:1300});CW.pose="idle"}
+async function actNightDance(){const R=CW.room;if(R&&R.kind==="room"){cwRoomLamp(true);R.el.classList.add("party")}
+ try{if(cwMaySay()||Math.random()<.4)await cwSay(cwPick(["Gece yarısı partisi! Madem uyumuyoruz...","Saat kaç olursa olsun, dans saati!"]),{hold:1200});await actDance();cwNoteFx(2)}finally{if(R)R.el.classList.remove("party")}}
+function cwInpRecent(ms){return(CW.inp||[]).filter(t=>now()-t<ms).length}
+function cwOwlOk(){return now()-CW.lastInput<40000/CW.speed}
+function cwOwlWake(){return now()-CW.lastInput<8000&&cwInpRecent(60000)>=4&&now()-CW.sleptAt>45000/CW.speed&&now()-CW.owlAt>180000/CW.speed}
+async function actOwlUp(){CW.owlAt=now();CW.pose="sleepy";await cwWait(700);CW.inBed=false;CW.surf="floor";cwRoomLamp(true);const bd=CW.bed;
+ await cwHop(bd?Math.max(cwB().L+CW.W*.5,bd.x-(cwBG().w/2*CW.U+CW.W*.5)):CW.x,cwB().B,10,360);CW.pose="sleepy";
+ await cwSay(cwPick(["Uyuyamadım... Sen de uyumuyorsun zaten.","Madem sen buradasın, ben de kalkayım.","Gece kuşu musun? Ben de oldum o zaman."]),{hold:1400});CW.pose="idle"}
+async function actOwl(){CW.owlAt=Math.max(CW.owlAt,now()-170000);const f=cwPick([actYawn,actYawn,actDoze,actDoze,actNightDance,actStretch,actWander]);cwRoomLamp(true);await f()}
+async function actConfetti(){CW.zz=false;if(CW.inBed)return;CW.pose="joy";cwSfx("pop");const x=CW.x,y=CW.y-CW.H*.8;cwConfetti(x,y);await cwHop(CW.x,cwB().B,CW.room?10:18,340);cwConfetti(x,y,14);
+ CW.pose="happy";if(Math.random()<.6)await cwSay(cwPick(["Yeni beğeni! Konfetiler benden.","Biri seni beğendi! Kutlama zamanı!","Beğeni geldi! Piksellerim dans ediyor."]),{hold:1300});else await cwWait(900);CW.pose="idle"}
+async function actMsgDance(){if(CW.inBed)return;CW.pose="surprised";await cwWait(250);CW.pose="dance";cwNoteFx(2);if(Math.random()<.5)await cwSay(cwPick(["Mesaj geldi! Dans etmeden duramam.","Dıt dıt! Yeni mesaj!"]),{hold:900});
+ for(let i=0;i<2;i++){CW.pose="dance";await cwWait(380);cwNoteFx(1);await cwHop(CW.x,cwB().B,CW.room?8:14,300)}CW.pose="idle"}
+async function actSneeze(){CW.pose="sniff";await cwSay("Ha... ha...",{hold:300});await cwTween(500,k=>{CW.rot=-6*k});CW.pose="sneeze";cwSfx("sneeze");CW.rot=8;
+ const b=cwB();const dir=CW.face||1;const sx=CW.x+dir*CW.W*.3,sy=CW.y-CW.H*.45;if(!cwReduce())cwBurst(sx,sy,10,"#BFE3FF");cwBulbSwing();
+ await cwHop(Math.max(b.L+CW.W*.5,Math.min(b.R-CW.W*.5,CW.x-dir*8)),b.B,6,220);CW.rot=0;CW.pose="idle";await cwSay(cwPick(["HAPŞU! Pardon, piksel tozu.","Çok yaşa ben! Kendime teşekkür ederim.","Bir virüs mü kaptım? Yok yok, sadece toz."]),{hold:1300})}
+async function actJuggle(){const gs=["{","}",";"].map(c=>cwGlyph(0,0,c,"jg"));CW.pose="juggle";const R=CW.U*7;
+ try{await cwTween(3600,k=>{const top=CW.y-CW.H-CW.U*2;gs.forEach((g,i)=>{const ph=(k*4+i/3)%1;const x=CW.x+Math.cos(ph*Math.PI*2)*R-CW.U*3.5,y=top-Math.abs(Math.sin(ph*Math.PI*2))*CW.U*9;g.style.left=Math.round(x)+"px";g.style.top=Math.round(y)+"px"})});
+  if(Math.random()<.35){const g=gs[0];g.style.left=Math.round(CW.x-CW.U*3.5)+"px";g.style.top=Math.round(CW.y-CW.H)+"px";CW.pose="dizzy";CW.stars=true;cwSfx("bonk");await cwWait(300);CW.stars=false;await cwSay("Ay! Süslü parantez kafama düştü.",{hold:1100})}
+  else{CW.pose="happy";cwSfx("pop");await cwWait(700)}}
+ finally{cwDissolve(gs,60);CW.stars=false}CW.pose="idle"}
+async function actRead(){const b=cwB();if(!cwReduce())await cwWalk(Math.max(b.L+CW.W*.5,Math.min(b.R-CW.W*.5,CW.room?(b.L+b.R)*.45:CW.x)),40);CW.pose="read";
+ for(let i=0;i<3;i++){await cwWait(cwRand(1600,2400));cwSfx("page")}
+ if(cwMaySay()||Math.random()<.3)await cwSay(cwPick(["Bu kitapta hiç resim yok!","\"Kod Yazmanın 101 Yolu\". Yüzü hata.","Tam heyecanlı yerinde bitti. Devamı 5.2'de.","Okuyorum ama piksellerim kitaptan küçük."]),{hold:1400});else await cwWait(500);CW.pose="idle"}
+async function actDrawer(){const R=CW.room;if(!R||R.kind!=="room")return actLook();const b=cwB();const cx=(R.lay.chest+7)*R.u;
+ await cwWalk(Math.max(b.L+CW.W*.5,cx+CW.W*.1),40);CW.face=-1;CW.pose="reach";let item=null;
+ try{await cwWait(300);cwChest(true);cwSfx("drawer");await cwWait(500);const it=cwPick(CW_ITEMS);CW.pose="hold";CW.face=1;item=cwItemEl(it);cwSfx("pop");
+  await cwSay(it.t,{hold:1600});CW.pose="reach";CW.face=-1;await cwWait(250)}
+ finally{if(item){if(!cwReduce())cwBurst(parseFloat(item.style.left)+CW.U*4,parseFloat(item.style.top)+CW.U*4,8);item.remove()}cwChest(false)}cwSfx("drawer");CW.pose="idle"}
+async function actSwitch(){const R=CW.room;if(!R||R.kind!=="room")return actLook();const b=cwB();const sx=(R.lay.sw+1.5)*R.u;
+ if(!cwReduce())await cwWalk(Math.max(b.L+CW.W*.5,sx+CW.W*.32),40);CW.face=-1;CW.pose="switch";await cwWait(350);
+ const v=!R.light;CW.lightOv={v,per:cwPeriod()};cwRoomLamp(v);cwSfx("click");cwBulbSwing();await cwWait(450);CW.face=1;CW.pose="happy";
+ if(cwMaySay()||Math.random()<.35)await cwSay(v?cwPick(["Işık açıldı! Gölgem bile şaşırdı.","Aydınlık geri geldi. Tasarruf modu kapalı."]):cwPick(["Işık kapalı. Romantik mod.","Elektrik faturası: düşük. Görüş mesafesi: düşük."]),{hold:1300});else await cwWait(600);CW.pose="idle"}
+async function actBedSit(){const R=CW.room;if(!R||R.kind!=="room"||!CW.bed)return actSit();const b=cwB();const bl=CW.bed.x-13*R.u;
+ await cwWalk(Math.max(b.L+CW.W*.5,bl-CW.W*.5),40);R.el.classList.add("cwfront");CW.surf="bed";
+ try{await cwHop(bl+R.u*2,CW.bed.y-6*R.u,10,340);CW.face=-1;CW.pose="bedsit";await cwWait(1500);CW.lookX=-1;await cwWait(900);CW.lookX=1;await cwWait(900);CW.lookX=0;await cwWait(cwRand(800,1600));
+  CW.pose="idle";await cwHop(Math.max(b.L+CW.W*.5,bl-CW.W*.5),b.B,10,320)}
+ finally{CW.surf="floor";CW.y=cwB().B;R.el.classList.remove("cwfront")}}
+async function actDisco(){CW.inBed=false;CW.surf="floor";CW.face=1;CW.pose="dance";
+ if(!CW.discoSaid){CW.discoSaid=true;if(cwMaySay()||Math.random()<.5)await cwSay(cwPick(["Yorumlar açıldı, pist benim!","Yaz bakalım, ben ritim tutarım.","Her yorum bir alkış! Dans ediyorum."]),{hold:1300})}
+ for(;;){CW.pose="dance";await cwWait(cwRand(900,1800));const r=Math.random();
+  if(r<.3)await cwHop(CW.x,cwB().B,8,300);else if(r<.5)CW.face=-CW.face;else if(r<.62&&!cwReduce()){await cwTween(420,k=>{CW.rot=360*k});CW.rot=0}else if(r<.85)cwNoteFx(1)}}
+async function actNook(){CW.surf="floor";CW.face=-1;CW.oy=3*CW.U;CW.pose="popcorn";
+ if(!CW.nookSaid){CW.nookSaid=true;if(cwMaySay())await cwSay(cwPick(["Klaket saati! Patlamış mısırım hazır.","Sessiz olun, film başlıyor!"]),{hold:1400});CW.pose="popcorn"}
+ for(;;){await cwWait(cwRand(3000,6000));if(Math.random()<.35){CW.pose="happy";await cwWait(800);CW.pose="popcorn"}else if(Math.random()<.3){CW.lookX=-1;await cwWait(1200);CW.lookX=0}}}
+const CW_ACTS51={guitar:actGuitar,stretch:actStretch,yawn:actYawn,doze:actDoze,nightdance:actNightDance,owl:actOwl,owlup:actOwlUp,confetti:actConfetti,msgdance:actMsgDance,sneeze:actSneeze,
+ juggle:actJuggle,read:actRead,drawer:actDrawer,switch:actSwitch,bedsit:actBedSit,disco:actDisco,nook:actNook,dunno:actDunno};
+function cwWeights(){const p=cwPeriod(),rm=CW.room&&CW.room.kind==="room",late=cwHour()>=22;
+ const w=[["wander",rm?20:30,actWander],["look",13,actLook],["sit",rm?5:9,actSit],["dance",3,actDance],["stretch",5,actStretch],["sneeze",2,actSneeze],["juggle",6,actJuggle],["read",rm?7:3,actRead]];
+ if(rm)w.push(["drawer",8,actDrawer],["bedsit",6,actBedSit],["switch",p==="e"||late?5:2,actSwitch]);else w.push(["peek",9,actPeek],["stairs",10,cwStairs],["ladder",9,cwLadder]);
+ const sg=now()-CW.lastGuitar;if(p==="m"&&sg>240000)w.push(["guitar",16,actGuitar]);else if(sg>600000)w.push(["guitar",2,actGuitar]);
+ if(late)w.push(["yawn",8,actYawn]);return w}
+
+/* --- ses: gitar riff'i ve küçük efektler --- */
+function cwRiff(){if(!cwSoundOk())return;try{const c=CWS.ctx;const t0=c.currentTime+.04;const sh=c.createWaveShaper();const n=256,cv=new Float32Array(n);for(let i=0;i<n;i++){const x=i/(n-1)*2-1;cv[i]=Math.tanh(x*5)}sh.curve=cv;
+ const lp=c.createBiquadFilter();lp.type="lowpass";lp.frequency.value=2300;const g=c.createGain();g.gain.value=.035;sh.connect(lp);lp.connect(g);g.connect(c.destination);
+ const N=[[164.8,.2],[164.8,.1],[196,.2],[220,.2],[164.8,.1],[246.9,.2],[220,.1],[196,.3],[164.8,.42]];let t=t0;
+ for(const[f,d]of N){for(const m of[1,1.5]){const o=c.createOscillator(),e=c.createGain();o.type="sawtooth";o.frequency.setValueAtTime(f*m,t);e.gain.setValueAtTime(.0001,t);e.gain.exponentialRampToValueAtTime(.6,t+.01);e.gain.exponentialRampToValueAtTime(.0001,t+d*.95);o.connect(e);e.connect(sh);o.start(t);o.stop(t+d)}t+=d;CWS.n++}
+ setTimeout(()=>{try{g.disconnect()}catch{}},(t-t0+.6)*1000)}catch{}}
+const cwSfxBase51=cwSfx;
+cwSfx=function(k){if(["drawer","click","clap","sneeze","page"].includes(k)){if(!cwSoundOk())return;try{
+  if(k==="drawer")cwTone("square",140,110,.12,.018);else if(k==="click"){cwTone("square",1800,1600,.02,.02);cwTone("square",900,800,.02,.015,.03)}
+  else if(k==="clap")cwTone("square",2200,300,.06,.03);else if(k==="sneeze"){cwTone("triangle",900,300,.18,.03)}else if(k==="page")cwTone("triangle",2400,1800,.04,.008)}catch{}return}
+ return cwSfxBase51(k)};
+
+/* --- uygulama olayları: beğenide konfeti, mesajda dans, girdi sayacı, anında oda eşitleme --- */
+function cwLikeCheck(m){if(!CW.root||!cwOn()||!S.authed||CW.inBed)return;let n=0;for(const[id,d]of Object.entries(m||{})){const p=S.posts[id];if(!p||p.uid!==S.uid)continue;const old=S.meta[id]||{};
+ for(const[u,at]of Object.entries(d.likes||{}))if(at&&u!==S.uid&&!(old.likes||{})[u]&&at>S.bootAt)n++}if(n)cwQueue("confetti",actConfetti,3)}
+function cwMsgCheck(m){if(!CW.root||!cwOn()||!S.authed||CW.inBed)return;for(const[id,c]of Object.entries(m||{})){const o=S.chats[id];
+ if(c.last&&c.last.from!==S.uid&&c.last.at>S.bootAt&&(!o||!o.last||o.last.at<c.last.at)){if(S.route.name==="chat")return;cwQueue("msgdance",actMsgDance,3);return}}}
+const notifyMetaBaseCW=notifyMeta;
+notifyMeta=function(m){try{cwLikeCheck(m)}catch(e){console.warn("clawd",e)}return notifyMetaBaseCW.apply(this,arguments)};
+const notifyChatsBaseCW=notifyChats;
+notifyChats=function(m){try{cwMsgCheck(m)}catch(e){console.warn("clawd",e)}return notifyChatsBaseCW.apply(this,arguments)};
+["pointerdown","keydown","wheel"].forEach(ev=>document.addEventListener(ev,()=>{const t=now();const a=CW.inp||(CW.inp=[]);if(!a.length||t-a[a.length-1]>700){a.push(t);if(a.length>40)a.shift()}if(ev==="wheel")CW.lastInput=t},{capture:true,passive:true}));
+HOOKS.after.push(()=>{try{if(CW.root&&cwOn())cwRoomSync()}catch(e){console.warn("clawd",e)}});
+(function(){let q=false;const mo=new MutationObserver(recs=>{if(q||CW.syncing||!CW.root)return;if(!recs.some(r=>{const t=r.target;return!(t.closest&&t.closest(".cw-room,.cw-rhost"))}))return;q=true;queueMicrotask(()=>{q=false;try{if(cwOn()||CW.room)cwRoomSync()}catch(e){console.warn("clawd",e)}})});
+ const go=()=>{const m=document.getElementById("main"),o=document.getElementById("overlay");if(m)mo.observe(m,{childList:true,subtree:true});if(o)mo.observe(o,{childList:true})};
+ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",go);else go()})();
+addEventListener("resize",()=>{if(CW.room)CW.room.rk="";setTimeout(()=>{try{cwRoomSync()}catch{}},60)});
+
+/* --- ortak API: CLAWD.sprite(poz) --- */
+const CW_POSES={idle:{},happy:{eyes:"happy",mouth:"smile",arms:"up",blush:true},think:{eyes:"up",lx:1,arms:"tk",mouth:"flat"},sad:{eyes:"sad",mouth:"frown"},
+ dance1:{eyes:"happy",mouth:"smile",arms:"up",legs:"w1",blush:true},dance2:{eyes:"happy",mouth:"smile",arms:"c1",legs:"w2",blush:true},
+ guitar1:{prop:"guitar",arms:"g1",eyes:"happy",mouth:"smile"},guitar2:{prop:"guitar",arms:"g2",eyes:"closed",mouth:"smile",legs:"spread"},
+ sleep:{eyes:"closed",legs:"tuck"},surprised:{eyes:"wide",mouth:"o",arms:"up"},talk:{mouth:"t1"},wave:{eyes:"happy",mouth:"smile",arms:"w1"},
+ read:{prop:"book",arms:"rd",eyes:"down",legs:"tuck"},cry:{eyes:"sad",mouth:"frown"},dizzy:{eyes:"x",mouth:"wob",bump:true,legs:"spread"},shrug:{eyes:"blink",mouth:"flat",arms:"sg"},
+ win:{eyes:"happy",mouth:"smile",arms:"up",legs:"tuck",blush:true},stretch:{eyes:"closed",mouth:"yawn",arms:"hi",legs:"spread"}};
+CLAWD.sprite=function(pose){const p=CW_POSES[pose]||CW_POSES.idle;return cwSvg({eyes:"open",mouth:"",arms:"down",legs:"stand",lx:0,blush:false,bump:false,brow:"",prop:"",...p})};
+CLAWD.poses=Object.keys(CW_POSES);
+Object.assign(CLAWD.debug,{room(){return CW.room&&{kind:CW.room.kind,key:CW.room.key,u:CW.room.u,RW:CW.room.RW,light:CW.room.light,rect:(r=>({x:Math.round(r.left),y:Math.round(r.top),w:Math.round(r.width),h:Math.round(r.height)}))(CW.room.el.getBoundingClientRect())}},
+ sync(){cwRoomSync();return this.room()},lamp(v){cwRoomLamp(v);return CW.room&&CW.room.light},inputs(n){const t=now();CW.inp=Array.from({length:n||6},(_,i)=>t-i*2000);CW.lastInput=t},owlReset(){CW.owlAt=0;CW.sleptAt=0}});
 /*}@js:51CLAWD*/
 
 /*@js:51CHS{*/
